@@ -1,0 +1,2 @@
+/usr/bin/ar cr libExceptions.a  "CMakeFiles/Exceptions.dir/FieldException.o" 
+/usr/bin/ranlib libExceptions.a 

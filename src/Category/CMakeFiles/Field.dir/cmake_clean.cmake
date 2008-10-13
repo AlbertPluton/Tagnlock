@@ -1,0 +1,10 @@
+FILE(REMOVE
+"libField.pdb"
+"libField.a"
+"libField.so"
+"CMakeFiles/Field.dir/Field.o"
+"CMakeFiles/Field.dir/TextField.o"
+"CMakeFiles/Field.dir/CheckField.o"
+"CMakeFiles/Field.dir/ComboField.o"
+"CMakeFiles/Field.dir/SpinField.o"
+)

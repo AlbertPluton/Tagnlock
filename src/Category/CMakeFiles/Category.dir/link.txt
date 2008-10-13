@@ -1,0 +1,2 @@
+/usr/bin/ar cr libCategory.a  "CMakeFiles/Category.dir/Category.o" 
+/usr/bin/ranlib libCategory.a 
