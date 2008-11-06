@@ -107,10 +107,17 @@ class Field
 		//! A function to convert booleans to strings.
 		string boolToString( bool input );
 		
+		//! Converts a string to a int.
+		int stringToInt( string input );
+		
 		
 		//! Converts a string to a double.
 		double stringToDouble( string input );
 		
+
+		//! Converts a int to a string.
+		string intToString( int input );
+	
 		
 		//! Converts a double to a string.
 		string doubleToString( double input );

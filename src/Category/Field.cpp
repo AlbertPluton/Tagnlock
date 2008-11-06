@@ -13,6 +13,7 @@
 
 #include "FieldException.h"
 
+#include <sstream>
 #include <iostream>
 using namespace std;
 
@@ -53,7 +54,7 @@ Field* Field::newField( vector<string>* description )
 	string str;
 	str = description->at(0);
 	Field* field = NULL;
-	
+
 
 	if( str.compare( 6, 9, "TextField" ) == 0 )
 	{
@@ -204,7 +205,9 @@ bool Field::stringToBool( string input )
 };
 
 
+
 //-----------------------------------------------------------------------------
+
 
 string Field::boolToString( bool input )
 {
@@ -217,17 +220,52 @@ string Field::boolToString( bool input )
 
 
 
+//-----------------------------------------------------------------------------
+
+
+int Field::stringToInt( string input )
+{
+		stringstream convert( input );
+		int number = 0;
+		convert >> number;
+		return number;
+};
+
+
+//-----------------------------------------------------------------------------
 
 
 
+double Field::stringToDouble( string input )
+{
+		stringstream convert( input );
+		double number = 0.0;
+		convert >> number;
+		return number;
+};
 
 
 
+//-----------------------------------------------------------------------------
 
 
+string Field::intToString( int input )
+{
+	stringstream convert;
+	convert << input;
+	return convert.str();
+};
 
 
+//-----------------------------------------------------------------------------
 
+
+string Field::doubleToString( double input )
+{
+	stringstream convert;
+	convert << input;
+	return convert.str();
+}
 
 
 

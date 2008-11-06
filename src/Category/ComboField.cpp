@@ -7,7 +7,6 @@
 
 
 #include "ComboField.h"
-#include <sstream>
 
 #include "FieldException.h"
 
@@ -87,9 +86,7 @@ ComboField::ComboField( vector<string> * description )
 		{
 		
 			str.erase(0, 6);
-			stringstream convert(str); // used to convert string to int
-			int comboSize = 0;
-			convert >> comboSize;
+			int comboSize = this->stringToInt( str );
 			
 			// Check to see if the value of comboSize is not invalid
 			if( (i + 1 + comboSize) == description->size() )
@@ -166,18 +163,12 @@ vector<string> ComboField::getDescription()
 	// Create a string vector.
 	vector<string> vec;
 
-	// convert int to string via stringstream
-  stringstream convert;
-  string size;
-	convert << this->getComboSize();
-	size = convert.str();	
-
 	// Fill in the different lines. 
 	vec.push_back( "Type: " 			+ this->getType() 	);
 	vec.push_back( "Label: "			+ this->getLabel() 	);
 	vec.push_back( "Required: " 	+ this->boolToString( this->getRequired() )	); 
 	vec.push_back( "Reset: "			+ this->boolToString( this->getReset() )		);
-	vec.push_back( "Size: "			+ size 							);
+	vec.push_back( "Size: "				+ this->intToString( this->getComboSize() ) );
 	// Iterate over all combo options
 	for( int i = 0; i < this->getComboSize(); i++ )
 	{

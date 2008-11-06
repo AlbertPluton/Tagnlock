@@ -64,20 +64,31 @@ class SpinField : public Field
 		*/
 		vector<string> getDescription();
 		
-			
-		double* getMinimum();		//! Returns a pointer to the lowest possible value of the spin field. NULL means that there is no limit to this value.
-		double* getMaximum();		//! Returns a pointer to the highest possible value of the spin field. NULL means that there is no limit to this value.
-		double getStepsize();		//! Returns the increment size of the field.
-		bool getAdhereStep();		//! Indicates whether or not manually entered values are rounded of to the nearest multiplication of the step size. Thus TRUE when rounding of.
-		int getDecimals();			//! Returns the number of decimals displayed in the field.
-		bool getAdhereDec();		//! Indicates whether manually entered values are displayed according to the number of decimals displayed. If FALSE the fully entered value is displayed.
+		//! Returns a pointer to the lowest possible value of the spin field. NULL means that there is no limit to this value.	
+		double* getMinimum();
+		//! Returns a pointer to the highest possible value of the spin field. NULL means that there is no limit to this value.		
+		double* getMaximum();
+		//! Returns the increment size of the field.		
+		double getStepsize();		
+		//! Indicates whether or not manually entered values are rounded of to the nearest multiplication of the step size. Thus TRUE when rounding of.
+		bool getAdhereStep();		
+		//! Returns the number of decimals displayed in the field.
+		int getDecimals();			
+		//! Indicates whether manually entered values are displayed according to the number of decimals displayed. If FALSE the fully entered value is displayed.
+		bool getAdhereDec();		
 
-		void setMinimum( double* minimum );		//! Set the lowest possible value of the spin field. Set it equal to NULL to indicate that there is no limit.
-		void setMaximum( double* maximum );		//! Set the highest possible value of the spin field. Set it equal to NULL to indicate that there is no limit.
-		void setStepsize( double stepsize );	//! Set the increment size of the spin field. This value should not be equal to zero unless adhereStep is FALSE, in this way only manual entries are possible.
-		void setAdhereStep( bool adhere );		//! Indicated if manually entered values are rounded to the nearest multiplication of the step size.
-		void setDecimals( int decimals );			//! Set the number of displayed decimals.
-		void setAdhereDec( bool adhere );			//! Indicated if manually entered values are displayed according to the value of decimals. If FALSE the fully entered value is displayed.
+		//! Set the lowest possible value of the spin field. Set it equal to NULL to indicate that there is no limit.
+		void setMinimum( double* minimum );	
+		//! Set the highest possible value of the spin field. Set it equal to NULL to indicate that there is no limit.	
+		void setMaximum( double* maximum );		
+		//! Set the increment size of the spin field. This value should not be equal to zero unless adhereStep is FALSE, in this way only manual entries are possible.
+		void setStepsize( double stepsize );	
+		//! Indicated if manually entered values are rounded to the nearest multiplication of the step size.
+		void setAdhereStep( bool adhere );		
+		//! Set the number of displayed decimals.
+		void setDecimals( int decimals );			
+		//! Indicated if manually entered values are displayed according to the value of decimals. If FALSE the fully entered value is displayed.
+		void setAdhereDec( bool adhere );			
 		
 		
 
@@ -91,10 +102,10 @@ class SpinField : public Field
 
 
 
-		void readMinimum(); 		//!	Used in the constructor to get min from the definition file.
-		void readMaximum();			//!	Used in the constructor to get max from the definition file.
-		void readStepsize();		//! Used in the constructor to get step form the definition file.
-		void read
+		//void readMinimum(); 		//!	Used in the constructor to get min from the definition file.
+		//void readMaximum();			//!	Used in the constructor to get max from the definition file.
+		//void readStepsize();		//! Used in the constructor to get step form the definition file.
+		//void read
 
 };
 

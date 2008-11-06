@@ -13,6 +13,10 @@
 
 #include <sstream>
 
+#include <iostream>
+
+using namespace std;
+
 
 //-----------------------------------------------------------------------------
 
@@ -82,11 +86,13 @@ SpinField::SpinField( string fieldLabel, bool fieldRequired, bool fieldReset, do
 SpinField::SpinField( vector<string> * description )
 {
 	string str;
+	
+	double number;	// used to convert string to double
 
-	for( int i = 0; i<(int)description->size(); i++)
+	for( int i = 1; i<(int)description->size(); i++)
 	{
 		str = description->at(i);
-
+		
 		if( str.compare( 0, 7, "Label: ") == 0 ) 	// ----------------------------------
 		{
 			str.erase(0, 7);
@@ -96,7 +102,7 @@ SpinField::SpinField( vector<string> * description )
 		{
 			// Get the substring of str which should contain true or false.
 			// Convert it to a boolean, this function can throw a FieldException.
-			// Assign the boolean to required.
+			// Assign the boolean to required.	
 			try { this->setRequired( this->stringToBool( str.substr(10, 5) ) ); }
 			catch(  FieldException& e ) 
 			{
@@ -122,29 +128,81 @@ SpinField::SpinField( vector<string> * description )
 			}				
 			catch( exception& e) { throw; }	
 		}
-		else if( str.compare( 0, 7, "Minimum" ) == 0 )
+		else if( str.compare( 0, 9, "Minimum: " ) == 0 )
 		{
-			// TODO
+			str.erase(0, 9);
+			if( !(str.compare( 0, 4, "NULL") == 0) )
+			{
+				try
+				{
+					min = new double; 
+				}
+				catch( exception& e) { throw; }
+				*min = this->stringToDouble( str );
+			}
+			else
+			{
+				min = NULL;
+			}
 		}
-		else if( str.compare( 0, 7, "Maximum" ) == 0 )
+		else if( str.compare( 0, 9, "Maximum: " ) == 0 )
 		{
-			// TODO
+			str.erase(0, 9);
+			if( !(str.compare( 0, 4, "NULL") == 0) )
+			{
+				try
+				{
+					max = new double; 
+				}
+				catch( exception& e) { throw; }
+				*max = this->stringToDouble( str );
+			}
+			else
+			{
+				max = NULL;
+			}
 		}		
-		else if( str.compare( 0, 8, "Stepsize" ) == 0 )
+		else if( str.compare( 0, 10, "Stepsize: " ) == 0 )
 		{
-			// TODO
+			str.erase(0, 10);
+			step = this->stringToDouble( str );	
 		}
-		else if( str.compare( 0, 10, "AdhereStep" ) == 0 )
+		else if( str.compare( 0, 12, "AdhereStep: " ) == 0 )
 		{
-			// TODO
+			// Get the substring of str which should contain true or false.
+			// Convert it to a boolean, this function can throw a FieldException.
+			// Assign the boolean to adhereStep.
+			try { this->setAdhereStep( this->stringToBool( str.substr(12, 5) ) ); }
+			catch(  FieldException& e ) 
+			{
+				// Add information to the exception to be able to trace its origin. 
+				e.setFieldType( this->getType() );
+				e.setFieldLabel( this->getLabel() );
+				e.addInfo( "Input string was:" + str + "\n" );
+				throw;
+			}			
+			catch(  exception& e ) { throw; }
 		}			
-		else if( str.compare( 0, 8, "Decimals" ) == 0 )
+		else if( str.compare( 0, 10, "Decimals: " ) == 0 )
 		{
-			// TODO
+			str.erase(0, 10);
+			dec = this->stringToInt( str );	
 		}
-		else if( str.compare( 0, 9, "AdhereDec" ) == 0 )
+		else if( str.compare( 0, 11, "AdhereDec: " ) == 0 )
 		{
-			// TODO
+			// Get the substring of str which should contain true or false.
+			// Convert it to a boolean, this function can throw a FieldException.
+			// Assign the boolean to adhereDec.
+			try { this->setAdhereDec( this->stringToBool( str.substr(11, 5) ) ); }
+			catch(  FieldException& e ) 
+			{
+				// Add information to the exception to be able to trace its origin. 
+				e.setFieldType( this->getType() );
+				e.setFieldLabel( this->getLabel() );
+				e.addInfo( "Input string was:" + str + "\n" );
+				throw;
+			}			
+			catch(  exception& e ) { throw; }
 		}			
 		else	//-------------------------------------------------------------------
 		{
@@ -153,6 +211,7 @@ SpinField::SpinField( vector<string> * description )
 		
 		
 	}
+	
 };
 
 
@@ -182,33 +241,40 @@ vector<string> SpinField::getDescription()
 	// Create a string vector.
 	vector<string> vec;
 
-	// convert numbers to string via stringstream
-  stringstream convert;
-  string number;
-	
+
 	// Fill in the different lines. 
 	vec.push_back( "Type: " 			+ this->getType() 	);
 	vec.push_back( "Label: "			+ this->getLabel() 	);
 	vec.push_back( "Required: " 	+ this->boolToString( this->getRequired() )	); 
-	vec.push_back( "Reset: "			+ this->boolToString( this->getReset() )		);	
+	vec.push_back( "Reset: "			+ this->boolToString( this->getReset() 		)	);	
 
-	convert << this->getMinimum();
-	number = convert.str();	
-	vec.push_back( "Minimum: "		+ number		);
+
+	if( this->getMinimum() != NULL ) // if min != NULL
+	{
+		vec.push_back( "Minimum: "		+ this->doubleToString( *(this->getMinimum()) )		);
+	}
+	else	// if min = NULL
+	{
+		vec.push_back( "Minimum: NULL" );
+	}
 	
-	convert << this->getMaximum();
-	number = convert.str();	
-	vec.push_back( "Maximum: " 		+ number		);
+	if( this->getMaximum() != NULL )	// if max != NULL
+	{
+		vec.push_back( "Maximum: " 		+ this->doubleToString( *(this->getMaximum()) ) );
+	}
+	else	// if max == NULL
+	{
+		vec.push_back( "Maximum: NULL" );
+	}
 	
-	convert << this->getStepsize();
-	number = convert.str();	
-	vec.push_back( "Stepsize: "		+ number		);	
+
+	vec.push_back( "Stepsize: "		+ this->doubleToString( this->getStepsize() )	);	
 	vec.push_back( "AdhereStep: " + this->boolToString( this->getAdhereStep() ) );
 	
-	convert << this->getDecimals();
-	number = convert.str();	
-	vec.push_back( "Decimals: "		+ number		);
-	vec.push_back( "AdhereDec: " + this->boolToString( this->getAdhereDec() ) );
+	vec.push_back( "Decimals: "		+ this->intToString( this->getDecimals() )	);
+	vec.push_back( "AdhereDec: " 	+ this->boolToString( this->getAdhereDec()	) );
+	
+	return vec;
 		
 };
 

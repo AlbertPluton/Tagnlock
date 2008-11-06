@@ -10,6 +10,7 @@
 #include "TextField.h"
 #include "CheckField.h"
 #include "ComboField.h"
+#include "SpinField.h"
 
 //! A class defining a catagory.
 

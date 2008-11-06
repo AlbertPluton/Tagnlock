@@ -130,6 +130,10 @@ void Category::loadCategory( string fileName )
 		// If there is informaiton in the description (the last field in the file), create a field object from it. 
 		if( ! description.empty() )
 		{
+		
+			//cout <<"\n"; 																																				// TODO
+			//for( int k = 0; k<description.size(); k++ ) cout << description.at(k) << "\n";			// TODO remove this debug line
+		
 			// Create new field object and push it in the fields vector.
 			try
 			{
@@ -182,6 +186,9 @@ void Category::saveCategory( string fileName, bool overwrite )
 		{
 			// obtain the description of element i.
 			description = fields[i]->getDescription();
+
+			//cout <<"\n"; 																																				// TODO
+			//for( int k = 0; k<description.size(); k++ ) cout << description.at(k) << "\n";			// TODO remove this debug line
 
 			// Put a white line infront of each field
 			file << "\n";

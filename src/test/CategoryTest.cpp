@@ -36,6 +36,9 @@ int main (int argc, const char* argv[] )
 	TextField fieldE( "text_E", false, false );	
 	CheckField fieldF( "check_F", false, true );
 	
+	double min = -2;
+	double max = 6;
+	SpinField  fieldG( "spin_G", false, false, NULL, &max, 0.01, true, 3, true );	
 
 // TODO that is until here.
 		
@@ -47,7 +50,7 @@ int main (int argc, const char* argv[] )
 	category.addField(&fieldD);
 	category.addField(&fieldB);
 	category.addField(&fieldF);
-
+	category.addField(&fieldG);
 
 	category.saveCategory( "testSaveCategory.txt", true );
 
@@ -76,7 +79,7 @@ int main (int argc, const char* argv[] )
 	}
 	
 	category2.saveCategory( "testSaveCategory2.txt", true );
-	
+
 
 	cout << "------------------------- END ------------------------------\n";
 
