@@ -5,6 +5,12 @@
 //
 //
 
+
+
+#ifndef COMBOFIELD_H
+#define COMBOFIELD_H
+
+
 #include "Field.h"
 #include <vector>
 
@@ -94,6 +100,8 @@ class ComboField : public Field
 
 };
 
+
+#endif
 
 
 

@@ -6,6 +6,12 @@
 //
 
 
+
+
+#ifndef CATEGORY_H
+#define CATEGORY_H
+
+
 #include "Field.h"
 #include "TextField.h"
 #include "CheckField.h"
@@ -73,10 +79,16 @@ class Category
 		
 		//! Return a vector holding the types of all fields.
 		/*!
-			/return A vector of strings is returned. Each holding the type of the corresponding (the same index) field in string form.
+			\return A vector of strings is returned. Each holding the type of the corresponding (the same index) field in string form.
 		*/
 		vector<string> getFieldTypeVector();
 		
+		
+		//! Returns the name of the category.
+		string getName();
+		
+		//! Changes the name of the category.
+		void setName( string categoryName );
 		
 	
 	private:
@@ -84,4 +96,8 @@ class Category
 		//! This is a vector of pointer to Field ojects.
 		vector<Field*> fields;
 
+		//! The name of the category. This name is used to identify the category
+		string name;
 };
+
+#endif

@@ -5,6 +5,10 @@
 //
 //
 
+
+#ifndef TEXTFIELD_H
+#define TEXTFIELD_H
+
 #include "Field.h"
 
 //! A child class of Field defining a text field.
@@ -47,3 +51,6 @@ class TextField : public Field
 
 
 };
+
+
+#endif

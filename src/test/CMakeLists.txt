@@ -2,11 +2,11 @@
 
 
 
-# Make sure the compiler can find include files from our Hello library.
+# Make sure the compiler can find include files from our library.
 include_directories (${CMAKE_BINARY_DIR}/src/Category)
 
 
-# Make sure the linker can find the Hello library once it is built.
+# Make sure the linker can find the library once it is built.
 link_directories ( ${LIBRARY_OUTPUT_PATH} )
 
 

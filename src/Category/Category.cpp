@@ -21,7 +21,7 @@ using namespace std;
 
 Category::Category()
 {
-	
+	name = "";
 }
 
 
@@ -61,7 +61,7 @@ void Category::loadCategory( string fileName )
 	fstream file;								// Create file object.
 	string inputString;					// This string is used to read the file line by line.
 	size_t found;								// Used for the string function find.
-	vector<string> description;	// All the lines containing information about the field.
+	vector<string> description;	// All the lines containing information about the field.	
 	
 	// Open the file
 	file.open( fileName.c_str() );
@@ -89,7 +89,16 @@ void Category::loadCategory( string fileName )
 			if( found != string::npos ) inputString.erase( found+1, inputString.size() );
 
 			// If the string is empty continue with the next line.			
-			if( inputString.empty() ) continue;		
+			if( inputString.empty() ) continue;	
+			
+			// Search for the category name
+			found = inputString.find("CategoryName:", 0);	
+			if( found!=string::npos )
+			{
+				inputString.erase(0, 14);
+				this->name = inputString;
+				continue;
+			}			
 			
 			// Search the string for the keyword "Type: 
 			found = inputString.find("Type: ", 0);	
@@ -170,6 +179,13 @@ void Category::loadCategory( string fileName )
 void Category::saveCategory( string fileName, bool overwrite )
 {
 
+	// Check to see if the category name is not equal to "". In that case throw an exception.
+	if( name.compare("") == 0 )
+	{
+		// TODO throw
+	}
+
+
 	// Create file object.
 	ofstream file;
 
@@ -179,6 +195,9 @@ void Category::saveCategory( string fileName, bool overwrite )
 	if( file.is_open() )
 	{
 	
+		// Write the Category name to the file
+		file << "\n" << "CategoryName: " << name << "\n";
+				
 		vector<string> description;
 				
 		// Iterate over all elements in the vector fields.
@@ -246,4 +265,19 @@ vector<string> Category::getFieldTypeVector()
 };
 
 
+//-----------------------------------------------------------------------------
+
+string Category::getName()
+{
+	return name;
+};
+
+
+//-----------------------------------------------------------------------------
+
+void Category::setName( string categoryName )
+{
+	name = categoryName;
+};
+		
 
