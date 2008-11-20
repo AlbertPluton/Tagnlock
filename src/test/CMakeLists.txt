@@ -3,7 +3,7 @@
 
 
 # Make sure the compiler can find include files from our library.
-include_directories (${CMAKE_BINARY_DIR}/src/Category)
+include_directories (${CMAKE_BINARY_DIR}/src/Category ${CMAKE_BINARY_DIR}/src/Datahandler)
 
 
 # Make sure the linker can find the library once it is built.
@@ -18,9 +18,18 @@ ADD_EXECUTABLE (FieldTest FieldTest.cpp)
 TARGET_LINK_LIBRARIES (FieldTest Field Exceptions)
 
 
+
 # Add executable called CategoryTest
 ADD_EXECUTABLE (CategoryTest CategoryTest.cpp)
 
 # Link the executable to the libaries Field and Category
 TARGET_LINK_LIBRARIES (CategoryTest Field Category Exceptions)
+
+
+
+# Add executable called CategoryTest
+ADD_EXECUTABLE (DatahandlerTest DatahandlerTest.cpp)
+
+# Link the executable to the libaries Field and Category
+TARGET_LINK_LIBRARIES (DatahandlerTest Field Category Exceptions Datahandler)
 

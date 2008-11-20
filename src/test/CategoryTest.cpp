@@ -52,7 +52,7 @@ int main (int argc, const char* argv[] )
 	category.addField(&fieldF);
 	category.addField(&fieldG);
 	
-	//category.setName("testName");
+	category.setName("testName");
 
 	category.saveCategory( "testSaveCategory.txt", true );
 

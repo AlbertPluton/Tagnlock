@@ -31,22 +31,31 @@ ObjectData::ObjectData( Category* categoryPointer )
 	
 	// Iterate over all field types and create compatible FieldData objects.
 	for( int i = 0; i < (int)typeVector.size(); i++ )
-	{
+	{	
+//		cout << "Creating a new field, should be of type: " << typeVector.at(i) << "\t\t" ;			//TODO remove debug line
 		if( typeVector.at(i).compare("CheckField") == 0 )
 		{
 			fieldDataVec.at(i) = new FieldDataBool();
+//			cout << "is of: Bool\n";													// TODO remove debug line
+			continue;
 		}
 		if( typeVector.at(i).compare("TextField") == 0 )
 		{
 			fieldDataVec.at(i) = new FieldDataString();
+//			cout << "is of: String\n";													// TODO remove debug line
+			continue;
 		}
-		if( typeVector.at(i).compare("Combo") == 0 )
+		if( (typeVector.at(i).compare("Combo") == 0) or (typeVector.at(i).compare("ComboEntry") == 0) or (typeVector.at(i).compare("ComboRadio") == 0) )
 		{
 			fieldDataVec.at(i) = new FieldDataString();
+//			cout << "is of: String\n";													// TODO remove debug line
+			continue;
 		}
 		if( typeVector.at(i).compare("SpinField") == 0 )
 		{
 			fieldDataVec.at(i) = new FieldDataDouble();
+//			cout << "is of: Double\n";													// TODO remove debug line
+			continue;
 		}
 	}
 	
@@ -70,7 +79,7 @@ Category* ObjectData::getCategory()
 
 int ObjectData::getSize()
 {
-	return (int)fieldDataVec.size();
+	return fieldDataVec.size();
 };
 
 //-----------------------------------------------------------------------------

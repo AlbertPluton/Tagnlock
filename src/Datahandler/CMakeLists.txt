@@ -1,7 +1,7 @@
 
 
 # Make sure the compiler can find include files from our library.
-include_directories (${CMAKE_BINARY_DIR}/src/Category)
+include_directories (${CMAKE_BINARY_DIR}/src/Category ${CMAKE_BINARY_DIR}/src/Datahandler)
 
 
 
@@ -16,8 +16,6 @@ SET (	SRCS_Datahandler
 			FieldDataString.cpp
 			FieldDataBool.cpp
 			ObjectData.cpp
-			FileData.cpp
-			FolderData.cpp
 		)
 
 		

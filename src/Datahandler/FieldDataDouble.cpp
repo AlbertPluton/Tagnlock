@@ -8,6 +8,37 @@
 #include "FieldDataDouble.h"
 
 
+//-----------------------------------------------------------------------------
+
+FieldDataDouble::FieldDataDouble( )
+{
+	type = typeFieldDataDouble;
+};
+
+
+//-----------------------------------------------------------------------------
+
+
+FieldDataDouble::FieldDataDouble( int value )
+{
+	type = typeFieldDataDouble;
+	data = (double)value;
+};
+
+
+//-----------------------------------------------------------------------------
+
+
+FieldDataDouble::FieldDataDouble( float value )
+{
+	type = typeFieldDataDouble;
+	data = (double)value;
+};
+
+
+//-----------------------------------------------------------------------------
+
+
 FieldDataDouble::FieldDataDouble( double value )
 {
 	type = typeFieldDataDouble;
@@ -26,6 +57,25 @@ FieldDataDouble::~FieldDataDouble()
 
 //-----------------------------------------------------------------------------
 
+
+void FieldDataDouble::set( int value )
+{
+	data = (double)value;
+}
+
+
+//-----------------------------------------------------------------------------
+
+
+void FieldDataDouble::set( float value )
+{
+	data = (double)value;
+}
+
+
+//-----------------------------------------------------------------------------
+
+
 void FieldDataDouble::set( double value )
 {
 	data = value;
@@ -33,6 +83,7 @@ void FieldDataDouble::set( double value )
 
 
 //-----------------------------------------------------------------------------
+
 
 double FieldDataDouble::getDouble()
 {

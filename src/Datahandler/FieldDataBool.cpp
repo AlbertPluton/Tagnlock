@@ -8,6 +8,18 @@
 #include "FieldDataBool.h"
 
 
+//-----------------------------------------------------------------------------
+
+
+FieldDataBool::FieldDataBool()
+{
+	type = typeFieldDataBool;
+};
+
+
+//-----------------------------------------------------------------------------
+
+
 FieldDataBool::FieldDataBool( bool value)
 {
 	type = typeFieldDataBool;

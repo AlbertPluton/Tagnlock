@@ -8,6 +8,17 @@
 #include "FieldDataInt.h"
 
 
+//-----------------------------------------------------------------------------
+
+FieldDataInt::FieldDataInt( )
+{
+	type = typeFieldDataInt;
+};
+
+
+//-----------------------------------------------------------------------------
+
+
 FieldDataInt::FieldDataInt( int value)
 {
 	type = typeFieldDataInt;

@@ -16,12 +16,19 @@
 class FieldDataFloat : public FieldData
 {
 	public:
-	
+		
+		//! Default constructor.
 		FieldDataFloat();
+		//! Constructor with the data value as a parameter, it converts integers to floats.
+		FieldDataFloat( int value );		
+		//! Constructor with the data value as a parameter.
 		FieldDataFloat( float value );
 		~FieldDataFloat();
 		
-		//! Derived virutal function from the FieldData class
+		//! Derived virutal function from the FieldData class, it converts integers to floats. 
+		void set( int value);
+
+		//! Derived virutal function from the FieldData class.
 		void set( float value);
 	
 		//! Simple get funtion	

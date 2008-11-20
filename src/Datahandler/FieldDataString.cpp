@@ -8,6 +8,18 @@
 #include "FieldDataString.h"
 
 
+//-----------------------------------------------------------------------------
+
+
+FieldDataString::FieldDataString( )
+{
+	type = typeFieldDataString;
+};
+
+
+//-----------------------------------------------------------------------------
+
+
 FieldDataString::FieldDataString( string value)
 {
 	type = typeFieldDataString;

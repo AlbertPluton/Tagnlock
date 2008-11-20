@@ -12,11 +12,11 @@
 //! An enumeration of the possible types (the different sub classes).
 enum FieldDataType
 {
-	typeFieldDataInt,
-	typeFieldDataFloat,
-	typeFieldDataDouble,
-	typeFieldDataString,
-	typeFieldDataBool
+	typeFieldDataInt			= 0,
+	typeFieldDataFloat		= 1,
+	typeFieldDataDouble		= 2,
+	typeFieldDataString		= 3,
+	typeFieldDataBool			= 4
 };
 
 
@@ -53,26 +53,26 @@ class FieldData
 		FieldData* newFieldData( bool 	value );
 
 		//! This function is implemented in FieldDataInt
-		virtual int getInt();
+		virtual int getInt(){ cout << "Not sepose to happen Int\n"; };																						//TODO throw if not the correct data type
 		//! This function is implemented in FieldDataFloat
-		virtual float getFloat();
+		virtual float getFloat(){ cout << "Not sepose to happen Float\n"; };																			//TODO throw if not the correct data type
 		//! This function is implemented in FieldDataDouble
-		virtual double getDouble();
+		virtual double getDouble(){ cout << "Not sepose to happen Double\n"; };																	//TODO throw if not the correct data type
 		//! This function is implemented in FieldDataString
-		virtual string getString();
+		virtual string getString(){ cout << "Not sepose to happen String\n"; };																	//TODO throw if not the correct data type
 		//! This function is implemented in FieldDataBool
-		virtual bool getBool();
+		virtual bool getBool(){ cout << "Not sepose to happen Bool\n"; };																				//TODO throw if not the correct data type
 		
 		//! This function is implemented in FieldDataInt
-		virtual void set( int 		value );
+		virtual void set( int 		value ){ cout << "Not sepose to happen Int\n"; };															//TODO throw if not the correct data type
 		//! This function is implemented in FieldDataFloat
-		virtual void set( float		value );
+		virtual void set( float		value ){ cout << "Not sepose to happen Float\n"; };														//TODO throw if not the correct data type
 		//! This function is implemented in FieldDataDouble
-		virtual void set( double	value );
+		virtual void set( double	value ){ cout << "Not sepose to happen Double\n"; };														//TODO throw if not the correct data type
 		//! This function is implemented in FieldDataString
-		virtual void set( string	value );
+		virtual void set( string	value ){ cout << "Not sepose to happen String\n"; };														//TODO throw if not the correct data type
 		//! This function is implemented in FieldDataBool
-		virtual void set( bool		value );
+		virtual void set( bool		value ){ cout << "Not sepose to happen Bool\n"; };															//TODO throw if not the correct data type
 		
 		
 		//! Returns the type of subclass is used to store the data.

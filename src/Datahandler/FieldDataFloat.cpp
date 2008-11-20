@@ -8,6 +8,27 @@
 #include "FieldDataFloat.h"
 
 
+//-----------------------------------------------------------------------------
+
+FieldDataFloat::FieldDataFloat(  )
+{
+	type = typeFieldDataFloat;
+};
+
+
+//-----------------------------------------------------------------------------
+
+
+FieldDataFloat::FieldDataFloat( int value )
+{
+	type = typeFieldDataFloat;
+	data = (float)value;
+};
+
+
+//-----------------------------------------------------------------------------
+
+
 FieldDataFloat::FieldDataFloat( float value )
 {
 	type = typeFieldDataFloat;
@@ -22,6 +43,14 @@ FieldDataFloat::~FieldDataFloat()
 {
 
 };
+
+
+//-----------------------------------------------------------------------------
+
+void FieldDataFloat::set( int value )
+{
+	data = (float)value;
+}
 
 
 //-----------------------------------------------------------------------------
