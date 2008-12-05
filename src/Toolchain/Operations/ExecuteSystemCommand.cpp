@@ -91,49 +91,73 @@ string ExecuteSystemCommand::getCommand( )
 
 void ExecuteSystemCommand::setArguments( string args )
 {
+	this->deleteAllArguments( );
+	ExecuteSystemCommand::addArguments( args );
+};
 
+//-----------------------------------------------------------------------------
+
+void ExecuteSystemCommand::setArguments( vector<string> args )
+{
+	this->deleteAllArguments( );
+	ExecuteSystemCommand::addArguments( args );
 };
 
 //-----------------------------------------------------------------------------
 
 void ExecuteSystemCommand::addArguments( string args )
 {
-
+	// Convert the string to a vector and add this vector to the arguments.
+	this->addArguments( this->stringToVector( args ) );
 };			
 
 //-----------------------------------------------------------------------------
 
 void ExecuteSystemCommand::addArguments( vector<string> args )
 {
-
+	for( int i = 0; i < (int)args.size(); i++ )
+	{
+		arguments.push_back( args.at(i) );
+	}
 };				
 
 //-----------------------------------------------------------------------------
 
 void ExecuteSystemCommand::deleteArgument( int index )
 {
-
+	
+	if( index >= (int)arguments.size() )
+	{
+		// TODO throw
+	}
+	
+	arguments.erase( index );
 };
 
 //-----------------------------------------------------------------------------
 
 void ExecuteSystemCommand::deleteAllArguments( )
 {
-
+	arguments.clear();
 };
 
 //-----------------------------------------------------------------------------
 
 string ExecuteSystemCommand::getArguments( )
 {
-
+	return vectorToString( arguments );
 };
 
 //-----------------------------------------------------------------------------
 
 string ExecuteSystemCommand::getArgument( int index )
 {
-
+	if( index >= (int)arguments.size() )
+	{
+		// TODO throw
+	}
+	
+	return arguments.at( index );
 };			
 
 //-----------------------------------------------------------------------------
@@ -143,7 +167,7 @@ string ExecuteSystemCommand::vectorToString( vector<string>* vec )
 	string str;
 	
 	// Loop through the vector en add all the elements to the string with spaces in between.
-	for( int i = 0; i < vec->size(); i++ )
+	for( int i = 0; i < (int)vec->size(); i++ )
 	{
 		str += vec->at(i);
 		str += " ";

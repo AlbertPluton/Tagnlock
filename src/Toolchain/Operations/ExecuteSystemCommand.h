@@ -80,7 +80,10 @@ class ExecuteSystemCommand : public ToolchainOperation
 				\param args String with arguments. Spaces in the string are considered to be the end of an argument unless part of the string is in "", '' or a \\ is place in front of the white space. Otherwise the individual arguments are phrased in to the string vector arguments.	
 			*/	
 			void setArguments( string args );
-
+			
+			//! This function deletes all the old arguments and adds new.			
+			void setArguments( vector<strings> args );
+			
 			//! Function to add arguments without deleting any existing arguments.
 			/*!
 				\param args String with arguments. Spaces in the string are considered to be the end of an argument unless that part of the string is place in "" or ''. Otherwise the individual arguments are phrased in to the string vector arguments.	
