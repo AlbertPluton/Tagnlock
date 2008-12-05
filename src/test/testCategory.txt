@@ -1,0 +1,87 @@
+
+
+CategoryName: Read_GPL
+
+
+Type: CheckField
+Label: I have read the GPL 
+Required: true
+Reset: true
+
+
+Type: TextField
+Label: Name
+Required: true
+Reset: true
+
+
+Type: TextField
+Label: Sirname
+Required: true
+Reset: true
+
+
+Type: Combo
+Label: Gender
+Required: true
+Reset: true 
+Size: 2
+Option: Female
+Option: Male
+
+
+Type: TextField
+Label: Birthplace
+Required: true
+Reset: true
+
+
+Type: SpinField
+Label: Birth year
+Required: true
+Reset: true
+Minimum: NULL
+Maximum: 1990
+Stepsize: 1
+AdhereStep: true
+Decimals: 0
+AdhereDec: true
+
+
+Type: Combo
+Label: Birth month
+Required: true
+Reset: true 
+Size: 12 
+Option: January
+Option: February
+Option: March
+Option: April
+Option: May
+Option: June
+Option: July
+Option: Augustus
+Option: September
+Option: October
+Option: November
+Option: December
+
+
+Type: SpinField
+Label: Birthday
+Required: true
+Reset: true
+Minimum: 1
+Maximum: 31
+Stepsize: 1
+AdhereStep: true
+Decimals: 0
+AdhereDec: true
+
+
+
+
+
+
+
+
