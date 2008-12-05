@@ -13,8 +13,8 @@
 #include <vector>
 using namespace std;
 
-#include "ToolchainNode.h"
-#include "ToolchainOperation.h"
+#include "../ToolchainNode.h"
+#include "../ToolchainOperation.h"
 
 #include <cstdlib>
 

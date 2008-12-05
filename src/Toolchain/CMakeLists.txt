@@ -9,7 +9,7 @@ SET (	SRCS_Toolchain
 				Toolchain.cpp
 				ToolchainNode.cpp
 				ToolchainOperation.cpp
-				ExecuteSystemCommand.cpp
+				Operations/ExecuteSystemCommand.cpp
 		)
 
 
