@@ -31,7 +31,8 @@ ExecuteSystemCommand::ExecuteSystemCommand( ToolchainNode* parent, string comm )
 
 ExecuteSystemCommand::ExecuteSystemCommand( ToolchainNode* parent, string comm, string args ) : ToolchainOperation( parent )
 {
-
+	setCommand( comm );
+	setArguments( args );
 };
 			
 
@@ -39,7 +40,8 @@ ExecuteSystemCommand::ExecuteSystemCommand( ToolchainNode* parent, string comm, 
 
 ExecuteSystemCommand::ExecuteSystemCommand( ToolchainNode* parent, string comm, vector<string> args ) : ToolchainOperation( parent )
 {
-
+	setCommand( comm );
+	setArguments( args );
 };
 
 
@@ -52,31 +54,31 @@ ExecuteSystemCommand::~ExecuteSystemCommand( )
 
 //-----------------------------------------------------------------------------
 
+
 void ExecuteSystemCommand::execute()
 {
-
+	
+	// If the command processor is available 
+	if( system( NULL ) )
+	{
+		// execute the system command.
+		system( getArguments().c_str() );
+	}
+	else
+	{
+		// TODO throw 
+	}
+	
+	
 };
 
 
 //-----------------------------------------------------------------------------
 
-void ExecuteSystemCommand::execute( string args )
-{
-
-};
-
-//-----------------------------------------------------------------------------
-
-void ExecuteSystemCommand::execute( vector<string> args )
-{
-
-};
-
-//-----------------------------------------------------------------------------
 
 void ExecuteSystemCommand::setCommand( string comm )
 {
-
+	command = comm;
 };
 
 
@@ -131,7 +133,7 @@ void ExecuteSystemCommand::deleteArgument( int index )
 		// TODO throw
 	}
 	
-	arguments.erase( index );
+	arguments.erase( arguments.begin()+index );
 };
 
 //-----------------------------------------------------------------------------
@@ -145,7 +147,7 @@ void ExecuteSystemCommand::deleteAllArguments( )
 
 string ExecuteSystemCommand::getArguments( )
 {
-	return vectorToString( arguments );
+	return this->vectorToString( &arguments );
 };
 
 //-----------------------------------------------------------------------------

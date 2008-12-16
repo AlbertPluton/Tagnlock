@@ -60,13 +60,6 @@ class ExecuteSystemCommand : public ToolchainOperation
 			//! Execute the command with the arguments as defined in the vector arguments.
 			void execute();
 			
-			//! Execute the command with additional arguments.
-			void execute( string args );
-			
-			//! Execute the command with additional arguments.
-			void execute( vector<string> args );
-			
-			
 						
 			//! Sets the command. This function overwrites the current command.
 			void setCommand( string comm );
@@ -82,7 +75,7 @@ class ExecuteSystemCommand : public ToolchainOperation
 			void setArguments( string args );
 			
 			//! This function deletes all the old arguments and adds new.			
-			void setArguments( vector<strings> args );
+			void setArguments( vector<string> args );
 			
 			//! Function to add arguments without deleting any existing arguments.
 			/*!
