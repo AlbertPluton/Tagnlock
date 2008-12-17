@@ -67,7 +67,13 @@ class ToolchainNode
 		//! Set function for the name of this node.
 		void setName( string n );
 		
+
 	
+	protected:
+	
+		//! This function can be called in the derived execute function to execute the children of a node.
+		virtual void executeChildren();
+		
 	
 	private:
 	
@@ -76,7 +82,7 @@ class ToolchainNode
 			void deleteParentNode();
 			
 			
-			//! This vector holds all direct childeren nodes of this parent node.
+			//! This vector holds all direct children nodes of this parent node.
 			vector<ToolchainNode*> nodeVector; 
 			
 			ToolchainNode* parentNode;

@@ -15,6 +15,8 @@
 ToolchainNode::ToolchainNode( ToolchainNode* parent )
 {
 	parentNode = parent;
+	// Let the parent know it has a new child.
+	parent->addNode( this );
 };
 
 
@@ -154,6 +156,33 @@ string ToolchainNode::getDescription()
 void ToolchainNode::setDescription( string descrip)
 {
 	description = descrip;
+};
+
+//-----------------------------------------------------------------------------
+
+string ToolchainNode::getName()
+{
+	return name;
+};
+
+//-----------------------------------------------------------------------------
+
+void ToolchainNode::setName( string n )
+{
+	name = n;
+};
+
+//-----------------------------------------------------------------------------
+
+void ToolchainNode::executeChildren()
+{
+
+	// Execute the childeren of this node.
+	for( int i = 0; i < (int)nodeVector.size(); i++ )
+	{
+		nodeVector.at(i)->execute();			// TODO how about the input and output????
+	}
+	
 };
 
 //-----------------------------------------------------------------------------

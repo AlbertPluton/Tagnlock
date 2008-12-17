@@ -11,6 +11,7 @@
 #define TOOLCHAINOPERATION_H
 
 #include "ToolchainNode.h"
+#include <typeinfo>
 
 
 
@@ -45,6 +46,12 @@ class ToolchainOperation : public ToolchainNode
 		
 		//! Function to get the output data.
 		type_out getOutput();
+		
+		//! Function which returns the data type of the input.
+		type_info getTypeIn();
+		
+		//! Function which returns the data type of the output.
+		type_info getTypeOut();
 	
 	
 	private:
@@ -107,7 +114,21 @@ type_out ToolchainOperation<type_in, type_out>::getOutput()
 
 //-----------------------------------------------------------------------------
 
+template <class type_in, class type_out>
+type_info ToolchainOperation<type_in, type_out>::getTypeIn()
+{
+	return typeid(input);
+};
 
+//-----------------------------------------------------------------------------
+
+template <class type_in, class type_out>
+type_info ToolchainOperation<type_in, type_out>::getTypeOut()
+{
+	return typeid(output);
+};
+
+//-----------------------------------------------------------------------------
 
 #endif
 

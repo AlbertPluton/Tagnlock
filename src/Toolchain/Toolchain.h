@@ -16,6 +16,9 @@
 #include "ObjectData.h"
 #include "FieldData.h"
 
+#include <typeinfo>
+
+
 //! A Toolchain object is the start of a tooolchain.
 
 class Toolchain : public ToolchainNode
@@ -49,10 +52,19 @@ class Toolchain : public ToolchainNode
 		*/
 		void execute( Datahandler* handler );
 		
+		
+		//! Returns a pointer to the datahandler on which this toolchain is operating.
+		Datahandler* getOutput();
+		
+		
+		//! Returns the type of output this object giver, Datahandler*.
+		type_info getTypeOut();
+	
+	
 	
 	private:
 		
-
+		Datahandler* data;
 
 };
 

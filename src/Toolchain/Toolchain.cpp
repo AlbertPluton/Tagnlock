@@ -9,7 +9,7 @@
 
 #include "Toolchain.h"
 
-
+#include "ToolchainOperation.h"
 
 
 //-----------------------------------------------------------------------------
@@ -44,10 +44,25 @@ void Toolchain::loadToolchain( string fileName )
 
 void Toolchain::execute( Datahandler* handler )
 {
-
-		// TODO
+	data = handler;
+	this->executeChildren();
 };
 
 //-----------------------------------------------------------------------------
 
+Datahandler* Toolchain::getOutput()
+{
+	return data;
+};
+
+
+//-----------------------------------------------------------------------------
+
+//type_info Toolchain::getTypeOut()
+//{
+//	return typeid(data);
+//};
+
+
+//-----------------------------------------------------------------------------
 

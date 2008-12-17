@@ -32,6 +32,6 @@ ADD_SUBDIRECTORY (src/Category)
 ADD_SUBDIRECTORY (src/test)
 ADD_SUBDIRECTORY (src/Datahandler)
 ADD_SUBDIRECTORY (src/Toolchain)
-
+ADD_SUBDIRECTORY (src/Toolchain/Operations)
 
 
