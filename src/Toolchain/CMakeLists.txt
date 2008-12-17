@@ -10,6 +10,7 @@ SET (	SRCS_Toolchain
 				ToolchainNode.cpp
 				ToolchainOperation.cpp
 				Operations/ExecuteSystemCommand.cpp
+				Operations/TextFileStorage.cpp
 		)
 
 

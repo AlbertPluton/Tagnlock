@@ -29,6 +29,7 @@ class ToolchainNode
 
 		//! The default destructor.
 		~ToolchainNode();
+
 	
 	
 		//! Adds a node object at the end of the nodeVector.
@@ -69,7 +70,13 @@ class ToolchainNode
 	
 	
 	private:
+	
+	
+			//! This function is used by the parent class when it is destructed of the child node is removed from the nodeVector.
+			void deleteParentNode();
 			
+			
+			//! This vector holds all direct childeren nodes of this parent node.
 			vector<ToolchainNode*> nodeVector; 
 			
 			ToolchainNode* parentNode;

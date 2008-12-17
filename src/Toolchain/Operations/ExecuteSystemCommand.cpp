@@ -13,14 +13,14 @@
 
 //-----------------------------------------------------------------------------
 
-ExecuteSystemCommand::ExecuteSystemCommand( ToolchainNode* parent ) : ToolchainOperation( parent )
+ExecuteSystemCommand::ExecuteSystemCommand( ToolchainNode* parent ) : ToolchainOperation<string, int>( parent )
 {
 
 };
 
 //-----------------------------------------------------------------------------
 
-ExecuteSystemCommand::ExecuteSystemCommand( ToolchainNode* parent, string comm ) : ToolchainOperation( parent )
+ExecuteSystemCommand::ExecuteSystemCommand( ToolchainNode* parent, string comm ) : ToolchainOperation<string, int>( parent )
 {
 	setCommand( comm );
 };
@@ -29,7 +29,7 @@ ExecuteSystemCommand::ExecuteSystemCommand( ToolchainNode* parent, string comm )
 //-----------------------------------------------------------------------------
 
 
-ExecuteSystemCommand::ExecuteSystemCommand( ToolchainNode* parent, string comm, string args ) : ToolchainOperation( parent )
+ExecuteSystemCommand::ExecuteSystemCommand( ToolchainNode* parent, string comm, string args ) : ToolchainOperation<string, int>( parent )
 {
 	setCommand( comm );
 	setArguments( args );
@@ -38,7 +38,7 @@ ExecuteSystemCommand::ExecuteSystemCommand( ToolchainNode* parent, string comm, 
 
 //-----------------------------------------------------------------------------
 
-ExecuteSystemCommand::ExecuteSystemCommand( ToolchainNode* parent, string comm, vector<string> args ) : ToolchainOperation( parent )
+ExecuteSystemCommand::ExecuteSystemCommand( ToolchainNode* parent, string comm, vector<string> args ) : ToolchainOperation<string, int>( parent )
 {
 	setCommand( comm );
 	setArguments( args );
@@ -58,11 +58,13 @@ ExecuteSystemCommand::~ExecuteSystemCommand( )
 void ExecuteSystemCommand::execute()
 {
 	
+	string str = this->getArguments() + this->getInput();
+	
 	// If the command processor is available 
 	if( system( NULL ) )
 	{
 		// execute the system command.
-		system( getArguments().c_str() );
+		this->setOutput( system( str.c_str() ) );
 	}
 	else
 	{

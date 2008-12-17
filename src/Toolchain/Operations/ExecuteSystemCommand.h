@@ -19,8 +19,13 @@ using namespace std;
 #include <cstdlib>
 
 //! The ExecuteSystemCommand class is used to execute a system command.
+/*!
+	This class requires the input to be of the type string. The input string is concatinated after the current parameters.
+	
+	The output is required to be of the type integer. The command "system" returns an integer this is the output.
+*/
 
-class ExecuteSystemCommand : public ToolchainOperation
+class ExecuteSystemCommand : public ToolchainOperation<string, int>
 {
 
 	public:

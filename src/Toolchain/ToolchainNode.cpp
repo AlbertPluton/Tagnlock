@@ -22,8 +22,23 @@ ToolchainNode::ToolchainNode( ToolchainNode* parent )
 
 ToolchainNode::~ToolchainNode()
 {
-	// TODO
+
 	// Inform the parent and children of this node that it has died.
+	
+	// Inform the parent.
+	if( this->getParentNode() != NULL )
+	{
+		(this->getParentNode())->removeNode( this );
+	}
+	
+	
+	// Inform the childeren of this node that it has died
+	for( int i = 0; i < (int)nodeVector.size(); i++ )
+	{
+		nodeVector.at(i)->deleteParentNode();
+	}
+	
+	
 };
 
 
@@ -142,5 +157,14 @@ void ToolchainNode::setDescription( string descrip)
 };
 
 //-----------------------------------------------------------------------------
+
+void ToolchainNode::deleteParentNode()
+{
+	parentNode = NULL;
+};
+
+
+//-----------------------------------------------------------------------------
+
 
 
