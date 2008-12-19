@@ -58,7 +58,7 @@ class Toolchain : public ToolchainNode
 		
 		
 		//! Returns the type of output this object giver, Datahandler*.
-		type_info getTypeOut();
+		//type_info getTypeOut();
 	
 	
 	

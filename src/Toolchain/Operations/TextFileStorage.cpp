@@ -37,7 +37,7 @@ TextFileStorage::~TextFileStorage()
 void TextFileStorage::execute()
 {
 	
-	this->setInput( this->getParentNode()->getOutput() );
+
 	
 	if( individualFiles )
 	{
@@ -125,34 +125,34 @@ void TextFileStorage::saveToSingleFile()
 				data = objectData->getDataAt(j);
 				
 				// Start with a new line;
-				cout << endl;
+				file << endl;
 				
 				switch( data->getType() )
 				{
 					case typeFieldDataInt:
-						cout << data->getInt() << endl;
+						file << data->getInt() << endl;
 					break;
 					
 					case typeFieldDataFloat:
-						cout << data->getFloat() << endl;
+						file << data->getFloat() << endl;
 					break;
 					
 					case typeFieldDataDouble:
-						cout << data->getDouble() << endl;
+						file << data->getDouble() << endl;
 					break;
 					
 					case typeFieldDataString:
-						cout << data->getString() << endl;
+						file << data->getString() << endl;
 					break;
 					
 					case typeFieldDataBool:
 						if( data->getBool() )
 						{
-							cout << "true" << endl;
+							file << "true" << endl;
 						}
 						else
 						{
-							cout << "false" << endl;
+							file << "false" << endl;
 						}
 					break;				
 				}		
@@ -223,29 +223,29 @@ void TextFileStorage::saveToIndividualFile()
 				switch( data->getType() )
 				{
 					case typeFieldDataInt:
-						cout << data->getInt() << endl;
+						file << data->getInt() << endl;
 					break;
 					
 					case typeFieldDataFloat:
-						cout << data->getFloat() << endl;
+						file << data->getFloat() << endl;
 					break;
 					
 					case typeFieldDataDouble:
-						cout << data->getDouble() << endl;
+						file << data->getDouble() << endl;
 					break;
 					
 					case typeFieldDataString:
-						cout << data->getString() << endl;
+						file << data->getString() << endl;
 					break;
 					
 					case typeFieldDataBool:
 						if( data->getBool() )
 						{
-							cout << "true" << endl;
+							file << "true" << endl;
 						}
 						else
 						{
-							cout << "false" << endl;
+							file << "false" << endl;
 						}
 					break;				
 				}		

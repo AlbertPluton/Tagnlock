@@ -14,9 +14,12 @@
 
 ToolchainNode::ToolchainNode( ToolchainNode* parent )
 {
+
 	parentNode = parent;
-	// Let the parent know it has a new child.
-	parent->addNode( this );
+
+	// Let the parent know it has a new child, unless parent == NULL which means it is a Toolchain object, the start of the chain.
+	if( parent != NULL) parent->addNode( this );
+
 };
 
 
@@ -139,6 +142,20 @@ void ToolchainNode::moveNodeDown( ToolchainNode* node )
 
 //-----------------------------------------------------------------------------
 
+ToolchainNode* ToolchainNode::getNode( int index )
+{
+	return nodeVector.at( index );
+};
+
+//-----------------------------------------------------------------------------
+
+int ToolchainNode::getNodeVectorSize()
+{
+	return (int)nodeVector.size();
+};
+
+//-----------------------------------------------------------------------------
+
 ToolchainNode* ToolchainNode::getParentNode()
 {
 	return parentNode;
@@ -170,19 +187,6 @@ string ToolchainNode::getName()
 void ToolchainNode::setName( string n )
 {
 	name = n;
-};
-
-//-----------------------------------------------------------------------------
-
-void ToolchainNode::executeChildren()
-{
-
-	// Execute the childeren of this node.
-	for( int i = 0; i < (int)nodeVector.size(); i++ )
-	{
-		nodeVector.at(i)->execute();			// TODO how about the input and output????
-	}
-	
 };
 
 //-----------------------------------------------------------------------------

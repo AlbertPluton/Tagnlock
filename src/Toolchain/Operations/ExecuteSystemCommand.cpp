@@ -57,8 +57,13 @@ ExecuteSystemCommand::~ExecuteSystemCommand( )
 
 void ExecuteSystemCommand::execute()
 {
+
+	string str = this->getCommand() + " " + this->getArguments() + " " + this->getInput();
 	
-	string str = this->getArguments() + this->getInput();
+	cout << "Command string is: " << str << "\n";					// TODO remove debug lines
+	
+	for( int i = 0; i < (int)arguments.size(); i++ ) cout << "argument " << i << ": " << arguments.at(i) << "\n";
+	
 	
 	// If the command processor is available 
 	if( system( NULL ) )
@@ -71,6 +76,7 @@ void ExecuteSystemCommand::execute()
 		// TODO throw 
 	}
 	
+	//this->executeChilderen();
 	
 };
 
@@ -178,7 +184,7 @@ string ExecuteSystemCommand::vectorToString( vector<string>* vec )
 	}
 	
 	// Delete the last redundant white space.
-	if( vec->size() != 0 ) str.erase( str.end() );
+	//if( 0 < (int)vec->size() ) str.erase( str.end() );
 	
 	return str;
 };
@@ -235,19 +241,28 @@ vector<string> ExecuteSystemCommand::stringToVector( string str )
 		
 		
 			// Search for the end of the string with deliberate white spaces
-			foundDeliberateSpaceEnd = str.find_first_of( spaceDelimiter, 1 );
+			foundDeliberateSpaceEnd = str.find_first_of( spaceDelimiter, foundDeliberateSpaceBegin+1 );
 			
 			// If no end was found, throw an exception
 			if( foundDeliberateSpaceEnd == string::npos )
 			{
 				// TODO throw
+				cout << "Something went wrong in ExecuteSystemCommand::stringToVector( string str ), line" << __LINE__ << ".\n";
+			}
+			
+			// Search for the next white space.
+			found = str.find_first_of( delimiter, foundDeliberateSpaceEnd );
+			
+			if( found == string::npos ) 
+			{
+				found = str.size();
 			}
 			
 			// Add the string with deliberate white spaces to the vector.
-			vec.push_back( str.substr(0, foundDeliberateSpaceEnd ) );
+			vec.push_back( str.substr(0, found ) );
 			
 			// Erase the string
-			str.erase(0, foundDeliberateSpaceEnd );		
+			str.erase(0, found );		
 			
 			// See if it was followed by a white space and in that case delete it.			
 			found = str.find_first_of( delimiter );
@@ -283,7 +298,7 @@ vector<string> ExecuteSystemCommand::stringToVector( string str )
 		else
 		{	
 			// TODO throw 
-			cout << "Something went wrong in ExecuteSystemCommand::stringToVector( string str ) \n";
+			cout << "Something went wrong in ExecuteSystemCommand::stringToVector( string str ), line" << __LINE__ << ".\n";
 		}
 
 		

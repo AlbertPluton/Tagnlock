@@ -60,7 +60,7 @@ Datahandler* Toolchain::getOutput()
 
 //type_info Toolchain::getTypeOut()
 //{
-//	return typeid(data);
+//	return typeid( Datahandler* );
 //};
 
 

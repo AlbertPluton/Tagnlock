@@ -11,6 +11,7 @@
 #define TOOLCHAINOPERATION_H
 
 #include "ToolchainNode.h"
+#include "Toolchain.h"
 #include <typeinfo>
 
 
@@ -35,7 +36,7 @@ class ToolchainOperation : public ToolchainNode
 		~ToolchainOperation( );
 		
 		
-		//! Funciton to set the input data.
+		//! Function to set the input data.
 		void setInput( type_in in );
 	
 		//! Function to set the output data.
@@ -53,6 +54,10 @@ class ToolchainOperation : public ToolchainNode
 		//! Function which returns the data type of the output.
 		type_info getTypeOut();
 	
+	protected:
+	
+		//! This function can be called in the derived execute function to execute the children of a node.
+		virtual void executeChildren();
 	
 	private:
 
@@ -127,6 +132,22 @@ type_info ToolchainOperation<type_in, type_out>::getTypeOut()
 {
 	return typeid(output);
 };
+
+//-----------------------------------------------------------------------------
+
+template <class type_in, class type_out>
+void ToolchainOperation<type_in, type_out>::executeChildren()
+{
+	
+	ToolchainNode* node;	
+		
+	for( int i = 0; i < this->getNodeVectorSize(); i++ )
+	{
+		node = this->getNode( i );
+	}
+	
+};
+
 
 //-----------------------------------------------------------------------------
 

@@ -45,7 +45,12 @@ class ToolchainNode
 		//! Swamps the position of the node with its higher nightbour in the nodeVector.
 		void moveNodeDown( ToolchainNode* node );
 	
-	
+		//! Returns the child node at the number index in the nodeVector.
+		ToolchainNode* getNode( int index );
+				
+		//! Returns the amount of childeren this node has.
+		int getNodeVectorSize();
+				
 		//! Returns the parent node.
 		ToolchainNode* getParentNode();
 		
@@ -72,7 +77,7 @@ class ToolchainNode
 	protected:
 	
 		//! This function can be called in the derived execute function to execute the children of a node.
-		virtual void executeChildren();
+		virtual void executeChildren(){};
 		
 	
 	private:
