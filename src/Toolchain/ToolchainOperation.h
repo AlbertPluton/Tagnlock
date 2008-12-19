@@ -10,7 +10,9 @@
 #ifndef TOOLCHAINOPERATION_H
 #define TOOLCHAINOPERATION_H
 
+#include "ToolchainNodeOutput.h"
 #include "ToolchainNode.h"
+#include "ToolchainNodeInput.h"
 #include "Toolchain.h"
 #include <typeinfo>
 
@@ -18,8 +20,8 @@
 
 //! A ToolchainOperation holds information on the operations to be done on the data.
 
-template <class type_in, class type_out>
-class ToolchainOperation : public ToolchainNode
+template <class type_input, class type_output>
+class ToolchainOperation : public ToolchainNodeOutput<type_input, type_output>
 {
 
 
@@ -37,22 +39,22 @@ class ToolchainOperation : public ToolchainNode
 		
 		
 		//! Function to set the input data.
-		void setInput( type_in in );
+		//void setInput( type_in in );
 	
 		//! Function to set the output data.
-		void setOutput( type_out out );
+		//void setOutput( type_out out );
 		
 		//! Function to get the input data.
-		type_in getInput();
+		//type_in getInput();
 		
 		//! Function to get the output data.
-		type_out getOutput();
+		//type_out getOutput();
 		
 		//! Function which returns the data type of the input.
-		type_info getTypeIn();
+		//type_info getTypeIn();
 		
 		//! Function which returns the data type of the output.
-		type_info getTypeOut();
+		//type_info getTypeOut();
 	
 	protected:
 	
@@ -61,8 +63,8 @@ class ToolchainOperation : public ToolchainNode
 	
 	private:
 
-		type_in input;
-		type_out output;
+		//type_in input;
+		//type_out output;
 
 };
 
@@ -71,7 +73,7 @@ class ToolchainOperation : public ToolchainNode
 //-----------------------------------------------------------------------------
 
 template <class type_in, class type_out>
-ToolchainOperation<type_in, type_out>::ToolchainOperation( ToolchainNode* parent ) : ToolchainNode( parent )
+ToolchainOperation<type_in, type_out>::ToolchainOperation( ToolchainNode* parent ) : ToolchainNodeOutput<type_in, type_out>( parent )
 {
 
 };
@@ -86,7 +88,7 @@ ToolchainOperation<type_in, type_out>::~ToolchainOperation( )
 
 
 //-----------------------------------------------------------------------------
-
+/*
 template <class type_in, class type_out>
 void ToolchainOperation<type_in, type_out>::setInput( type_in in )
 {
@@ -134,13 +136,13 @@ type_info ToolchainOperation<type_in, type_out>::getTypeOut()
 };
 
 //-----------------------------------------------------------------------------
-
+*/
 template <class type_in, class type_out>
 void ToolchainOperation<type_in, type_out>::executeChildren()
 {
 	
 	ToolchainNode* node;	
-		
+	 	
 	for( int i = 0; i < this->getNodeVectorSize(); i++ )
 	{
 		node = this->getNode( i );

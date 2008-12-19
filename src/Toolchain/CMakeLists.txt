@@ -8,7 +8,6 @@ include_directories ( ${CMAKE_BINARY_DIR}/src/Category ${CMAKE_BINARY_DIR}/src/D
 SET (	SRCS_Toolchain
 				Toolchain.cpp
 				ToolchainNode.cpp
-				ToolchainOperation.cpp
 				Operations/ExecuteSystemCommand.cpp
 				Operations/TextFileStorage.cpp
 		)
