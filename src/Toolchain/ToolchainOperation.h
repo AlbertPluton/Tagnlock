@@ -14,7 +14,10 @@
 #include "ToolchainNode.h"
 #include "ToolchainNodeInput.h"
 #include "Toolchain.h"
+
 #include <typeinfo>
+
+#include <exception>
 
 
 
@@ -141,11 +144,41 @@ template <class type_in, class type_out>
 void ToolchainOperation<type_in, type_out>::executeChildren()
 {
 	
-	ToolchainNode* node;	
+	ToolchainNode* childNode = NULL;
+	ToolchainNodeInput<type_out>* childNodeInput = NULL;	
 	 	
 	for( int i = 0; i < this->getNodeVectorSize(); i++ )
 	{
-		node = this->getNode( i );
+		
+		// Obtain a child
+		childNode = this->getChildNode( i );
+
+		try
+		{
+			// Cast the child to a ToolchainNodeInput object with the same input type as the output of this object.
+			childNodeInput = dynamic_cast< (ToolchainNodeInput<type_out>*) > childNode;
+		}
+		catch( exception& e )
+		{
+			throw e
+		}
+		// Check if the cast went oke, if not throw an exeception
+		//if( childNodeInput == NULL ) 
+		//{
+			// TODO throw
+		//}	
+
+
+		// Use the pointer to set the output of this class as the input of the child.
+		childNodeInput->setInput( this->getOutput );
+		
+		// Now execute the child
+		childNode->execute();
+
+
+		childNode = NULL;
+		childNodeInput = NULL;
+
 	}
 	
 };

@@ -46,7 +46,7 @@ class ToolchainNode
 		void moveNodeDown( ToolchainNode* node );
 	
 		//! Returns the child node at the number index in the nodeVector.
-		ToolchainNode* getNode( int index );
+		ToolchainNode* getChildNode( int index );
 				
 		//! Returns the amount of childeren this node has.
 		int getNodeVectorSize();

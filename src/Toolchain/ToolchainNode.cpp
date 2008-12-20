@@ -142,7 +142,7 @@ void ToolchainNode::moveNodeDown( ToolchainNode* node )
 
 //-----------------------------------------------------------------------------
 
-ToolchainNode* ToolchainNode::getNode( int index )
+ToolchainNode* ToolchainNode::getChildNode( int index )
 {
 	return nodeVector.at( index );
 };
