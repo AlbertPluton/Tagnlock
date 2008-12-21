@@ -14,6 +14,13 @@
 TextFileStorage::TextFileStorage( ToolchainNode* parent ) : ToolchainOperation<Datahandler*, string>( parent )
 {
 	
+	// Set the input to a default value.
+	this->setInput( NULL );
+
+	// Set the output to a default value.
+	this->setOutput( (string)("") );
+
+
 };
 
 //-----------------------------------------------------------------------------
@@ -23,6 +30,13 @@ TextFileStorage::TextFileStorage( ToolchainNode* parent, string loc, string name
 	location = loc;
 	fileName = name;
 	individualFiles = individual;
+
+	// Set the input to a default value.
+	this->setInput( NULL );
+
+	// Set the output to a default value.
+	this->setOutput( (string)("") );
+
 };
 
 //-----------------------------------------------------------------------------
@@ -37,7 +51,11 @@ TextFileStorage::~TextFileStorage()
 void TextFileStorage::execute()
 {
 	
-
+	// Check to see if there is input.
+	if( this->getInput() == NULL )
+	{
+		// TODO throw
+	}
 	
 	if( individualFiles )
 	{
@@ -47,6 +65,8 @@ void TextFileStorage::execute()
 	{
 		saveToSingleFile();
 	}	
+
+	this->executeChildren();
 	
 };
 
@@ -66,7 +86,7 @@ void TextFileStorage::setFileName( string name )
 
 //-----------------------------------------------------------------------------
 
-void TextFileStorage::SetIndividualFiles( bool ind )
+void TextFileStorage::setIndividualFiles( bool ind )
 {
 	individualFiles = ind;
 };
@@ -137,7 +157,8 @@ void TextFileStorage::saveToSingleFile()
 						file << data->getFloat() << endl;
 					break;
 					
-					case typeFieldDataDouble:
+					case typeFieldDataDouble:  // Resore the initial position of the internal Datahandler iterator. This is not as it is seposed to be. TODO alter the datahandler internal iterator.
+  getInput()->getObjectAt( pos );
 						file << data->getDouble() << endl;
 					break;
 					
@@ -177,6 +198,12 @@ void TextFileStorage::saveToSingleFile()
 	}
 
 
+  // Resore the initial position of the internal Datahandler iterator. This is not as it is seposed to be. TODO alter the datahandler internal iterator.
+  (this->getInput())->getObjectAt( pos );
+
+
+	// Set the output to the full file name.
+	this->setOutput( this->getLocation() + this->getFileName() );
 
 
 };
@@ -189,7 +216,7 @@ void TextFileStorage::saveToIndividualFile()
 
 	string str;
 	ofstream file;
-	stringstream integerConvertor;
+
 
   // Declare actual field data object.
   FieldData* data; 
@@ -206,6 +233,7 @@ void TextFileStorage::saveToIndividualFile()
 	{
 
 		// Create the file name.
+		stringstream integerConvertor;
 		integerConvertor << i;
 		str = this->getLocation() + this->getFileName() + integerConvertor.str();
 
@@ -265,7 +293,11 @@ void TextFileStorage::saveToIndividualFile()
 	}
 
   // Resore the initial position of the internal Datahandler iterator. This is not as it is seposed to be. TODO alter the datahandler internal iterator.
-  getInput()->getObjectAt( pos );
+  (this->getInput())->getObjectAt( pos );
+
+
+	// Set the output to the location of the files.
+	this->setOutput( this->getLocation() );
 
 };
 

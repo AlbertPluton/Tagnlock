@@ -77,7 +77,7 @@ int main (int argc, const char* argv[] )
 	catch( exception& e )
 	{
 		cout << e.what() << "\n";
-		exit(0);
+		//exit(0);
 	}
 	
 	category2.saveCategory( "testSaveCategory2.txt", true );

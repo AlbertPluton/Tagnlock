@@ -13,7 +13,10 @@
 #include "ToolchainNodeOutput.h"
 #include "ToolchainNode.h"
 #include "ToolchainNodeInput.h"
-#include "Toolchain.h"
+
+
+
+#include <iostream>
 
 #include <typeinfo>
 
@@ -40,24 +43,7 @@ class ToolchainOperation : public ToolchainNodeOutput<type_input, type_output>
 		//! The default destructor.
 		~ToolchainOperation( );
 		
-		
-		//! Function to set the input data.
-		//void setInput( type_in in );
-	
-		//! Function to set the output data.
-		//void setOutput( type_out out );
-		
-		//! Function to get the input data.
-		//type_in getInput();
-		
-		//! Function to get the output data.
-		//type_out getOutput();
-		
-		//! Function which returns the data type of the input.
-		//type_info getTypeIn();
-		
-		//! Function which returns the data type of the output.
-		//type_info getTypeOut();
+
 	
 	protected:
 	
@@ -66,8 +52,7 @@ class ToolchainOperation : public ToolchainNodeOutput<type_input, type_output>
 	
 	private:
 
-		//type_in input;
-		//type_out output;
+
 
 };
 
@@ -89,57 +74,8 @@ ToolchainOperation<type_in, type_out>::~ToolchainOperation( )
 
 };
 
-
-//-----------------------------------------------------------------------------
-/*
-template <class type_in, class type_out>
-void ToolchainOperation<type_in, type_out>::setInput( type_in in )
-{
-	input = in;
-};
-
 //-----------------------------------------------------------------------------
 
-template <class type_in, class type_out>
-void ToolchainOperation<type_in, type_out>::setOutput( type_out out )
-{
-	output = out;
-};
-
-//-----------------------------------------------------------------------------
-
-template <class type_in, class type_out>
-type_in ToolchainOperation<type_in, type_out>::getInput()
-{
-	return input;
-};
-
-//-----------------------------------------------------------------------------
-
-template <class type_in, class type_out>
-type_out ToolchainOperation<type_in, type_out>::getOutput()
-{
-	return output;
-};
-
-//-----------------------------------------------------------------------------
-
-template <class type_in, class type_out>
-type_info ToolchainOperation<type_in, type_out>::getTypeIn()
-{
-	return typeid(input);
-};
-
-//-----------------------------------------------------------------------------
-
-template <class type_in, class type_out>
-type_info ToolchainOperation<type_in, type_out>::getTypeOut()
-{
-	return typeid(output);
-};
-
-//-----------------------------------------------------------------------------
-*/
 template <class type_in, class type_out>
 void ToolchainOperation<type_in, type_out>::executeChildren()
 {
@@ -156,21 +92,22 @@ void ToolchainOperation<type_in, type_out>::executeChildren()
 		try
 		{
 			// Cast the child to a ToolchainNodeInput object with the same input type as the output of this object.
-			childNodeInput = dynamic_cast< (ToolchainNodeInput<type_out>*) > childNode;
+			childNodeInput = dynamic_cast< ToolchainNodeInput<type_out>* > (childNode);
 		}
 		catch( exception& e )
 		{
-			throw e
+			cout << "ToolchainOperation<type_in, type_out>::executeChilderen() throws an exception!!!!\n";
+			throw e;
 		}
-		// Check if the cast went oke, if not throw an exeception
-		//if( childNodeInput == NULL ) 
-		//{
-			// TODO throw
-		//}	
+		
+		// If the cast went oke set the input of the child.
+		if( childNodeInput != NULL ) 
+		{
+			// Use the pointer to set the output of this class as the input of the child.
+			childNodeInput->setInput( this->getOutput() );
+		}
 
 
-		// Use the pointer to set the output of this class as the input of the child.
-		childNodeInput->setInput( this->getOutput );
 		
 		// Now execute the child
 		childNode->execute();

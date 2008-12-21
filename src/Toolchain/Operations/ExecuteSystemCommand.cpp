@@ -16,6 +16,12 @@
 ExecuteSystemCommand::ExecuteSystemCommand( ToolchainNode* parent ) : ToolchainOperation<string, int>( parent )
 {
 
+	// Set the input to a default value.
+	this->setInput( (string)("") );
+
+	// Set the output to a default value.
+	this->setOutput( 0 );
+
 };
 
 //-----------------------------------------------------------------------------
@@ -23,6 +29,13 @@ ExecuteSystemCommand::ExecuteSystemCommand( ToolchainNode* parent ) : ToolchainO
 ExecuteSystemCommand::ExecuteSystemCommand( ToolchainNode* parent, string comm ) : ToolchainOperation<string, int>( parent )
 {
 	setCommand( comm );
+
+	// Set the input to a default value.
+	this->setInput( (string)("") );
+
+	// Set the output to a default value.
+	this->setOutput( 0 );
+
 };
 
 
@@ -33,6 +46,13 @@ ExecuteSystemCommand::ExecuteSystemCommand( ToolchainNode* parent, string comm, 
 {
 	setCommand( comm );
 	setArguments( args );
+
+	// Set the input to a default value.
+	this->setInput( (string)("") );
+
+	// Set the output to a default value.
+	this->setOutput( 0 );
+
 };
 			
 
@@ -42,6 +62,13 @@ ExecuteSystemCommand::ExecuteSystemCommand( ToolchainNode* parent, string comm, 
 {
 	setCommand( comm );
 	setArguments( args );
+
+	// Set the input to a default value.
+	this->setInput( (string)("") );
+
+	// Set the output to a default value.
+	this->setOutput( 0 );
+
 };
 
 
@@ -58,7 +85,7 @@ ExecuteSystemCommand::~ExecuteSystemCommand( )
 void ExecuteSystemCommand::execute()
 {
 
-	string str = this->getCommand() + " " + this->getArguments() + " " + this->getInput();
+	string str = this->getCommand() + " " + this->getInput() + " " + this->getArguments();
 	
 	cout << "Command string is: " << str << "\n";					// TODO remove debug lines
 	

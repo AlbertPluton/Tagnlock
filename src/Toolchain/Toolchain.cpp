@@ -9,12 +9,11 @@
 
 #include "Toolchain.h"
 
-#include "ToolchainOperation.h"
 
 
 //-----------------------------------------------------------------------------
 
-Toolchain::Toolchain() : ToolchainNode( NULL )
+Toolchain::Toolchain() : ToolchainOperation< Datahandler*, Datahandler* >( NULL )
 {
 
 };
@@ -42,9 +41,10 @@ void Toolchain::loadToolchain( string fileName )
 
 //-----------------------------------------------------------------------------
 
-void Toolchain::execute( Datahandler* handler )
+void Toolchain::execute( )//Datahandler* handler )
 {
-	data = handler;
+	//data = handler;
+	this->setOutput( this->getInput() );
 	this->executeChildren();
 };
 

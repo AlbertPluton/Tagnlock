@@ -10,7 +10,7 @@
 #ifndef TOOLCHAIN_H
 #define TOOLCHAIN_H
 
-#include "ToolchainNode.h"
+#include "ToolchainOperation.h"
 
 #include "Datahandler.h"
 #include "ObjectData.h"
@@ -21,7 +21,7 @@
 
 //! A Toolchain object is the start of a tooolchain.
 
-class Toolchain : public ToolchainNode
+class Toolchain : public ToolchainOperation<Datahandler*, Datahandler*>
 {
 
 	public:
@@ -50,7 +50,7 @@ class Toolchain : public ToolchainNode
 		/*!
 			\param handler Is the data handler of which the data should be processed by the tool-chain.
 		*/
-		void execute( Datahandler* handler );
+		void execute( );//Datahandler* handler );
 		
 		
 		//! Returns a pointer to the datahandler on which this toolchain is operating.

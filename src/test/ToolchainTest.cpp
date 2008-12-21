@@ -128,18 +128,37 @@ int main (int argc, const char* argv[] )
 	
 	Toolchain* toolchain = new Toolchain();
 	toolchain->setName("SaveToFile");
-	toolchain->setDescription("This toolchain saves a datahandler to a text file.");
-	
-	string loc = "../DMS_SVN/";
-	string fileName = "testFile";
-	TextFileStorage saveNode( toolchain, loc, fileName, false );	
-	saveNode.setInput( &dataHandler );
-	saveNode.execute();
+	toolchain->setDescription("This toolchain saves a datahandler to a text file and copies it to a second file.");
+	toolchain->setInput( &dataHandler );
 
-	ExecuteSystemCommand command( toolchain, "cp" );
-	command.addArguments( loc + fileName );
+	cout << "\nToolchain name: " << toolchain->getName() << "\n";
+	cout << "Toolchain desciption: " << toolchain->getDescription() << "\n\n";	
+
+
+	string loc = "../";
+	string fileName = "testFile";
+
+	// Save the datahandler to 1 file
+	TextFileStorage saveNode( toolchain );	
+	saveNode.setLocation( loc );
+	saveNode.setFileName( fileName );
+	saveNode.setIndividualFiles( false );
+	//saveNode.setInput( &dataHandler );
+
+	// Copy the one file to a new file.
+	ExecuteSystemCommand command( &saveNode, (string)"cp" );
 	command.addArguments( loc + (string)"\'testFile 2 b\'" );
-	command.execute();
+
+
+	// Save the objects in the data handler to individual files.
+	TextFileStorage saveNode2( toolchain );	
+	saveNode2.setLocation( loc );
+	saveNode2.setFileName( fileName );
+	saveNode2.setIndividualFiles( true );
+
+
+	// execute the toolchain.
+	toolchain->execute();
 
 };
 

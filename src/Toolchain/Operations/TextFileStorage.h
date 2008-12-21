@@ -58,7 +58,7 @@ class TextFileStorage : public ToolchainOperation<Datahandler*, string>
 		void setFileName( string name );
 		
 		//! Function to set whether or not all objects are stored in individual files.
-		void SetIndividualFiles( bool ind );
+		void setIndividualFiles( bool ind );
 		
 		
 		//! Returns the location in which the file(s) is/are stored.
