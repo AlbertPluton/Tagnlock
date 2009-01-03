@@ -7,13 +7,16 @@ include_directories (	${CMAKE_BINARY_DIR}/src/Category
 											${CMAKE_BINARY_DIR}/src/Datahandler 
 											${CMAKE_BINARY_DIR}/src/Toolchain 
 											${CMAKE_BINARY_DIR}/src/Toolchain/Operations
-											/usr/include/libglademm-2.4
-											/usr/include/glibmm-2.4
+											${GTKMM_INCLUDE_DIRS}
+											${GLADEMM_INCLUDE_DIRS}
 										)
 
 
 # Make sure the linker can find the library once it is built.
-#LINK_DIRECTORIES( ${LIBRARY_OUTPUT_PATH} )
+LINK_DIRECTORIES ( ${LIBRARY_OUTPUT_PATH}
+									 ${GTKMM_LIBRARY_DIRS}
+									 ${GLADEMM_LIBRARY_DIRS}
+								 )
 
 
 # Add executable called FieldTest
@@ -54,7 +57,7 @@ TARGET_LINK_LIBRARIES (ToolchainTest Field Category Exceptions Datahandler Toolc
 ADD_EXECUTABLE (GTKMMTest GTKMMTest.cpp)
 
 # Link the executable to the libaries Field and Category
-TARGET_LINK_LIBRARIES (GTKMMTest libglademm-2.4 gtkmm )
+TARGET_LINK_LIBRARIES (GTKMMTest ${GTKMM_LIBRARIES} ${GLADEMM_LIBRARIES} )
 
 
 

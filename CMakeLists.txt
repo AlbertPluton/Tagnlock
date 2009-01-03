@@ -2,6 +2,11 @@
 
 project (DMS CXX)
 
+
+cmake_minimum_required(VERSION 2.6)
+
+
+
 SET ( CMAKE_BUILD_TYPE Debug )
 
 IF(NOT CMAKE_BUILD_TYPE)
@@ -13,6 +18,13 @@ ENDIF(NOT CMAKE_BUILD_TYPE)
 
 
 
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
+
+
+find_package ( PkgConfig )
+
+pkg_check_modules( GTKMM gtkmm-2.4 )
+pkg_check_modules( GLADEMM libglademm-2.4 )
 
 
 
@@ -33,5 +45,6 @@ ADD_SUBDIRECTORY (src/test)
 ADD_SUBDIRECTORY (src/Datahandler)
 ADD_SUBDIRECTORY (src/Toolchain)
 ADD_SUBDIRECTORY (src/Toolchain/Operations)
+ADD_SUBDIRECTORY (src/Engine)
 
 

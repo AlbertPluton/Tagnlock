@@ -12,14 +12,61 @@
 #include <iostream>
 
 
+Gtk::Dialog* pDialog = 0;
 
-int main (int argc, const char* argv[] )
+
+void on_button_clicked()
 {
+  if(pDialog)
+    pDialog->hide(); //hide() will cause main::run() to end.
+}
 
 
-	Glib::RefPtr<Gnome::Glade::Xml> refXml = Gnome::Glade::Xml::create("../UI/GTK/GTK_GUI.glade");
 
+int main (int argc, char **argv)
+{
+  Gtk::Main kit(argc, argv);
 
+  //Load the Glade file and instiate its widgets:
+  Glib::RefPtr<Gnome::Glade::Xml> refXml;
+#ifdef GLIBMM_EXCEPTIONS_ENABLED
+  try
+  {
+    refXml = Gnome::Glade::Xml::create("simple.glade");
+  }
+  catch(const Gnome::Glade::XmlError& ex)
+  {
+    std::cerr << ex.what() << std::endl;
+    return 1;
+  }
+#else
+  std::auto_ptr<Gnome::Glade::XmlError> error;
+  refXml = Gnome::Glade::Xml::create("simple.glade", "", "", error);
+  if(error.get())
+  {
+    std::cerr << error->what() << std::endl;
+    return 1;
+  }
+#endif
 
+  //Get the Glade-instantiated Dialog:
+  refXml->get_widget("DialogBasic", pDialog);
+  if(pDialog)
+  {
+    //Get the Glade-instantiated Button, and connect a signal handler:
+    Gtk::Button* pButton = 0;
+    refXml->get_widget("quit_button", pButton);
+    if(pButton)
+    {
+      pButton->signal_clicked().connect( sigc::ptr_fun(on_button_clicked) );
+    }
 
-};
+    kit.run(*pDialog);
+    
+    delete pDialog;
+    pDialog = 0;
+  }
+
+  return 0;
+}
+
