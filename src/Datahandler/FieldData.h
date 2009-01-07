@@ -11,6 +11,7 @@
 
 
 
+
 //! This class is used as a front end to the standard data types.
 /*!
 	By using this class it is possible to place different data types in the same list. 
