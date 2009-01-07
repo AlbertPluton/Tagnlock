@@ -3,7 +3,7 @@
 project (DMS CXX)
 
 
-cmake_minimum_required(VERSION 2.4)
+cmake_minimum_required(VERSION 2.4.7)
 
 
 
@@ -23,7 +23,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
 
 find_package ( PkgConfig )
 
-pkg_check_modules( GTKMM gtkmm-2.4 )
+#pkg_check_modules( GTKMM gtkmm-2.4 )
 pkg_check_modules( GLADEMM libglademm-2.4 )
 
 
