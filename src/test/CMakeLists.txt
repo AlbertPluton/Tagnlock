@@ -2,8 +2,8 @@
 MESSAGE ( "gtkmm include: \n ${GTKMM_INCLUDE_DIRS} \n " )
 MESSAGE ( "glademm include: \n ${GLADEMM_INCLUDE_DIRS} \n " )
 
-MESSAGE ( "gtkmm library: \n ${GTKMM_LIBRARY_DIRS} \n " )
-MESSAGE ( "glademm library: \n ${GLADEMM_LIBRARY_DIRS} \n " )
+MESSAGE ( "gtkmm library: \n ${GTKMM_LIBRARY} \n " )
+MESSAGE ( "glademm library: \n ${GLADEMM_LIBRARY} \n " )
 
 # Make sure the compiler can find include files from our library.
 INCLUDE_DIRECTORIES (	${CMAKE_BINARY_DIR}/src/Category 
