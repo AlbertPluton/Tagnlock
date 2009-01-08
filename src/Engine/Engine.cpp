@@ -86,14 +86,14 @@ void Engine::addField( int indexCategory, Field* field )
 
 //-----------------------------------------------------------------------------
 
-Field* getCurrentField()
+int Engine::getCurrentField()
 {
 	return currentField;
 };
 
 //-----------------------------------------------------------------------------
 
-void setCurrentField( Field* field )
+void Engine::setCurrentField( int field )
 {
 	currentField = field;
 };

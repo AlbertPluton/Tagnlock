@@ -12,6 +12,7 @@
 #include "Category.h"
 #include "Field.h"
 #include "Datahandler.h"
+#include "ObjectData.h"
 #include "Toolchain.h"
 #include "ToolchainNode.h"
 
@@ -85,18 +86,17 @@ class Engine
 		//! Sets the currentCategory index.
 		void setCurrentCategory( int index );
 
-		//! This virtual function is UI dependent. It should ask the user what kind of new field to add field to a category.
+		//! This virtual function is UI dependent. It should ask the user what kind of field to add to the current category.
 		/*!
 			The new field is added behind the current field.
-			\param indexCategory indicates to which category in the vector the field should be added.
 		*/
-		virtual void newField( int indexCategory ){};
+		virtual void newField(){};
 		
 		//! This virtual function is UI dependent. It should be able to modify all atributes of the current field.
 		virtual void modifyField();
 
-		//! This virtual function is UI dependent. It should display all fields in the desired category.
-		virtual void displayCategory( int index ){};
+		//! This virtual function is UI dependent. It should display all fields in the current category.
+		virtual void displayCategory(){};
 
 
 
@@ -129,12 +129,8 @@ class Engine
 		//! Sets the currentData index.
 		void setCurrentData( int index );
 		
-		//! This virtual function is UI dependent. It should display the specified data object of the desired Datahandler.
-		/*!
-			\param indexDatahandler This index indicates which Datahandler object to use.
-			\param indexObjectData This index indicates of which object the data should be shown.
-		*/
-		virtual void displayDatahandlerObject( int indexDatahandler, int indexObjectData ){};
+		//! This virtual function is UI dependent. It should display the current data object of the current Datahandler.
+		virtual void displayDatahandlerObject(){};
 
 		//! This virtual function is UI dependent. It should display the current data object of the next Datahandler.
 		/*
@@ -198,8 +194,8 @@ class Engine
 		//! Sets the currentToolchainNode pointer to node.
 		void setCurrentToolchainNode( ToolchainNode* node );
 
-		//! This virutal function is UI dependent. It should display the desired toolchain.
-		virtual void dispalyToolchain( int index ){};
+		//! This virutal function is UI dependent. It should display the current toolchain.
+		virtual void dispalyToolchain(){};
 		
 		//! This virutal function is UI dependent. It should handel modifications to the current toolchain.
 		/*!

@@ -23,7 +23,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
 
 find_package ( PkgConfig )
 
-#pkg_check_modules( GTKMM gtkmm-2.4 )
+pkg_check_modules( GTKMM gtkmm-2.4 )
 pkg_check_modules( GLADEMM libglademm-2.4 )
 
 
@@ -46,6 +46,7 @@ ADD_SUBDIRECTORY (src/Datahandler)
 ADD_SUBDIRECTORY (src/Toolchain)
 ADD_SUBDIRECTORY (src/Toolchain/Operations)
 ADD_SUBDIRECTORY (src/Engine)
+ADD_SUBDIRECTORY (src/UI)
 ADD_SUBDIRECTORY (src/UI/GTKMM)
 
 
