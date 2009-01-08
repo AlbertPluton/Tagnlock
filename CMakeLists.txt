@@ -46,5 +46,6 @@ ADD_SUBDIRECTORY (src/Datahandler)
 ADD_SUBDIRECTORY (src/Toolchain)
 ADD_SUBDIRECTORY (src/Toolchain/Operations)
 ADD_SUBDIRECTORY (src/Engine)
+ADD_SUBDIRECTORY (src/UI/GTKMM)
 
 
