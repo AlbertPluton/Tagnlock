@@ -10,8 +10,10 @@
 #define ENGINE_H
 
 #include "Category.h"
+#include "Field.h"
 #include "Datahandler.h"
 #include "Toolchain.h"
+#include "ToolchainNode.h"
 
 
 #include <vector>
@@ -37,6 +39,7 @@ class Engine
 
 		//! The destructor
 		~Engine();
+
 
 
 
@@ -69,12 +72,28 @@ class Engine
 			\param field is a pointer to the new field.
 		*/
 		void addField( int indexCategory, Field* field );
+		
+		//! Returns a pointer to the current field.
+		int getCurrentField();
+		
+		//! Set the pointer currentField to field.
+		void setCurrentField( int field );
+
+		//! Returns the index of the current Category.
+		int getCurrentCategory();
+		
+		//! Sets the currentCategory index.
+		void setCurrentCategory( int index );
 
 		//! This virtual function is UI dependent. It should ask the user what kind of new field to add field to a category.
 		/*!
+			The new field is added behind the current field.
 			\param indexCategory indicates to which category in the vector the field should be added.
 		*/
 		virtual void newField( int indexCategory ){};
+		
+		//! This virtual function is UI dependent. It should be able to modify all atributes of the current field.
+		virtual void modifyField();
 
 		//! This virtual function is UI dependent. It should display all fields in the desired category.
 		virtual void displayCategory( int index ){};
@@ -103,6 +122,12 @@ class Engine
 		\param mod the value to which the boolean should be set TRUE to indicate modifications.
 		*/
 		void setDataModified( int index, bool mod );		
+
+		//! Returns the index of the current Datahandler.
+		int getCurrentData();
+		
+		//! Sets the currentData index.
+		void setCurrentData( int index );
 		
 		//! This virtual function is UI dependent. It should display the specified data object of the desired Datahandler.
 		/*!
@@ -141,8 +166,11 @@ class Engine
 		//! Returns the Toolchain an the desired index.
 		Toolchain* getToolchain( int index );
 
-		//! Execute a Toolchain
+		//! Execute a Toolchain on the current Datahandler object.
 		void executeToolchain( int index );
+
+		//! Execute a Toolchain on the indicated Datahandler object.
+		void executeToolchain( int indexToolchain, int indexData );
 
 		//! Delete the Toolchain at the desired index from the vector.
 		void deleteToolchain( int index );
@@ -152,17 +180,38 @@ class Engine
 		
 		//! This function is used to alter teh boolean indicating that changes have been made to a certain toolchain.
 		/*!
-		This function should for example be used in a function like ???TODO???.
+		This function should for example be used in functions like addToolchainOperation and modifyToolchainNode.
 		\param index the toolchain which has been (un)changed
 		\param mod the value to which the boolean should be set TRUE to indicate modifications.
 		*/
 		void setToolchainModified( int index, bool mod );		
 
+		//! Returns the index of the current toolchain.
+		int getCurrentToolchain();
+		
+		//! Sets the currentToolchain index.
+		void setCurrentToolchain( int index );
+
+		//! Returns a pointer to the current ToolchainNode object
+		ToolchainNode* getCurrentToolchainNode();
+		
+		//! Sets the currentToolchainNode pointer to node.
+		void setCurrentToolchainNode( ToolchainNode* node );
 
 		//! This virutal function is UI dependent. It should display the desired toolchain.
 		virtual void dispalyToolchain( int index ){};
+		
+		//! This virutal function is UI dependent. It should handel modifications to the current toolchain.
+		/*!
+			The function should ask the user what kind of Operation to add. The new node should be added as a child of the current ToolchainNode. After the node is added the function modifyToolchainNode can be called to edit the atributes of the node.
+		*/
+		virtual void addToolchainOperation(){}; 
 
-
+		//! This virutal function is UI dependent. It should handel modifications to the current ToolchainNode.
+		/*!
+			The function should be able to display/modify all atributes of a ToolchainNode. 
+		*/
+		virtual void modifyToolchainNode(){};
 
 	private:
 
@@ -170,6 +219,7 @@ class Engine
 		vector<Category*> categories;
 		vector<bool> categoryModified;		// Used to keep track of objects which are modified.
 		int currentCategory;
+		int currentField;
 
 		vector<Datahandler*> data;
 		vector<bool> dataModified;				// Used to keep track of objects which are modified.
@@ -178,7 +228,7 @@ class Engine
 		vector<Toolchain*> toolchains;		
 		vector<bool> toolchainModified;		// Used to keep track of objects which are modified.
 		int currentToolchain;
-
+		ToolchainNode* currentToolchainNode;
 
 
 

@@ -41,9 +41,8 @@ void Toolchain::loadToolchain( string fileName )
 
 //-----------------------------------------------------------------------------
 
-void Toolchain::execute( )//Datahandler* handler )
+void Toolchain::execute( )
 {
-	//data = handler;
 	this->setOutput( this->getInput() );
 	this->executeChildren();
 };

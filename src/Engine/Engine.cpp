@@ -74,6 +74,7 @@ void Engine::setCategoryModified( int index, bool mod )
 	Engine::categoryModified.at( index ) = mod;
 };
 
+
 //-----------------------------------------------------------------------------
 
 void Engine::addField( int indexCategory, Field* field )
@@ -81,6 +82,37 @@ void Engine::addField( int indexCategory, Field* field )
 		Category* cat = this->getCategory( indexCategory );
 		cat->addField( field );
 };
+
+
+//-----------------------------------------------------------------------------
+
+Field* getCurrentField()
+{
+	return currentField;
+};
+
+//-----------------------------------------------------------------------------
+
+void setCurrentField( Field* field )
+{
+	currentField = field;
+};
+
+
+//-----------------------------------------------------------------------------
+
+int Engine::getCurrentCategory()
+{
+	return currentCategory;
+};
+
+//-----------------------------------------------------------------------------
+		
+void Engine::setCurrentCategory( int index )
+{
+	currentCategory = index;
+};
+
 
 
 //=============================================================================
@@ -130,6 +162,22 @@ void Engine::setDataModified( int index, bool mod )
 };	
 
 
+//-----------------------------------------------------------------------------
+
+int Engine::getCurrentData()
+{
+	return currentData;
+};
+
+//-----------------------------------------------------------------------------
+
+void Engine::setCurrentData( int index )
+{
+	currentData = index;
+};
+
+
+
 //=============================================================================
 
 
@@ -157,7 +205,15 @@ Toolchain* Engine::getToolchain( int index )
 
 void Engine::executeToolchain( int index )
 {
-	// TODO
+	// Get a pointer to the desired toolchain.
+	Toolchain* toolchain = toolchains.at( index );
+	
+	// Set the current Datahandler object as the input for the toolchain.
+	toolchain->setInput( data.at( currentData ) );
+	
+	// Execute the toolchain.
+	toolchain->execute();	
+	
 };
 
 //-----------------------------------------------------------------------------
@@ -185,15 +241,31 @@ void Engine::setToolchainModified( int index, bool mod )
 
 //-----------------------------------------------------------------------------
 
+int Engine::getCurrentToolchain()
+{
+	return currentToolchain;
+};
 
 //-----------------------------------------------------------------------------
 
+void Engine::setCurrentToolchain( int index )
+{
+	currentToolchain = index;
+};
 
 //-----------------------------------------------------------------------------
 
+ToolchainNode* Engine::getCurrentToolchainNode()
+{
+	return currentToolchainNode;
+};
 
 //-----------------------------------------------------------------------------
 
+void Engine::setCurrentToolchainNode( ToolchainNode* node )
+{
+	currentToolchainNode = node;
+};
 
 //-----------------------------------------------------------------------------
 
