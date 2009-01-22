@@ -43,7 +43,7 @@ class Engine
 
 
 
-
+	protected:
 
 		// --- Functions relating to Category -------------------------------------
 
@@ -93,7 +93,7 @@ class Engine
 		virtual void newField(){};
 		
 		//! This virtual function is UI dependent. It should be able to modify all atributes of the current field.
-		virtual void modifyField();
+		virtual void modifyField(){};
 
 		//! This virtual function is UI dependent. It should display all fields in the current category.
 		virtual void displayCategory(){};
@@ -208,6 +208,10 @@ class Engine
 			The function should be able to display/modify all atributes of a ToolchainNode. 
 		*/
 		virtual void modifyToolchainNode(){};
+
+
+
+
 
 	private:
 

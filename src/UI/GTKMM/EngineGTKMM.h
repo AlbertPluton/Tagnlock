@@ -16,6 +16,7 @@
 #include <libglademm/xml.h>
 #include <gtkmm.h>
 
+#include <iostream>
 #include <string>
 using namespace std;
 
@@ -34,7 +35,7 @@ class EngineGTKMM : public Engine
 			\param argv arguments/parameters from the main function.
 			\param gladeFileName location and name of the glade xml file describing the GUI.
 		*/
-		EngineGTKMM( int argc, char *argv[], string gladeFileName );
+		EngineGTKMM( int argc, char **argv, string gladeFileName );
 		
 		~EngineGTKMM();
 	
@@ -46,7 +47,7 @@ class EngineGTKMM : public Engine
 		void newField( int indexCategory );
 		void modifyField();
 		void displayCategory( int index );
-		
+
 		// --- Functions relating to Datahandler ----------------------------------
 		
 		void displayDatahandlerObject( );
@@ -63,15 +64,29 @@ class EngineGTKMM : public Engine
 		void modifyToolchainNode();
 
 
+
+void on_toolbutton25_clicked(  );
+
+
+
+
 	
 	private:
 
+		void connectSignalsToToolButtons();
 
-		Gtk::Main kit;
+
+
+
+		Gtk::Main* kit;
+		Gtk::Window* dataWindow;
+		
+  	Glib::RefPtr<Gnome::Glade::Xml> refXml;		
 
 
 
 };
+
 
 
 
