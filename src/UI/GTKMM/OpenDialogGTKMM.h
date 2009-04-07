@@ -6,9 +6,31 @@
 //
 
 
-#ifndef OPENDIALOGGTKMM_H
-#define OPENDIALOGGTKMM_H
+#ifndef OPENFILEWINDOWGTKMM_H
+#define OPENFILEWINDOWGTKMM_H
 
+#include <gtkmm.h>
+
+class OpenFileWindowGTKMM : public Gtk::Window
+{
+
+	public:
+		OpenFileWindowGTKMM();
+		virtual ~OpenFileWindowGTKMM();
+		
+		
+	protected:
+		//Signal handlers
+		virtual void on_button_file_clicked();
+		virtual void on_button_folder_clicked();
+		
+		//Child widgets
+		Gtk::VButtonBox m_ButtonBox;
+		Gtk::Button m_Button_File, m_Button_Folder;
+	
+
+
+}
 
 
 
