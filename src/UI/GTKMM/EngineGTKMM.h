@@ -9,8 +9,9 @@
 #ifndef ENGINEGTK_H
 #define ENGINEGTK_H
 
-
 #include "Engine.h"
+
+#include "Category.h"
 
 #include <libglademm.h>
 #include <libglademm/xml.h>
@@ -43,8 +44,9 @@ class EngineGTKMM : public Engine
 		// === The following functions are implementations of the virtual functions in the Engine class ====================
 	
 		// --- Functions relating to Category -------------------------------------
-	
-		void newField( int indexCategory );
+		void loadCategory();
+		void saveCategory();
+		void newField();
 		void modifyField();
 		void displayCategory( int index );
 
@@ -73,13 +75,18 @@ void on_toolbutton25_clicked(  );
 	
 	private:
 
+		void connectSignalsToButtons();
 		void connectSignalsToToolButtons();
-
+		
 
 
 
 		Gtk::Main* kit;
 		Gtk::Window* dataWindow;
+		Gtk::Window* toolchainWindow;
+		Gtk::Window* categoryWindow;
+		
+		Gtk::Dialog* openDialog;
 		
   	Glib::RefPtr<Gnome::Glade::Xml> refXml;		
 

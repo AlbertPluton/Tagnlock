@@ -7,7 +7,7 @@
 
 
 #include "EngineGTKMM.h"
-
+#include <gtkmm/box.h>
 
 //-----------------------------------------------------------------------------
 
@@ -18,6 +18,9 @@ EngineGTKMM::EngineGTKMM( int argc, char **argv, string gladeFileName )
 	kit = new Gtk::Main(argc, argv);
 
 	dataWindow = 0;
+	toolchainWindow = 0;
+	categoryWindow = 0;
+	openDialog = 0;
 	
   //Load the Glade file and instiate its widgets:
 	#ifdef GLIBMM_EXCEPTIONS_ENABLED
@@ -48,16 +51,27 @@ EngineGTKMM::EngineGTKMM( int argc, char **argv, string gladeFileName )
 	
   //Get the Glade-instantiated Dialog:
   refXml->get_widget("DataWindow", dataWindow);
-  if(dataWindow)
+  refXml->get_widget("ToolchainWindow", toolchainWindow);
+  refXml->get_widget("CategoryWindow", categoryWindow);
+  
+  refXml->get_widget("OpenDialog", openDialog);
+  
+  if(dataWindow && toolchainWindow && categoryWindow && openDialog)
   {
 
+		connectSignalsToButtons();
 		connectSignalsToToolButtons();
 
 		// TODO place the following function in a better place = other function.
-    kit->run(*dataWindow);  
-    delete dataWindow;
- 
-  }
+    dataWindow->show();
+    categoryWindow->show();
+    toolchainWindow->show();
+    
+    openDialog->hide();
+    
+    kit->run();
+ 		
+	}
 
 	
 };
@@ -68,7 +82,44 @@ EngineGTKMM::EngineGTKMM( int argc, char **argv, string gladeFileName )
 EngineGTKMM::~EngineGTKMM()
 {
 	delete dataWindow;
+	delete toolchainWindow;
+	delete categoryWindow;
+	delete openDialog;
 };
+
+//-----------------------------------------------------------------------------
+
+void EngineGTKMM::connectSignalsToButtons()
+{
+    //Get the Glade-instantiated Button, and connect a signal handler:
+    Gtk::Button* pButton = 0;
+
+		// OpenWindow =============================================================================================================
+
+	  // Open button 
+    refXml->get_widget("button1", pButton);
+    if(pButton)
+    {
+      pButton->signal_clicked().connect( sigc::mem_fun( this, &EngineGTKMM::on_toolbutton25_clicked) );
+    }
+    else
+    {
+    	// TODO throw error
+    }
+		
+	  // Cancel button
+    refXml->get_widget("button2", pButton);
+    if(pButton)
+    {
+      pButton->signal_clicked().connect( sigc::mem_fun( this, &EngineGTKMM::on_toolbutton25_clicked) );
+    }
+    else
+    {
+    	// TODO throw error
+    }
+		
+}
+
 
 //-----------------------------------------------------------------------------
 
@@ -138,6 +189,118 @@ void EngineGTKMM::connectSignalsToToolButtons()
     {
     	// TODO throw error
     }
+    
+    
+    
+    // ToolchainWindow ===============================================================================================================
+ 
+ 
+ 
+    // CategoryWindow ===============================================================================================================
+   
+    // New button
+    refXml->get_widget("toolbutton14", pToolButton);
+    if(pToolButton)
+    {
+      pToolButton->signal_clicked().connect( sigc::mem_fun( this, &EngineGTKMM::on_toolbutton25_clicked) );
+    }
+    else
+    {
+    	// TODO throw error
+    }
+    
+
+		// Open button
+    refXml->get_widget("toolbutton15", pToolButton);
+    if(pToolButton)
+    {
+      pToolButton->signal_clicked().connect( sigc::mem_fun( this, &EngineGTKMM::loadCategory) );
+    }
+    else
+    {
+    	// TODO throw error
+    }
+    
+    
+    // Save button
+		refXml->get_widget("toolbutton16", pToolButton);
+    if(pToolButton)
+    {
+      pToolButton->signal_clicked().connect( sigc::mem_fun( this, &EngineGTKMM::on_toolbutton25_clicked) );
+    }
+    else
+    {
+    	// TODO throw error
+    } 
+    
+    // Undo button
+		refXml->get_widget("toolbutton18", pToolButton);
+    if(pToolButton)
+    {
+      pToolButton->signal_clicked().connect( sigc::mem_fun( this, &EngineGTKMM::on_toolbutton25_clicked) );
+    }
+    else
+    {
+    	// TODO throw error
+    }   
+
+    // Redo button
+		refXml->get_widget("toolbutton19", pToolButton);
+    if(pToolButton)
+    {
+      pToolButton->signal_clicked().connect( sigc::mem_fun( this, &EngineGTKMM::on_toolbutton25_clicked) );
+    }
+    else
+    {
+    	// TODO throw error
+    }  
+    
+    
+		// Add button
+    refXml->get_widget("toolbutton21", pToolButton);
+    if(pToolButton)
+    {
+      pToolButton->signal_clicked().connect( sigc::mem_fun( this, &EngineGTKMM::on_toolbutton25_clicked) );
+    }
+    else
+    {
+    	// TODO throw error
+    }
+    
+    
+    // Delete button
+		refXml->get_widget("toolbutton22", pToolButton);
+    if(pToolButton)
+    {
+      pToolButton->signal_clicked().connect( sigc::mem_fun( this, &EngineGTKMM::on_toolbutton25_clicked) );
+    }
+    else
+    {
+    	// TODO throw error
+    } 
+    
+    // Up button
+		refXml->get_widget("toolbutton23", pToolButton);
+    if(pToolButton)
+    {
+      pToolButton->signal_clicked().connect( sigc::mem_fun( this, &EngineGTKMM::on_toolbutton25_clicked) );
+    }
+    else
+    {
+    	// TODO throw error
+    }   
+
+    // Down button
+		refXml->get_widget("toolbutton24 ", pToolButton);
+    if(pToolButton)
+    {
+      pToolButton->signal_clicked().connect( sigc::mem_fun( this, &EngineGTKMM::on_toolbutton25_clicked) );
+    }
+    else
+    {
+    	// TODO throw error
+    }        
+      
    
 }
 
@@ -174,7 +337,22 @@ void EngineGTKMM::on_toolbutton25_clicked(  )
 	
 // --- Functions relating to Category -----------------------------------------
 
-void EngineGTKMM::newField( int indexCategory )
+void EngineGTKMM::loadCategory()
+{
+	
+	openDialog->show();
+};
+
+//-----------------------------------------------------------------------------
+
+void EngineGTKMM::saveCategory()
+{
+
+};
+
+//-----------------------------------------------------------------------------
+
+void EngineGTKMM::newField()
 {
 
 };
@@ -194,8 +372,10 @@ void EngineGTKMM::displayCategory( int index )
 };
 
 
-// --- Functions relating to Datahandler --------------------------------------
+
 //-----------------------------------------------------------------------------
+
+// --- Functions relating to Datahandler --------------------------------------
 
 void EngineGTKMM::displayDatahandlerObject( )
 {
