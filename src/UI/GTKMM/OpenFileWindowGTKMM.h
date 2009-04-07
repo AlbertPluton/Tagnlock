@@ -21,16 +21,16 @@ class OpenFileWindowGTKMM : public Gtk::Window
 		
 	protected:
 		//Signal handlers
-		virtual void on_button_file_clicked();
+		virtual void on_button_open_clicked();
 		virtual void on_button_folder_clicked();
 		
 		//Child widgets
-		Gtk::VButtonBox m_ButtonBox;
-		Gtk::Button m_Button_File, m_Button_Folder;
+		Gtk::VButtonBox buttonBox;
+		Gtk::Button button_Open, button_Folder;
 	
 
 
-}
+};
 
 
 

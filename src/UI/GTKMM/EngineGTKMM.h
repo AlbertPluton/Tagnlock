@@ -86,8 +86,6 @@ void on_toolbutton25_clicked(  );
 		Gtk::Window* toolchainWindow;
 		Gtk::Window* categoryWindow;
 		
-		Gtk::Dialog* openDialog;
-		
   	Glib::RefPtr<Gnome::Glade::Xml> refXml;		
 
 
