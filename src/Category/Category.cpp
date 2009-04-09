@@ -241,7 +241,12 @@ int Category::getFieldsSize()
 	return (int)fields.size();
 };
 
+//-----------------------------------------------------------------------------
 
+Field* Category::getFieldAt( int index )
+{
+	return fields.at( index );
+};
 
 //-----------------------------------------------------------------------------
 

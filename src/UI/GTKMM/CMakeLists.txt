@@ -28,6 +28,7 @@ LINK_DIRECTORIES ( ${LIBRARY_OUTPUT_PATH}
 SET (	SRCS_EngineGTKMM
 			EngineGTKMM.cpp
 			FieldGTKMM.cpp
+			FieldTableGTKMM.cpp
 			${CMAKE_BINARY_DIR}/src/Engine/Engine.cpp
 		)
 

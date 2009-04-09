@@ -47,7 +47,7 @@ class Engine
 
 		// --- Functions relating to Category -------------------------------------
 
-		//! Adds a category to the end of the vector categories.
+		//! Adds a category to the end of the vector categories and sets currentCategory to this value. 
 		void addCategory( Category* cat );
 
 		//! Returns the category at the desired index.
@@ -74,17 +74,27 @@ class Engine
 		*/
 		void addField( int indexCategory, Field* field );
 		
+		
 		//! Returns a pointer to the current field.
 		int getCurrentField();
 		
 		//! Set the pointer currentField to field.
 		void setCurrentField( int field );
 
+		// Returns the size of the categories vector.
+		int getNumberOfCategories();
+
 		//! Returns the index of the current Category.
-		int getCurrentCategory();
+		int getIndexCurrentCategory();
 		
 		//! Sets the currentCategory index.
 		void setCurrentCategory( int index );
+
+		//! This virtual function is UI dependent. The UI should give the user the option to load a category from a file.
+		virtual void loadCategory(){};
+
+		//! This virtual function is UI dependent. The UI should give the user the option to save a category to a file.
+		virtual void saveCategory(){};
 
 		//! This virtual function is UI dependent. It should ask the user what kind of field to add to the current category.
 		/*!
@@ -95,8 +105,8 @@ class Engine
 		//! This virtual function is UI dependent. It should be able to modify all atributes of the current field.
 		virtual void modifyField(){};
 
-		//! This virtual function is UI dependent. It should display all fields in the current category.
-		virtual void displayCategory(){};
+		//! This virtual function is UI dependent. It should display all fields in the desired category.
+		virtual void displayCategory( int index ){};
 
 
 

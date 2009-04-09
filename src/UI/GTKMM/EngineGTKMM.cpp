@@ -21,6 +21,7 @@ EngineGTKMM::EngineGTKMM( int argc, char **argv, string gladeFileName )
 	dataWindow = 0;
 	toolchainWindow = 0;
 	categoryWindow = 0;
+	fieldTableGTKMM = NULL;
 	
   //Load the Glade file and instiate its widgets:
 	#ifdef GLIBMM_EXCEPTIONS_ENABLED
@@ -53,6 +54,8 @@ EngineGTKMM::EngineGTKMM( int argc, char **argv, string gladeFileName )
   refXml->get_widget("DataWindow", dataWindow);
   refXml->get_widget("ToolchainWindow", toolchainWindow);
   refXml->get_widget("CategoryWindow", categoryWindow);
+  
+  refXml->get_widget("scrolledwindow3", categoryFieldsWindow);
    
   if(dataWindow && toolchainWindow && categoryWindow)
   {
@@ -323,6 +326,7 @@ void EngineGTKMM::loadCategory()
 
   //Add filters, so that only certain file types can be selected:
 
+#warning TODO Make a good filter
 /*	TODO Make a good filter for the files.
   Gtk::FileFilter filter_cat;
   filter_cat.set_name("Category files");
@@ -349,6 +353,9 @@ void EngineGTKMM::loadCategory()
       Category* cat = new Category();
       cat->loadCategory( fileName );
       this->addCategory( cat );  
+      
+      // Display the current category which is the new one.
+      this->displayCategory( this->getIndexCurrentCategory() );
       
       //std::cout << "Number of categories is: " << this->getNumberOfCategories() << ".\tCurrent category is: " << this->getCurrentCategory() << "\n" ;
       
@@ -386,6 +393,33 @@ void EngineGTKMM::modifyField()
 
 void EngineGTKMM::displayCategory( int index )
 {
+
+	// If there is an table delete it.
+	if( fieldTableGTKMM != NULL )
+	{
+		categoryFieldsWindow->remove();
+		delete fieldTableGTKMM;
+	}
+
+	// Create a new table from the category.
+	fieldTableGTKMM = new FieldTableGTKMM();
+	
+	Category* cat =  this->getCategory( index );
+	if( cat != NULL )
+	{
+		fieldTableGTKMM->makeNewTable( cat );
+
+		// Add it to the scolled window.
+		categoryFieldsWindow->add( *(Gtk::Widget*)fieldTableGTKMM );
+
+	}
+	else
+	{
+		// TODO throw error index exceded
+		cout << "In file " << __FILE__ << " at line " << __LINE__ << ": cat = NULL.\n";
+	}
+	
+
 
 };
 

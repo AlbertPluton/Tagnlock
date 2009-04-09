@@ -12,6 +12,8 @@
 #include "Engine.h"
 
 #include "Category.h"
+#include "FieldGTKMM.h"
+#include "FieldTableGTKMM.h"
 
 #include <libglademm.h>
 #include <libglademm/xml.h>
@@ -85,6 +87,9 @@ void on_toolbutton25_clicked(  );
 		Gtk::Window* dataWindow;
 		Gtk::Window* toolchainWindow;
 		Gtk::Window* categoryWindow;
+		
+		Gtk::ScrolledWindow* categoryFieldsWindow;
+		FieldTableGTKMM* fieldTableGTKMM;
 		
   	Glib::RefPtr<Gnome::Glade::Xml> refXml;		
 

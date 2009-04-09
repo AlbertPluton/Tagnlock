@@ -16,16 +16,18 @@
 #include <string>
 using namespace std;
 
-
+#include <iostream>
 
 
 //-----------------------------------------------------------------------------
 
-FieldGTKMM::FieldGTKMM( Field* field ) : 
-				label( field->getLabel() ),
-				required( "", field->getRequired() ),
-				reset( "", field->getReset() )
+FieldGTKMM::FieldGTKMM( Field* field ) 
 {
+
+
+	label = new Gtk::Label( field->getLabel() );
+	required = new Gtk::CheckButton( "", field->getRequired() );
+	reset = new Gtk::CheckButton( "", field->getReset() );
 
 	string fieldType = field->getType();
 
@@ -90,6 +92,9 @@ FieldGTKMM::FieldGTKMM( Field* field ) :
 		}	
 	}
 	// TODO 
+	#ifdef TODO_DEF
+	#warning TODO in file __FILE__ at line __LINE__.
+	#endif
 	else if( fieldType.compare("ComboEntry") == 0 )	//---------------------------
 	{
 		entryField = new Gtk::Entry();
@@ -102,31 +107,57 @@ FieldGTKMM::FieldGTKMM( Field* field ) :
 	{
 		// TODO Send error because the field type is unknown.
 	}
-
+	
+	
+	// Add the widgets to the parrent HBox
+	this->pack_end( *label, 			false, 	false, 	5 );
+	this->pack_end( *entryField, 	true, 	true, 	5 );
+	this->pack_end( *required, 		false,	false, 	5 );
+	this->pack_end( *reset, 			false, 	false, 	5 );
+	
 };
 
 //-----------------------------------------------------------------------------
 
 FieldGTKMM::~FieldGTKMM()
 {
+	delete label;
+	delete required;
+	delete reset;
 	delete entryField;
+	cout << "Destroyed a FieldGTKMM object.\n";
 };
 
 
 //-----------------------------------------------------------------------------
 
-
-
-
-//-----------------------------------------------------------------------------
-
-
-
-//-----------------------------------------------------------------------------
+Gtk::Widget* FieldGTKMM::getLabel()
+{
+	return label;
+};
 
 
 //-----------------------------------------------------------------------------
 
+Gtk::Widget* FieldGTKMM::getRequired()
+{
+	return required;
+};
+
+
+//-----------------------------------------------------------------------------
+
+Gtk::Widget* FieldGTKMM::getReset()
+{
+	return reset;
+};
+
+//-----------------------------------------------------------------------------
+
+Gtk::Widget* FieldGTKMM::getEntryField()
+{
+	return entryField;
+};
 
 //-----------------------------------------------------------------------------
 

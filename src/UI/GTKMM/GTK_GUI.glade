@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Tue Apr  7 13:06:21 2009 -->
+<!--Generated with glade3 3.4.5 on Tue Apr  7 13:28:41 2009 -->
 <glade-interface>
   <widget class="GtkWindow" id="DataWindow">
     <property name="title" translatable="yes">Data</property>

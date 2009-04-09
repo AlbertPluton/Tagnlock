@@ -15,7 +15,13 @@
 //-----------------------------------------------------------------------------
 
 Engine::Engine()
-{
+{		
+	currentCategory = 0;
+	currentField = 0;
+	currentData = 0;
+	currentToolchain = 0;
+	currentToolchainNode = NULL;
+
 	// TODO
 };
 
@@ -36,13 +42,14 @@ void Engine::addCategory( Category* cat )
 {
 	categories.push_back( cat );
 	categoryModified.push_back( true );
+	this->setCurrentCategory( this->getNumberOfCategories() - 1 );
 };
 
 //-----------------------------------------------------------------------------
 
 Category* Engine::getCategory( int index )
 {
-	if( index >= 0 )
+	if( (index >= 0) && (index < categories.size()) )
 	{
 		return categories.at( index );
 	}
@@ -98,10 +105,16 @@ void Engine::setCurrentField( int field )
 	currentField = field;
 };
 
+//-----------------------------------------------------------------------------
+
+int Engine::getNumberOfCategories()
+{
+	return categories.size();
+};
 
 //-----------------------------------------------------------------------------
 
-int Engine::getCurrentCategory()
+int Engine::getIndexCurrentCategory()
 {
 	return currentCategory;
 };

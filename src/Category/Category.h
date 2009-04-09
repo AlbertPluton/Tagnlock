@@ -68,6 +68,8 @@ class Category
 		//! Return the size of the fields vector
 		int getFieldsSize();
 		
+		//! Return a pointer to the field at index.
+		Field* getFieldAt( int index );
 		
 		//! Return the type of a specific field
 		/*!
