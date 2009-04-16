@@ -14,20 +14,29 @@
 FieldTableGTKMM::FieldTableGTKMM()
 {
 
+#ifdef DEBUG_MESSAGES_DEF
+	cout << "Constructing FieldTableGTKMM	object.\n";
+#endif
+
+	this->show();
+	this->set_child_visible();	
+
 };
 
 //-----------------------------------------------------------------------------
 
 FieldTableGTKMM::~FieldTableGTKMM()
 {
+#ifdef DEBUG_MESSAGES_DEF
 	cout << "Destroyed a FieldTableGTKMM object.\n";
+#endif
 };
 
 //-----------------------------------------------------------------------------
 
 void FieldTableGTKMM::addField( Gtk::Widget* field )
 {
-	this->pack_end( *field,	true, true, 2 );
+	this->pack_start( *field,	true, true, 2 );
 };
 
 //-----------------------------------------------------------------------------
@@ -56,7 +65,9 @@ void FieldTableGTKMM::makeNewTable( Category* category )
 		fieldGTKMM = new FieldGTKMM( field );
 		this->addField( (Gtk::Widget*)fieldGTKMM );
 	}
-
+	
+	this->show_all();
+	
 };
 
 //-----------------------------------------------------------------------------

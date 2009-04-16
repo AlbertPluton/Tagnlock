@@ -40,6 +40,10 @@ class FieldGTKMM : Gtk::HBox
 		Gtk::Widget* required; 	// Gtk::CheckButton required;
 		Gtk::Widget* reset;			//Gtk::CheckButton reset;
 		Gtk::Widget* entryField;
+		
+		
+		// Required when the field is a ComboField with ComboType ComboRadio.
+		Gtk::RadioButton* radioButtons; // This is a pointer to the first element in an array;
 
 
 };

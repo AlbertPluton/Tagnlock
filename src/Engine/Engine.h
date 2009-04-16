@@ -45,6 +45,12 @@ class Engine
 
 	protected:
 
+
+		// --- Functions relating to the general program flow ---------------------
+
+		virtual void quit(){};
+
+
 		// --- Functions relating to Category -------------------------------------
 
 		//! Adds a category to the end of the vector categories and sets currentCategory to this value. 

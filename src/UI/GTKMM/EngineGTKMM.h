@@ -44,6 +44,11 @@ class EngineGTKMM : public Engine
 	
 	
 		// === The following functions are implementations of the virtual functions in the Engine class ====================
+
+
+		// --- Functions relating to the general program flow ---------------------
+		void quit();
+
 	
 		// --- Functions relating to Category -------------------------------------
 		void loadCategory();

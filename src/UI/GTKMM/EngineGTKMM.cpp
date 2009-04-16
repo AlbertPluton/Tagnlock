@@ -15,6 +15,10 @@
 EngineGTKMM::EngineGTKMM( int argc, char **argv, string gladeFileName )
 {
 
+#ifdef DEBUG_MESSAGES_DEF
+	cout << "Constructing FieldTableGTKMM	object.\n";
+#endif
+
 
 	kit = new Gtk::Main(argc, argv);
 
@@ -56,6 +60,8 @@ EngineGTKMM::EngineGTKMM( int argc, char **argv, string gladeFileName )
   refXml->get_widget("CategoryWindow", categoryWindow);
   
   refXml->get_widget("scrolledwindow3", categoryFieldsWindow);
+ 	categoryFieldsWindow->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_ALWAYS);
+
    
   if(dataWindow && toolchainWindow && categoryWindow)
   {
@@ -71,6 +77,11 @@ EngineGTKMM::EngineGTKMM( int argc, char **argv, string gladeFileName )
     kit->run();
  		
 	}
+	
+	
+	// For debug purposes written
+	
+
 
 	
 };
@@ -80,9 +91,15 @@ EngineGTKMM::EngineGTKMM( int argc, char **argv, string gladeFileName )
 
 EngineGTKMM::~EngineGTKMM()
 {
+
+#ifdef DEBUG_MESSAGES_DEF	
+	cout << "Destroyed a EngineGTKMM object.\n";
+#endif
+
 	delete dataWindow;
 	delete toolchainWindow;
 	delete categoryWindow;
+	delete categoryFieldsWindow;
 };
 
 //-----------------------------------------------------------------------------
@@ -312,6 +329,15 @@ void EngineGTKMM::on_toolbutton25_clicked(  )
 
 
 // === The following functions are implementations of the virtual functions in the Engine class ====================
+
+// --- Functions relating to the general program flow -------------------------
+
+void EngineGTKMM::quit()
+{
+	Gtk::Main::quit();
+};
+
+
 	
 // --- Functions relating to Category -----------------------------------------
 
@@ -401,6 +427,8 @@ void EngineGTKMM::displayCategory( int index )
 		delete fieldTableGTKMM;
 	}
 
+
+
 	// Create a new table from the category.
 	fieldTableGTKMM = new FieldTableGTKMM();
 	
@@ -412,6 +440,13 @@ void EngineGTKMM::displayCategory( int index )
 		// Add it to the scolled window.
 		categoryFieldsWindow->add( *(Gtk::Widget*)fieldTableGTKMM );
 
+//		Gtk::Label * testLabel = new Gtk::Label("Test 1 2 3 Test.");
+//		testLabel->show();
+//		categoryFieldsWindow->add( *testLabel );
+
+		((Gtk::Widget*)fieldTableGTKMM)->show();
+		
+
 	}
 	else
 	{
@@ -419,7 +454,7 @@ void EngineGTKMM::displayCategory( int index )
 		cout << "In file " << __FILE__ << " at line " << __LINE__ << ": cat = NULL.\n";
 	}
 	
-
+	//categoryFieldsWindow->show_all_childeren();
 
 };
 
