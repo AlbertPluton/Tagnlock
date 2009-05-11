@@ -70,9 +70,9 @@ EngineGTKMM::EngineGTKMM( int argc, char **argv, string gladeFileName )
 		connectSignalsToToolButtons();
 
 		// TODO place the following function in a better place = other function.
-    dataWindow->show();
+//    dataWindow->show();
     categoryWindow->show();
-    toolchainWindow->show();
+//    toolchainWindow->show();
    
     kit->run();
  		

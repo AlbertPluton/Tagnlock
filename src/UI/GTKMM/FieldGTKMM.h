@@ -32,6 +32,8 @@ class FieldGTKMM : Gtk::HBox
 		Gtk::Widget* getReset();
 		//! Returns a pointer to the entry field widget.
 		Gtk::Widget* getEntryField();
+		
+		Gtk::Widget* clickedOnField();
 	
 	
 	private:

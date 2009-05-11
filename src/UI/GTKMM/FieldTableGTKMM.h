@@ -36,7 +36,12 @@ class FieldTableGTKMM : Gtk::VBox
 		//! Fill the current table with the data from the given object.
 		void fillTable( ObjectData* object );
 		
+		//! Renew the table if some field has changed. 
+		void renewTable( );
+		
 	private:
+	
+		ObjectData* objectData;
 
 };
 

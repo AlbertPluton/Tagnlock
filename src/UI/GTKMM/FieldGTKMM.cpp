@@ -30,9 +30,13 @@ FieldGTKMM::FieldGTKMM( Field* field )
 
 
 	label = new Gtk::Label( field->getLabel() );
-	required = new Gtk::CheckButton( "", field->getRequired() );
-	reset = new Gtk::CheckButton( "", field->getReset() );
-
+	
+	required = new Gtk::CheckButton();
+	((Gtk::CheckButton*)required)->set_active( field->getRequired() );
+	
+	reset = new Gtk::CheckButton();
+	((Gtk::CheckButton*)reset)->set_active( field->getReset() );
+		
 	string fieldType = field->getType();
 
 
@@ -46,13 +50,14 @@ FieldGTKMM::FieldGTKMM( Field* field )
 	
 	else if( fieldType.compare("CheckField") == 0 )	//-------------------------------
 	{
-		entryField = new Gtk::CheckButton( "", false );
+		entryField = new Gtk::CheckButton();
 	}
 	
 	
 	
 	else if( fieldType.compare("SpinField") == 0 )	//---------------------------
 	{
+	
 #ifdef TODO_DEF
 #warning TODO in file __FILE__ at line __LINE__. Make the spin button work.
 #endif		
@@ -226,7 +231,11 @@ FieldGTKMM::FieldGTKMM( Field* field )
 	entryField->show();
 
  	this->show_all();
-
+ 	
+ 	
+ 	// Try to connect a signal to it.
+ 	//this->signal_button_press_event().connect( sigc::mem_fun( this, &FieldGTKMM::clickedOnField) );
+ 	
 };
 
 //-----------------------------------------------------------------------------
@@ -281,6 +290,12 @@ Gtk::Widget* FieldGTKMM::getEntryField()
 };
 
 //-----------------------------------------------------------------------------
+
+Gtk::Widget* FieldGTKMM::clickedOnField()
+{
+
+};
+
 
 //-----------------------------------------------------------------------------
 

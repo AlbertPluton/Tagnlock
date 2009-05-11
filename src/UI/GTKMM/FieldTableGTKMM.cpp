@@ -18,6 +18,9 @@ FieldTableGTKMM::FieldTableGTKMM()
 	cout << "Constructing FieldTableGTKMM	object.\n";
 #endif
 
+	objectData = NULL;
+
+	this->set_homogeneous(false);
 	this->show();
 	this->set_child_visible();	
 
@@ -59,10 +62,14 @@ void FieldTableGTKMM::makeNewTable( Category* category )
 	int size = category->getFieldsSize();
 	Field* field = NULL;
 	
+
+	
 	for( int i = 0; i < size; i++ )
 	{
 		field = category->getFieldAt( i );
 		fieldGTKMM = new FieldGTKMM( field );
+		
+	
 		this->addField( (Gtk::Widget*)fieldGTKMM );
 	}
 	
