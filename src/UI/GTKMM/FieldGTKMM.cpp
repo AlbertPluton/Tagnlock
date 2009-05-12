@@ -123,6 +123,7 @@ FieldGTKMM::FieldGTKMM( Field* field )
 				}		
 
 				entryField = comboEntryField;
+				
 			}
 			else
 			{
@@ -218,24 +219,19 @@ FieldGTKMM::FieldGTKMM( Field* field )
 
 	
 	
-	// Add the widgets to the parrent HBox
-	this->pack_start( *label, 			false, 	false, 	5 );
-	this->pack_start( *entryField, 	true, 	true, 	5 );
-	this->pack_start( *required, 		false,	false, 	5 );
-	this->pack_start( *reset, 			false, 	false, 	5 );
+	// Add the HBox to the EventBox as a child
+	this->add(hBox);
 	
-	label->show();
-	entryField->show();
-	required->show();
-	reset->show();
-	entryField->show();
+	// Add the widgets to the parrent HBox
+	hBox.pack_start( *label, 			false, 	false, 	5 );
+	hBox.pack_start( *entryField,	true, 	true, 	5 );
+	hBox.pack_start( *required, 	false,	false, 	5 );
+	hBox.pack_start( *reset, 			false, 	false, 	5 );
+	
+	
+	// Connect the signal of the EventBox
+	this->signal_button_press_event().connect( sigc::mem_fun( *this, &FieldGTKMM::selected) );
 
- 	this->show_all();
- 	
- 	
- 	// Try to connect a signal to it.
- 	//this->signal_button_press_event().connect( sigc::mem_fun( this, &FieldGTKMM::clickedOnField) );
- 	
 };
 
 //-----------------------------------------------------------------------------
@@ -298,4 +294,16 @@ Gtk::Widget* FieldGTKMM::clickedOnField()
 
 
 //-----------------------------------------------------------------------------
+
+bool FieldGTKMM::selected( GdkEventButton* event )
+{
+	cout << "Field selected\n" ;
+	
+	return true;
+}
+
+//-----------------------------------------------------------------------------
+
+
+
 

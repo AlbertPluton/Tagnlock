@@ -59,15 +59,36 @@ EngineGTKMM::EngineGTKMM( int argc, char **argv, string gladeFileName )
   refXml->get_widget("ToolchainWindow", toolchainWindow);
   refXml->get_widget("CategoryWindow", categoryWindow);
   
+  
+  // categoryWindow specific
   refXml->get_widget("scrolledwindow3", categoryFieldsWindow);
  	categoryFieldsWindow->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_ALWAYS);
+
+  refXml->get_widget("categoryTreeView", categoryTreeView);
+ 
+ 	categoryColumns.add( columnFieldType			);
+ 	categoryColumns.add( columnFieldLabel			);
+ 	categoryColumns.add( columnFieldRequired	);
+ 	categoryColumns.add( columnFieldReset			);
+ 	
+ 	categoryTreeModel = Gtk::ListStore::create(categoryColumns);
+  
+  categoryTreeView->append_column( "Type", 			columnFieldType 		);
+  categoryTreeView->append_column( "Label", 		columnFieldLabel 		);
+  categoryTreeView->append_column( "Required", 	columnFieldRequired	);
+  categoryTreeView->append_column( "Reset", 		columnFieldReset		);
+ 	
+ 	categoryTreeView->set_model( categoryTreeModel );
+ 	
+ 	categoryTreeSelection = categoryTreeView->get_selection();
+ 	
+	// end categoryWindow
 
    
   if(dataWindow && toolchainWindow && categoryWindow)
   {
 
-		connectSignalsToButtons();
-		connectSignalsToToolButtons();
+		connectSignals();
 
 		// TODO place the following function in a better place = other function.
 //    dataWindow->show();
@@ -78,8 +99,6 @@ EngineGTKMM::EngineGTKMM( int argc, char **argv, string gladeFileName )
  		
 	}
 	
-	
-	// For debug purposes written
 	
 
 
@@ -102,23 +121,11 @@ EngineGTKMM::~EngineGTKMM()
 	delete categoryFieldsWindow;
 };
 
-//-----------------------------------------------------------------------------
-
-void EngineGTKMM::connectSignalsToButtons()
-{
-    //Get the Glade-instantiated Button, and connect a signal handler:
-    Gtk::Button* pButton = 0;
-
-		// OpenWindow =============================================================================================================
-
-
-		
-}
 
 
 //-----------------------------------------------------------------------------
 
-void EngineGTKMM::connectSignalsToToolButtons()
+void EngineGTKMM::connectSignals()
 {
     //Get the Glade-instantiated Button, and connect a signal handler:
     Gtk::ToolButton* pToolButton = 0;
@@ -296,7 +303,8 @@ void EngineGTKMM::connectSignalsToToolButtons()
     	// TODO throw error
     }        
       
-   
+    // When clicking on a field in the tree view of the category window, change the selection
+   	categoryTreeSelection->signal_changed().connect( sigc::mem_fun(this, &EngineGTKMM::fieldSelectionChange) );
 }
 
 //-----------------------------------------------------------------------------
@@ -351,8 +359,9 @@ void EngineGTKMM::loadCategory()
   dialog.add_button(Gtk::Stock::OPEN, Gtk::RESPONSE_OK);
 
   //Add filters, so that only certain file types can be selected:
-
+#ifdef TODO_DEF
 #warning TODO Make a good filter
+#endif
 /*	TODO Make a good filter for the files.
   Gtk::FileFilter filter_cat;
   filter_cat.set_name("Category files");
@@ -425,12 +434,21 @@ void EngineGTKMM::displayCategory( int index )
 	{
 		categoryFieldsWindow->remove();
 		delete fieldTableGTKMM;
+		
+		categoryTreeModel.clear();
+		
+	 	categoryTreeModel = Gtk::ListStore::create(categoryColumns);
+
+		categoryTreeView->set_model( categoryTreeModel );
+
 	}
 
 
 
-	// Create a new table from the category.
+	// Create a new table and column model from the category.
 	fieldTableGTKMM = new FieldTableGTKMM();
+
+	
 	
 	Category* cat =  this->getCategory( index );
 	if( cat != NULL )
@@ -440,17 +458,17 @@ void EngineGTKMM::displayCategory( int index )
 		// Add it to the scolled window.
 		categoryFieldsWindow->add( *(Gtk::Widget*)fieldTableGTKMM );
 
-//		Gtk::Label * testLabel = new Gtk::Label("Test 1 2 3 Test.");
-//		testLabel->show();
-//		categoryFieldsWindow->add( *testLabel );
-
 		((Gtk::Widget*)fieldTableGTKMM)->show();
 		
+		// Make a tree model;
+		makeCategoryTreeModel( cat );
 
 	}
 	else
 	{
-		// TODO throw error index exceded
+#ifdef TODO_DEF
+#warning TODO throw error index exceded
+#endif
 		cout << "In file " << __FILE__ << " at line " << __LINE__ << ": cat = NULL.\n";
 	}
 	
@@ -459,6 +477,38 @@ void EngineGTKMM::displayCategory( int index )
 };
 
 
+
+//-----------------------------------------------------------------------------
+
+
+void EngineGTKMM::makeCategoryTreeModel( Category* cat )
+{
+	
+	Field* field = NULL;
+	
+	Gtk::TreeModel::Row row;
+		
+	for( int i = 0; i < cat->getFieldsSize(); i++ )
+	{
+		row = *(categoryTreeModel->append());
+		field = cat->getFieldAt(i);
+		row[columnFieldType] = field->getType();
+		row[columnFieldLabel] = field->getLabel();
+		row[columnFieldRequired] = field->getRequired();
+		row[columnFieldReset] = field->getReset();
+	};
+
+};
+
+//-----------------------------------------------------------------------------
+
+void EngineGTKMM::fieldSelectionChange( void )
+{
+	cout << "Changed selection\n";
+	//Gtk::TreeModel::Row row = m_refModel->children()[5]; //The fifth row.
+	//if(row) categoryTreeSelection->select(row);
+
+};
 
 //-----------------------------------------------------------------------------
 

@@ -56,10 +56,13 @@ class EngineGTKMM : public Engine
 		void newField();
 		void modifyField();
 		void displayCategory( int index );
+		
+		void fieldSelectionChange( void );
+		
 
 		// --- Functions relating to Datahandler ----------------------------------
 		
-		void displayDatahandlerObject( );
+		void displayDatahandlerObject();
 		void displayNextDatahandler();
 		void displayPreviousDatahandler();
 		void displayNextObjectData();
@@ -82,10 +85,12 @@ void on_toolbutton25_clicked(  );
 	
 	private:
 
-		void connectSignalsToButtons();
-		void connectSignalsToToolButtons();
+		//! This function connects signals to the corresponding functions
+		void connectSignals();
 		
 
+		//! Functions secifically required for teh cateory window
+		void makeCategoryTreeModel( Category* cat );
 
 
 		Gtk::Main* kit;
@@ -93,8 +98,26 @@ void on_toolbutton25_clicked(  );
 		Gtk::Window* toolchainWindow;
 		Gtk::Window* categoryWindow;
 		
+		
+		// Variables specifically required for the category window
 		Gtk::ScrolledWindow* categoryFieldsWindow;
 		FieldTableGTKMM* fieldTableGTKMM;
+		
+	  
+	  // Variables used in the tree view of the category window
+	  Gtk::TreeView* categoryTreeView;
+	  Glib::RefPtr<Gtk::ListStore> categoryTreeModel;
+	  Gtk::TreeModel::ColumnRecord categoryColumns;
+		Glib::RefPtr<Gtk::TreeSelection> categoryTreeSelection; 
+	  
+	  Gtk::TreeModelColumn<Glib::ustring> columnFieldType;
+	  Gtk::TreeModelColumn<Glib::ustring> columnFieldLabel;
+		Gtk::TreeModelColumn<bool> columnFieldRequired;
+		Gtk::TreeModelColumn<bool> columnFieldReset;
+
+
+
+		
 		
   	Glib::RefPtr<Gnome::Glade::Xml> refXml;		
 

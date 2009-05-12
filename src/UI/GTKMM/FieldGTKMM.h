@@ -13,7 +13,7 @@
 
 //! This class holds pointer to the GTKMM opjects for a field.
 
-class FieldGTKMM : Gtk::HBox
+class FieldGTKMM : public Gtk::EventBox
 {
 
 	public:
@@ -35,17 +35,25 @@ class FieldGTKMM : Gtk::HBox
 		
 		Gtk::Widget* clickedOnField();
 	
+		virtual bool selected( GdkEventButton* event );
 	
 	private:
+
+		Gtk::HBox hBox;
+
 
 		Gtk::Widget* label; 		//Gtk::Label label;
 		Gtk::Widget* required; 	// Gtk::CheckButton required;
 		Gtk::Widget* reset;			//Gtk::CheckButton reset;
 		Gtk::Widget* entryField;
 		
-		
 		// Required when the field is a ComboField with ComboType ComboRadio.
 		Gtk::RadioButton* radioButtons; // This is a pointer to the first element in an array;
+
+		
+		// Required to beable to recieve a clicked event from this widget.
+		//Gtk::EventBox eventBox;
+
 
 
 };
