@@ -94,10 +94,10 @@ FieldGTKMM::FieldGTKMM( Field* field, int i )
 				{
 					adjustment->set_upper( defaultMaximum );
 				}
-				spinEntryField->set_increments( 1, 10 );
+				adjustment->set_step_increment( spinField->getStepsize() );
+				adjustment->set_page_increment( spinField->getStepsize() * 10 );
 				spinEntryField->set_numeric();
-				spinEntryField->set_snap_to_ticks( spinField->getAdhereStep() );
-			
+				spinEntryField->set_snap_to_ticks( spinField->getAdhereStep() );	
 				spinEntryField->set_update_policy( Gtk::UPDATE_IF_VALID );
 				
 				entryField = spinEntryField;
