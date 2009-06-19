@@ -82,15 +82,23 @@ FieldGTKMM::FieldGTKMM( Field* field, int i )
 				{
 				 	adjustment->set_lower( *(spinField->getMinimum()) );
 				}
+				else
+				{
+					adjustment->set_lower( defaultMinimum );
+				}
 				if( spinField->getMaximum() != NULL )
 				{
 				 	adjustment->set_upper( *(spinField->getMaximum()) );
 				}
-				
+				else
+				{
+					adjustment->set_upper( defaultMaximum );
+				}
+				spinEntryField->set_increments( 1, 10 );
 				spinEntryField->set_numeric();
 				spinEntryField->set_snap_to_ticks( spinField->getAdhereStep() );
 			
-				spinEntryField->set_update_policy( Gtk::UPDATE_ALWAYS );
+				spinEntryField->set_update_policy( Gtk::UPDATE_IF_VALID );
 				
 				entryField = spinEntryField;
 			}

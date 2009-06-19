@@ -80,6 +80,11 @@ class FieldGTKMM : public Gtk::EventBox
 		// These can be used to reffer back to the original class.
 		Field* baseField;
 		int index;
+		
+		
+		// These are to configure the spinbuttons at some maximum and minimum
+		static const int defaultMaximum = 1000000;
+		static const int defaultMinimum = -1000000;
 	
 };
 

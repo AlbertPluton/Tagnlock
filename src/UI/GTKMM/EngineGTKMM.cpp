@@ -487,16 +487,15 @@ void EngineGTKMM::fieldSelected( int select )
 	Field* selectedField = this->getCurrentField();
 	
 	// Make the window to edit the selected field.
-	if( fieldEditWindow == NULL ) 
+	if( fieldEditWindow != NULL ) 
 	{
-		fieldEditWindow = new FieldEditWindowGTKMM( selectedField );
-		categoryFieldEditWindow->add( *fieldEditWindow );
-		categoryFieldEditWindow->show();
+		delete fieldEditWindow;
 	}
-	else
-	{
-	  fieldEditWindow->change( selectedField );
-	}
+		
+	fieldEditWindow = FieldEditWindowGTKMM::newEditWindow( selectedField );
+	categoryFieldEditWindow->add( *fieldEditWindow );
+	categoryFieldEditWindow->show();
+
 
 };
 

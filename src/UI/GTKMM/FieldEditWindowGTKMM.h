@@ -14,6 +14,7 @@
 #include "Field.h"
 #include "YesNoToggleButtonGTKMM.h"
 
+
 #include <gtkmm.h>
 
 #include <iostream>
@@ -34,14 +35,10 @@ class FieldEditWindowGTKMM : public Gtk::Table
 		FieldEditWindowGTKMM( Field* pField );
 		~FieldEditWindowGTKMM();
 		
-		void change( Field* pField );
+		static FieldEditWindowGTKMM* newEditWindow( Field* pField );
+		
 		
 	private:
-
-		Field* field;
-
-		int rows, columns;
-	
 
 		Gtk::Label typeLabel, labelLabel, requiredLabel, resetLabel;
 		
@@ -49,6 +46,16 @@ class FieldEditWindowGTKMM : public Gtk::Table
 		Gtk::Entry label;
 		YesNoToggleButtonGTKMM required;
 		YesNoToggleButtonGTKMM reset;
+
+	protected:
+	
+		Gtk::AttachOptions attachX;
+		Gtk::AttachOptions attachY;
+
+		int rows, columns;
+
+		// Pointer to the field this widget was generated for.
+		Field* baseField;
 
 };
 
