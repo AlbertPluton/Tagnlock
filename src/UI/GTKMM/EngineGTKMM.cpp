@@ -25,7 +25,7 @@ EngineGTKMM::EngineGTKMM( int argc, char **argv, string gladeFileName )
 	dataWindow = 0;
 	toolchainWindow = 0;
 	categoryWindow = 0;
-	fieldTableGTKMM = NULL;
+	fieldTableGTKMM = new FieldTableGTKMM();
 	
   //Load the Glade file and instiate its widgets:
 	#ifdef GLIBMM_EXCEPTIONS_ENABLED
@@ -64,23 +64,12 @@ EngineGTKMM::EngineGTKMM( int argc, char **argv, string gladeFileName )
   refXml->get_widget("scrolledwindow3", categoryFieldsWindow);
  	categoryFieldsWindow->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_ALWAYS);
 
-  refXml->get_widget("categoryTreeView", categoryTreeView);
- 
- 	categoryColumns.add( columnFieldType			);
- 	categoryColumns.add( columnFieldLabel			);
- 	categoryColumns.add( columnFieldRequired	);
- 	categoryColumns.add( columnFieldReset			);
- 	
- 	categoryTreeModel = Gtk::ListStore::create(categoryColumns);
-  
-  categoryTreeView->append_column( "Type", 			columnFieldType 		);
-  categoryTreeView->append_column( "Label", 		columnFieldLabel 		);
-  categoryTreeView->append_column( "Required", 	columnFieldRequired	);
-  categoryTreeView->append_column( "Reset", 		columnFieldReset		);
- 	
- 	categoryTreeView->set_model( categoryTreeModel );
- 	
- 	categoryTreeSelection = categoryTreeView->get_selection();
+  refXml->get_widget("CategoryTreeWindow", categoryTreeWindow);
+ 	categoryTree = new CategoryTreeGTKMM();
+	categoryTreeWindow->add( (*categoryTree) );
+
+	refXml->get_widget("CategoryFieldEditWindow", categoryFieldEditWindow);
+	fieldEditWindow = NULL;
  	
 	// end categoryWindow
 
@@ -118,7 +107,14 @@ EngineGTKMM::~EngineGTKMM()
 	delete dataWindow;
 	delete toolchainWindow;
 	delete categoryWindow;
+	
 	delete categoryFieldsWindow;
+	
+	delete categoryTreeWindow;
+	delete categoryTree;
+	
+	delete categoryFieldEditWindow;
+	delete fieldEditWindow;
 };
 
 
@@ -127,6 +123,10 @@ EngineGTKMM::~EngineGTKMM()
 
 void EngineGTKMM::connectSignals()
 {
+
+
+
+
     //Get the Glade-instantiated Button, and connect a signal handler:
     Gtk::ToolButton* pToolButton = 0;
     
@@ -266,7 +266,7 @@ void EngineGTKMM::connectSignals()
     }
     else
     {
-    	// TODO throw error
+    	// TODO throw error	fieldTableGTKMM = new FieldTableGTKMM();
     }
     
     
@@ -304,7 +304,10 @@ void EngineGTKMM::connectSignals()
     }        
       
     // When clicking on a field in the tree view of the category window, change the selection
-   	categoryTreeSelection->signal_changed().connect( sigc::mem_fun(this, &EngineGTKMM::fieldSelectionChange) );
+    categoryTree->get_signal_selectionChange().connect( sigc::mem_fun( this, &EngineGTKMM::fieldSelected) );
+
+		fieldTableGTKMM->get_signal_selectionChange().connect( sigc::mem_fun( this, &EngineGTKMM::fieldSelected) );
+
 }
 
 //-----------------------------------------------------------------------------
@@ -433,22 +436,18 @@ void EngineGTKMM::displayCategory( int index )
 	if( fieldTableGTKMM != NULL )
 	{
 		categoryFieldsWindow->remove();
-		delete fieldTableGTKMM;
-		
-		categoryTreeModel.clear();
-		
-	 	categoryTreeModel = Gtk::ListStore::create(categoryColumns);
 
-		categoryTreeView->set_model( categoryTreeModel );
-
+		fieldTableGTKMM->clear();
+		
+		categoryTree->clearTreeModel();
+		
+		delete fieldEditWindow;
 	}
 
 
 
-	// Create a new table and column model from the category.
-	fieldTableGTKMM = new FieldTableGTKMM();
+	//fieldTableGTKMM = new FieldTableGTKMM();
 
-	
 	
 	Category* cat =  this->getCategory( index );
 	if( cat != NULL )
@@ -461,7 +460,7 @@ void EngineGTKMM::displayCategory( int index )
 		((Gtk::Widget*)fieldTableGTKMM)->show();
 		
 		// Make a tree model;
-		makeCategoryTreeModel( cat );
+		categoryTree->makeTreeModel( cat );
 
 	}
 	else
@@ -480,35 +479,27 @@ void EngineGTKMM::displayCategory( int index )
 
 //-----------------------------------------------------------------------------
 
-
-void EngineGTKMM::makeCategoryTreeModel( Category* cat )
+void EngineGTKMM::fieldSelected( int select )
 {
+
+	this->setCurrentField( select );
 	
-	Field* field = NULL;
+	Field* selectedField = this->getCurrentField();
 	
-	Gtk::TreeModel::Row row;
-		
-	for( int i = 0; i < cat->getFieldsSize(); i++ )
+	// Make the window to edit the selected field.
+	if( fieldEditWindow == NULL ) 
 	{
-		row = *(categoryTreeModel->append());
-		field = cat->getFieldAt(i);
-		row[columnFieldType] = field->getType();
-		row[columnFieldLabel] = field->getLabel();
-		row[columnFieldRequired] = field->getRequired();
-		row[columnFieldReset] = field->getReset();
-	};
+		fieldEditWindow = new FieldEditWindowGTKMM( selectedField );
+		categoryFieldEditWindow->add( *fieldEditWindow );
+		categoryFieldEditWindow->show();
+	}
+	else
+	{
+	  fieldEditWindow->change( selectedField );
+	}
 
 };
 
-//-----------------------------------------------------------------------------
-
-void EngineGTKMM::fieldSelectionChange( void )
-{
-	cout << "Changed selection\n";
-	//Gtk::TreeModel::Row row = m_refModel->children()[5]; //The fifth row.
-	//if(row) categoryTreeSelection->select(row);
-
-};
 
 //-----------------------------------------------------------------------------
 

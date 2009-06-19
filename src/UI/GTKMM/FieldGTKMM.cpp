@@ -21,13 +21,16 @@ using namespace std;
 
 //-----------------------------------------------------------------------------
 
-FieldGTKMM::FieldGTKMM( Field* field ) 
+FieldGTKMM::FieldGTKMM( Field* field, int i ) 
 {
 
 #ifdef DEBUG_MESSAGES_DEF
 	cout << "Constructing FieldGTKMM	object.\n";
 #endif
 
+
+	baseField = field;
+	index = i;
 
 	label = new Gtk::Label( field->getLabel() );
 	
@@ -285,25 +288,38 @@ Gtk::Widget* FieldGTKMM::getEntryField()
 	return entryField;
 };
 
+
 //-----------------------------------------------------------------------------
 
-Gtk::Widget* FieldGTKMM::clickedOnField()
+void FieldGTKMM::setIndex( int i )
 {
-
+	index = i;
 };
 
+//-----------------------------------------------------------------------------
+
+int FieldGTKMM::getIndex()
+{
+	return index;
+};
 
 //-----------------------------------------------------------------------------
 
 bool FieldGTKMM::selected( GdkEventButton* event )
 {
-	cout << "Field selected\n" ;
-	
+	signal_selected.emit( this->getIndex() );	
 	return true;
 }
 
 //-----------------------------------------------------------------------------
 
+
+FieldGTKMM::type_signal_selected FieldGTKMM::get_signal_selected( void )
+{
+	return signal_selected;
+};
+
+//-----------------------------------------------------------------------------
 
 
 

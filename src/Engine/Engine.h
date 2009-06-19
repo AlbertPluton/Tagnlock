@@ -56,6 +56,9 @@ class Engine
 		//! Adds a category to the end of the vector categories and sets currentCategory to this value. 
 		void addCategory( Category* cat );
 
+		//! Retruns a pointer to the current category.
+		Category* getCurrentCategory();
+
 		//! Returns the category at the desired index.
 		Category* getCategory( int index );
 
@@ -81,8 +84,11 @@ class Engine
 		void addField( int indexCategory, Field* field );
 		
 		
+		//! Returns the index of the current field.
+		int getIndexCurrentField();
+		
 		//! Returns a pointer to the current field.
-		int getCurrentField();
+		Field* getCurrentField();
 		
 		//! Set the pointer currentField to field.
 		void setCurrentField( int field );

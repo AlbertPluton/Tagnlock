@@ -47,6 +47,13 @@ void Engine::addCategory( Category* cat )
 
 //-----------------------------------------------------------------------------
 
+Category* Engine::getCurrentCategory( )
+{
+	return categories.at( currentCategory );
+}
+
+//-----------------------------------------------------------------------------
+
 Category* Engine::getCategory( int index )
 {
 	if( (index >= 0) && (index < categories.size()) )
@@ -93,9 +100,16 @@ void Engine::addField( int indexCategory, Field* field )
 
 //-----------------------------------------------------------------------------
 
-int Engine::getCurrentField()
+int Engine::getIndexCurrentField()
 {
 	return currentField;
+};
+
+//-----------------------------------------------------------------------------
+
+Field* Engine::getCurrentField()
+{
+	return getCurrentCategory()->getFieldAt( currentField );
 };
 
 //-----------------------------------------------------------------------------

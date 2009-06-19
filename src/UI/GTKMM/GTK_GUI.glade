@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Tue May 12 11:22:58 2009 -->
+<!--Generated with glade3 3.4.5 on Thu Jun 18 14:41:43 2009 -->
 <glade-interface>
   <widget class="GtkWindow" id="DataWindow">
     <property name="title" translatable="yes">Data</property>
@@ -937,17 +937,13 @@
                         <property name="visible">True</property>
                         <property name="left_padding">12</property>
                         <child>
-                          <widget class="GtkScrolledWindow" id="categoryTreeWindow">
+                          <widget class="GtkScrolledWindow" id="CategoryTreeWindow">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="hscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
                             <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
                             <child>
-                              <widget class="GtkTreeView" id="categoryTreeView">
-                                <property name="visible">True</property>
-                                <property name="can_focus">True</property>
-                                <property name="headers_clickable">True</property>
-                              </widget>
+                              <placeholder/>
                             </child>
                           </widget>
                         </child>
@@ -972,16 +968,25 @@
                 <child>
                   <widget class="GtkFrame" id="frame1">
                     <property name="width_request">450</property>
-                    <property name="height_request">300</property>
+                    <property name="height_request">600</property>
                     <property name="visible">True</property>
                     <property name="label_xalign">0</property>
                     <property name="shadow_type">GTK_SHADOW_NONE</property>
                     <child>
                       <widget class="GtkAlignment" id="alignment1">
                         <property name="visible">True</property>
+                        <property name="yalign">0</property>
                         <property name="left_padding">12</property>
                         <child>
-                          <placeholder/>
+                          <widget class="GtkScrolledWindow" id="CategoryFieldEditWindow">
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="hscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
+                            <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
+                            <child>
+                              <placeholder/>
+                            </child>
+                          </widget>
                         </child>
                       </widget>
                     </child>

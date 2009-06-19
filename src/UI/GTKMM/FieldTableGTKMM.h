@@ -14,9 +14,11 @@
 #include "Category.h"
 #include "ObjectData.h"
 
+//#include <sigc++/sigc++.h>
+
 //! This class holds all FieldGTKMM objects in a signle table.
 
-class FieldTableGTKMM : Gtk::VBox
+class FieldTableGTKMM : public Gtk::VBox
 {
 
 	public:
@@ -39,9 +41,28 @@ class FieldTableGTKMM : Gtk::VBox
 		//! Renew the table if some field has changed. 
 		void renewTable( );
 		
+		//! Delete all the fields this class holds.
+		void clear();
+		
+		
+		void fieldSelected( int fieldIndex );
+		
+  	typedef sigc::signal<void, int> type_signal_selectionChange;
+  	
+  	//! This is the signal to indicate a change of the selected field.
+  	type_signal_selectionChange get_signal_selectionChange( void );
+		
+		
 	private:
 	
 		ObjectData* objectData;
+
+		type_signal_selectionChange signal_selectionChange;
+
+
+		// An vector with all connection objects which this object has generated to receive signals from its children.
+		vector<sigc::connection> connections;
+
 
 };
 

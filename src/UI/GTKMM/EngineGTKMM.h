@@ -6,6 +6,10 @@
 //
 
 
+
+
+
+
 #ifndef ENGINEGTK_H
 #define ENGINEGTK_H
 
@@ -14,6 +18,9 @@
 #include "Category.h"
 #include "FieldGTKMM.h"
 #include "FieldTableGTKMM.h"
+#include "CategoryTreeGTKMM.h"
+#include "FieldEditWindowGTKMM.h"
+
 
 #include <libglademm.h>
 #include <libglademm/xml.h>
@@ -57,7 +64,8 @@ class EngineGTKMM : public Engine
 		void modifyField();
 		void displayCategory( int index );
 		
-		void fieldSelectionChange( void );
+		void fieldSelected( int select );
+
 		
 
 		// --- Functions relating to Datahandler ----------------------------------
@@ -89,9 +97,6 @@ void on_toolbutton25_clicked(  );
 		void connectSignals();
 		
 
-		//! Functions secifically required for teh cateory window
-		void makeCategoryTreeModel( Category* cat );
-
 
 		Gtk::Main* kit;
 		Gtk::Window* dataWindow;
@@ -105,16 +110,13 @@ void on_toolbutton25_clicked(  );
 		
 	  
 	  // Variables used in the tree view of the category window
-	  Gtk::TreeView* categoryTreeView;
-	  Glib::RefPtr<Gtk::ListStore> categoryTreeModel;
-	  Gtk::TreeModel::ColumnRecord categoryColumns;
-		Glib::RefPtr<Gtk::TreeSelection> categoryTreeSelection; 
-	  
-	  Gtk::TreeModelColumn<Glib::ustring> columnFieldType;
-	  Gtk::TreeModelColumn<Glib::ustring> columnFieldLabel;
-		Gtk::TreeModelColumn<bool> columnFieldRequired;
-		Gtk::TreeModelColumn<bool> columnFieldReset;
+	  Gtk::ScrolledWindow* categoryTreeWindow;
+	  CategoryTreeGTKMM* categoryTree;
 
+		
+		// Variables used for the edit window of the category window
+		Gtk::ScrolledWindow* categoryFieldEditWindow;
+		FieldEditWindowGTKMM* fieldEditWindow;
 
 
 		
@@ -135,4 +137,6 @@ void on_toolbutton25_clicked(  );
 
 
 #endif
+
+
 

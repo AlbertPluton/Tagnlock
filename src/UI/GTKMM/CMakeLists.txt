@@ -29,7 +29,10 @@ SET (	SRCS_EngineGTKMM
 			EngineGTKMM.cpp
 			FieldGTKMM.cpp
 			FieldTableGTKMM.cpp
+			CategoryTreeGTKMM.cpp
+			FieldEditWindowGTKMM.cpp
 			${CMAKE_BINARY_DIR}/src/Engine/Engine.cpp
+			YesNoToggleButtonGTKMM.cpp
 		)
 
 		
