@@ -492,7 +492,7 @@ void EngineGTKMM::fieldSelected( int select )
 		delete fieldEditWindow;
 	}
 		
-	fieldEditWindow = FieldEditWindowGTKMM::newEditWindow( selectedField );
+	fieldEditWindow = FieldEditWindowGTKMM::newEditWindow( selectedField, select );
 	categoryFieldEditWindow->add( *fieldEditWindow );
 	categoryFieldEditWindow->show();
 

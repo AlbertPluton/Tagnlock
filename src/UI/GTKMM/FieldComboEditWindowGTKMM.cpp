@@ -6,7 +6,7 @@
 
 //-----------------------------------------------------------------------------
 
-FieldComboEditWindowGTKMM::FieldComboEditWindowGTKMM( Field* pField ) : FieldEditWindowGTKMM( pField )
+FieldComboEditWindowGTKMM::FieldComboEditWindowGTKMM( Field* pField, int i ) : FieldEditWindowGTKMM( pField, i )
 {
 
 };

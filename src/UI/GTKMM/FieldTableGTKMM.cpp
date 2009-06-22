@@ -62,6 +62,12 @@ void FieldTableGTKMM::makeNewTable( Category* category )
 	int size = category->getFieldsSize();
 	Field* field = NULL;
 	
+	// Disconnect excisting signals
+	for( int i = 0; i < connections.size(); i++ )
+	{
+		connections[i].disconnect();
+	};	
+	connections.clear();
 
 	
 	for( int i = 0; i < size; i++ )

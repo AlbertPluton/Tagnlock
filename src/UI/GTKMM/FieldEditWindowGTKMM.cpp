@@ -13,13 +13,14 @@
 
 //-----------------------------------------------------------------------------
 
-FieldEditWindowGTKMM::FieldEditWindowGTKMM( Field* pField ) : typeLabel("Type: ", 0.98, 0.5), labelLabel("Label: ", 0.98, 0.5), requiredLabel("Required: ", 0.98, 0.5), resetLabel("Reset: ", 0.98, 0.5)
+FieldEditWindowGTKMM::FieldEditWindowGTKMM( Field* pField, int i ) : typeLabel("Type: ", 0.98, 0.5), labelLabel("Label: ", 0.98, 0.5), requiredLabel("Required: ", 0.98, 0.5), resetLabel("Reset: ", 0.98, 0.5)
 {
 #ifdef DEBUG_MESSAGES_DEF	
 	cout << "Constructing a FieldEditWindowGTKMM object.\n";
 #endif	
 
 	baseField = pField;
+	index = i;
 
 	attachX = Gtk::FILL|Gtk::EXPAND;
 	attachY = Gtk::EXPAND;
@@ -52,6 +53,13 @@ FieldEditWindowGTKMM::FieldEditWindowGTKMM( Field* pField ) : typeLabel("Type: "
 	this->attach( reset, 1, columns, 3, 4, attachX, attachY );
 
 	
+	// Connect the signals
+	label.signal_changed().connect( sigc::mem_fun(this, &FieldEditWindowGTKMM::changeLabel) );	
+	required.signal_clicked().connect( sigc::mem_fun(this, &FieldEditWindowGTKMM::changeRequired) );
+	reset.signal_clicked().connect( sigc::mem_fun(this, &FieldEditWindowGTKMM::changeReset) );
+
+	
+	
 	this->show_all();
 	
 };
@@ -67,7 +75,7 @@ FieldEditWindowGTKMM::~FieldEditWindowGTKMM()
 
 //-----------------------------------------------------------------------------
 
-FieldEditWindowGTKMM* FieldEditWindowGTKMM::newEditWindow( Field* pField )
+FieldEditWindowGTKMM* FieldEditWindowGTKMM::newEditWindow( Field* pField, int i )
 {
 
 	FieldEditWindowGTKMM* editWindow = NULL;
@@ -78,17 +86,17 @@ FieldEditWindowGTKMM* FieldEditWindowGTKMM::newEditWindow( Field* pField )
 
 	if( fieldType.compare("SpinField") == 0 )	//-------------------------------
 	{
-		editWindow = new FieldSpinEditWindowGTKMM( pField );
+		editWindow = new FieldSpinEditWindowGTKMM( pField, i );
 		return editWindow;
 	}	
 	else if( (fieldType.compare("Combo") == 0) || (fieldType.compare("ComboEntry") == 0) || (fieldType.compare("ComboRadio") == 0) )	//-------------------------------
 	{
-		editWindow = new FieldComboEditWindowGTKMM( pField );
+		editWindow = new FieldComboEditWindowGTKMM( pField, i );
 		return editWindow;
 	}	
 	else if( (fieldType.compare("CheckField") == 0) || (fieldType.compare("TextField") == 0) ) //--------------------------------
 	{
-		editWindow = new FieldEditWindowGTKMM( pField );
+		editWindow = new FieldEditWindowGTKMM( pField, i );
 		return editWindow;
 	}
 	else
@@ -105,9 +113,34 @@ FieldEditWindowGTKMM* FieldEditWindowGTKMM::newEditWindow( Field* pField )
 
 //-----------------------------------------------------------------------------
 
-//-----------------------------------------------------------------------------
+void FieldEditWindowGTKMM::changeLabel()
+{
+	baseField->setLabel( label.get_text() );
+	m_signal_changed_property.emit( 1 );
+};		
 
 //-----------------------------------------------------------------------------
+
+void FieldEditWindowGTKMM::changeRequired()
+{
+	baseField->setRequired( required.get_active() );
+	m_signal_changed_property.emit( 1 );	
+};
+
+//-----------------------------------------------------------------------------
+
+void FieldEditWindowGTKMM::changeReset()
+{
+	baseField->setReset( reset.get_active() );
+	m_signal_changed_property.emit( 1 );		
+};
+
+//-----------------------------------------------------------------------------
+
+FieldEditWindowGTKMM::type_signal_changed_property FieldEditWindowGTKMM::signal_changed_property()
+{
+  return m_signal_changed_property;
+}
 
 //-----------------------------------------------------------------------------
 

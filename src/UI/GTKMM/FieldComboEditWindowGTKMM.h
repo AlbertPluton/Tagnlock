@@ -26,7 +26,7 @@ using namespace std;
 class FieldComboEditWindowGTKMM : public FieldEditWindowGTKMM
 {
 	public:
-		FieldComboEditWindowGTKMM( Field* pField );
+		FieldComboEditWindowGTKMM( Field* pField, int i );
 		~FieldComboEditWindowGTKMM();
 		
 	private:
