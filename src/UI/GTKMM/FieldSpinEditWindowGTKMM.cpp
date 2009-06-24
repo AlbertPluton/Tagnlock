@@ -12,12 +12,19 @@ FieldSpinEditWindowGTKMM::FieldSpinEditWindowGTKMM( Field* pField, int i )	: Fie
 																																							labelStepsize("Stepsize: ", 0.98, 0.5),
 																																							labelAdhereStep("Adhere the stepsize: ", 0.98, 0.5),
 																																							labelDec("Number of decimal digits: ", 0.98, 0.5),
-																																							labelAdhereDec("Adhere decimals: ", 0.98, 0.5)
+																																							labelAlwaysUpdate("Always update: ", 0.98, 0.5)
 {
 
 
 	// Cast the baseField pointer to a SpinField object for easy acces.
-	spinField = static_cast<SpinField*>(pField);
+	try
+	{
+		spinField = static_cast<SpinField*>(pField);
+	}
+	catch( exception& e )
+	{
+		throw e;
+	}
 
 	// Obtain the maximum/minimum value the spin field can get.
 	// A NULL pointer means no boundary.
@@ -94,7 +101,7 @@ FieldSpinEditWindowGTKMM::FieldSpinEditWindowGTKMM( Field* pField, int i )	: Fie
 	adjustment->set_step_increment( 1 );
 	adjustment->set_page_increment( 10 );
 	spinMin.set_numeric();
-	spinMin.set_update_policy( Gtk::UPDATE_ALWAYS );
+	spinMin.set_update_policy( Gtk::UPDATE_IF_VALID );	
 	spinMin.update();
 
 	
@@ -153,9 +160,9 @@ FieldSpinEditWindowGTKMM::FieldSpinEditWindowGTKMM( Field* pField, int i )	: Fie
 	
 	
 	// Setup the adhere decimal line -----------------------------------
-	this->attach( labelAdhereDec, 0, 1, 9, 10, attachX, attachY ); 
-	this->attach( toggleAdhereDec, 1, columns, 9, 10, attachX, attachY ); 
-	toggleAdhereDec.set_active( spinField->getAdhereDec() );
+	this->attach( labelAlwaysUpdate, 0, 1, 9, 10, attachX, attachY ); 
+	this->attach( toggleAlwaysUpdate, 1, columns, 9, 10, attachX, attachY ); 
+	toggleAlwaysUpdate.set_active( spinField->getAlwaysUpdate() );
 	
 	
 		
@@ -172,7 +179,7 @@ FieldSpinEditWindowGTKMM::FieldSpinEditWindowGTKMM( Field* pField, int i )	: Fie
 	toggleAdhereStep.signal_clicked().connect( sigc::mem_fun(this, &FieldSpinEditWindowGTKMM::changeAdhereStep) );
 	
 	spinDec.signal_value_changed().connect( sigc::mem_fun(this, &FieldSpinEditWindowGTKMM::changeDec) );		
-	toggleAdhereDec.signal_clicked().connect( sigc::mem_fun(this, &FieldSpinEditWindowGTKMM::changeAdhereDec) );			
+	toggleAlwaysUpdate.signal_clicked().connect( sigc::mem_fun(this, &FieldSpinEditWindowGTKMM::changeAlwaysUpdate) );			
 	
 		
 	this->show_all();		
@@ -360,9 +367,9 @@ void FieldSpinEditWindowGTKMM::changeAdhereStep( )
 
 //-----------------------------------------------------------------------------
 
-void FieldSpinEditWindowGTKMM::changeAdhereDec( )
+void FieldSpinEditWindowGTKMM::changeAlwaysUpdate( )
 {
-	spinField->setAdhereDec( toggleAdhereDec.get_active() );
+	spinField->setAlwaysUpdate( toggleAlwaysUpdate.get_active() );
 	
 
 	m_signal_changed_property.emit( 1 );

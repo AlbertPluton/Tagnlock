@@ -13,6 +13,12 @@
 #include "ComboField.h"
 #include "SpinField.h"
 
+#include "TextFieldGTKMM.h"
+#include "CheckFieldGTKMM.h"
+#include "ComboFieldGTKMM.h"
+#include "SpinFieldGTKMM.h"
+
+
 #include <string>
 using namespace std;
 
@@ -21,227 +27,57 @@ using namespace std;
 
 //-----------------------------------------------------------------------------
 
-FieldGTKMM::FieldGTKMM( Field* field, int i ) 
+
+Gtk::AttachOptions FieldGTKMM::tableAttachX = defaultTableAttachX;
+Gtk::AttachOptions FieldGTKMM::tableAttachY = defaultTableAttachY;
+		
+int FieldGTKMM::columns = defaultColumns; 
+int FieldGTKMM::tablePaddingX = defaultPaddingX;
+int FieldGTKMM::tablePaddinY = defaultPaddingY;
+		
+		
+//-----------------------------------------------------------------------------
+
+FieldGTKMM::FieldGTKMM( Field* pField, FieldData* pData, int i )
 {
 
 #ifdef DEBUG_MESSAGES_DEF
 	cout << "Constructing FieldGTKMM	object.\n";
 #endif
+	
+	tableAttachX = Gtk::FILL|Gtk::EXPAND;
+	tableAttachY = Gtk::EXPAND;
 
-
-	baseField = field;
+	baseField = pField;
+	data = pData;
 	index = i;
-
-	label = new Gtk::Label( field->getLabel() );
 	
-	required = new Gtk::CheckButton();
-	((Gtk::CheckButton*)required)->set_active( field->getRequired() );
-	
-	reset = new Gtk::CheckButton();
-	((Gtk::CheckButton*)reset)->set_active( field->getReset() );
-		
-	string fieldType = field->getType();
+	editWidget = NULL;
 
 
-
-	if( fieldType.compare("TextField") == 0 )	//-------------------------------
-	{
-		entryField = new Gtk::Entry();
-	}
-	
-	
-	
-	else if( fieldType.compare("CheckField") == 0 )	//-------------------------------
-	{
-		entryField = new Gtk::CheckButton();
-	}
-	
-	
-	
-	else if( fieldType.compare("SpinField") == 0 )	//---------------------------
-	{
-	
-#ifdef TODO_DEF
-#warning TODO in file __FILE__ at line __LINE__. Make the spin button work.
-#endif		
-
-		try
-		{
-			// Cast field to a SpinField object
-			SpinField* spinField = NULL;
-			spinField = static_cast<SpinField*>(field);
-	
-			if( spinField != NULL )
-			{	
-				// Create a SpinButton, set its variables and set entryField equal to it.
-				Gtk::SpinButton* spinEntryField = new Gtk::SpinButton( spinField->getStepsize(), spinField->getDecimals() );
-				
-				Gtk::Adjustment* adjustment = spinEntryField->get_adjustment();
-				
-				if( spinField->getMinimum() != NULL )
-				{
-				 	adjustment->set_lower( *(spinField->getMinimum()) );
-				}
-				else
-				{
-					adjustment->set_lower( defaultMinimum );
-				}
-				if( spinField->getMaximum() != NULL )
-				{
-				 	adjustment->set_upper( *(spinField->getMaximum()) );
-				}
-				else
-				{
-					adjustment->set_upper( defaultMaximum );
-				}
-				adjustment->set_step_increment( spinField->getStepsize() );
-				adjustment->set_page_increment( spinField->getStepsize() * 10 );
-				spinEntryField->set_numeric();
-				spinEntryField->set_snap_to_ticks( spinField->getAdhereStep() );	
-				spinEntryField->set_update_policy( Gtk::UPDATE_IF_VALID );
-				
-				entryField = spinEntryField;
-			}
-			else
-			{
-				// TODO throw exception
-			}
-		}
-		catch (exception& e)
-		{
-			throw e;
-		}
-	}
-
-
-
-	else if( fieldType.compare("Combo") == 0 )	//-------------------------------
-	{
-		try
-		{
-			// Cast field to a ComboField
-			ComboField* comboField = NULL;
-			comboField = static_cast<ComboField*>(field);
-	
-			if( comboField != NULL )
-			{	
-				// Make a new ComboBox object named comboEntryField, this does not refer to comboEntry-Field but to a combo-EntryField.
-				Gtk::ComboBoxText* comboEntryField = new Gtk::ComboBoxText();
-				
-				for( int i = 0; i < comboField->getComboSize(); i++ )
-				{
-					comboEntryField->append_text( comboField->getComboElement( i ) );
-				}		
-
-				entryField = comboEntryField;
-				
-			}
-			else
-			{
-				// TODO throw exception
-			}
-		}
-		catch (exception& e)
-		{
-			throw e;
-		}	
-	}
-
-
-
-	else if( fieldType.compare("ComboEntry") == 0 )	//---------------------------
-	{
-		try
-		{
-			// Cast field to a ComboField
-			ComboField* comboField = NULL;
-			comboField = static_cast<ComboField*>(field);
-	
-			if( comboField != NULL )
-			{	
-				Gtk::ComboBoxEntryText* comboEntryEntryField = new Gtk::ComboBoxEntryText();
-				
-				for( int i = 0; i < comboField->getComboSize(); i++ )
-				{
-					comboEntryEntryField->append_text( comboField->getComboElement( i ) );
-				}		
-
-				entryField = comboEntryEntryField;
-			}
-			else
-			{
-				// TODO throw exception
-			}
-		}
-		catch (exception& e)
-		{
-			throw e;
-		}	
-	}
-
-
-
-	else if( fieldType.compare("ComboRadio") == 0 )	//---------------------------
-	{
-		try
-		{
-		
-			// Create a widget ot hold the radiobuttons
-			entryField = new Gtk::VBox();
-			
-			// Cast field to a ComboField
-			ComboField* comboField = NULL;
-			comboField = static_cast<ComboField*>(field);
-
-			// Create a number of new radiobuttons in an array.
-			radioButtons = new Gtk::RadioButton[ comboField->getComboSize() ]; 
-
-			// Get the group from the first radiobutton.
-			Gtk::RadioButton::Group group = (radioButtons[0]).get_group();
-			
-			// Add the first radio button to the VBox.
-			((Gtk::VBox*)entryField)->pack_start( *radioButtons );
-			
-			// Set the text form getComboElement for the first radiobutton.
-			(radioButtons[0]).set_label( comboField->getComboElement( 0 ) );
-		
-			// Add the rest of the radiobuttons to the same group, give them the text from getComboElement() and add them to the entryField widget.
-			for( int i = 1; i < comboField->getComboSize(); i++ )
-			{
-				(radioButtons[i]).set_group( group );
-				(radioButtons[i]).set_label( comboField->getComboElement( i ) );
-				((Gtk::VBox*)entryField)->pack_start( *(radioButtons + i) );
-			}
-			
-		}
-		catch (exception& e)
-		{
-			throw e;
-		}	
-
-	}
-
-
-
-	else
-	{
-		// TODO Send error because the field type is unknown.
-	}
+	// Set properties of basic widgets
+	label.set_text( baseField->getLabel() );
+	required.set_active( baseField->getRequired() );
+	reset.set_active( baseField->getReset() );
 
 	
-	
-	// Add the HBox to the EventBox as a child
+	// Add the HBox to the EventBox as a child.
 	this->add(hBox);
 	
-	// Add the widgets to the parrent HBox
-	hBox.pack_start( *label, 			false, 	false, 	5 );
-	hBox.pack_start( *entryField,	true, 	true, 	5 );
-	hBox.pack_start( *required, 	false,	false, 	5 );
-	hBox.pack_start( *reset, 			false, 	false, 	5 );
+	// Add the table to the hBox.
+	hBox.add(table);
+	
+	// Add the widgets to the table
+	table.attach( label, 0 , 3, 0, 1, tableAttachX, tableAttachY, tablePaddingX, tablePaddinY	);
+	table.attach( required, columns-2 , columns-1, 0, 1, tableAttachX, tableAttachY, tablePaddingX, tablePaddinY	);
+	table.attach( reset, columns-1 , columns, 0, 1, tableAttachX, tableAttachY, tablePaddingX, tablePaddinY	);
+
 	
 	
 	// Connect the signal of the EventBox
 	this->signal_button_press_event().connect( sigc::mem_fun( *this, &FieldGTKMM::selected) );
+
+	this->show_all();
 
 };
 
@@ -254,48 +90,83 @@ FieldGTKMM::~FieldGTKMM()
 	cout << "Destroyed a FieldGTKMM object.\n";
 #endif
 
-
-	delete label;
-	delete required;
-	delete reset;
-	delete entryField;
-
-	delete [] radioButtons;
- 
-
-};
-
-
-//-----------------------------------------------------------------------------
-
-Gtk::Widget* FieldGTKMM::getLabel()
-{
-	return label;
-};
-
-
-//-----------------------------------------------------------------------------
-
-Gtk::Widget* FieldGTKMM::getRequired()
-{
-	return required;
-};
-
-
-//-----------------------------------------------------------------------------
-
-Gtk::Widget* FieldGTKMM::getReset()
-{
-	return reset;
 };
 
 //-----------------------------------------------------------------------------
 
-Gtk::Widget* FieldGTKMM::getEntryField()
+FieldGTKMM* FieldGTKMM::newFieldGTKMM( Field* pField )
 {
-	return entryField;
+	return newFieldGTKMM( pField, NULL, -1 );
 };
 
+//-----------------------------------------------------------------------------
+
+FieldGTKMM* FieldGTKMM::newFieldGTKMM( Field* pField, FieldData* pData )
+{
+	return newFieldGTKMM( pField, pData, -1 );
+};
+
+//-----------------------------------------------------------------------------
+
+FieldGTKMM* FieldGTKMM::newFieldGTKMM( Field* pField, FieldData* pData, int i )
+{
+
+	FieldGTKMM* fieldGTKMM = NULL;
+
+	string fieldType = pField->getType();
+
+
+	try
+	{
+		if( fieldType.compare("TextField") == 0 )	//-------------------------------
+		{
+			fieldGTKMM = new TextFieldGTKMM( pField, pData, i );
+		}
+		else if( fieldType.compare("CheckField") == 0 )	//-------------------------------
+		{
+			fieldGTKMM = new CheckFieldGTKMM( pField, pData, i );
+		}
+		else if( fieldType.compare("SpinField") == 0 )	//---------------------------
+		{
+			fieldGTKMM = new SpinFieldGTKMM( pField, pData, i );
+		}
+		else if( (fieldType.compare("Combo") == 0) ||  (fieldType.compare("ComboEntry") == 0) || (fieldType.compare("ComboRadio") == 0 ) )	//-------------------------------
+		{
+			fieldGTKMM = new ComboFieldGTKMM( pField, pData, i );
+		}
+		else
+		{
+#ifdef TODO_DEF
+#warning TODO in FieldGTKMM::newFieldGTKMM: throw error
+#endif				// TODO Send error because the field type is unknown.
+		}
+	}
+#ifdef TODO_DEF
+#warning TODO in FieldGTKMM::newFieldGTKMM: chatch errors shuch as the one generated above or out of memory generated by new.
+#endif		
+	catch( exception& e )
+	{
+		throw e;
+	}	
+
+	return fieldGTKMM;
+	
+};
+
+//-----------------------------------------------------------------------------
+
+Field* FieldGTKMM::getBaseField()
+{
+	return baseField;
+};
+	
+
+//-----------------------------------------------------------------------------
+
+void FieldGTKMM::setFieldData( FieldData* pData )
+{
+	data = pData;
+}; 
 
 //-----------------------------------------------------------------------------
 
@@ -306,21 +177,65 @@ void FieldGTKMM::setIndex( int i )
 
 //-----------------------------------------------------------------------------
 
-int FieldGTKMM::getIndex()
+int FieldGTKMM::getIndex( )
 {
 	return index;
 };
 
 //-----------------------------------------------------------------------------
 
-bool FieldGTKMM::selected( GdkEventButton* event )
+void FieldGTKMM::setColumns( int c  )
 {
-	signal_selected.emit( this->getIndex() );	
-	return true;
-}
+	columns = c;
+};
 
 //-----------------------------------------------------------------------------
 
+int FieldGTKMM::getColumns()
+{
+	return columns;
+};
+
+//-----------------------------------------------------------------------------
+
+Gtk::Widget* FieldGTKMM::getLabel()
+{
+	return &label;
+};
+
+
+//-----------------------------------------------------------------------------
+
+Gtk::Widget* FieldGTKMM::getRequired()
+{
+	return &required;
+};
+
+
+//-----------------------------------------------------------------------------
+
+Gtk::Widget* FieldGTKMM::getReset()
+{
+	return &reset;
+};
+
+//-----------------------------------------------------------------------------
+
+bool FieldGTKMM::selected( GdkEventButton* event )
+{
+	signal_selected.emit( this->getBaseField(), this->getIndex() );	
+	return true;
+};
+
+//-----------------------------------------------------------------------------
+
+
+void FieldGTKMM::changed( )
+{
+	signal_changed.emit( this->getBaseField(), this->getIndex() );	
+};
+
+//-----------------------------------------------------------------------------
 
 FieldGTKMM::type_signal_selected FieldGTKMM::get_signal_selected( void )
 {
@@ -329,5 +244,27 @@ FieldGTKMM::type_signal_selected FieldGTKMM::get_signal_selected( void )
 
 //-----------------------------------------------------------------------------
 
+FieldGTKMM::type_signal_changed FieldGTKMM::get_signal_changed( void )
+{
+	return signal_changed;
+};
+
+//-----------------------------------------------------------------------------
+
+void FieldGTKMM::updatePropertiesParentClass()
+{
+	label.set_text( baseField->getLabel() );
+	required.set_active( baseField->getRequired() );
+	reset.set_active( baseField->getReset() );
+};
+		
+		
+
+//-----------------------------------------------------------------------------
 
 
+
+//-----------------------------------------------------------------------------
+		
+		
+		

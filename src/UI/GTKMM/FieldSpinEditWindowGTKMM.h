@@ -36,10 +36,10 @@ class FieldSpinEditWindowGTKMM : public FieldEditWindowGTKMM
 
 	private:
 	
-		Gtk::Label labelMax, labelMin, labelStepsize, labelAdhereStep, labelDec, labelAdhereDec;
+		Gtk::Label labelMax, labelMin, labelStepsize, labelAdhereStep, labelDec, labelAlwaysUpdate;
 		Gtk::CheckButton checkMax, checkMin;
 		Gtk::SpinButton spinMax, spinMin, spinStepsize, spinDec;
-		YesNoToggleButtonGTKMM toggleAdhereStep, toggleAdhereDec;
+		YesNoToggleButtonGTKMM toggleAdhereStep, toggleAlwaysUpdate;
 		Gtk::HBox hBoxMax, hBoxMin;
 		
 		// Pointer to the baseField but of different type for easy acces to specific funcitons.
@@ -53,7 +53,7 @@ class FieldSpinEditWindowGTKMM : public FieldEditWindowGTKMM
 		void changeStepsize( );
 		void changeDec( );
 		void changeAdhereStep( );
-		void changeAdhereDec( );
+		void changeAlwaysUpdate( );
 
 
 };

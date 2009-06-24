@@ -28,7 +28,11 @@ LINK_DIRECTORIES ( ${LIBRARY_OUTPUT_PATH}
 SET (	SRCS_EngineGTKMM
 			EngineGTKMM.cpp
 			FieldGTKMM.cpp
-			FieldTableGTKMM.cpp
+			TextFieldGTKMM.cpp
+			CheckFieldGTKMM.cpp
+			SpinFieldGTKMM.cpp
+			ComboFieldGTKMM.cpp
+			CategoryGTKMM.cpp
 			CategoryTreeGTKMM.cpp
 			FieldEditWindowGTKMM.cpp
 			FieldSpinEditWindowGTKMM.cpp

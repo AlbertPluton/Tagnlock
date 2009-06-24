@@ -25,7 +25,7 @@ EngineGTKMM::EngineGTKMM( int argc, char **argv, string gladeFileName )
 	dataWindow = 0;
 	toolchainWindow = 0;
 	categoryWindow = 0;
-	fieldTableGTKMM = new FieldTableGTKMM();
+	categoryGTKMM = NULL;
 	
   //Load the Glade file and instiate its widgets:
 	#ifdef GLIBMM_EXCEPTIONS_ENABLED
@@ -305,8 +305,8 @@ void EngineGTKMM::connectSignals()
       
     // When clicking on a field in the tree view of the category window, change the selection
     categoryTree->get_signal_selectionChange().connect( sigc::mem_fun( this, &EngineGTKMM::fieldSelected) );
-
-		fieldTableGTKMM->get_signal_selectionChange().connect( sigc::mem_fun( this, &EngineGTKMM::fieldSelected) );
+//TODO
+//		categoryGTKMM->get_signal_selectionChange().connect( sigc::mem_fun( this, &EngineGTKMM::fieldSelected) );
 
 }
 
@@ -433,11 +433,11 @@ void EngineGTKMM::displayCategory( int index )
 {
 
 	// If there is an table delete it.
-	if( fieldTableGTKMM != NULL )
+	if( categoryGTKMM != NULL )
 	{
 		categoryFieldsWindow->remove();
 
-		fieldTableGTKMM->clear();
+		categoryGTKMM->clear();
 		
 		categoryTree->clearTreeModel();
 		
@@ -452,12 +452,12 @@ void EngineGTKMM::displayCategory( int index )
 	Category* cat =  this->getCategory( index );
 	if( cat != NULL )
 	{
-		fieldTableGTKMM->makeNewTable( cat );
+		categoryGTKMM->makeNewTable( cat );
 
 		// Add it to the scolled window.
-		categoryFieldsWindow->add( *(Gtk::Widget*)fieldTableGTKMM );
+		categoryFieldsWindow->add( *(Gtk::Widget*)categoryGTKMM );
 
-		((Gtk::Widget*)fieldTableGTKMM)->show();
+		((Gtk::Widget*)categoryGTKMM)->show();
 		
 		// Make a tree model;
 		categoryTree->makeTreeModel( cat );

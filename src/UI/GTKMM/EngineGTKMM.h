@@ -17,7 +17,7 @@
 
 #include "Category.h"
 #include "FieldGTKMM.h"
-#include "FieldTableGTKMM.h"
+#include "CategoryGTKMM.h"
 #include "CategoryTreeGTKMM.h"
 #include "FieldEditWindowGTKMM.h"
 
@@ -106,7 +106,7 @@ void on_toolbutton25_clicked(  );
 		
 		// Variables specifically required for the category window
 		Gtk::ScrolledWindow* categoryFieldsWindow;
-		FieldTableGTKMM* fieldTableGTKMM;
+		CategoryGTKMM* categoryGTKMM;
 		
 	  
 	  // Variables used in the tree view of the category window
