@@ -29,7 +29,7 @@ SpinField::SpinField( string fieldLabel, bool fieldRequired, bool fieldReset ) :
 	step = 1;
 	dec = 1;
 	adhereStep = false;
-	adhereDec = false;
+	alwaysUpdate = false;
 }
 
 
@@ -37,7 +37,7 @@ SpinField::SpinField( string fieldLabel, bool fieldRequired, bool fieldReset ) :
 
 
 SpinField::SpinField( string fieldLabel, bool fieldRequired, bool fieldReset, double* minimum, 
-							double* maximum, double stepsize, bool adStep, int decimals, bool adDec ) : Field( fieldLabel, fieldRequired, fieldReset)
+							double* maximum, double stepsize, bool adStep, int decimals, bool update ) : Field( fieldLabel, fieldRequired, fieldReset)
 {
 	min = NULL;
 	max = NULL;
@@ -75,7 +75,7 @@ SpinField::SpinField( string fieldLabel, bool fieldRequired, bool fieldReset, do
 	step = stepsize;
 	adhereStep = adStep;
 	dec = decimals;
-	adhereDec = adDec;
+	alwaysUpdate = update;
 
 };
 
@@ -188,12 +188,12 @@ SpinField::SpinField( vector<string> * description )
 			str.erase(0, 10);
 			dec = this->stringToInt( str );	
 		}
-		else if( str.compare( 0, 11, "AdhereDec: " ) == 0 )
+		else if( str.compare( 0, 14, "AlwaysUpdate: " ) == 0 )
 		{
 			// Get the substring of str which should contain true or false.
 			// Convert it to a boolean, this function can throw a FieldException.
-			// Assign the boolean to adhereDec.
-			try { this->setAdhereDec( this->stringToBool( str.substr(11, 5) ) ); }
+			// Assign the boolean to alwaysUpdate.
+			try { this->setAlwaysUpdate( this->stringToBool( str.substr(14, 5) ) ); }
 			catch(  FieldException& e ) 
 			{
 				// Add information to the exception to be able to trace its origin. 
@@ -272,7 +272,9 @@ vector<string> SpinField::getDescription()
 	vec.push_back( "AdhereStep: " + this->boolToString( this->getAdhereStep() ) );
 	
 	vec.push_back( "Decimals: "		+ this->intToString( this->getDecimals() )	);
-	vec.push_back( "AdhereDec: " 	+ this->boolToString( this->getAdhereDec()	) );
+	
+	
+	vec.push_back( "AlwaysUpdate: " 	+ this->boolToString( this->getAlwaysUpdate()	) );
 	
 	return vec;
 		
@@ -327,9 +329,9 @@ bool SpinField::getAdhereStep()
 //-----------------------------------------------------------------------------
 
 
-bool SpinField::getAdhereDec()
+bool SpinField::getAlwaysUpdate()
 {
-	return adhereDec;
+	return alwaysUpdate;
 };
 
 
@@ -417,9 +419,9 @@ void SpinField::setAdhereStep( bool adhere )
 //-----------------------------------------------------------------------------
 
 
-void SpinField::setAdhereDec( bool adhere )
+void SpinField::setAlwaysUpdate( bool update )
 {
-	adhereDec = adhere;
+	alwaysUpdate = update;
 };
 
 

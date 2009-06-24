@@ -255,8 +255,44 @@ string Category::getFieldTypeAt( int index )
 	return fields.at( index )->getType();
 };
 
+//-----------------------------------------------------------------------------
+
+void Category::increaseFieldIndex( int index )
+{
+	if( ( index >=  0 ) && ( index <  ((int)fields.size()) - 1) )
+	{
+		Field* temp = fields[index];
+		fields[index] = fields[index+1];
+		fields[index+1] = temp;
+	}
+	else
+	{
+		// TODO throw
+		cout << "Invalid index input in Category::increasFieldIndex.\n";
+	};
+
+	
+};
 
 
+//-----------------------------------------------------------------------------
+
+void Category::decreaseFieldIndex( int index )
+{
+	if( ( index >=  1 ) && ( index <  (int)fields.size()) )
+	{
+		Field* temp = fields[index];
+		fields[index] = fields[index-1];
+		fields[index-1] = temp;
+	}
+	else
+	{
+		// TODO throw
+		cout << "Invalid index input in Category::decreaseFieldIndex.\n";
+	};
+
+	
+};
 //-----------------------------------------------------------------------------
 
 vector<string> Category::getFieldTypeVector()

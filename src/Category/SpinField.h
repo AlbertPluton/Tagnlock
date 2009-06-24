@@ -31,10 +31,10 @@ class SpinField : public Field
 			\param stepsize is the increment size of the field. Should not be equal to 0 unless adStep equals FALSE, in this way only manual entries are possible.
 			\param adStep indicates if manually entered values are rounded to the nearest multiplication of the step size.
 			\param decimals	is the number of decimals visible in the field.
-			\param adDec indicates if manually entered values are displayed according to the value of decimals. If FALSE the fully entered value is displayed.
+			\param update indicates if manually entered values are is they do not comply with the stepsize and number of decimals.
 		*/
 		SpinField( string fieldLabel, bool fieldRequired, bool fieldReset, double* minimum, 
-							double* maximum, double stepsize, bool adStep, int decimals, bool adDec );
+							double* maximum, double stepsize, bool adStep, int decimals, bool update );
 		
 
 		
@@ -75,7 +75,7 @@ class SpinField : public Field
 		//! Returns the number of decimals displayed in the field.
 		int getDecimals();			
 		//! Indicates whether manually entered values are displayed according to the number of decimals displayed. If FALSE the fully entered value is displayed.
-		bool getAdhereDec();		
+		bool getAlwaysUpdate();		
 
 		//! Set the lowest possible value of the spin field. Set it equal to NULL to indicate that there is no limit.
 		void setMinimum( double* minimum );	
@@ -87,8 +87,8 @@ class SpinField : public Field
 		void setAdhereStep( bool adhere );		
 		//! Set the number of displayed decimals.
 		void setDecimals( int decimals );			
-		//! Indicated if manually entered values are displayed according to the value of decimals. If FALSE the fully entered value is displayed.
-		void setAdhereDec( bool adhere );			
+		//! Indicates if manually entered values are is they do not comply with the stepsize and number of decimals
+		void setAlwaysUpdate( bool adhere );			
 		
 		
 
@@ -98,7 +98,7 @@ class SpinField : public Field
 		double* max;
 		double step;
 		int dec;
-		bool adhereStep, adhereDec;
+		bool adhereStep, alwaysUpdate;
 
 
 

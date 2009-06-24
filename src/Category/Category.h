@@ -71,6 +71,13 @@ class Category
 		//! Return a pointer to the field at index.
 		Field* getFieldAt( int index );
 		
+		//! Move the field at index i to index i+1. It swaps place with the field at index i+1, which goes to index i.
+		void increaseFieldIndex( int i );
+		
+		//! Move the field at index i to index i-1. It swaps place with the field at index i-1, which goes to index i.
+		void decreaseFieldIndex( int i );
+		
+		
 		//! Return the type of a specific field
 		/*!
 			\param The index number of the desired field.
