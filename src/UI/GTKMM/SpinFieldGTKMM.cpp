@@ -18,6 +18,7 @@ SpinFieldGTKMM::SpinFieldGTKMM( Field* pField, FieldData* dat, int i ) : FieldGT
 	// Connect the signals.
 	spinButton.signal_value_changed().connect( sigc::mem_fun( *this, &FieldGTKMM::changed) );
 
+	this->updateProperties();
 
 };
 

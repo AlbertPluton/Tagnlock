@@ -34,9 +34,9 @@ SET (	SRCS_EngineGTKMM
 			ComboFieldGTKMM.cpp
 			CategoryGTKMM.cpp
 			CategoryTreeGTKMM.cpp
-			FieldEditWindowGTKMM.cpp
-			FieldSpinEditWindowGTKMM.cpp
-			FieldComboEditWindowGTKMM.cpp
+			FieldEditWidgetGTKMM.cpp
+			FieldSpinEditWidgetGTKMM.cpp
+			FieldComboEditWidgetGTKMM.cpp
 			${CMAKE_BINARY_DIR}/src/Engine/Engine.cpp
 			YesNoToggleButtonGTKMM.cpp
 		)

@@ -134,13 +134,11 @@ class FieldGTKMM : public Gtk::EventBox
 		void updatePropertiesParentClass();
 
 
-
-
-				
+			
 		// Widgets to house information.
-		Gtk::Label label; 		//Gtk::Label label;
-		Gtk::CheckButton required; 	// Gtk::CheckButton required;
-		Gtk::CheckButton reset;			//Gtk::CheckButton reset;
+		Gtk::Label label; 		
+		Gtk::CheckButton required; 	
+		Gtk::CheckButton reset;		
 		
 	
 		
@@ -152,7 +150,8 @@ class FieldGTKMM : public Gtk::EventBox
 		Field* baseField;
 		FieldData* data;
 		int index;
-	
+
+
 		Gtk::Widget* editWidget;
 };
 
