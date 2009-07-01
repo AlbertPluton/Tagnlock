@@ -14,9 +14,6 @@
 CheckFieldGTKMM::CheckFieldGTKMM( Field* pField, FieldData* dat, int i ) : FieldGTKMM( pField, dat, i )
 {
 
-	// Attach the checkButton to the table.
-	table.attach( checkButton, 2, columns-2, 0, 1, tableAttachX, tableAttachY, tablePaddingX, tablePaddinY	);
-	
 	// Fill the field with some data.
 	if( data != NULL ) this->getData();
 	
@@ -94,7 +91,10 @@ void CheckFieldGTKMM::setData()
 
 //-----------------------------------------------------------------------------
 
-
+Gtk::Widget* CheckFieldGTKMM::getEntry()
+{
+	return (Gtk::Widget*)(&checkButton);
+};
 
 //-----------------------------------------------------------------------------
 

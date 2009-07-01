@@ -12,7 +12,7 @@
 
 //-----------------------------------------------------------------------------
 
-EngineGTKMM::EngineGTKMM( int argc, char **argv, string gladeFileName )
+EngineGTKMM::EngineGTKMM( int argc, char **argv, string gladeFileName ) 
 {
 
 #ifdef DEBUG_MESSAGES_DEF
@@ -22,10 +22,10 @@ EngineGTKMM::EngineGTKMM( int argc, char **argv, string gladeFileName )
 
 	kit = new Gtk::Main(argc, argv);
 
-	dataWindow = 0;
-	toolchainWindow = 0;
-	categoryWindow = 0;
-	categoryGTKMM = NULL;
+	dataWindow = NULL;
+	toolchainWindow = NULL;
+	categoryWindow = NULL;
+	categoryGTKMM = new CategoryGTKMM(); // categoryGTKMM = NULL;
 	
   //Load the Glade file and instiate its widgets:
 	#ifdef GLIBMM_EXCEPTIONS_ENABLED
@@ -65,11 +65,10 @@ EngineGTKMM::EngineGTKMM( int argc, char **argv, string gladeFileName )
  	categoryFieldsWindow->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_ALWAYS);
 
   refXml->get_widget("CategoryTreeWindow", categoryTreeWindow);
- 	categoryTree = new CategoryTreeGTKMM();
-	categoryTreeWindow->add( (*categoryTree) );
 
 	refXml->get_widget("CategoryFieldEditWindow", categoryFieldEditWindow);
-	fieldEditWindow = NULL;
+
+
  	
 	// end categoryWindow
 
@@ -109,12 +108,9 @@ EngineGTKMM::~EngineGTKMM()
 	delete categoryWindow;
 	
 	delete categoryFieldsWindow;
-	
 	delete categoryTreeWindow;
-	delete categoryTree;
-	
 	delete categoryFieldEditWindow;
-	delete fieldEditWindow;
+
 };
 
 
@@ -304,7 +300,7 @@ void EngineGTKMM::connectSignals()
     }        
       
     // When clicking on a field in the tree view of the category window, change the selection
-    categoryTree->get_signal_selectionChange().connect( sigc::mem_fun( this, &EngineGTKMM::fieldSelected) );
+    categoryGTKMM->get_signal_selectionChange().connect( sigc::mem_fun( this, &EngineGTKMM::fieldSelected) );
 //TODO
 //		categoryGTKMM->get_signal_selectionChange().connect( sigc::mem_fun( this, &EngineGTKMM::fieldSelected) );
 
@@ -432,21 +428,8 @@ void EngineGTKMM::modifyField()
 void EngineGTKMM::displayCategory( int index )
 {
 
-	// If there is an table delete it.
-	if( categoryGTKMM != NULL )
-	{
-		categoryFieldsWindow->remove();
-
-		categoryGTKMM->clear();
-		
-		categoryTree->clearTreeModel();
-		
-		delete fieldEditWindow;
-	}
-
-
-
-	//fieldTableGTKMM = new FieldTableGTKMM();
+	categoryFieldsWindow->remove();
+	categoryGTKMM->clear();
 
 	
 	Category* cat =  this->getCategory( index );
@@ -460,7 +443,7 @@ void EngineGTKMM::displayCategory( int index )
 		((Gtk::Widget*)categoryGTKMM)->show();
 		
 		// Make a tree model;
-		categoryTree->makeTreeModel( cat );
+//		categoryTree->makeTreeModel( cat );
 
 	}
 	else
@@ -487,14 +470,14 @@ void EngineGTKMM::fieldSelected( int select )
 	Field* selectedField = this->getCurrentField();
 	
 	// Make the window to edit the selected field.
-	if( fieldEditWindow != NULL ) 
-	{
-		delete fieldEditWindow;
-	}
+//	if( fieldEditWindow != NULL ) 
+//	{
+//		delete fieldEditWindow;
+//	}
 		
-	fieldEditWindow = FieldEditWindowGTKMM::newEditWindow( selectedField, select );
-	categoryFieldEditWindow->add( *fieldEditWindow );
-	categoryFieldEditWindow->show();
+//	fieldEditWindow = FieldEditWindowGTKMM::newEditWindow( selectedField, select );
+//	categoryFieldEditWindow->add( *fieldEditWindow );
+//	categoryFieldEditWindow->show();
 
 
 };

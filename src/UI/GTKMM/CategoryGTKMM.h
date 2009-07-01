@@ -14,19 +14,30 @@
 #include "Category.h"
 #include "ObjectData.h"
 
-//#include <sigc++/sigc++.h>
+
+
+#define defaultTableAttachX Gtk::FILL|Gtk::EXPAND
+#define defaultTableAttachY Gtk::EXPAND
+
+#define defaultColumns 10
+#define defaultPaddingX 5
+#define defaultPaddingY 5
+
+
 
 //! This class holds all FieldGTKMM objects in a signle table.
 
-class CategoryGTKMM : public Gtk::VBox
+class CategoryGTKMM : public Gtk::Table
 {
 
 	public:
 		CategoryGTKMM();
 		~CategoryGTKMM();
 	
+		
 		//! Add a signle field to the current table.
-		void addField( Gtk::Widget* field );
+		void addField( FieldGTKMM* field );
+		
 		//! Delete the field at index.
 		void deleteField( int index );
 
@@ -44,6 +55,13 @@ class CategoryGTKMM : public Gtk::VBox
 		//! Delete all the fields this class holds.
 		void clear();
 		
+
+		//! Set the number of columns in the table.
+		void setColumns( int c = defaultColumns );
+		
+		//! Get the number of columns in the table.
+		int getColumns();
+
 		
 		void fieldSelected( int fieldIndex );
 		
@@ -63,6 +81,14 @@ class CategoryGTKMM : public Gtk::VBox
 		// An vector with all connection objects which this object has generated to receive signals from its children.
 		vector<sigc::connection> connections;
 
+
+		// Attach options for the table.
+		static Gtk::AttachOptions tableAttachX;
+		static Gtk::AttachOptions tableAttachY;
+		
+		static int columns; 
+		static int tablePaddingX;
+		static int tablePaddingY;	
 
 };
 

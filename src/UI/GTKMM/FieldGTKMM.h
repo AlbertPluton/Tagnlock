@@ -12,12 +12,6 @@
 #include "Field.h"
 #include "FieldData.h"
 
-#define defaultTableAttachX Gtk::FILL|Gtk::EXPAND
-#define defaultTableAttachY Gtk::EXPAND
-
-#define defaultColumns 10
-#define defaultPaddingX 5
-#define defaultPaddingY 5
 
 
 
@@ -37,7 +31,6 @@ class FieldGTKMM : public Gtk::EventBox
 		*/		
 		FieldGTKMM( Field* pField, FieldData* dat = NULL, int i = -1 );
 		
-		
 		//! The default destructor.
 		~FieldGTKMM();
 
@@ -49,9 +42,13 @@ class FieldGTKMM : public Gtk::EventBox
 		//! Creates a new FieldGTKMM object specified by pField with a link to the pData as FieldData object. 
 		static FieldGTKMM* newFieldGTKMM( Field* pField, FieldData* pData );
 
+		//! Creates a new FieldGTKMM object specified by pField and with the index given. 
+		static FieldGTKMM* newFieldGTKMM( Field* pField,  int i );
+
 		//! Creates a new FieldGTKMM object specified by pField with a link to the pData as FieldData object and the index of the pField. 
 		static FieldGTKMM* newFieldGTKMM( Field* pField, FieldData* pData, int i );
 
+		
 
 
 	
@@ -87,11 +84,7 @@ class FieldGTKMM : public Gtk::EventBox
 		int getIndex( );
 		
 		
-		//! Set the number of columns in the table.
-		void setColumns( int c = defaultColumns );
-		
-		//! Get the number of columns in the table.
-		int getColumns();
+
 		
 		
 		
@@ -121,10 +114,8 @@ class FieldGTKMM : public Gtk::EventBox
 
 
 
-	protected:
 
-		//! This functiond updates the properties of the widgets defined in this class. This class beeing the parent class of Check-, Combo-, Spin- and Text-FieldGTKM.
-		void updatePropertiesParentClass();
+
 
 		//! Returns a pointer to the label widget.
 		Gtk::Widget* getLabel();
@@ -132,19 +123,17 @@ class FieldGTKMM : public Gtk::EventBox
 		Gtk::Widget* getRequired();
 		//! Returns a pointer to the reset check button widget.		
 		Gtk::Widget* getReset();
-		
-		
+		//! Returns the entry widget.
+		virtual Gtk::Widget* getEntry(){};
+	
+	
+	
+	protected:	
 
-		Gtk::HBox hBox;
-		Gtk::Table table;
+		//! This functiond updates the properties of the widgets defined in this class. This class beeing the parent class of Check-, Combo-, Spin- and Text-FieldGTKM.
+		void updatePropertiesParentClass();
 
-		// Attach options for the table.
-		static Gtk::AttachOptions tableAttachX;
-		static Gtk::AttachOptions tableAttachY;
-		
-		static int columns; 
-		static int tablePaddingX;
-		static int tablePaddinY;	
+
 
 
 				

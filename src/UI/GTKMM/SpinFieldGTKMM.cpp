@@ -12,9 +12,6 @@
 SpinFieldGTKMM::SpinFieldGTKMM( Field* pField, FieldData* dat, int i ) : FieldGTKMM( pField, dat, i )
 {
 
-	// Attach the spinButton to the table.
-	table.attach( spinButton, 2, columns-2, 0, 1, tableAttachX, tableAttachY, tablePaddingX, tablePaddinY	);
-
 	// Fill the button with some data
 	if( data != NULL ) this->getData();
 	
@@ -147,7 +144,10 @@ void SpinFieldGTKMM::setData()
 
 //-----------------------------------------------------------------------------
 
-
+Gtk::Widget* SpinFieldGTKMM::getEntry()
+{
+	return (Gtk::Widget*)(&spinButton);
+};
 
 //-----------------------------------------------------------------------------
 

@@ -42,7 +42,7 @@ class SpinFieldGTKMM : public FieldGTKMM
 		//! Extracts the data which was entered in the widget and stores it in the FieldData object.
 		void setData();
 		
-		
+		Gtk::Widget* getEntry();
 		
 	private:
 

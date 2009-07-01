@@ -11,9 +11,6 @@
 	
 TextFieldGTKMM::TextFieldGTKMM( Field* pField, FieldData* dat, int i ) : FieldGTKMM( pField, dat, i )
 {
-	// Attach the entry to the table
-	table.attach( textEntry, 2, columns-2, 0, 1, tableAttachX, tableAttachY, tablePaddingX, tablePaddinY	);
-
 	// Fill the field with data.
  	if( data != NULL ) this->getData();
 
@@ -91,6 +88,10 @@ void TextFieldGTKMM::setData()
 
 //-----------------------------------------------------------------------------
 
+Gtk::Widget* TextFieldGTKMM::getEntry()
+{
+	return (Gtk::Widget*)(&textEntry);
+};
 
 
 //-----------------------------------------------------------------------------

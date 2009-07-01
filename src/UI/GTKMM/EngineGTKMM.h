@@ -111,12 +111,9 @@ void on_toolbutton25_clicked(  );
 	  
 	  // Variables used in the tree view of the category window
 	  Gtk::ScrolledWindow* categoryTreeWindow;
-	  CategoryTreeGTKMM* categoryTree;
-
 		
 		// Variables used for the edit window of the category window
 		Gtk::ScrolledWindow* categoryFieldEditWindow;
-		FieldEditWindowGTKMM* fieldEditWindow;
 
 
 		

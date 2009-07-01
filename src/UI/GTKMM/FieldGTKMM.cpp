@@ -28,15 +28,6 @@ using namespace std;
 //-----------------------------------------------------------------------------
 
 
-Gtk::AttachOptions FieldGTKMM::tableAttachX = defaultTableAttachX;
-Gtk::AttachOptions FieldGTKMM::tableAttachY = defaultTableAttachY;
-		
-int FieldGTKMM::columns = defaultColumns; 
-int FieldGTKMM::tablePaddingX = defaultPaddingX;
-int FieldGTKMM::tablePaddinY = defaultPaddingY;
-		
-		
-//-----------------------------------------------------------------------------
 
 FieldGTKMM::FieldGTKMM( Field* pField, FieldData* pData, int i )
 {
@@ -45,8 +36,6 @@ FieldGTKMM::FieldGTKMM( Field* pField, FieldData* pData, int i )
 	cout << "Constructing FieldGTKMM	object.\n";
 #endif
 	
-	tableAttachX = Gtk::FILL|Gtk::EXPAND;
-	tableAttachY = Gtk::EXPAND;
 
 	baseField = pField;
 	data = pData;
@@ -57,23 +46,10 @@ FieldGTKMM::FieldGTKMM( Field* pField, FieldData* pData, int i )
 
 	// Set properties of basic widgets
 	label.set_text( baseField->getLabel() );
+	label.set_justify( Gtk::JUSTIFY_RIGHT );
 	required.set_active( baseField->getRequired() );
 	reset.set_active( baseField->getReset() );
 
-	
-	// Add the HBox to the EventBox as a child.
-	this->add(hBox);
-	
-	// Add the table to the hBox.
-	hBox.add(table);
-	
-	// Add the widgets to the table
-	table.attach( label, 0 , 3, 0, 1, tableAttachX, tableAttachY, tablePaddingX, tablePaddinY	);
-	table.attach( required, columns-2 , columns-1, 0, 1, tableAttachX, tableAttachY, tablePaddingX, tablePaddinY	);
-	table.attach( reset, columns-1 , columns, 0, 1, tableAttachX, tableAttachY, tablePaddingX, tablePaddinY	);
-
-	
-	
 	// Connect the signal of the EventBox
 	this->signal_button_press_event().connect( sigc::mem_fun( *this, &FieldGTKMM::selected) );
 
@@ -101,10 +77,19 @@ FieldGTKMM* FieldGTKMM::newFieldGTKMM( Field* pField )
 
 //-----------------------------------------------------------------------------
 
-FieldGTKMM* FieldGTKMM::newFieldGTKMM( Field* pField, FieldData* pData )
+FieldGTKMM* FieldGTKMM::newFieldGTKMM(  Field* pField, FieldData* pData )
 {
 	return newFieldGTKMM( pField, pData, -1 );
 };
+	
+	
+//-----------------------------------------------------------------------------
+
+FieldGTKMM* FieldGTKMM::newFieldGTKMM(  Field* pField,  int i )
+{
+	return newFieldGTKMM( pField, NULL, i );
+};
+
 
 //-----------------------------------------------------------------------------
 
@@ -182,19 +167,6 @@ int FieldGTKMM::getIndex( )
 	return index;
 };
 
-//-----------------------------------------------------------------------------
-
-void FieldGTKMM::setColumns( int c  )
-{
-	columns = c;
-};
-
-//-----------------------------------------------------------------------------
-
-int FieldGTKMM::getColumns()
-{
-	return columns;
-};
 
 //-----------------------------------------------------------------------------
 

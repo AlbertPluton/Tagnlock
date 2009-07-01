@@ -9,7 +9,7 @@
 //-----------------------------------------------------------------------------
 
 	
-ComboFieldGTKMM::ComboFieldGTKMM( Field* pField, FieldData* dat, int i ) : FieldGTKMM( pField, dat, i )
+ComboFieldGTKMM::ComboFieldGTKMM( Field* pField, FieldData* dat, int i ) : FieldGTKMM(  pField, dat, i )
 {
 
 	comboField = NULL;
@@ -42,7 +42,7 @@ ComboFieldGTKMM::ComboFieldGTKMM( Field* pField, FieldData* dat, int i ) : Field
 	
 			// Connect the changed signal to the changed signal of this class.
 			comboBoxText->signal_changed().connect( sigc::mem_fun( *this, &FieldGTKMM::changed) );	
-
+			
 		}
 		catch (exception& e)
 		{
@@ -66,6 +66,7 @@ ComboFieldGTKMM::ComboFieldGTKMM( Field* pField, FieldData* dat, int i ) : Field
 
 			// Connect the changed signal to the changed signal of this class.
 			comboBoxEntry->signal_changed().connect( sigc::mem_fun( *this, &FieldGTKMM::changed) );	
+			
 
 		}
 		catch (exception& e)
@@ -104,6 +105,8 @@ ComboFieldGTKMM::ComboFieldGTKMM( Field* pField, FieldData* dat, int i ) : Field
 				radioBox->pack_start( *(radioButtons + i) );
 			}
 
+			radioBox->show_all();
+	
 #ifdef TODO_DEF
 #warning TODO in ComboFieldGTKMM::ComboFieldGTKMM: Connect the signal of the radio buttons 
 #endif	
@@ -130,6 +133,7 @@ ComboFieldGTKMM::ComboFieldGTKMM( Field* pField, FieldData* dat, int i ) : Field
 	// Fill the field with some data.
 	if( data != NULL ) this->getData();
 
+	this->show_all();
 
 };
 
@@ -250,7 +254,10 @@ void ComboFieldGTKMM::updateProperties()
 					(radioButtons[i]).set_label( comboField->getComboElement( i ) );
 					radioBox->pack_start( *(radioButtons + i) );
 				}
-
+	
+				radioBox->show_all();
+				
+				
 #ifdef TODO_DEF
 #warning TODO in ComboFieldGTKMM::ComboFieldGTKMM: Connect the signal of the radio buttons 
 #endif	
@@ -305,7 +312,34 @@ void ComboFieldGTKMM::setData()
 
 //-----------------------------------------------------------------------------
 
+Gtk::Widget* ComboFieldGTKMM::getEntry()
+{
+	string fieldType = baseField->getType();
 
+	if( fieldType.compare("Combo") == 0 )	//-------------------------------
+	{
+		return (Gtk::Widget*)comboBoxText;
+	}
+	
+	else if( fieldType.compare("ComboEntry") == 0 )	//---------------------------
+	{
+		return (Gtk::Widget*)comboBoxEntry;
+	}
+
+	else if( fieldType.compare("ComboRadio") == 0 )	//---------------------------
+	{
+		return (Gtk::Widget*)radioBox;
+	}
+	else
+	{
+		// TODO Send error because the field type is unknown.
+#ifdef TODO_DEF
+#warning TODO in ...FieldGTKMM::getEntry
+#endif
+	}
+	
+	return NULL;
+};
 
 //-----------------------------------------------------------------------------
 

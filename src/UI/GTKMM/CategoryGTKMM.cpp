@@ -11,12 +11,25 @@
 
 //-----------------------------------------------------------------------------
 
+Gtk::AttachOptions CategoryGTKMM::tableAttachX = defaultTableAttachX;
+Gtk::AttachOptions CategoryGTKMM::tableAttachY = defaultTableAttachY;
+		
+int CategoryGTKMM::columns = defaultColumns; 
+int CategoryGTKMM::tablePaddingX = defaultPaddingX;
+int CategoryGTKMM::tablePaddingY = defaultPaddingY;
+		
+		
+//-----------------------------------------------------------------------------
+
 CategoryGTKMM::CategoryGTKMM()
 {
 
 #ifdef DEBUG_MESSAGES_DEF
 	cout << "Constructing CategoryGTKMM	object.\n";
 #endif
+
+	tableAttachX = Gtk::FILL|Gtk::EXPAND;
+	tableAttachY = Gtk::EXPAND;
 
 	objectData = NULL;
 
@@ -37,12 +50,28 @@ CategoryGTKMM::~CategoryGTKMM()
 
 //-----------------------------------------------------------------------------
 
-void CategoryGTKMM::addField( Gtk::Widget* field )
+void CategoryGTKMM::addField( FieldGTKMM* field )
 {
-	this->pack_start( *field,	false, false, 2 );
+
+	int index = field->getIndex();
+
+	// Attach the label.
+	this->attach( *(field->getLabel()), 0, 1, index, index+1, tableAttachX, tableAttachY, tablePaddingX, tablePaddingY );
+	
+	// Attach the entry field.
+	this->attach( *(field->getEntry()), 1, columns-2, index, index+1, tableAttachX, tableAttachY, tablePaddingX, tablePaddingY );
+
+	// Attach the required button.
+	this->attach( *(field->getRequired()), columns-2, columns-1, index, index+1, tableAttachX, tableAttachY, tablePaddingX, tablePaddingY );
+
+
+	// Attach the reset button.
+	this->attach( *(field->getReset()), columns-1, columns, index, index+1, tableAttachX, tableAttachY, tablePaddingX, tablePaddingY );
+	
+
 };
 
-//-----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 
 void CategoryGTKMM::deleteField( int index )
 {
@@ -63,20 +92,28 @@ void CategoryGTKMM::makeNewTable( Category* category )
 	Field* field = NULL;
 	
 	// Disconnect excisting signals
-	for( int i = 0; i < connections.size(); i++ )
+/*	if( connections.size() > 0 )
 	{
-		connections[i].disconnect();
-	};	
-	connections.clear();
-
-	
+		for( int i = 0; i < connections.size(); i++ )
+		{
+			connections[i].disconnect();
+		};		
+		connections.clear();
+	}
+*/	
 	for( int i = 0; i < size; i++ )
 	{
 		field = category->getFieldAt( i );
-		fieldGTKMM = new FieldGTKMM( field, objectData->getDataAt(i), i );
-		
+		if( objectData != NULL )
+		{
+			fieldGTKMM = FieldGTKMM::newFieldGTKMM( field, objectData->getDataAt(i), i );
+		}
+		else
+		{
+			fieldGTKMM = FieldGTKMM::newFieldGTKMM( field, i );		
+		};
 	
-		this->addField( (Gtk::Widget*)fieldGTKMM );
+		this->addField( fieldGTKMM );
 		
 		// Create the connection the the childs signal and add the connection to the vector.
 //		connections.push_back( (fieldGTKMM->get_signal_selected()).connect( sigc::mem_fun(this, &CategoryGTKMM::fieldSelected) ) );
@@ -132,6 +169,18 @@ CategoryGTKMM::type_signal_selectionChange CategoryGTKMM::get_signal_selectionCh
 };
 
 //-----------------------------------------------------------------------------
+
+void CategoryGTKMM::setColumns( int c  )
+{
+	columns = c;
+};
+
+//-----------------------------------------------------------------------------
+
+int CategoryGTKMM::getColumns()
+{
+	return columns;
+};
 
 
 //-----------------------------------------------------------------------------
