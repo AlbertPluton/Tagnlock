@@ -1,12 +1,12 @@
 
 
-#include "FieldSpinEditWindowGTKMM.h"
+#include "FieldSpinEditWidgetGTKMM.h"
 #include <cmath>
 
 
 //-----------------------------------------------------------------------------
 
-FieldSpinEditWindowGTKMM::FieldSpinEditWindowGTKMM( Field* pField, int i )	: FieldEditWindowGTKMM( pField, i ), 
+FieldSpinEditWidgetGTKMM::FieldSpinEditWidgetGTKMM( Field* pField, int i )	: FieldEditWidgetGTKMM( pField, i ), 
 																																							labelMax("Maximum value: ", 0.98, 0.5), 
 																																							labelMin("Minimum value: ", 0.98, 0.5),
 																																							labelStepsize("Stepsize: ", 0.98, 0.5),
@@ -58,7 +58,7 @@ FieldSpinEditWindowGTKMM::FieldSpinEditWindowGTKMM( Field* pField, int i )	: Fie
 	spinMax.set_sensitive( checkMax.get_active() );
 
 #ifdef TODO_DEF
-#warning TODO FieldSpinEditWindowGTKMM::FieldSpinEditWindowGTKMM: Not so nicely solved the problem of having no upper or lower boundary by setting it to -+1000000.
+#warning TODO FieldSpinEditWidgetGTKMM::FieldSpinEditWidgetGTKMM: Not so nicely solved the problem of having no upper or lower boundary by setting it to -+1000000.
 #endif
 	if( min != NULL ){ adjustment->set_lower( *min ); } else { adjustment->set_lower( -1000000 );  } 
 	adjustment->set_upper( 1000000 );
@@ -94,7 +94,7 @@ FieldSpinEditWindowGTKMM::FieldSpinEditWindowGTKMM( Field* pField, int i )	: Fie
 	spinMin.set_sensitive( checkMin.get_active() );
 
 #ifdef TODO_DEF
-#warning TODO FieldSpinEditWindowGTKMM::FieldSpinEditWindowGTKMM: Not so nicely solved the problem of having no upper or lower boundary by setting it to -+1000000.
+#warning TODO FieldSpinEditWidgetGTKMM::FieldSpinEditWidgetGTKMM: Not so nicely solved the problem of having no upper or lower boundary by setting it to -+1000000.
 #endif				
 	if( max != NULL ){ adjustment->set_upper( *max ); } else { adjustment->set_upper( 1000000 );  } 		
 	adjustment->set_lower( -1000000 );
@@ -169,17 +169,17 @@ FieldSpinEditWindowGTKMM::FieldSpinEditWindowGTKMM( Field* pField, int i )	: Fie
 		
 		
 	// Connect the signals
-	spinMax.signal_value_changed().connect( sigc::mem_fun(this, &FieldSpinEditWindowGTKMM::changeMax) );	
-	checkMax.signal_clicked().connect( sigc::mem_fun(this, &FieldSpinEditWindowGTKMM::activateMax) );
+	spinMax.signal_value_changed().connect( sigc::mem_fun(this, &FieldSpinEditWidgetGTKMM::changeMax) );	
+	checkMax.signal_clicked().connect( sigc::mem_fun(this, &FieldSpinEditWidgetGTKMM::activateMax) );
 	
-	spinMin.signal_value_changed().connect( sigc::mem_fun(this, &FieldSpinEditWindowGTKMM::changeMin) );	
-	checkMin.signal_clicked().connect( sigc::mem_fun(this, &FieldSpinEditWindowGTKMM::activateMin) );
+	spinMin.signal_value_changed().connect( sigc::mem_fun(this, &FieldSpinEditWidgetGTKMM::changeMin) );	
+	checkMin.signal_clicked().connect( sigc::mem_fun(this, &FieldSpinEditWidgetGTKMM::activateMin) );
 	
-	spinStepsize.signal_value_changed().connect( sigc::mem_fun(this, &FieldSpinEditWindowGTKMM::changeStepsize) );	
-	toggleAdhereStep.signal_clicked().connect( sigc::mem_fun(this, &FieldSpinEditWindowGTKMM::changeAdhereStep) );
+	spinStepsize.signal_value_changed().connect( sigc::mem_fun(this, &FieldSpinEditWidgetGTKMM::changeStepsize) );	
+	toggleAdhereStep.signal_clicked().connect( sigc::mem_fun(this, &FieldSpinEditWidgetGTKMM::changeAdhereStep) );
 	
-	spinDec.signal_value_changed().connect( sigc::mem_fun(this, &FieldSpinEditWindowGTKMM::changeDec) );		
-	toggleAlwaysUpdate.signal_clicked().connect( sigc::mem_fun(this, &FieldSpinEditWindowGTKMM::changeAlwaysUpdate) );			
+	spinDec.signal_value_changed().connect( sigc::mem_fun(this, &FieldSpinEditWidgetGTKMM::changeDec) );		
+	toggleAlwaysUpdate.signal_clicked().connect( sigc::mem_fun(this, &FieldSpinEditWidgetGTKMM::changeAlwaysUpdate) );			
 	
 		
 	this->show_all();		
@@ -187,14 +187,14 @@ FieldSpinEditWindowGTKMM::FieldSpinEditWindowGTKMM( Field* pField, int i )	: Fie
 
 //-----------------------------------------------------------------------------
 
-FieldSpinEditWindowGTKMM::~FieldSpinEditWindowGTKMM()
+FieldSpinEditWidgetGTKMM::~FieldSpinEditWidgetGTKMM()
 {
 
 };
 
 //-----------------------------------------------------------------------------
 
-void FieldSpinEditWindowGTKMM::changeMax( )
+void FieldSpinEditWidgetGTKMM::changeMax( )
 {
 
 	// Update the value of the max
@@ -212,7 +212,7 @@ void FieldSpinEditWindowGTKMM::changeMax( )
 
 //-----------------------------------------------------------------------------
 
-void FieldSpinEditWindowGTKMM::changeMin( )
+void FieldSpinEditWidgetGTKMM::changeMin( )
 {
 	double min = spinMin.get_value();
 	spinField->setMinimum( &min );
@@ -228,7 +228,7 @@ void FieldSpinEditWindowGTKMM::changeMin( )
 
 //-----------------------------------------------------------------------------
 
-void FieldSpinEditWindowGTKMM::activateMax( )
+void FieldSpinEditWidgetGTKMM::activateMax( )
 {
 	// Get the adjustment object of the MINimum spinbutton
 	Gtk::Adjustment* adjustment_min = spinMin.get_adjustment();
@@ -250,7 +250,7 @@ void FieldSpinEditWindowGTKMM::activateMax( )
 		spinMax.set_sensitive( false );
 		spinField->setMaximum( NULL );
 #ifdef TODO_DEF
-#warning TODO FieldSpinEditWindowGTKMM::activateMax: Not so nicely solved the problem of having no upper or lower boundary by setting it to -+1000000.
+#warning TODO FieldSpinEditWidgetGTKMM::activateMax: Not so nicely solved the problem of having no upper or lower boundary by setting it to -+1000000.
 #endif			
 		adjustment_min->set_upper( 1000000 );
 	}
@@ -263,7 +263,7 @@ void FieldSpinEditWindowGTKMM::activateMax( )
 
 //-----------------------------------------------------------------------------
 
-void FieldSpinEditWindowGTKMM::activateMin( )
+void FieldSpinEditWidgetGTKMM::activateMin( )
 {
 	// Get the adjustment object of the MAXimum spinbutton
 	Gtk::Adjustment* adjustment_max = spinMax.get_adjustment();
@@ -285,7 +285,7 @@ void FieldSpinEditWindowGTKMM::activateMin( )
 		spinMin.set_sensitive( false );
 		spinField->setMinimum( NULL );
 #ifdef TODO_DEF
-#warning TODO FieldSpinEditWindowGTKMM::activateMin: Not so nicely solved the problem of having no upper or lower boundary by setting it to -+1000000.
+#warning TODO FieldSpinEditWidgetGTKMM::activateMin: Not so nicely solved the problem of having no upper or lower boundary by setting it to -+1000000.
 #endif			
 		adjustment_max->set_lower( -1000000 );
 	}
@@ -296,7 +296,7 @@ void FieldSpinEditWindowGTKMM::activateMin( )
 
 //-----------------------------------------------------------------------------
 
-void FieldSpinEditWindowGTKMM::changeStepsize( )
+void FieldSpinEditWidgetGTKMM::changeStepsize( )
 {
 	spinField->setStepsize( spinStepsize.get_value() );
 	
@@ -306,7 +306,7 @@ void FieldSpinEditWindowGTKMM::changeStepsize( )
 
 //-----------------------------------------------------------------------------
 
-void FieldSpinEditWindowGTKMM::changeDec( )
+void FieldSpinEditWidgetGTKMM::changeDec( )
 {
 	// Update the number of decimals of the base field
 	spinField->setDecimals( spinDec.get_value() );
@@ -335,7 +335,7 @@ void FieldSpinEditWindowGTKMM::changeDec( )
 	if( spinStepsize.get_value() < value ) spinStepsize.set_value( value );
 	
 #ifdef TODO_DEF
-#warning TODO FieldSpinEditWindowGTKMM::changeDec: Get the "what you see is what you get" to work.
+#warning TODO FieldSpinEditWidgetGTKMM::changeDec: Get the "what you see is what you get" to work.
 #endif			
 /*
 	// Round of the stepsize, this is to make sure no nasty things remain unseen in the spinbutton but keep incrementing the value. In other words what you see is what you get.
@@ -358,7 +358,7 @@ void FieldSpinEditWindowGTKMM::changeDec( )
 
 //-----------------------------------------------------------------------------
 
-void FieldSpinEditWindowGTKMM::changeAdhereStep( )
+void FieldSpinEditWidgetGTKMM::changeAdhereStep( )
 {
 	spinField->setAdhereStep( toggleAdhereStep.get_active() );
 
@@ -367,7 +367,7 @@ void FieldSpinEditWindowGTKMM::changeAdhereStep( )
 
 //-----------------------------------------------------------------------------
 
-void FieldSpinEditWindowGTKMM::changeAlwaysUpdate( )
+void FieldSpinEditWidgetGTKMM::changeAlwaysUpdate( )
 {
 	spinField->setAlwaysUpdate( toggleAlwaysUpdate.get_active() );
 	

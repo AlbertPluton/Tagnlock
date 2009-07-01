@@ -1,19 +1,19 @@
 
 
-#include "FieldComboEditWindowGTKMM.h"
+#include "FieldComboEditWidgetGTKMM.h"
 
 
 
 //-----------------------------------------------------------------------------
 
-FieldComboEditWindowGTKMM::FieldComboEditWindowGTKMM( Field* pField, int i ) : FieldEditWindowGTKMM( pField, i )
+FieldComboEditWidgetGTKMM::FieldComboEditWidgetGTKMM( Field* pField, int i ) : FieldEditWidgetGTKMM( pField, i )
 {
 
 };
 
 //-----------------------------------------------------------------------------
 
-FieldComboEditWindowGTKMM::~FieldComboEditWindowGTKMM()
+FieldComboEditWidgetGTKMM::~FieldComboEditWidgetGTKMM()
 {
 
 }

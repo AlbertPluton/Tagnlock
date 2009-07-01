@@ -5,15 +5,15 @@
 //
 //
 
-#ifndef FIELDSPINEDITWINDOWGTKMM_H
-#define FIELDSPINEDITWINDOWGTKMM_H
+#ifndef FIELDSPINEDITWIDGETGTKMM_H
+#define FIELDSPINEDITWIDGETGTKMM_H
 
 
 
 #include "Category.h"
 #include "Field.h"
 #include "SpinField.h"
-#include "FieldEditWindowGTKMM.h"
+#include "FieldEditWidgetGTKMM.h"
 #include "YesNoToggleButtonGTKMM.h"
 
 #include <gtkmm.h>
@@ -25,13 +25,13 @@ using namespace std;
 
 //! This class represents a window in which the properties of a spin field can be edited.
 
-class FieldSpinEditWindowGTKMM : public FieldEditWindowGTKMM
+class FieldSpinEditWidgetGTKMM : public FieldEditWidgetGTKMM
 {
 
 	public:
 	
-		FieldSpinEditWindowGTKMM( Field* pField, int i );
-		~FieldSpinEditWindowGTKMM();
+		FieldSpinEditWidgetGTKMM( Field* pField, int i );
+		~FieldSpinEditWidgetGTKMM();
 
 
 	private:

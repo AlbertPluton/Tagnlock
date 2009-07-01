@@ -5,14 +5,14 @@
 //
 //
 
-#ifndef FIELDCOMBOEDITWINDOWGTKMM_H
-#define FIELDCOMBOEDITWINDOWGTKMM_H
+#ifndef FIELDCOMBOEDITWIDGETGTKMM_H
+#define FIELDCOMBOEDITWIDGETGTKMM_H
 
 
 
 #include "Category.h"
 #include "Field.h"
-#include "FieldEditWindowGTKMM.h"
+#include "FieldEditWidgetGTKMM.h"
 
 #include <gtkmm.h>
 
@@ -23,11 +23,11 @@ using namespace std;
 
 //! This class represents a window in which the properties of a combo field can be edited.
 
-class FieldComboEditWindowGTKMM : public FieldEditWindowGTKMM
+class FieldComboEditWidgetGTKMM : public FieldEditWidgetGTKMM
 {
 	public:
-		FieldComboEditWindowGTKMM( Field* pField, int i );
-		~FieldComboEditWindowGTKMM();
+		FieldComboEditWidgetGTKMM( Field* pField, int i );
+		~FieldComboEditWidgetGTKMM();
 		
 	private:
 	

@@ -19,7 +19,7 @@
 #include "FieldGTKMM.h"
 #include "CategoryGTKMM.h"
 #include "CategoryTreeGTKMM.h"
-#include "FieldEditWindowGTKMM.h"
+#include "FieldEditWidgetGTKMM.h"
 
 
 #include <libglademm.h>

@@ -5,8 +5,8 @@
 //
 //
 
-#ifndef FIELDEDITWINDOWGTKMM_H
-#define FIELDEDITWINDOWGTKMM_H
+#ifndef FIELDEDITWIDGETGTKMM_H
+#define FIELDEDITWIDGETGTKMM_H
 
 
 
@@ -28,7 +28,7 @@ using namespace std;
 		The class is derived from Gtk::Table to house the different widgets representing the properties of the field. 
 */
 
-class FieldEditWindowGTKMM : public Gtk::Table
+class FieldEditWidgetGTKMM : public Gtk::Table
 {
 
 	public:
@@ -37,16 +37,16 @@ class FieldEditWindowGTKMM : public Gtk::Table
 		/*!
 			This constructor generates a normal FieldEditWindowGTKMM object. To generate a object depending on the field type of pField use the static function FieldEditWindowGTKMM* FieldEditWindowGTKMM::newEditWindow( Field* pField ). This function is also able to generate a FieldSpinEditWindowGTKMM or FieldComboEditWindowGTKMM depending on the type.		
 		*/
-		FieldEditWindowGTKMM( Field* pField, int i );
+		FieldEditWidgetGTKMM( Field* pField, int i );
 		
 		//! The default destructor.
-		~FieldEditWindowGTKMM();
+		~FieldEditWidgetGTKMM();
 		
 		//! Function to create a new FieldEditWindowGTKMM object.
 		/*!
 			This function takes the type from pField and determinse from this what type of object to generate. This can be a: FieldEditWindowGTKMM, FieldSpinEditWindowGTKMM or FieldComboEditWindowGTKMM.
 		*/
-		static FieldEditWindowGTKMM* newEditWindow( Field* pField, int i );
+		static FieldEditWidgetGTKMM* newEditWidget( Field* pField, int i );
 
 
 		// Used to change the index after a field rearangement.

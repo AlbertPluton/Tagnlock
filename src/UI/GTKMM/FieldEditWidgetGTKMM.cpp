@@ -6,17 +6,17 @@
 //
 
 
-#include "FieldEditWindowGTKMM.h"
+#include "FieldEditWidgetGTKMM.h"
 
-#include "FieldSpinEditWindowGTKMM.h"
-#include "FieldComboEditWindowGTKMM.h"
+#include "FieldSpinEditWidgetGTKMM.h"
+#include "FieldComboEditWidgetGTKMM.h"
 
 //-----------------------------------------------------------------------------
 
-FieldEditWindowGTKMM::FieldEditWindowGTKMM( Field* pField, int i ) : typeLabel("Type: ", 0.98, 0.5), labelLabel("Label: ", 0.98, 0.5), requiredLabel("Required: ", 0.98, 0.5), resetLabel("Reset: ", 0.98, 0.5)
+FieldEditWidgetGTKMM::FieldEditWidgetGTKMM( Field* pField, int i ) : typeLabel("Type: ", 0.98, 0.5), labelLabel("Label: ", 0.98, 0.5), requiredLabel("Required: ", 0.98, 0.5), resetLabel("Reset: ", 0.98, 0.5)
 {
 #ifdef DEBUG_MESSAGES_DEF	
-	cout << "Constructing a FieldEditWindowGTKMM object.\n";
+	cout << "Constructing a FieldEditWidgetGTKMM object.\n";
 #endif	
 
 	baseField = pField;
@@ -54,9 +54,9 @@ FieldEditWindowGTKMM::FieldEditWindowGTKMM( Field* pField, int i ) : typeLabel("
 
 	
 	// Connect the signals
-	label.signal_changed().connect( sigc::mem_fun(this, &FieldEditWindowGTKMM::changeLabel) );	
-	required.signal_clicked().connect( sigc::mem_fun(this, &FieldEditWindowGTKMM::changeRequired) );
-	reset.signal_clicked().connect( sigc::mem_fun(this, &FieldEditWindowGTKMM::changeReset) );
+	label.signal_changed().connect( sigc::mem_fun(this, &FieldEditWidgetGTKMM::changeLabel) );	
+	required.signal_clicked().connect( sigc::mem_fun(this, &FieldEditWidgetGTKMM::changeRequired) );
+	reset.signal_clicked().connect( sigc::mem_fun(this, &FieldEditWidgetGTKMM::changeReset) );
 
 	
 	
@@ -66,19 +66,19 @@ FieldEditWindowGTKMM::FieldEditWindowGTKMM( Field* pField, int i ) : typeLabel("
 
 //-----------------------------------------------------------------------------
 
-FieldEditWindowGTKMM::~FieldEditWindowGTKMM()
+FieldEditWidgetGTKMM::~FieldEditWidgetGTKMM()
 {
 #ifdef DEBUG_MESSAGES_DEF	
-	cout << "Destroyed a FieldEditWindowGTKMM object.\n";
+	cout << "Destroyed a FieldEditWidgetGTKMM object.\n";
 #endif
 };
 
 //-----------------------------------------------------------------------------
 
-FieldEditWindowGTKMM* FieldEditWindowGTKMM::newEditWindow( Field* pField, int i )
+FieldEditWidgetGTKMM* FieldEditWidgetGTKMM::newEditWidget( Field* pField, int i )
 {
 
-	FieldEditWindowGTKMM* editWindow = NULL;
+	FieldEditWidgetGTKMM* editWindow = NULL;
 
 	// Obtain the type from the original field.	
 	string fieldType = pField->getType();
@@ -86,17 +86,17 @@ FieldEditWindowGTKMM* FieldEditWindowGTKMM::newEditWindow( Field* pField, int i 
 
 	if( fieldType.compare("SpinField") == 0 )	//-------------------------------
 	{
-		editWindow = new FieldSpinEditWindowGTKMM( pField, i );
+		editWindow = new FieldSpinEditWidgetGTKMM( pField, i );
 		return editWindow;
 	}	
 	else if( (fieldType.compare("Combo") == 0) || (fieldType.compare("ComboEntry") == 0) || (fieldType.compare("ComboRadio") == 0) )	//-------------------------------
 	{
-		editWindow = new FieldComboEditWindowGTKMM( pField, i );
+		editWindow = new FieldComboEditWidgetGTKMM( pField, i );
 		return editWindow;
 	}	
 	else if( (fieldType.compare("CheckField") == 0) || (fieldType.compare("TextField") == 0) ) //--------------------------------
 	{
-		editWindow = new FieldEditWindowGTKMM( pField, i );
+		editWindow = new FieldEditWidgetGTKMM( pField, i );
 		return editWindow;
 	}
 	else
@@ -104,7 +104,7 @@ FieldEditWindowGTKMM* FieldEditWindowGTKMM::newEditWindow( Field* pField, int i 
 #ifdef TODO_DEF
 #warning TODO throw error field type not correct
 #endif		
-		cout << "Error: Field type not correct. Occoured in: FieldEditWindowGTKMM::generateTypeDependend()\n";
+		cout << "Error: Field type not correct. Occoured in: FieldEditWidgetGTKMM::generateTypeDependend()\n";
 	}	
 	
 	return NULL;
@@ -113,7 +113,7 @@ FieldEditWindowGTKMM* FieldEditWindowGTKMM::newEditWindow( Field* pField, int i 
 
 //-----------------------------------------------------------------------------
 
-void FieldEditWindowGTKMM::changeLabel()
+void FieldEditWidgetGTKMM::changeLabel()
 {
 	baseField->setLabel( label.get_text() );
 	m_signal_changed_property.emit( 1 );
@@ -121,7 +121,7 @@ void FieldEditWindowGTKMM::changeLabel()
 
 //-----------------------------------------------------------------------------
 
-void FieldEditWindowGTKMM::changeRequired()
+void FieldEditWidgetGTKMM::changeRequired()
 {
 	baseField->setRequired( required.get_active() );
 	m_signal_changed_property.emit( 1 );	
@@ -129,7 +129,7 @@ void FieldEditWindowGTKMM::changeRequired()
 
 //-----------------------------------------------------------------------------
 
-void FieldEditWindowGTKMM::changeReset()
+void FieldEditWidgetGTKMM::changeReset()
 {
 	baseField->setReset( reset.get_active() );
 	m_signal_changed_property.emit( 1 );		
@@ -137,7 +137,7 @@ void FieldEditWindowGTKMM::changeReset()
 
 //-----------------------------------------------------------------------------
 
-FieldEditWindowGTKMM::type_signal_changed_property FieldEditWindowGTKMM::signal_changed_property()
+FieldEditWidgetGTKMM::type_signal_changed_property FieldEditWidgetGTKMM::signal_changed_property()
 {
   return m_signal_changed_property;
 }
