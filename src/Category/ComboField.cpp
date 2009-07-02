@@ -199,7 +199,65 @@ string ComboField::getComboElement( int n )
 	{
 		return combo->at(n);
 	}
+	else
+	{
+		// TODO throw exception.
+	}
 	return "";
 }
+
+//-----------------------------------------------------------------------------
+
+void ComboField::addComboElement( string element )
+{
+	combo->push_back( element );
+};
+
+//-----------------------------------------------------------------------------
+
+void ComboField::removeComboElement( int i )
+{
+	if( (i >= 0) && (i < (int)combo->size()) )
+	{
+		combo->erase( combo->begin() + i );
+	}
+	else
+	{
+		// TODO throw exception.
+	}	
+};
+
+//-----------------------------------------------------------------------------
+
+
+void ComboField::setComboElement( int i, string element )
+{
+	if( (i >= 0) && (i < (int)combo->size()) )
+	{
+		combo->at(i) = element;
+	}
+	else
+	{
+		// TODO throw exception.
+	}	
+};
+
+
+//-----------------------------------------------------------------------------
+
+void ComboField::setComboElements( vector<string> elements )
+{
+
+};
+	
+
+
+//-----------------------------------------------------------------------------
+
+
+
+
+
+
 
 

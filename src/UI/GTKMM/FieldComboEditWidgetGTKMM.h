@@ -26,10 +26,14 @@ using namespace std;
 
 class FieldComboEditWidgetGTKMM : public FieldEditWidgetGTKMM
 {
+
+
 	public:
 	
 		FieldComboEditWidgetGTKMM( Field* pField, int i );
 		~FieldComboEditWidgetGTKMM();
+		
+		
 		
 	private:
 
@@ -42,13 +46,22 @@ class FieldComboEditWidgetGTKMM : public FieldEditWidgetGTKMM
 		Gtk::ScrolledWindow treeScrolledWindow;
 		Gtk::TreeView treeView;
 		Glib::RefPtr<Gtk::ListStore> treeModel;
-
+		Glib::RefPtr<Gtk::TreeSelection> 	treeSelection;
+		
+		
 		Gtk::Button addButton, delButton, upButton, downButton;
 		
 		
 		void addedOption();
 		void removedOption();
-		void changedOption();
+		void movedOptionUp();
+		void movedOptionDown();
+		void changedOption( const Glib::ustring& path_string, const Glib::ustring& new_text );
+		
+		void changedSelectedOption();
+		int selectedOption;
+		Gtk::TreeModel::iterator iterSelectedOption;
+		
 		
 		
 		// Pointer to the base class.
@@ -61,8 +74,9 @@ class FieldComboEditWidgetGTKMM : public FieldEditWidgetGTKMM
 		public:
 
 		  ModelColumns()
-		  { add( columnOption ); }
+		  { add( columnIndex ); add( columnOption ); }
 
+			Gtk::TreeModelColumn<int> 					columnIndex;
 		  Gtk::TreeModelColumn<Glib::ustring> columnOption;
 
 		};

@@ -88,7 +88,36 @@ class ComboField : public Field
 		*/
 		string getComboElement( int n );
 		
+		
+		//! Add a combo element to the back of the element vector.
+		/*!
+			\param element is the string of the new element.
+		*/
+		void addComboElement( string element );
+		
+		
+		//! Remove the element at index i.
+		/*!
+			\param i is the index of the element to remove.
+		*/
+		void removeComboElement( int i );
+		
+		
+		//! Set the combo element at index i.
+		/*!
+			\param i is the index of the element to alter.
+			\param element is the new string of element i.
+		*/
+		void setComboElement( int i, string element );
 
+		//! Set all the elements in this combo field.
+		/*!
+			Using this function will remove all current combo elements.
+			\param elements is a vector of strings containing all the new elements.
+		*/
+		void setComboElements( vector<string> elements );
+		
+		
 	
 	private:
 	
