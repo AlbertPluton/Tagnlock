@@ -53,7 +53,7 @@ class FieldGTKMM : public Gtk::EventBox
 
 	
 		//! Returns a widget edit the properties of the base field.
-		Gtk::Widget* getEditWidget();
+		virtual Gtk::Widget* getEditWidget(){};
 		
 		//! Updates the properties of the widgets.
 		/*!

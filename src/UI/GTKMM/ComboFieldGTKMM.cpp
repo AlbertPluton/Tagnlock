@@ -150,30 +150,6 @@ ComboFieldGTKMM::~ComboFieldGTKMM()
 //-----------------------------------------------------------------------------
 
 		
-Gtk::Widget* ComboFieldGTKMM::getEditWidget()
-{
-	if( editWidget == NULL )
-	{
-		try
-		{
-#ifdef TODO_DEF
-#warning TODO in ...FieldGTKMM::getEditWidget 
-#endif	
-//			editWindow = 
-		}
-		catch( exception& e )
-		{
-			throw e;
-		}	
-	}
-	return editWidget;
-};
-		
-
-
-//-----------------------------------------------------------------------------
-
-		
 void ComboFieldGTKMM::updateProperties()
 {
 	string fieldType = baseField->getType();
@@ -284,6 +260,8 @@ void ComboFieldGTKMM::updateProperties()
 		// TODO Send error because the field type is unknown.
 	}
 	
+	this->updatePropertiesParentClass();
+	
 };
 
 
@@ -340,6 +318,24 @@ Gtk::Widget* ComboFieldGTKMM::getEntry()
 	
 	return NULL;
 };
+
+//-----------------------------------------------------------------------------
+
+Gtk::Widget* ComboFieldGTKMM::getEditWidget()
+{
+
+	// Get the editWidget.
+	FieldEditWidgetGTKMM* fieldEditWidgetGTKMM = FieldEditWidgetGTKMM::newEditWidget( this->getBaseField(), this->getIndex() );
+		
+	// Cast it to a Gtk::Widget.
+	editWidget = (Gtk::Widget*)fieldEditWidgetGTKMM;
+		
+	// Connect the properties updated signal.
+	fieldEditWidgetGTKMM->signal_changed_property().connect( sigc::mem_fun( *this, &ComboFieldGTKMM::updateProperties) );	
+		
+	return editWidget;
+};
+
 
 //-----------------------------------------------------------------------------
 

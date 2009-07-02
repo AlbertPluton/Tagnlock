@@ -206,7 +206,7 @@ void FieldSpinEditWidgetGTKMM::changeMax( )
 	// Set the highest possible value for the minimum to max.
 	adjustment_min->set_upper( max );	
 	
-	m_signal_changed_property.emit( 1 );
+	m_signal_changed_property.emit( );
 
 };
 
@@ -222,7 +222,7 @@ void FieldSpinEditWidgetGTKMM::changeMin( )
 	// Set the lowest possible value for the maximum to min.
 	adjustment_max->set_lower( min );
 	
-	m_signal_changed_property.emit( 1 );
+	m_signal_changed_property.emit( );
 
 };
 
@@ -256,7 +256,7 @@ void FieldSpinEditWidgetGTKMM::activateMax( )
 	}
 	
 	
-	m_signal_changed_property.emit( 1 );
+	m_signal_changed_property.emit( );
 	
 		
 };
@@ -290,7 +290,7 @@ void FieldSpinEditWidgetGTKMM::activateMin( )
 		adjustment_max->set_lower( -1000000 );
 	}
 	
-	m_signal_changed_property.emit( 1 );
+	m_signal_changed_property.emit( );
 		
 };
 
@@ -300,7 +300,7 @@ void FieldSpinEditWidgetGTKMM::changeStepsize( )
 {
 	spinField->setStepsize( spinStepsize.get_value() );
 	
-	m_signal_changed_property.emit( 1 );
+	m_signal_changed_property.emit( );
 	
 };
 
@@ -352,7 +352,7 @@ void FieldSpinEditWidgetGTKMM::changeDec( )
 
 	spinField->setStepsize( spinStepsize.get_value() );
 
-	m_signal_changed_property.emit( 1 );
+	m_signal_changed_property.emit( );
 
 };
 
@@ -362,7 +362,7 @@ void FieldSpinEditWidgetGTKMM::changeAdhereStep( )
 {
 	spinField->setAdhereStep( toggleAdhereStep.get_active() );
 
-	m_signal_changed_property.emit( 1 );
+	m_signal_changed_property.emit( );
 };
 
 //-----------------------------------------------------------------------------
@@ -372,7 +372,7 @@ void FieldSpinEditWidgetGTKMM::changeAlwaysUpdate( )
 	spinField->setAlwaysUpdate( toggleAlwaysUpdate.get_active() );
 	
 
-	m_signal_changed_property.emit( 1 );
+	m_signal_changed_property.emit( );
 	
 };
 

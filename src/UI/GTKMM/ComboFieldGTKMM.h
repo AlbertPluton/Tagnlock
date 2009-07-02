@@ -27,9 +27,6 @@ class ComboFieldGTKMM : public FieldGTKMM
 
 
 
-		//! Returns a widget edit the properties of the base field.
-		Gtk::Widget* getEditWidget();
-
 		//! Updates the properties of the widgets.
 		/*!
 			This function should be called by the edit widget when the user has alterd some properties of a field.
@@ -43,6 +40,9 @@ class ComboFieldGTKMM : public FieldGTKMM
 		void setData();
 		
 		Gtk::Widget* getEntry();
+
+		//! Returns the edit widget.
+		Gtk::Widget* getEditWidget();
 		
 	private:
 

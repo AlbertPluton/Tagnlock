@@ -34,31 +34,7 @@ SpinFieldGTKMM::~SpinFieldGTKMM()
 
 //-----------------------------------------------------------------------------
 
-		
-Gtk::Widget* SpinFieldGTKMM::getEditWidget()
-{
-	if( editWidget == NULL )
-	{
-		try
-		{
-#ifdef TODO_DEF
-#warning TODO in ...FieldGTKMM::getEditWidget 
-#endif	
-//			editWindow = 
-		}
-		catch( exception& e )
-		{
-			throw e;
-		}	
-	}
-	return editWidget;
-};
-		
 
-
-//-----------------------------------------------------------------------------
-
-		
 void SpinFieldGTKMM::updateProperties()
 {
 
@@ -116,6 +92,7 @@ void SpinFieldGTKMM::updateProperties()
 
 	spinButton.update();
 
+	this->updatePropertiesParentClass();
 
 };
 
@@ -149,6 +126,24 @@ Gtk::Widget* SpinFieldGTKMM::getEntry()
 {
 	return (Gtk::Widget*)(&spinButton);
 };
+
+//-----------------------------------------------------------------------------
+
+Gtk::Widget* SpinFieldGTKMM::getEditWidget()
+{
+
+	// Get the editWidget.
+	FieldEditWidgetGTKMM* fieldEditWidgetGTKMM = FieldEditWidgetGTKMM::newEditWidget( this->getBaseField(), this->getIndex() );
+		
+	// Cast it to a Gtk::Widget.
+	editWidget = (Gtk::Widget*)fieldEditWidgetGTKMM;
+		
+	// Connect the properties updated signal.
+	fieldEditWidgetGTKMM->signal_changed_property().connect( sigc::mem_fun( *this, &SpinFieldGTKMM::updateProperties) );
+	
+	return editWidget;
+};
+
 
 //-----------------------------------------------------------------------------
 

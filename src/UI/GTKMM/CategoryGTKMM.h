@@ -13,7 +13,7 @@
 #include "FieldGTKMM.h"
 #include "Category.h"
 #include "ObjectData.h"
-
+#include "CategoryTreeGTKMM.h"
 
 
 #define defaultTableAttachX Gtk::FILL|Gtk::EXPAND
@@ -31,7 +31,7 @@ class CategoryGTKMM : public Gtk::Table
 {
 
 	public:
-		CategoryGTKMM();
+		CategoryGTKMM( Gtk::ScrolledWindow* catTreeWindow, Gtk::ScrolledWindow* editWindow );
 		~CategoryGTKMM();
 	
 		
@@ -75,12 +75,21 @@ class CategoryGTKMM : public Gtk::Table
 	
 		ObjectData* objectData;
 
-		type_signal_selectionChange signal_selectionChange;
 
+		CategoryTreeGTKMM* categoryTree;
+		Gtk::Widget* categoryFieldEditWidget;
+		Gtk::ScrolledWindow* categoryTreeWindow;
+		Gtk::ScrolledWindow* categoryFieldEditWindow;
+		
+		
+		type_signal_selectionChange signal_selectionChange;
 
 		// An vector with all connection objects which this object has generated to receive signals from its children.
 		vector<sigc::connection> connections;
 
+
+		// An vector with all fields in this class
+		vector<FieldGTKMM*> fields;
 
 		// Attach options for the table.
 		static Gtk::AttachOptions tableAttachX;

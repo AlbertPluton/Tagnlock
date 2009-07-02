@@ -33,8 +33,8 @@ class CategoryTreeGTKMM : public Gtk::TreeView
 	public:
 	
 		//! The default constructor.
-		CategoryTreeGTKMM();
-		
+		CategoryTreeGTKMM( Category* cat = NULL );
+
 		//! The default destructor.
 		~CategoryTreeGTKMM();
 

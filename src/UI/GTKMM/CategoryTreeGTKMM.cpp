@@ -11,7 +11,7 @@
 
 //-----------------------------------------------------------------------------
 
-CategoryTreeGTKMM::CategoryTreeGTKMM()
+CategoryTreeGTKMM::CategoryTreeGTKMM( Category* cat )
 {
 
 
@@ -35,6 +35,11 @@ CategoryTreeGTKMM::CategoryTreeGTKMM()
  	categoryTreeSelection->signal_changed().connect( sigc::mem_fun(this, &CategoryTreeGTKMM::selectionChange) );
 
 	this->show_all();
+
+	if( cat != NULL )
+	{
+		this->makeTreeModel( cat );
+	};
 
 };
 

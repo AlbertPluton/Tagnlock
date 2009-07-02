@@ -35,30 +35,6 @@ CheckFieldGTKMM::~CheckFieldGTKMM()
 //-----------------------------------------------------------------------------
 
 		
-Gtk::Widget* CheckFieldGTKMM::getEditWidget()
-{
-	if( editWidget == NULL )
-	{
-		try
-		{
-#ifdef TODO_DEF
-#warning TODO in ...FieldGTKMM::getEditWidget 
-#endif	
-//			editWindow = 
-		}
-		catch( exception& e )
-		{
-			throw e;
-		}	
-	}
-	return editWidget;
-};
-		
-
-
-//-----------------------------------------------------------------------------
-
-		
 void CheckFieldGTKMM::updateProperties()
 {
 	this->updatePropertiesParentClass();
@@ -95,6 +71,23 @@ Gtk::Widget* CheckFieldGTKMM::getEntry()
 {
 	return (Gtk::Widget*)(&checkButton);
 };
+
+//-----------------------------------------------------------------------------
+
+Gtk::Widget* CheckFieldGTKMM::getEditWidget()
+{
+
+	// Get the editWidget.
+	FieldEditWidgetGTKMM* fieldEditWidgetGTKMM = FieldEditWidgetGTKMM::newEditWidget( this->getBaseField(), this->getIndex() );
+		
+	editWidget = (Gtk::Widget*)fieldEditWidgetGTKMM;
+		
+	// Connect the properties updated signal.
+	fieldEditWidgetGTKMM->signal_changed_property().connect( sigc::mem_fun( *this, &CheckFieldGTKMM::updateProperties) );
+			
+	return editWidget;
+};
+
 
 //-----------------------------------------------------------------------------
 

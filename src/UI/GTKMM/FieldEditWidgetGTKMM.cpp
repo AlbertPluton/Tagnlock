@@ -26,7 +26,7 @@ FieldEditWidgetGTKMM::FieldEditWidgetGTKMM( Field* pField, int i ) : typeLabel("
 	attachY = Gtk::EXPAND;
 	
 	rows = 4;
-	columns = 3;
+	columns = 5;
 	
 	this->set_row_spacings(10);
 	
@@ -116,7 +116,7 @@ FieldEditWidgetGTKMM* FieldEditWidgetGTKMM::newEditWidget( Field* pField, int i 
 void FieldEditWidgetGTKMM::changeLabel()
 {
 	baseField->setLabel( label.get_text() );
-	m_signal_changed_property.emit( 1 );
+	m_signal_changed_property.emit( );
 };		
 
 //-----------------------------------------------------------------------------
@@ -124,7 +124,7 @@ void FieldEditWidgetGTKMM::changeLabel()
 void FieldEditWidgetGTKMM::changeRequired()
 {
 	baseField->setRequired( required.get_active() );
-	m_signal_changed_property.emit( 1 );	
+	m_signal_changed_property.emit( );	
 };
 
 //-----------------------------------------------------------------------------
@@ -132,7 +132,7 @@ void FieldEditWidgetGTKMM::changeRequired()
 void FieldEditWidgetGTKMM::changeReset()
 {
 	baseField->setReset( reset.get_active() );
-	m_signal_changed_property.emit( 1 );		
+	m_signal_changed_property.emit( );		
 };
 
 //-----------------------------------------------------------------------------

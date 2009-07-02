@@ -25,7 +25,7 @@ EngineGTKMM::EngineGTKMM( int argc, char **argv, string gladeFileName )
 	dataWindow = NULL;
 	toolchainWindow = NULL;
 	categoryWindow = NULL;
-	categoryGTKMM = new CategoryGTKMM(); // categoryGTKMM = NULL;
+ 
 	
   //Load the Glade file and instiate its widgets:
 	#ifdef GLIBMM_EXCEPTIONS_ENABLED
@@ -65,8 +65,9 @@ EngineGTKMM::EngineGTKMM( int argc, char **argv, string gladeFileName )
  	categoryFieldsWindow->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_ALWAYS);
 
   refXml->get_widget("CategoryTreeWindow", categoryTreeWindow);
-
 	refXml->get_widget("CategoryFieldEditWindow", categoryFieldEditWindow);
+	categoryGTKMM = new CategoryGTKMM( categoryTreeWindow, categoryFieldEditWindow );
+
 
 
  	

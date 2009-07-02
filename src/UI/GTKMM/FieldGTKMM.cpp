@@ -140,18 +140,6 @@ FieldGTKMM* FieldGTKMM::newFieldGTKMM( Field* pField, FieldData* pData, int i )
 
 //-----------------------------------------------------------------------------
 
-Gtk::Widget* FieldGTKMM::getEditWidget()
-{
-	if( editWidget == NULL )
-	{
-		editWidget = (Gtk::Widget*)FieldEditWidgetGTKMM::newEditWidget( this->getBaseField(), this->getIndex() );
-	}
-	
-	return editWidget;
-};
-
-
-//-----------------------------------------------------------------------------
 Field* FieldGTKMM::getBaseField()
 {
 	return baseField;

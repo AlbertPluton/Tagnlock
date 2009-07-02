@@ -31,31 +31,7 @@ TextFieldGTKMM::~TextFieldGTKMM()
 
 //-----------------------------------------------------------------------------
 
-		
-Gtk::Widget* TextFieldGTKMM::getEditWidget()
-{
-	if( editWidget == NULL )
-	{
-		try
-		{
-#ifdef TODO_DEF
-#warning TODO in ...FieldGTKMM::getEditWidget 
-#endif	
-//			editWindow = 
-		}
-		catch( exception& e )
-		{
-			throw e;
-		}	
-	}
-	return editWidget;
-};
-		
-
-
-//-----------------------------------------------------------------------------
-
-		
+			
 void TextFieldGTKMM::updateProperties()
 {
 	this->updatePropertiesParentClass();
@@ -96,6 +72,24 @@ Gtk::Widget* TextFieldGTKMM::getEntry()
 
 //-----------------------------------------------------------------------------
 
+
+Gtk::Widget* TextFieldGTKMM::getEditWidget()
+{
+	// Get the editWidget.
+	FieldEditWidgetGTKMM* fieldEditWidgetGTKMM = FieldEditWidgetGTKMM::newEditWidget( this->getBaseField(), this->getIndex() );
+		
+	// Cast it to Gtk::Widget
+	editWidget = (Gtk::Widget*)fieldEditWidgetGTKMM;
+		
+	// Connect the properties updated signal.
+	fieldEditWidgetGTKMM->signal_changed_property().connect( sigc::mem_fun( *this, &TextFieldGTKMM::updateProperties) );
+	
+		
+	return editWidget;
+};
+
+
+//-----------------------------------------------------------------------------
 
 
 //-----------------------------------------------------------------------------

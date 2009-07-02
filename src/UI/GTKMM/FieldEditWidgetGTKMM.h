@@ -55,7 +55,7 @@ class FieldEditWidgetGTKMM : public Gtk::Table
 		
 		
 		// The signal to indicate a change in the configuration of this field.
-		typedef sigc::signal<void, int> type_signal_changed_property;
+		typedef sigc::signal<void> type_signal_changed_property;
 		type_signal_changed_property signal_changed_property();
 
  
