@@ -38,6 +38,21 @@ class CategoryWindowGTKMM : public EngineGTKMM
 		~CategoryWindowGTKMM();
 
 
+		void loadCategory();
+		void saveCategory();
+		void newField();
+		void modifyField();
+		void displayCategory( int index );
+		
+		void fieldSelected( int select );
+
+
+
+	protected:
+
+		//! This function connects signals to the corresponding functions
+		void connectSignals();
+
 
 	private:
 
@@ -56,9 +71,6 @@ class CategoryWindowGTKMM : public EngineGTKMM
 		Gtk::ScrolledWindow* categoryFieldEditWindow;
 
 
-		
-		
-  	Glib::RefPtr<Gnome::Glade::Xml> refXml;	
 
 
 };

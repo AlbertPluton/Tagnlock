@@ -59,8 +59,6 @@ class DataWindowGTKMM : public EngineGTKMM
 	
 			Gtk::Window* dataWindow;
 
-		
-	  	Glib::RefPtr<Gnome::Glade::Xml> refXml;		
 
 };
 

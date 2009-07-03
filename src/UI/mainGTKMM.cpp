@@ -5,7 +5,8 @@
 //
 //
 
-#include "EngineGTKMM.h"
+#include "CategoryWindowGTKMM.h"
+#include "DataWindowGTKMM.h"
 #include <string>
 using namespace std;
 
@@ -13,8 +14,11 @@ using namespace std;
 int main (int argc, char **argv)
 {
 	string fileName = "src/UI/GTKMM/GTK_GUI.glade";
-	EngineGTKMM engine( argc, argv, fileName);
+//	EngineGTKMM engine( argc, argv, fileName);
 
+//	CategoryWindowGTKMM engine( argc, argv, fileName);
+
+ DataWindowGTKMM engine( argc, argv, fileName);
 
 
 }

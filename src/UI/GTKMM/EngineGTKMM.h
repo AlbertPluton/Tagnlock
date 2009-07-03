@@ -57,15 +57,6 @@ class EngineGTKMM : public Engine
 		void quit();
 
 	
-		// --- Functions relating to Category -------------------------------------
-		void loadCategory();
-		void saveCategory();
-		void newField();
-		void modifyField();
-		void displayCategory( int index );
-		
-		void fieldSelected( int select );
-
 		
 		
 		// --- Functions relating to Toolchain ------------------------------------
@@ -85,31 +76,19 @@ void on_toolbutton25_clicked(  );
 	protected:
 
 		//! This function connects signals to the corresponding functions
-		virtual void connectSignals();
+		virtual void connectSignals(){};
+		
+  	Glib::RefPtr<Gnome::Glade::Xml> refXml;
+
+		Gtk::Main* kit;
+
 		
 	private:
 
-		Gtk::Main* kit;
-		Gtk::Window* dataWindow;
+
 		Gtk::Window* toolchainWindow;
-		Gtk::Window* categoryWindow;
-		
-		
-		// Variables specifically required for the category window
-		Gtk::ScrolledWindow* categoryFieldsWindow;
-		CategoryGTKMM* categoryGTKMM;
-		
-	  
-	  // Variables used in the tree view of the category window
-	  Gtk::ScrolledWindow* categoryTreeWindow;
-		
-		// Variables used for the edit window of the category window
-		Gtk::ScrolledWindow* categoryFieldEditWindow;
-
 
 		
-		
-  	Glib::RefPtr<Gnome::Glade::Xml> refXml;		
 
 
 

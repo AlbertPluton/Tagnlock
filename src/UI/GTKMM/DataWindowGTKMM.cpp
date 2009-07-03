@@ -54,7 +54,7 @@ DataWindowGTKMM::DataWindowGTKMM(  int argc, char **argv, string gladeFileName )
 
 		connectSignals();
     dataWindow->show();
- 		
+ 			 kit->run();
 	}
 	
 	
@@ -65,7 +65,9 @@ DataWindowGTKMM::DataWindowGTKMM(  int argc, char **argv, string gladeFileName )
 
 DataWindowGTKMM::~DataWindowGTKMM()
 {
-
+	
+	delete dataWindow;
+	
 };
 
 //-----------------------------------------------------------------------------
