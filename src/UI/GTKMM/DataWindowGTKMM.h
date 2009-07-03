@@ -6,6 +6,9 @@
 //
 
 
+#ifndef DATAWINDOWGTKMM_H
+#define DATAWINDOWGTKMM_H
+
 #include "EngineGTKMM.h"
 
 
@@ -30,20 +33,39 @@ class DataWindowGTKMM : public EngineGTKMM
 		/*!
 			\param data is a pointer to the data window.
 		*/
-		DataWindowGTKMM( Glib::RefPtr<Gnome::Glade::Xml>* xml );
+		DataWindowGTKMM( int argc, char **argv, string gladeFileName );
 		
 		//! The default destructor.
 		~DataWindowGTKMM();
 
 
 
+		void displayDatahandlerObject();
+		void displayNextDatahandler();
+		void displayPreviousDatahandler();
+		void displayNextObjectData();
+		void displayPreviousObjectData();
+		void readDataFromUI();
+
+
+
+	protected:
+
+		//! This function connects signals to the corresponding functions
+		void connectSignals();
 
 
 	private:
 	
 			Gtk::Window* dataWindow;
 
+		
+	  	Glib::RefPtr<Gnome::Glade::Xml> refXml;		
 
 };
+
+
+#endif
+
 
 

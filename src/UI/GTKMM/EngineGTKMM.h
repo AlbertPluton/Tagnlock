@@ -67,15 +67,6 @@ class EngineGTKMM : public Engine
 		void fieldSelected( int select );
 
 		
-
-		// --- Functions relating to Datahandler ----------------------------------
-		
-		void displayDatahandlerObject();
-		void displayNextDatahandler();
-		void displayPreviousDatahandler();
-		void displayNextObjectData();
-		void displayPreviousObjectData();
-		void readDataFromUI();
 		
 		// --- Functions relating to Toolchain ------------------------------------
 		
@@ -91,12 +82,12 @@ void on_toolbutton25_clicked(  );
 
 
 	
-	private:
+	protected:
 
 		//! This function connects signals to the corresponding functions
-		void connectSignals();
+		virtual void connectSignals();
 		
-
+	private:
 
 		Gtk::Main* kit;
 		Gtk::Window* dataWindow;

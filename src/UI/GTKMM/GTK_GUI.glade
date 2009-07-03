@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Fri Jul  3 11:03:24 2009 -->
+<!--Generated with glade3 3.4.5 on Fri Jul  3 11:41:53 2009 -->
 <glade-interface>
   <widget class="GtkWindow" id="DataWindow">
     <property name="title" translatable="yes">Data</property>
@@ -240,27 +240,18 @@
                     <property name="n_columns">2</property>
                     <property name="column_spacing">5</property>
                     <child>
-                      <widget class="GtkLabel" id="label2">
+                      <widget class="GtkComboBoxEntry" id="comboboxentry1">
                         <property name="visible">True</property>
-                        <property name="xalign">0</property>
-                        <property name="label" translatable="yes">Datahandler:</property>
+                        <child internal-child="entry">
+                          <widget class="GtkEntry" id="comboboxentry-entry1">
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                          </widget>
+                        </child>
                       </widget>
                       <packing>
-                        <property name="top_attach">1</property>
-                        <property name="bottom_attach">2</property>
-                        <property name="x_options"></property>
-                        <property name="y_options">GTK_FILL</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <widget class="GtkLabel" id="label1">
-                        <property name="visible">True</property>
-                        <property name="xalign">0.89999997615814209</property>
-                        <property name="label" translatable="yes">Location:</property>
-                      </widget>
-                      <packing>
-                        <property name="x_options"></property>
-                        <property name="y_options">GTK_FILL</property>
+                        <property name="left_attach">1</property>
+                        <property name="right_attach">2</property>
                       </packing>
                     </child>
                     <child>
@@ -276,13 +267,27 @@
                       </packing>
                     </child>
                     <child>
-                      <widget class="GtkComboBox" id="combobox1">
+                      <widget class="GtkLabel" id="label1">
                         <property name="visible">True</property>
+                        <property name="xalign">0.89999997615814209</property>
+                        <property name="label" translatable="yes">Location:</property>
                       </widget>
                       <packing>
-                        <property name="left_attach">1</property>
-                        <property name="right_attach">2</property>
-                        <property name="y_options"></property>
+                        <property name="x_options"></property>
+                        <property name="y_options">GTK_FILL</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <widget class="GtkLabel" id="label2">
+                        <property name="visible">True</property>
+                        <property name="xalign">0</property>
+                        <property name="label" translatable="yes">Datahandler:</property>
+                      </widget>
+                      <packing>
+                        <property name="top_attach">1</property>
+                        <property name="bottom_attach">2</property>
+                        <property name="x_options"></property>
+                        <property name="y_options">GTK_FILL</property>
                       </packing>
                     </child>
                   </widget>

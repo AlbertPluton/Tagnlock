@@ -16,7 +16,7 @@ EngineGTKMM::EngineGTKMM( int argc, char **argv, string gladeFileName )
 {
 
 #ifdef DEBUG_MESSAGES_DEF
-	cout << "Constructing FieldTableGTKMM	object.\n";
+	cout << "Constructing EngineGTKMM	object.\n";
 #endif
 
 
@@ -51,10 +51,7 @@ EngineGTKMM::EngineGTKMM( int argc, char **argv, string gladeFileName )
 	#endif	
 	
 	// Get the Glade-instantiated windows and dialogs.
-	
-	// Connect the signal handlers.
-	
-  //Get the Glade-instantiated Dialog:
+
   refXml->get_widget("DataWindow", dataWindow);
   refXml->get_widget("ToolchainWindow", toolchainWindow);
   refXml->get_widget("CategoryWindow", categoryWindow);
@@ -127,7 +124,7 @@ void EngineGTKMM::connectSignals()
     //Get the Glade-instantiated Button, and connect a signal handler:
     Gtk::ToolButton* pToolButton = 0;
     
-    
+/*    
     // DataWindow ===============================================================================================================
     
     // New button
@@ -189,7 +186,7 @@ void EngineGTKMM::connectSignals()
     	// TODO throw error
     }
     
-    
+*/    
     
     // ToolchainWindow ===============================================================================================================
  
@@ -483,52 +480,6 @@ void EngineGTKMM::fieldSelected( int select )
 
 };
 
-
-//-----------------------------------------------------------------------------
-
-// --- Functions relating to Datahandler --------------------------------------
-
-void EngineGTKMM::displayDatahandlerObject( )
-{
-
-};
-
-//-----------------------------------------------------------------------------
-
-void EngineGTKMM::displayNextDatahandler()
-{
-
-};
-
-//-----------------------------------------------------------------------------
-
-void EngineGTKMM::displayPreviousDatahandler()
-{
-
-};
-
-//-----------------------------------------------------------------------------
-
-void EngineGTKMM::displayNextObjectData()
-{
-
-};
-
-
-
-//-----------------------------------------------------------------------------
-
-void EngineGTKMM::displayPreviousObjectData()
-{
-
-};
-
-//-----------------------------------------------------------------------------
-
-void EngineGTKMM::readDataFromUI()
-{
-
-};
 
 
 //-----------------------------------------------------------------------------
