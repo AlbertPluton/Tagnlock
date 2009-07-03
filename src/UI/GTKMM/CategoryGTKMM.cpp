@@ -65,6 +65,7 @@ void CategoryGTKMM::addField( FieldGTKMM* field )
 
 	int index = field->getIndex();
 
+
 	// Attach the label.
 	this->attach( *(field->getLabel()), 0, 1, index, index+1, tableAttachX, tableAttachY, tablePaddingX, tablePaddingY );
 	
@@ -188,6 +189,16 @@ void CategoryGTKMM::fieldSelected( int fieldIndex )
 	
 	// Add the editWidget to the editWindow
 	categoryFieldEditWindow->add( *categoryFieldEditWidget );
+	
+	try
+	{
+		FieldEditWidgetGTKMM* temp_class = static_cast<FieldEditWidgetGTKMM*>(categoryFieldEditWidget);
+		temp_class->signal_changed_property().connect( sigc::mem_fun(categoryTree, &CategoryTreeGTKMM::updateProperties) );
+	}
+	catch( exception& e )
+	{
+		// TODO Throw error.
+	}
 	
 };
 

@@ -14,7 +14,6 @@
 CategoryTreeGTKMM::CategoryTreeGTKMM( Category* cat )
 {
 
-
 	categoryColumns.add( columnIndex					);
  	categoryColumns.add( columnFieldType			);
  	categoryColumns.add( columnFieldLabel			);
@@ -38,7 +37,7 @@ CategoryTreeGTKMM::CategoryTreeGTKMM( Category* cat )
 
 	if( cat != NULL )
 	{
-		this->makeTreeModel( cat );
+		this->makeTreeModel( category );
 	};
 
 };
@@ -56,14 +55,16 @@ CategoryTreeGTKMM::~CategoryTreeGTKMM()
 void CategoryTreeGTKMM::makeTreeModel( Category* cat )
 {
 	
+	category = cat;
+	
 	Field* field = NULL;
 	
 	Gtk::TreeModel::Row row;
 		
-	for( int i = 0; i < cat->getFieldsSize(); i++ )
+	for( int i = 0; i < category->getFieldsSize(); i++ )
 	{
 		row = *(categoryTreeModel->append());
-		field = cat->getFieldAt(i);
+		field = category->getFieldAt(i);
 		row[columnIndex] = i;
 		row[columnFieldType] = field->getType();
 		row[columnFieldLabel] = field->getLabel();
@@ -111,6 +112,27 @@ void CategoryTreeGTKMM::selectionChange( void )
 
 };
 
+//-----------------------------------------------------------------------------
+
+void CategoryTreeGTKMM::updateProperties()
+{
+
+	// Get the selection
+	Gtk::TreeModel::iterator iter = categoryTreeSelection->get_selected();
+
+	//If anything is selected.
+	if(iter) 
+	{
+  	Gtk::TreeModel::Row row = *iter;
+		Field* field = category->getFieldAt( row[columnIndex] );
+
+		row[columnFieldLabel] = field->getLabel();
+		row[columnFieldRequired] = field->getRequired();
+		row[columnFieldReset] = field->getReset();
+
+	};
+
+};
 
 //-----------------------------------------------------------------------------
 

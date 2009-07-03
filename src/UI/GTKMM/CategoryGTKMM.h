@@ -17,7 +17,7 @@
 
 
 #define defaultTableAttachX Gtk::FILL|Gtk::EXPAND
-#define defaultTableAttachY Gtk::EXPAND
+#define defaultTableAttachY Gtk::FILL
 
 #define defaultColumns 10
 #define defaultPaddingX 5

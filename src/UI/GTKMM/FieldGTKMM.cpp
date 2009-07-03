@@ -36,7 +36,14 @@ FieldGTKMM::FieldGTKMM( Field* pField, FieldData* pData, int i )
 	cout << "Constructing FieldGTKMM	object.\n";
 #endif
 	
-
+	// Set the event box invisible.
+//	this->set_visible_window( false );
+	
+	//
+//	this->set_above_child( false );
+	
+	this->hide();
+	
 	baseField = pField;
 	data = pData;
 	index = i;
@@ -53,7 +60,7 @@ FieldGTKMM::FieldGTKMM( Field* pField, FieldData* pData, int i )
 	// Connect the signal of the EventBox
 	this->signal_button_press_event().connect( sigc::mem_fun( *this, &FieldGTKMM::selected) );
 
-	this->show_all();
+	//this->show_all();
 
 };
 

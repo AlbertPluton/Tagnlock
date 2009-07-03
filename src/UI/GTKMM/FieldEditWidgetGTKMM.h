@@ -49,13 +49,15 @@ class FieldEditWidgetGTKMM : public Gtk::Table
 		static FieldEditWidgetGTKMM* newEditWidget( Field* pField, int i );
 
 
-		// Used to change the index after a field rearangement.
+		//! Used to change the index after a field rearangement.
 		void setIndex( int i );
 		
 		
 		
-		// The signal to indicate a change in the configuration of this field.
+		//! The signal to indicate a change in the configuration of this field.
 		typedef sigc::signal<void> type_signal_changed_property;
+		
+		//! Returns the signal changed_property.
 		type_signal_changed_property signal_changed_property();
 
  

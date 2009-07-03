@@ -46,6 +46,9 @@ class CategoryTreeGTKMM : public Gtk::TreeView
 		void clearTreeModel( void );
 		
 		
+		//! Update the properties of the category in this tree.
+		void updateProperties();
+		
 		
   	typedef sigc::signal<void, int> type_signal_selectionChange;
   	
@@ -70,7 +73,7 @@ class CategoryTreeGTKMM : public Gtk::TreeView
 		Gtk::TreeModelColumn<bool> 						columnFieldRequired;
 		Gtk::TreeModelColumn<bool> 						columnFieldReset;
 
-
+		Category* category;
 
 };
 

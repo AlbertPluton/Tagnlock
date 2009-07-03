@@ -27,6 +27,7 @@ LINK_DIRECTORIES ( ${LIBRARY_OUTPUT_PATH}
 # Add all source files in a variable
 SET (	SRCS_EngineGTKMM
 			EngineGTKMM.cpp
+			DataWindowGTKMM.cpp
 			FieldGTKMM.cpp
 			TextFieldGTKMM.cpp
 			CheckFieldGTKMM.cpp

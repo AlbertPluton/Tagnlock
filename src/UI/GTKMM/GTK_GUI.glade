@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Fri Jun 19 13:50:55 2009 -->
+<!--Generated with glade3 3.4.5 on Fri Jul  3 11:03:24 2009 -->
 <glade-interface>
   <widget class="GtkWindow" id="DataWindow">
     <property name="title" translatable="yes">Data</property>
@@ -234,67 +234,61 @@
               <widget class="GtkVBox" id="vbox4">
                 <property name="visible">True</property>
                 <child>
-                  <widget class="GtkHBox" id="hbox1">
+                  <widget class="GtkTable" id="table1">
                     <property name="visible">True</property>
-                    <child>
-                      <widget class="GtkLabel" id="label1">
-                        <property name="visible">True</property>
-                        <property name="label" translatable="yes">Location: </property>
-                      </widget>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">False</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <widget class="GtkComboBoxEntry" id="comboboxentry1">
-                        <property name="visible">True</property>
-                        <child internal-child="entry">
-                          <widget class="GtkEntry" id="comboboxentry-entry1">
-                            <property name="visible">True</property>
-                            <property name="can_focus">True</property>
-                          </widget>
-                        </child>
-                      </widget>
-                      <packing>
-                        <property name="position">1</property>
-                      </packing>
-                    </child>
-                  </widget>
-                  <packing>
-                    <property name="expand">False</property>
-                  </packing>
-                </child>
-                <child>
-                  <widget class="GtkHBox" id="hbox2">
-                    <property name="visible">True</property>
+                    <property name="n_rows">2</property>
+                    <property name="n_columns">2</property>
+                    <property name="column_spacing">5</property>
                     <child>
                       <widget class="GtkLabel" id="label2">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">Datahandler: </property>
+                        <property name="xalign">0</property>
+                        <property name="label" translatable="yes">Datahandler:</property>
                       </widget>
                       <packing>
-                        <property name="expand">False</property>
+                        <property name="top_attach">1</property>
+                        <property name="bottom_attach">2</property>
+                        <property name="x_options"></property>
+                        <property name="y_options">GTK_FILL</property>
                       </packing>
                     </child>
                     <child>
-                      <widget class="GtkComboBoxEntry" id="comboboxentry2">
+                      <widget class="GtkLabel" id="label1">
                         <property name="visible">True</property>
-                        <child internal-child="entry">
-                          <widget class="GtkEntry" id="comboboxentry-entry2">
-                            <property name="visible">True</property>
-                            <property name="can_focus">True</property>
-                          </widget>
-                        </child>
+                        <property name="xalign">0.89999997615814209</property>
+                        <property name="label" translatable="yes">Location:</property>
                       </widget>
                       <packing>
-                        <property name="position">1</property>
+                        <property name="x_options"></property>
+                        <property name="y_options">GTK_FILL</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <widget class="GtkComboBox" id="combobox2">
+                        <property name="visible">True</property>
+                      </widget>
+                      <packing>
+                        <property name="left_attach">1</property>
+                        <property name="right_attach">2</property>
+                        <property name="top_attach">1</property>
+                        <property name="bottom_attach">2</property>
+                        <property name="y_options"></property>
+                      </packing>
+                    </child>
+                    <child>
+                      <widget class="GtkComboBox" id="combobox1">
+                        <property name="visible">True</property>
+                      </widget>
+                      <packing>
+                        <property name="left_attach">1</property>
+                        <property name="right_attach">2</property>
+                        <property name="y_options"></property>
                       </packing>
                     </child>
                   </widget>
                   <packing>
                     <property name="expand">False</property>
-                    <property name="position">1</property>
+                    <property name="padding">10</property>
                   </packing>
                 </child>
                 <child>
@@ -304,15 +298,11 @@
                     <property name="hscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
                     <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
                     <child>
-                      <widget class="GtkTreeView" id="treeview1">
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="headers_clickable">True</property>
-                      </widget>
+                      <placeholder/>
                     </child>
                   </widget>
                   <packing>
-                    <property name="position">2</property>
+                    <property name="position">1</property>
                   </packing>
                 </child>
               </widget>
@@ -935,7 +925,7 @@
                 </child>
               </widget>
               <packing>
-                <property name="resize">False</property>
+                <property name="resize">True</property>
                 <property name="shrink">True</property>
               </packing>
             </child>
@@ -1019,7 +1009,7 @@
                   </widget>
                   <packing>
                     <property name="resize">True</property>
-                    <property name="shrink">True</property>
+                    <property name="shrink">False</property>
                   </packing>
                 </child>
               </widget>

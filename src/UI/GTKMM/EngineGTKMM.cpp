@@ -80,8 +80,8 @@ EngineGTKMM::EngineGTKMM( int argc, char **argv, string gladeFileName )
 		connectSignals();
 
 		// TODO place the following function in a better place = other function.
-//    dataWindow->show();
-    categoryWindow->show();
+    dataWindow->show();
+//    categoryWindow->show();
 //    toolchainWindow->show();
    
     kit->run();
