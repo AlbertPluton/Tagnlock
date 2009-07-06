@@ -142,21 +142,34 @@ void CategoryGTKMM::makeNewTable( Category* category )
 
 void CategoryGTKMM::makeNewTable( ObjectData* object )
 {
-#ifdef TODO_DEF
-#warning TODO in file __FILE__ at line __LINE__.
-#endif
+	makeNewTable( object->getCategory() );
 };
 
 //-----------------------------------------------------------------------------
 
 void CategoryGTKMM::fillTable( ObjectData* object )
 {
-#ifdef TODO_DEF
-#warning TODO in file __FILE__ at line __LINE__.
-#endif
+
+	objectData = object;	
+
+	for( int i = 0; i < fields.size(); i++ )
+	{
+		fields[i]->setFieldData();
+		fields[i]->setData();
+	};
 };
 
 
+//-----------------------------------------------------------------------------
+
+void CategoryGTKMM::readFromTable( ObjectData* object )
+{
+	for( int i = 0; i < fields.size(); i++ )
+	{
+		fields[i]->setFieldData();
+		fields[i]->getData();
+	}
+};
 
 //-----------------------------------------------------------------------------
 
@@ -174,7 +187,7 @@ void CategoryGTKMM::fieldSelected( int fieldIndex )
 {
 
 	
-	if(	categoryFieldEditWidget != NULL )
+	if(	(categoryFieldEditWidget != NULL) && (categoryFieldEditWindow != NULL) )
 	{
 		// Remove the old editWidget from the editWindow
 		categoryFieldEditWindow->remove( );
@@ -188,7 +201,7 @@ void CategoryGTKMM::fieldSelected( int fieldIndex )
 	categoryFieldEditWidget = fields[ fieldIndex ]->getEditWidget();
 	
 	// Add the editWidget to the editWindow
-	categoryFieldEditWindow->add( *categoryFieldEditWidget );
+	if( categoryFieldEditWindow != NULL ) categoryFieldEditWindow->add( *categoryFieldEditWidget );
 	
 	try
 	{
@@ -207,6 +220,14 @@ void CategoryGTKMM::fieldSelected( int fieldIndex )
 CategoryGTKMM::type_signal_selectionChange CategoryGTKMM::get_signal_selectionChange( void )
 {
 	return signal_selectionChange;
+};
+
+//-----------------------------------------------------------------------------
+
+
+void CategoryGTKMM::setObjectData( ObjectData* data )
+{
+	objectData = data;
 };
 
 //-----------------------------------------------------------------------------

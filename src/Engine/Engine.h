@@ -128,6 +128,9 @@ class Engine
 		//! Adds a Datahandler to the end of the vector data.
 		void addDatahandler( Datahandler* newData );
 
+		//! Returns a pointer to the current Datahandler.
+		Datahandler* getCurrentDatahandler( );
+
 		//! Returns the Datahandler at the desired index.
 		Datahandler* getDatahandler( int index );
 
@@ -235,7 +238,7 @@ class Engine
 
 
 
-	private:
+	protected:
 
 
 		vector<Category*> categories;

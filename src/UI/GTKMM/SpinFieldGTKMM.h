@@ -34,10 +34,10 @@ class SpinFieldGTKMM : public FieldGTKMM
 		void updateProperties();
 
 		//! Extracts data from the FieldData object specified for this field and displays it in the widget.
-		void getData();
+		void setData();
 
 		//! Extracts the data which was entered in the widget and stores it in the FieldData object.
-		void setData();
+		void getData();
 		
 		Gtk::Widget* getEntry();
 

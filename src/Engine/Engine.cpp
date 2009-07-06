@@ -153,6 +153,14 @@ void Engine::addDatahandler( Datahandler* newData )
 
 //-----------------------------------------------------------------------------
 
+Datahandler* Engine::getCurrentDatahandler( )
+{
+	return data.at( currentData );
+};
+
+//-----------------------------------------------------------------------------
+
+
 Datahandler* Engine::getDatahandler( int index )
 {
 	if( index >= 0 )

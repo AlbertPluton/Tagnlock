@@ -59,6 +59,10 @@ class DataWindowGTKMM : public EngineGTKMM
 	
 			Gtk::Window* dataWindow;
 
+			Gtk::ScrolledWindow* categoryScrolledWindow;
+			Gtk::ScrolledWindow* displayScrolledWindow;
+
+			CategoryGTKMM* category;
 
 };
 

@@ -64,10 +64,10 @@ class FieldGTKMM : public Gtk::EventBox
 		
 	
 		//! Extracts data from the FieldData object specified for this field and displays it in the widget.
-		virtual void getData(){};
+		virtual void setData(){};
 		
 		//! Extracts the data which was entered in the widget and stores it in the FieldData object.
-		virtual void setData(){};
+		virtual void getData(){};
 
 			
 		//! Returns a pointer to the base Field object.

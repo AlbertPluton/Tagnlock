@@ -31,7 +31,7 @@ class CategoryGTKMM : public Gtk::Table
 {
 
 	public:
-		CategoryGTKMM( Gtk::ScrolledWindow* catTreeWindow, Gtk::ScrolledWindow* editWindow );
+		CategoryGTKMM( Gtk::ScrolledWindow* catTreeWindow, Gtk::ScrolledWindow* editWindow = NULL);
 		~CategoryGTKMM();
 	
 		
@@ -47,14 +47,23 @@ class CategoryGTKMM : public Gtk::Table
 		void makeNewTable( ObjectData* object );
 	
 		//! Fill the current table with the data from the given object.
-		void fillTable( ObjectData* object );
+		virtual void fillTable( ObjectData* object ){};
 		
+		//! Read the data from the table and put it in the given object.
+		/*!
+			\param object is a pointer in which the function writes all data from the table.
+		*/		
+		virtual void readFromTable( ObjectData* object ){};
+
 		//! Renew the table if some field has changed. 
 		void renewTable( );
 		
 		//! Delete all the fields this class holds.
 		void clear();
 		
+
+		//! Set the current data object.
+		void setObjectData( ObjectData* data );
 
 		//! Set the number of columns in the table.
 		void setColumns( int c = defaultColumns );
