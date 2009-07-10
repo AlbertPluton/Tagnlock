@@ -176,53 +176,62 @@ void DataWindowGTKMM::displayDatahandlerObject()
 
 void DataWindowGTKMM::displayNextDatahandler()
 {
-	currentData++;
-	if( currentData < data.size() )	
+	// Only perform the action if there is a datahandler in the vector.
+	if( currentData >= 0 )
 	{
-		this->displayDatahandlerObject();
-	}
-	else
-	{
-		currentData--;
-	}
+		currentData++;
+		if( currentData < data.size() )	
+		{
+			this->displayDatahandlerObject();
+		}
+		else
+		{
+			currentData--;
+		};
+	};
 };
 
 //-----------------------------------------------------------------------------
 
 void DataWindowGTKMM::displayPreviousDatahandler()
 {
-	currentData--;
-	if( currentData >= 0 )
-	{
-		this->displayDatahandlerObject();
-	}
-	else
-	{
-		currentData++;
-	};
+		currentData--;
+		if( currentData >= 0 )
+		{
+			this->displayDatahandlerObject();
+		}
+		else
+		{
+			currentData++;
+		};
 };
 
 //-----------------------------------------------------------------------------
 
 void DataWindowGTKMM::displayNextObjectData()
 {
+	// Only perform the action if ther is a datahandler in the vector.
+	if( currentData >= 0 )
+	{
+		// A little abuse of the getNextObject function only to update the value of the current object in the datahandler.
+		(this->getCurrentDatahandler())->getNextObject();
 
-	// A little abuse of the getNextObject function only to update the value of the current object in the datahandler.
-	(this->getCurrentDatahandler())->getNextObject();
-
-	this->displayDatahandlerObject();
-
+		this->displayDatahandlerObject();
+	};
 };
 
 //-----------------------------------------------------------------------------
 
 void DataWindowGTKMM::displayPreviousObjectData()
 {
+	// Only perform the action if ther is a datahandler in the vector.
+	if( currentData >= 0 )
+	{
+		// A little abuse of the getPreviousObject function only to update the value of the current object in the datahandler.
+		(this->getCurrentDatahandler())->getPreviousObject();
 
-	// A little abuse of the getPreviousObject function only to update the value of the current object in the datahandler.
-	(this->getCurrentDatahandler())->getPreviousObject();
-
-	this->displayDatahandlerObject();
+		this->displayDatahandlerObject();
+	};
 
 };
 
