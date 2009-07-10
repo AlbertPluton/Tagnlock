@@ -47,6 +47,9 @@ class DataWindowGTKMM : public EngineGTKMM
 		void displayPreviousObjectData();
 		void readDataFromUI();
 
+		void newButton_clicked();
+
+		void openButton_clicked();
 
 
 	protected:

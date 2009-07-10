@@ -31,7 +31,14 @@ class CategoryGTKMM : public Gtk::Table
 {
 
 	public:
-		CategoryGTKMM( Gtk::ScrolledWindow* catTreeWindow, Gtk::ScrolledWindow* editWindow = NULL);
+
+		//! The contructor used by the data window.
+		CategoryGTKMM( );		
+
+		//! The constructor used by the category window.
+		CategoryGTKMM( Gtk::ScrolledWindow* catTreeWindow, Gtk::ScrolledWindow* editWindow );
+
+		//! The default destructor.
 		~CategoryGTKMM();
 	
 		

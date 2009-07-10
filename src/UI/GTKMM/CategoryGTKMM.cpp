@@ -21,6 +21,32 @@ int CategoryGTKMM::tablePaddingY = defaultPaddingY;
 		
 //-----------------------------------------------------------------------------
 
+CategoryGTKMM::CategoryGTKMM( )
+{
+
+#ifdef DEBUG_MESSAGES_DEF
+	cout << "Constructing CategoryGTKMM	object.\n";
+#endif
+
+	tableAttachX = Gtk::FILL|Gtk::EXPAND;
+	tableAttachY = Gtk::EXPAND;
+
+	objectData = NULL;
+	categoryTree = NULL;
+
+	categoryFieldEditWindow = NULL;
+	categoryFieldEditWidget = NULL;
+
+	this->set_homogeneous(false);
+	this->show();
+	this->set_child_visible();	
+
+
+
+};
+
+//-----------------------------------------------------------------------------
+
 CategoryGTKMM::CategoryGTKMM( Gtk::ScrolledWindow* catTreeWindow, Gtk::ScrolledWindow* editWindow  )
 {
 

@@ -188,6 +188,7 @@ void Engine::addDatahandler( Datahandler* newData )
 {
 	data.push_back( newData );
 	dataModified.push_back( true );
+	currentData = data.size()-1;
 };
 
 //-----------------------------------------------------------------------------

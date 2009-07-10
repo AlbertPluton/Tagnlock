@@ -55,8 +55,8 @@ DataWindowGTKMM::DataWindowGTKMM(  int argc, char **argv, string gladeFileName )
   refXml->get_widget("scrolledwindow1", categoryScrolledWindow);
   refXml->get_widget("scrolledwindow4", displayScrolledWindow);
 
-	category = new CategoryGTKMM( categoryScrolledWindow );   
-
+	category = new CategoryGTKMM( );   
+	if( category ) categoryScrolledWindow->add( (Gtk::Widget&)*category );
 
   if(dataWindow)
   {
@@ -95,7 +95,7 @@ void DataWindowGTKMM::connectSignals()
   refXml->get_widget("toolbutton25", pToolButton);
   if(pToolButton)
   {
-    pToolButton->signal_clicked().connect( sigc::mem_fun( this, &DataWindowGTKMM::on_toolbutton25_clicked) );
+    pToolButton->signal_clicked().connect( sigc::mem_fun( this, &DataWindowGTKMM::newButton_clicked) );
   }
   else
   {
@@ -107,7 +107,7 @@ void DataWindowGTKMM::connectSignals()
   refXml->get_widget("toolbutton26", pToolButton);
   if(pToolButton)
   {
-    pToolButton->signal_clicked().connect( sigc::mem_fun( this, &DataWindowGTKMM::on_toolbutton25_clicked) );
+    pToolButton->signal_clicked().connect( sigc::mem_fun( this, &DataWindowGTKMM::openButton_clicked) );
   }
   else
   {
@@ -244,10 +244,44 @@ void DataWindowGTKMM::readDataFromUI()
 
 //-----------------------------------------------------------------------------
 
+void DataWindowGTKMM::newButton_clicked()
+{
 
+	
+
+};
 
 //-----------------------------------------------------------------------------
 
+void DataWindowGTKMM::openButton_clicked()
+{
+	
+	// Create a dialog to choose from which directory the sources files should be taken.
+	Gtk::FileChooserDialog dialog( *dataWindow, "Please choose the source directory.", Gtk::FILE_CHOOSER_ACTION_SELECT_FOLDER 	 );
+
+  //Add response buttons the the dialog:
+  dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+  dialog.add_button(Gtk::Stock::OPEN, Gtk::RESPONSE_OK);
+
+	int result = dialog.run();
+
+  //Handle the response:
+  switch(result)
+  {
+    case(Gtk::RESPONSE_OK):
+    {
+			Glib::ustring result = dialog.get_current_folder();
+			string result_2 = result.raw();
+			
+			cout << result_2 << "\n";
+      break;
+    }
+     default:
+    {
+      break;
+    }	
+	};
+};
 
 
 //-----------------------------------------------------------------------------
