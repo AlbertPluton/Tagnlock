@@ -154,7 +154,7 @@ void CategoryGTKMM::fillTable( ObjectData* object )
 
 	for( int i = 0; i < fields.size(); i++ )
 	{
-		fields[i]->setFieldData();
+		fields[i]->setFieldData( object->getDataAt(i) );
 		fields[i]->setData();
 	};
 };
@@ -166,7 +166,7 @@ void CategoryGTKMM::readFromTable( ObjectData* object )
 {
 	for( int i = 0; i < fields.size(); i++ )
 	{
-		fields[i]->setFieldData();
+		fields[i]->setFieldData( object->getDataAt(i) );
 		fields[i]->getData();
 	}
 };

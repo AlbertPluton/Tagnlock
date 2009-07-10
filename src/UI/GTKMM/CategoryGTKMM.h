@@ -47,13 +47,13 @@ class CategoryGTKMM : public Gtk::Table
 		void makeNewTable( ObjectData* object );
 	
 		//! Fill the current table with the data from the given object.
-		virtual void fillTable( ObjectData* object ){};
+		virtual void fillTable( ObjectData* object );
 		
 		//! Read the data from the table and put it in the given object.
 		/*!
 			\param object is a pointer in which the function writes all data from the table.
 		*/		
-		virtual void readFromTable( ObjectData* object ){};
+		virtual void readFromTable( ObjectData* object );
 
 		//! Renew the table if some field has changed. 
 		void renewTable( );

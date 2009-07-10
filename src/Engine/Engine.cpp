@@ -16,10 +16,10 @@
 
 Engine::Engine()
 {		
-	currentCategory = 0;
-	currentField = 0;
-	currentData = 0;
-	currentToolchain = 0;
+	currentCategory = -1;
+	currentField = -1;
+	currentData = -1;
+	currentToolchain = -1;
 	currentToolchainNode = NULL;
 
 	// TODO
@@ -49,7 +49,8 @@ void Engine::addCategory( Category* cat )
 
 Category* Engine::getCurrentCategory( )
 {
-	return categories.at( currentCategory );
+	if( currentCategory >= 0 ) return categories.at( currentCategory );
+	else return NULL;
 }
 
 //-----------------------------------------------------------------------------
@@ -62,6 +63,7 @@ Category* Engine::getCategory( int index )
 	}
 	else
 	{
+		// TODO throw
 		return NULL;
 	}
 };
@@ -70,22 +72,45 @@ Category* Engine::getCategory( int index )
 
 void Engine::deleteCategory( int index )
 {
-	categories.erase( categories.begin() + index );
-	categoryModified.erase( categoryModified.begin() + index );
+	if( (index >= 0) && (index < categories.size()) )
+	{	
+		categories.erase( categories.begin() + index );
+		categoryModified.erase( categoryModified.begin() + index );
+	}
+	else
+	{
+		// TODO throw
+	}
 };
 
 //-----------------------------------------------------------------------------
 
 bool Engine::getCategoryModified( int index )
 {
-	return categoryModified.at( index );
+	if( (index >= 0) && (index < categoryModified.size()) )
+	{
+		return categoryModified.at( index );
+	}
+	else
+	{	
+		// TODO throw
+		return false;
+	}
+	
 };
 
 //-----------------------------------------------------------------------------
 
 void Engine::setCategoryModified( int index, bool mod )
 {
-	Engine::categoryModified.at( index ) = mod;
+	if( (index >= 0) && (index < categoryModified.size()) )
+	{	
+		Engine::categoryModified.at( index ) = mod;
+	}
+	else
+	{	
+		// TODO throw
+	}
 };
 
 
@@ -93,8 +118,15 @@ void Engine::setCategoryModified( int index, bool mod )
 
 void Engine::addField( int indexCategory, Field* field )
 {
-		Category* cat = this->getCategory( indexCategory );
+	if( (indexCategory >= 0) && (indexCategory < categories.size()) )
+	{
+		Category* cat = categories[ indexCategory ];
 		cat->addField( field );
+	}
+	else
+	{
+		// TODO throw
+	}
 };
 
 
@@ -137,7 +169,14 @@ int Engine::getIndexCurrentCategory()
 		
 void Engine::setCurrentCategory( int index )
 {
-	currentCategory = index;
+	if( (index >= 0) && (index < categories.size()) )
+	{	
+		currentCategory = index;
+	}
+	else
+	{
+		//TODO throw
+	}
 };
 
 
@@ -163,7 +202,7 @@ Datahandler* Engine::getCurrentDatahandler( )
 
 Datahandler* Engine::getDatahandler( int index )
 {
-	if( index >= 0 )
+	if( (index >= 0) && (index < data.size()) )
 	{
 		return data.at( index );
 	}
@@ -177,15 +216,30 @@ Datahandler* Engine::getDatahandler( int index )
 
 void Engine::deleteDatahandler( int index )
 {
-	data.erase( data.begin() + index );
-	dataModified.erase( dataModified.begin() + index );
+	if( (index >= 0) && (index < data.size()) )
+	{
+		data.erase( data.begin() + index );
+		dataModified.erase( dataModified.begin() + index );
+	}
+	else
+	{
+		//TODO throw
+	}	
 };
 
 //-----------------------------------------------------------------------------
 
 bool Engine::getDataModified( int index )
 {
-	return dataModified.at( index );
+	if( (index >= 0) && (index < dataModified.size()) )
+	{
+		return dataModified.at( index );
+	}
+	else
+	{	
+		// TODO throw
+		return false;
+	}
 };
 
 
@@ -193,7 +247,14 @@ bool Engine::getDataModified( int index )
 
 void Engine::setDataModified( int index, bool mod )
 {
-	dataModified.at( index ) = mod;
+	if( (index >= 0) && (index < dataModified.size()) )
+	{
+		dataModified.at( index ) = mod;
+	}	
+	else
+	{	
+		// TODO throw
+	}
 };	
 
 
@@ -208,7 +269,14 @@ int Engine::getCurrentData()
 
 void Engine::setCurrentData( int index )
 {
-	currentData = index;
+	if( (index >= 0) && (index < data.size()) )
+	{
+		currentData = index;
+	}
+	else
+	{
+		// TODO throw
+	}
 };
 
 
@@ -226,7 +294,7 @@ void Engine::addToolchain( Toolchain* chain )
 
 Toolchain* Engine::getToolchain( int index )
 {
-	if( index >= 0 )
+	if( (index >= 0) && (index < toolchains.size()) )
 	{
 		return toolchains.at( index );
 	}
@@ -240,30 +308,50 @@ Toolchain* Engine::getToolchain( int index )
 
 void Engine::executeToolchain( int index )
 {
-	// Get a pointer to the desired toolchain.
-	Toolchain* toolchain = toolchains.at( index );
+	if( (index >= 0) && (index < toolchains.size()) )
+	{	
+		// Get a pointer to the desired toolchain.
+		Toolchain* toolchain = toolchains.at( index );
 	
-	// Set the current Datahandler object as the input for the toolchain.
-	toolchain->setInput( data.at( currentData ) );
+		// Set the current Datahandler object as the input for the toolchain.
+		toolchain->setInput( data.at( currentData ) );
 	
-	// Execute the toolchain.
-	toolchain->execute();	
-	
+		// Execute the toolchain.
+		toolchain->execute();	
+	}
+	else
+	{
+		// TODO throw
+	}
 };
 
 //-----------------------------------------------------------------------------
 
 void Engine::deleteToolchain( int index )
 {
-	toolchains.erase( toolchains.begin() + index );
-	toolchainModified.erase( toolchainModified.begin() + index );
+	if( (index >= 0) && (index < toolchains.size()) )
+	{
+		toolchains.erase( toolchains.begin() + index );
+		toolchainModified.erase( toolchainModified.begin() + index );
+	}
+	else
+	{
+		// TODO throw
+	}
 };
 
 //-----------------------------------------------------------------------------
 
 bool Engine::getToolchainModified( int index )
 {
-	return toolchainModified.at( index );
+	if( (index >= 0) && (index < toolchainModified.size()) )
+	{
+		return toolchainModified.at( index );
+	}
+	else
+	{
+		// TODO throw
+	}
 };
 
 
@@ -271,7 +359,14 @@ bool Engine::getToolchainModified( int index )
 
 void Engine::setToolchainModified( int index, bool mod )
 {
-	toolchainModified.at( index ) = mod;
+	if( (index >= 0) && (index < toolchainModified.size()) )
+	{
+		toolchainModified.at( index ) = mod;
+	}
+	else
+	{
+		// TODO throw
+	}
 };	
 
 //-----------------------------------------------------------------------------
@@ -285,7 +380,14 @@ int Engine::getCurrentToolchain()
 
 void Engine::setCurrentToolchain( int index )
 {
-	currentToolchain = index;
+	if( (index >= 0) && (index < toolchains.size()) )
+	{
+		currentToolchain = index;
+	}
+	else
+	{
+		// TODO throw
+	}
 };
 
 //-----------------------------------------------------------------------------
