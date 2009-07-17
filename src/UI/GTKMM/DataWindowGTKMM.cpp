@@ -161,12 +161,14 @@ void DataWindowGTKMM::displayDatahandlerObject()
 
 	this->readDataFromUI();
 
-	if( true ) // TODO compare the category
+  ObjectData* object = (this->getCurrentDatahandler())->getCurrentObject();
+
+	if( (object != NULL) && true ) // TODO compare the category
 	{	
-		category->makeNewTable( (this->getCurrentDatahandler())->getCurrentObject() );
+		category->makeNewTable( object );
+		category->fillTable( object );
 	}
 
-	category->fillTable( (this->getCurrentDatahandler())->getCurrentObject() );
 
 	categoryScrolledWindow->show_all();
 
@@ -210,8 +212,8 @@ void DataWindowGTKMM::displayPreviousDatahandler()
 
 void DataWindowGTKMM::displayNextObjectData()
 {
-	// Only perform the action if ther is a datahandler in the vector.
-	if( currentData >= 0 )
+	// Only perform the action if there are multiple objects in the vector.
+	if( currentData > 0 )
 	{
 		// A little abuse of the getNextObject function only to update the value of the current object in the datahandler.
 		(this->getCurrentDatahandler())->getNextObject();
@@ -224,8 +226,8 @@ void DataWindowGTKMM::displayNextObjectData()
 
 void DataWindowGTKMM::displayPreviousObjectData()
 {
-	// Only perform the action if ther is a datahandler in the vector.
-	if( currentData >= 0 )
+	// Only perform the action if there are multiple objects in the vector.
+	if( currentData > 0 )
 	{
 		// A little abuse of the getPreviousObject function only to update the value of the current object in the datahandler.
 		(this->getCurrentDatahandler())->getPreviousObject();
@@ -246,9 +248,21 @@ void DataWindowGTKMM::readDataFromUI()
 
 void DataWindowGTKMM::newButton_clicked()
 {
+#ifdef TODO_DEF
+#warning TODO Make real code instead of test code in DataWindowGTKMM::newButton_clicked().
+#endif
 
+	// This is test code
+	Category* cat = new Category();
+	cat->loadCategory ("/home/bart/DMS_SVN/testSaveCategory.cat");
+	this->addCategory(cat);
+
+	Datahandler* datahandler = new Datahandler();
+	this->addDatahandler( datahandler );
+	datahandler->addNewObject( cat, "/home/bart/DMS_SVN/Test.pdf" );
 	
-
+	this->displayDatahandlerObject();
+	
 };
 
 //-----------------------------------------------------------------------------
@@ -261,7 +275,7 @@ void DataWindowGTKMM::openButton_clicked()
 
   //Add response buttons the the dialog:
   dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
-  dialog.add_button(Gtk::Stock::OPEN, Gtk::RESPONSE_OK);
+  dialog.add_button(Gtk::Stock::NEW, Gtk::RESPONSE_OK);
 
 	int result = dialog.run();
 

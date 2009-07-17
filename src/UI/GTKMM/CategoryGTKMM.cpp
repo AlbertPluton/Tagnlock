@@ -32,7 +32,7 @@ CategoryGTKMM::CategoryGTKMM( )
 	tableAttachY = Gtk::EXPAND;
 
 	objectData = NULL;
-	categoryTree = NULL;
+	categoryTree = new CategoryTreeGTKMM();
 
 	categoryFieldEditWindow = NULL;
 	categoryFieldEditWidget = NULL;
@@ -126,6 +126,7 @@ void CategoryGTKMM::makeNewTable( Category* category )
 
 	FieldGTKMM* fieldGTKMM = NULL;
 	int size = category->getFieldsSize();
+	fields.clear();
 	Field* field = NULL;
 	
 	// Disconnect excisting signals
