@@ -14,6 +14,7 @@
 FieldDataFloat::FieldDataFloat(  )
 {
 	type = typeFieldDataFloat;
+	data = 0.0;
 };
 
 

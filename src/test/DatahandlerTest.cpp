@@ -99,7 +99,7 @@ int main (int argc, const char* argv[] )
 	// Data for the first category
 	for( int i = 1; i <= 5; i++ )
 	{
-		dataHandler.addNewObject( &category_test );
+		dataHandler.addNewObject( &category_test, "" );
 		objectData = dataHandler.getCurrentObject();
 		(objectData->getDataAt( 0 ))->set( (string)"First string" );	
 		(objectData->getDataAt( 1 ))->set( true );	
@@ -125,7 +125,7 @@ int main (int argc, const char* argv[] )
 	
 	for( int i = 0; i < 3; i++ )
 	{
-		dataHandler.addNewObject( &category_GPL );
+		dataHandler.addNewObject( &category_GPL, "" );
 		objectData = dataHandler.getCurrentObject();
 		(objectData->getDataAt( 0 ))->set( read[i] );
 		(objectData->getDataAt( 1 ))->set( name[i] );

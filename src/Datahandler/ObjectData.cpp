@@ -20,9 +20,10 @@ using namespace std;
 
 //-----------------------------------------------------------------------------
 
-ObjectData::ObjectData( Category* categoryPointer )
+ObjectData::ObjectData( Category* categoryPointer, string name )
 {
 	category = categoryPointer;
+	objectName = name;
 	
 	// Get a vector with all field types in this Category.
 	vector<string> typeVector = category->getFieldTypeVector();
@@ -149,5 +150,17 @@ bool ObjectData::compareCategory( ObjectData* data )
 
 //-----------------------------------------------------------------------------
 
+string ObjectData::getObjectName()
+{
+	return objectName;
+};
+
+//-----------------------------------------------------------------------------
+		
+void ObjectData::setObjectName( string name )
+{
+	objectName = name;
+};
+	
 
 

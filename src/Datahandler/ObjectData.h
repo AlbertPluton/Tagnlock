@@ -10,6 +10,7 @@
 
 
 #include <vector>
+#include <string>
 using namespace std;
 
 
@@ -26,8 +27,9 @@ class ObjectData
 		//! The constructor
 		/*!
 			\param categoryPointer it is required to give a pointer to a Category object, this to beable to generate a data structure.
+			\param name the name and or directory of the file/folder under consideration.
 		*/
-		ObjectData( Category* categoryPointer );
+		ObjectData( Category* categoryPointer, string name );
 		
 		//! The default destructor
 		~ObjectData();	
@@ -55,12 +57,19 @@ class ObjectData
 		bool compareCategory( ObjectData* data );
 	
 	
+		//! Returns the file/folder name and or directory of the object under consideration.
+		string getObjectName();
+		
+		//! Set the name and or directory of the file/folder under consideration.
+		void setObjectName( string name );
+	
 	
 	private:
 		
 		vector<FieldData*> fieldDataVec;
 		
 		Category* category;
+		string objectName;
 
 };
 

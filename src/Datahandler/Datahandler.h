@@ -13,6 +13,7 @@
 #include <iostream>
 #include <vector>
 #include <list>
+#include <string>
 
 #include "Category.h"
 
@@ -48,9 +49,12 @@ class Datahandler
 	
 		//! Create and add a new ObjectData object to the list after the current position. This functions updates the value of the internal iterator.
 		/*!
-			 This new object has a data structure according to the given category. There is no data in this object, it is empty.
+			 	This new object has a data structure according to the given category. There is no data in this object, it is empty.
+				\param category the category corresponding to the object under consideration.
+				\param name the name and or directory of the file/folder under consideration.
+
 		*/
-		void addNewObject( Category* category );
+		void addNewObject( Category* category, string name );
 
 		
 		//! Get the first data object in the list. This functions updates the value of the internal iterator.

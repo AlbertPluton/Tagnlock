@@ -15,6 +15,7 @@
 FieldDataBool::FieldDataBool()
 {
 	type = typeFieldDataBool;
+	data = true;
 };
 
 

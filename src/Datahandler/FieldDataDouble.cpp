@@ -14,6 +14,7 @@
 FieldDataDouble::FieldDataDouble( )
 {
 	type = typeFieldDataDouble;
+	data = 0.0;
 };
 
 

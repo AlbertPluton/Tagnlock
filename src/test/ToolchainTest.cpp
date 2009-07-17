@@ -94,7 +94,7 @@ int main (int argc, const char* argv[] )
 	
 	for( int i = 0; i < 3; i++ )
 	{
-		dataHandler.addNewObject( &category_GPL );
+		dataHandler.addNewObject( &category_GPL, "" );
 		objectData = dataHandler.getCurrentObject();
 		(objectData->getDataAt( 0 ))->set( read[i] );
 		(objectData->getDataAt( 1 ))->set( name[i] );

@@ -58,10 +58,10 @@ void Datahandler::addObject( ObjectData* data )
 
 //-----------------------------------------------------------------------------
 
-void Datahandler::addNewObject( Category* category )
+void Datahandler::addNewObject( Category* category, string name )
 {
 		// TODO throw incase of memory shortage
-		ObjectData* data = new ObjectData( category ); 
+		ObjectData* data = new ObjectData( category, name ); 
 
 		
 		if( (int)objectDataList.size() == 0 ) 			// If the list is empty add to the front.
@@ -180,7 +180,7 @@ int Datahandler::getPosition()
 
 void Datahandler::incrementIT()
 {
-	if( position < objectDataList.size() )	// To prevent invalid data acces
+	if( position < objectDataList.size()-1 )	// To prevent invalid data acces
 	{
 		(this->it)++;
 		position++;

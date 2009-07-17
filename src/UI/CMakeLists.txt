@@ -6,6 +6,10 @@ include_directories (	${CMAKE_BINARY_DIR}/src/Category
 											${CMAKE_BINARY_DIR}/src/Toolchain
 											${CMAKE_BINARY_DIR}/src/Engine
 											${CMAKE_BINARY_DIR}/src/UI/GTKMM
+											${CMAKE_BINARY_DIR}/src/UI/GTKMM/Category
+											${CMAKE_BINARY_DIR}/src/UI/GTKMM/Category/Fields
+											${CMAKE_BINARY_DIR}/src/UI/GTKMM/Data						
+											${CMAKE_BINARY_DIR}/src/UI/GTKMM/GeneralGTKMM
 											${GTKMM_INCLUDE_DIRS}
 											${GLADEMM_INCLUDE_DIRS}
 										)

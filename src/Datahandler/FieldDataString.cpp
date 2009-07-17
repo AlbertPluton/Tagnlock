@@ -15,6 +15,7 @@
 FieldDataString::FieldDataString( )
 {
 	type = typeFieldDataString;
+	data = "";
 };
 
 

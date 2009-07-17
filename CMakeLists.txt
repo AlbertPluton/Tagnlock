@@ -29,8 +29,7 @@ find_package ( PkgConfig )
 
 pkg_check_modules( GTKMM gtkmm-2.4 )
 pkg_check_modules( GLADEMM libglademm-2.4 )
-
-
+pkg_check_modules( POPPLER poppler )
 
 
 # Put all the libaries in the /lib directory
@@ -54,5 +53,7 @@ ADD_SUBDIRECTORY (src/Toolchain/Operations)
 ADD_SUBDIRECTORY (src/Engine)
 ADD_SUBDIRECTORY (src/UI)
 ADD_SUBDIRECTORY (src/UI/GTKMM)
-
-
+ADD_SUBDIRECTORY (src/UI/GTKMM/Category)
+ADD_SUBDIRECTORY (src/UI/GTKMM/Category/Fields)
+ADD_SUBDIRECTORY (src/UI/GTKMM/Data)
+ADD_SUBDIRECTORY (src/UI/GTKMM/GeneralGTKMM)

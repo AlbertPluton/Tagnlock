@@ -14,6 +14,7 @@
 FieldDataInt::FieldDataInt( )
 {
 	type = typeFieldDataInt;
+	data = 0;
 };
 
 
