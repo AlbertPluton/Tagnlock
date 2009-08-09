@@ -15,8 +15,7 @@
 #include <string>
 using namespace std;
 
-
-//! This is the base class of which the childeren should be able to generate a visialiation of the file.
+//! This is the base class of which the children should be able to generate a visualization of the file.
 
 class DisplayFile
 {

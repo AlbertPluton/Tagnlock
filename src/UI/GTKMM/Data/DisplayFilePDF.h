@@ -10,10 +10,14 @@
 #define DISPLAYFILEPDF_H
 
 #include <gtkmm.h>
+#include <gdk-pixbuf/gdk-pixbuf.h>
 
 #include <glib/poppler.h>
 
 #include "DisplayFile.h"
+
+
+//! This class is able to create a widget which displays a PDF file. For this it uses poppler.
 
 class DisplayFilePDF : public DisplayFile
 {
@@ -24,13 +28,26 @@ class DisplayFilePDF : public DisplayFile
 		
 		~DisplayFilePDF( );
 	
-	
+		//! This function returns a widget which displays the file.
+		Gtk::Widget* getDisplayWidget();	
+
+
 	private:
 
 		PopplerDocument* document;
 		int nPages;
 		vector<PopplerPage*> pagesVec;
-		vector<Gdk::Pixbuf*> pixbufVec;
+		vector< Glib::RefPtr<Gdk::Pixbuf> > pixbufVec;
+
+		Gtk::Toolbar bar;
+		Gtk::ToolButton next, prev;
+		Gtk::ToolItem itemSpin;
+		Gtk::SpinButton pageNumber;
+
+		Gtk::VBox box;
+
+		Gtk::ScrolledWindow scrolledWindow;
+
 		
 };
 

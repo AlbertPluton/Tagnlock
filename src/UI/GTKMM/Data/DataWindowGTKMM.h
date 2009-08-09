@@ -11,7 +11,7 @@
 
 #include "EngineGTKMM.h"
 
-
+#include "DisplayFile.h"
 
 #include <libglademm.h>
 #include <libglademm/xml.h>
@@ -63,7 +63,7 @@ class DataWindowGTKMM : public EngineGTKMM
 			Gtk::Window* dataWindow;
 
 			Gtk::ScrolledWindow* categoryScrolledWindow;
-			Gtk::ScrolledWindow* displayScrolledWindow;
+			Gtk::Frame* displayWindow;
 
 			CategoryGTKMM* category;
 

@@ -12,12 +12,14 @@ include_directories (	${CMAKE_BINARY_DIR}/src/Category
 											${CMAKE_BINARY_DIR}/src/UI/GTKMM/GeneralGTKMM
 											${GTKMM_INCLUDE_DIRS}
 											${GLADEMM_INCLUDE_DIRS}
+											${POPPLER_INCLUDE_DIRS}
 										)
 
 # Make sure the linker can find the library once it is built.
 LINK_DIRECTORIES ( ${LIBRARY_OUTPUT_PATH}
 									 ${GTKMM_LIBRARY_DIRS}
 									 ${GLADEMM_LIBRARY_DIRS}
+									 ${POPPLER_LIBRARY_DIRS}
 								 )
 
 

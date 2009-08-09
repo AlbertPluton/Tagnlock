@@ -21,7 +21,7 @@ DataWindowGTKMM::DataWindowGTKMM(  int argc, char **argv, string gladeFileName )
 
 	dataWindow = NULL;
 	categoryScrolledWindow = NULL;
-	displayScrolledWindow = NULL;
+	displayWindow = NULL;
 	category = NULL;
 
 
@@ -53,7 +53,7 @@ DataWindowGTKMM::DataWindowGTKMM(  int argc, char **argv, string gladeFileName )
 	// Get the Glade-instantiated windows and dialogs.
   refXml->get_widget("DataWindow", dataWindow);
   refXml->get_widget("scrolledwindow1", categoryScrolledWindow);
-  refXml->get_widget("scrolledwindow4", displayScrolledWindow);
+  refXml->get_widget("frame4", displayWindow);
 
 	category = new CategoryGTKMM( );   
 	if( category ) categoryScrolledWindow->add( (Gtk::Widget&)*category );
@@ -77,7 +77,7 @@ DataWindowGTKMM::~DataWindowGTKMM()
 	
 	delete dataWindow;
 	delete categoryScrolledWindow;
-	delete displayScrolledWindow;
+	delete displayWindow;
 
 };
 
