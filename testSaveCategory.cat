@@ -1,0 +1,58 @@
+
+CategoryName: testName
+
+Type: TextField
+Label: text_A
+Required: true
+Reset: true
+
+Type: CheckField
+Label: check_B
+Required: false
+Reset: true
+
+Type: Combo
+Label: combo_C
+Required: true
+Reset: false
+Size: 4
+Option: option 1
+Option: option 2
+Option: option 3
+Option: option 4
+
+
+Type: ComboRadio
+Label: combo_D
+Required: true
+Reset: false
+Size: 3
+Option: option 1
+Option: option 2
+Option: option 3
+
+Type: CheckField
+Label: check_E
+Required: false
+Reset: true
+
+Type: ComboEntry
+Label: combo_F
+Required: true
+Reset: false
+Size: 4
+Option: option 1
+Option: option 2
+Option: option 3
+Option: option 4
+
+Type: SpinField
+Label: spin_G
+Required: false
+Reset: false
+Minimum: NULL
+Maximum: 6.0
+Stepsize: 0.01
+AdhereStep: true
+Decimals: 3
+AlwaysUpdate: true
