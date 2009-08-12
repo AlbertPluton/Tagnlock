@@ -12,14 +12,14 @@ include_directories (	${CMAKE_BINARY_DIR}/src/Category
 											${CMAKE_BINARY_DIR}/src/UI/GTKMM/GeneralGTKMM
 											${GTKMM_INCLUDE_DIRS}
 											${GLADEMM_INCLUDE_DIRS}
-											${POPPLER_INCLUDE_DIRS}
+											${POPPLER_GLIB_INCLUDE_DIRS}
 										)
 
 # Make sure the linker can find the library once it is built.
 LINK_DIRECTORIES ( ${LIBRARY_OUTPUT_PATH}
 									 ${GTKMM_LIBRARY_DIRS}
 									 ${GLADEMM_LIBRARY_DIRS}
-									 ${POPPLER_LIBRARY_DIRS}
+									 ${POPPLER_GLIB_LIBRARY_DIRS}
 								 )
 
 
@@ -35,6 +35,6 @@ SET (	SRCS_mainGTKMM
 ADD_EXECUTABLE (mainGTKMM mainGTKMM.cpp)
 
 # Link the executable to the libaries Field and Category
-TARGET_LINK_LIBRARIES ( mainGTKMM EngineGTKMM Category Field Exceptions Datahandler Toolchain ${GTKMM_LIBRARIES} ${GLADEMM_LIBRARIES})
+TARGET_LINK_LIBRARIES ( mainGTKMM EngineGTKMM Category Field Exceptions Datahandler Toolchain ${GTKMM_LIBRARIES} ${GLADEMM_LIBRARIES} ${POPPLER_GLIB_LIBRARIES})
 
 

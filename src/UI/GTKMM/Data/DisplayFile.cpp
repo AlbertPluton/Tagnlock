@@ -50,9 +50,9 @@ DisplayFile* DisplayFile::getDisplay( string fileName )
 	}
 	else if( (extension.compare("pdf") == 0) || (extension.compare("PDF") == 0) )
 	{
-		#ifdef WITH_POPPLER
+//		#ifdef WITH_POPPLER
 			return new DisplayFilePDF( fileName );
-		#endif
+//		#endif
 	}
 	else
 	{

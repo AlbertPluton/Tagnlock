@@ -16,7 +16,7 @@ int main (int argc, char **argv)
 	string fileName = "src/UI/GTKMM/GTK_GUI.glade";
 //	EngineGTKMM engine( argc, argv, fileName);
 
-//	CategoryWindowGTKMM engine( argc, argv, fileName);
+// CategoryWindowGTKMM engine( argc, argv, fileName);
 
  DataWindowGTKMM engine( argc, argv, fileName);
 

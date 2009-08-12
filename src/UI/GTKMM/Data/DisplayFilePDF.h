@@ -29,25 +29,44 @@ class DisplayFilePDF : public DisplayFile
 		~DisplayFilePDF( );
 	
 		//! This function returns a widget which displays the file.
-		Gtk::Widget* getDisplayWidget();	
+//		Gtk::Widget* getDisplayWidget();	
 
 
 	private:
 
 		PopplerDocument* document;
-		int nPages;
+
 		vector<PopplerPage*> pagesVec;
-		vector< Glib::RefPtr<Gdk::Pixbuf> > pixbufVec;
+		vector<GdkPixbuf*> gdkPixbufVec;
+		vector< Glib::RefPtr<Gdk::Pixbuf>* > pixbufVec;
 
 		Gtk::Toolbar bar;
 		Gtk::ToolButton next, prev;
-		Gtk::ToolItem itemSpin;
-		Gtk::SpinButton pageNumber;
+		Gtk::ToolItem itemPage;
+		Gtk::Entry pageNumberEntry;
+		Gtk::HBox pageBox;
+		Gtk::Label pageLabel;
+		Gtk::SeparatorToolItem sep1, sep2;
+		
+		
+		
 
 		Gtk::VBox box;
 
 		Gtk::ScrolledWindow scrolledWindow;
+		Gtk::Image image;
+		
+		
+		void nextPage();
+		void prevPage();
+		void spinPage();
+		void showPage( int pageNum );
+		void renderCurrentPage();
 
+
+		int currentPage;
+		int nPages;
+		double scale;
 		
 };
 

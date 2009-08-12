@@ -39,7 +39,8 @@ class DisplayFile
 		//! return the name of the file.
 		string getFileName();
 	
-	private:
+	
+	protected:
 
 		string fileName;
 		

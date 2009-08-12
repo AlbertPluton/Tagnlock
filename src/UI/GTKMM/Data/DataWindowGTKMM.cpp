@@ -22,7 +22,10 @@ DataWindowGTKMM::DataWindowGTKMM(  int argc, char **argv, string gladeFileName )
 	dataWindow = NULL;
 	categoryScrolledWindow = NULL;
 	displayWindow = NULL;
+	displayFile	 = NULL;
 	category = NULL;
+	
+	
 
 
 
@@ -53,7 +56,8 @@ DataWindowGTKMM::DataWindowGTKMM(  int argc, char **argv, string gladeFileName )
 	// Get the Glade-instantiated windows and dialogs.
   refXml->get_widget("DataWindow", dataWindow);
   refXml->get_widget("scrolledwindow1", categoryScrolledWindow);
-  refXml->get_widget("frame4", displayWindow);
+  refXml->get_widget("alignment3", displayWindow);
+
 
 	category = new CategoryGTKMM( );   
 	if( category ) categoryScrolledWindow->add( (Gtk::Widget&)*category );
@@ -78,6 +82,7 @@ DataWindowGTKMM::~DataWindowGTKMM()
 	delete dataWindow;
 	delete categoryScrolledWindow;
 	delete displayWindow;
+	delete displayFile;
 
 };
 
@@ -271,7 +276,7 @@ void DataWindowGTKMM::openButton_clicked()
 {
 	
 	// Create a dialog to choose from which directory the sources files should be taken.
-	Gtk::FileChooserDialog dialog( *dataWindow, "Please choose the source directory.", Gtk::FILE_CHOOSER_ACTION_SELECT_FOLDER 	 );
+	Gtk::FileChooserDialog dialog( *dataWindow, "Please choose the source directory.", Gtk::FILE_CHOOSER_ACTION_OPEN); //Gtk::FILE_CHOOSER_ACTION_SELECT_FOLDER 	 );
 
   //Add response buttons the the dialog:
   dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
@@ -283,11 +288,25 @@ void DataWindowGTKMM::openButton_clicked()
   switch(result)
   {
     case(Gtk::RESPONSE_OK):
-    {
-			Glib::ustring result = dialog.get_current_folder();
+    {	
+    	Glib::ustring result = dialog.get_uri();
+			//Glib::ustring result = dialog.get_current_folder();
 			string result_2 = result.raw();
-			
 			cout << result_2 << "\n";
+      
+      if( displayFile != NULL ) 
+      {
+      	displayWindow->remove();
+      	delete displayFile;
+      }
+      displayFile = DisplayFile::getDisplay( result_2 );
+      Gtk::Widget* widget = displayFile->getDisplayWidget();
+
+			displayWindow->add( *widget );      
+
+      displayWindow->show_all();
+      
+      
       break;
     }
      default:

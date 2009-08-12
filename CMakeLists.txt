@@ -29,7 +29,7 @@ find_package ( PkgConfig )
 
 pkg_check_modules( GTKMM gtkmm-2.4 )
 pkg_check_modules( GLADEMM libglademm-2.4 )
-pkg_check_modules( POPPLER poppler )
+pkg_check_modules( POPPLER_GLIB poppler-glib )
 
 
 # Put all the libaries in the /lib directory
