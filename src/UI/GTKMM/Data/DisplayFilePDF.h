@@ -43,7 +43,7 @@ class DisplayFilePDF : public DisplayFile
 		Gtk::Toolbar bar;
 		Gtk::ToolButton next, prev;
 		Gtk::ToolItem itemPage;
-		Gtk::Entry pageNumberEntry;
+		Gtk::SpinButton pageNumberEntry;
 		Gtk::HBox pageBox;
 		Gtk::Label pageLabel;
 		Gtk::SeparatorToolItem sep1, sep2;

@@ -62,12 +62,12 @@ DisplayFilePDF::DisplayFilePDF( string name ) : DisplayFile( name )
 
 	};
 
-	prev.set_stock_id( Gtk::Stock::GO_UP);
+	prev.set_stock_id( Gtk::Stock::GO_BACK);
 	prev.signal_clicked().connect( sigc::mem_fun( this, &DisplayFilePDF::prevPage) );
 	prev.show();
 	
 	
-	next.set_stock_id( Gtk::Stock::GO_DOWN );
+	next.set_stock_id( Gtk::Stock::GO_FORWARD );
 	next.signal_clicked().connect( sigc::mem_fun( this, &DisplayFilePDF::nextPage) );
 	next.show();
  
@@ -88,13 +88,12 @@ DisplayFilePDF::DisplayFilePDF( string name ) : DisplayFile( name )
 	bar.append( itemPage );
 	bar.append( sep2 );
 
-/*
 	Gtk::Adjustment adjustment(1, 1, nPages );
-	pageNumberSpin.configure( adjustment, 1, 0 );
-	pageNumberSpin.set_numeric();
-	pageNumberSpin.set_update_policy( Gtk::UPDATE_ALWAYS );
-	pageNumberSpin.signal_value_changed().connect( sigc::mem_fun( this, &DisplayFilePDF::spinPage) );
-*/
+	pageNumberEntry.configure( adjustment, 1, 0 );
+	pageNumberEntry.set_numeric();
+	pageNumberEntry.set_update_policy( Gtk::UPDATE_ALWAYS );
+	pageNumberEntry.signal_value_changed().connect( sigc::mem_fun( this, &DisplayFilePDF::spinPage) );
+	pageNumberEntry.update();
 
 	
 	scrolledWindow.set_policy( Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC );
@@ -158,8 +157,8 @@ void DisplayFilePDF::prevPage()
 
 void DisplayFilePDF::spinPage()
 {
-	cout << "old page number: " << pageNumberSpin.get_value_as_int() << "\n";
-	showPage( pageNumberSpin.get_value_as_int() );
+	cout << "old page number: " << pageNumberEntry.get_value_as_int() << "\n";
+	showPage( pageNumberEntry.get_value_as_int() );
 };
 
 //-----------------------------------------------------------------------------
@@ -172,9 +171,9 @@ void DisplayFilePDF::showPage( int pageNum )
 	{
 		// Set the current page number to the new value.
 		currentPage = pageNum;
-		pageNumberSpin.set_value( currentPage );
-		cout << "Current page: " << currentPage << "\tspin value: " <<  pageNumberSpin.get_value_as_int() << "\n";
-		pageNumberSpin.update();
+		pageNumberEntry.set_value( currentPage );
+		cout << "Current page: " << currentPage << "\tspin value: " <<  pageNumberEntry.get_value_as_int() << "\n";
+		pageNumberEntry.update();
 		
 		
 		image.clear();
@@ -183,7 +182,6 @@ void DisplayFilePDF::showPage( int pageNum )
 		image.set( *(pixbufVec[currentPage-1]) );
 	}
 	
-	//pageNumberSpin.update();
 
 };
 
