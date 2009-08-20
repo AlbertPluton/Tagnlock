@@ -61,6 +61,7 @@ DataWindowGTKMM::DataWindowGTKMM(  int argc, char **argv, string gladeFileName )
 
 	category = new CategoryGTKMM( );   
 	if( category ) categoryScrolledWindow->add( (Gtk::Widget&)*category );
+//	categoryScrolledWindow->show_all();
 
   if(dataWindow)
   {
@@ -172,6 +173,19 @@ void DataWindowGTKMM::displayDatahandlerObject()
 	{	
 		category->makeNewTable( object );
 		category->fillTable( object );
+
+    if( displayFile != NULL ) 
+    {
+    	displayWindow->remove();
+    	delete displayFile;
+    }
+
+    displayFile = DisplayFile::getDisplay( object->getObjectName() );
+    Gtk::Widget* widget = displayFile->getDisplayWidget();
+		displayWindow->add( *widget );      
+    displayWindow->show_all();
+
+
 	}
 
 
@@ -259,12 +273,12 @@ void DataWindowGTKMM::newButton_clicked()
 
 	// This is test code
 	Category* cat = new Category();
-	cat->loadCategory ("/home/bart/DMS_SVN/testSaveCategory.cat");
+	cat->loadCategory ("./testSaveCategory.cat");
 	this->addCategory(cat);
 
 	Datahandler* datahandler = new Datahandler();
 	this->addDatahandler( datahandler );
-	datahandler->addNewObject( cat, "/home/bart/DMS_SVN/Test.pdf" );
+	datahandler->addNewObject( cat, "file:///home/Pluton/dms/Test.pdf" );
 	
 	this->displayDatahandlerObject();
 	

@@ -37,13 +37,11 @@ class DisplayFilePDF : public DisplayFile
 		PopplerDocument* document;
 
 		vector<PopplerPage*> pagesVec;
-		vector<GdkPixbuf*> gdkPixbufVec;
 		vector< Glib::RefPtr<Gdk::Pixbuf>* > pixbufVec;
 
 		Gtk::Toolbar bar;
 		Gtk::ToolButton next, prev;
 		Gtk::ToolItem itemPage;
-		Gtk::SpinButton pageNumberEntry;
 		Gtk::HBox pageBox;
 		Gtk::Label pageLabel;
 		Gtk::SeparatorToolItem sep1, sep2;
@@ -62,6 +60,11 @@ class DisplayFilePDF : public DisplayFile
 		void spinPage();
 		void showPage( int pageNum );
 		void renderCurrentPage();
+		void setScale();
+
+		// pages starting from 0
+		void renderPage( int page );
+		
 
 
 		int currentPage;

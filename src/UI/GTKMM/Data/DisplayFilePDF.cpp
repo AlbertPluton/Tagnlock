@@ -17,50 +17,30 @@ using namespace std;
 DisplayFilePDF::DisplayFilePDF( string name ) : DisplayFile( name )
 {
 
-	double width, height = 0.0;
-	GdkPixbuf* gdkPixbuf;
 
-	this->document = poppler_document_new_from_file( name.c_str(), NULL, NULL );
+	document = poppler_document_new_from_file( name.c_str(), NULL, NULL );
 	nPages = poppler_document_get_n_pages( this->document );
 	pagesVec.reserve(nPages);
 	pixbufVec.reserve(nPages);
-	currentPage = 1;
-
+	currentPage = 0;
+	scale = 1;
 	
 
 #ifdef DEBUG_MESSAGES_DEF
 	cout << "Constructing DisplayFilePDF object with " << nPages << " pages.\n";
 #endif
 
-	for(int i = 0; i < nPages; i++)
+
+	// Initialize the vectors with nothing in them.
+	for( int i = 0; i < nPages; i++ )
 	{
-
-#ifdef DEBUG_MESSAGES_DEF
-	cout << "Creating page "<< i <<" ...";
-#endif
-
-		// Store the pages in the pages vector
-		pagesVec[i] = poppler_document_get_page( this->document, i );
-
-		// Obtain the size of the page
-    poppler_page_get_size( pagesVec[i], &width, &height);
-
-		// Create an pixbuf
-		gdkPixbuf =  gdk_pixbuf_new( GDK_COLORSPACE_RGB, FALSE, 8, (int)width, (int)height ); //(Colorspace colorspace, bool has_alpha, int bits_per_sample, int width, int height)
-
-		// Render the page to the Gdkpixbuf
-		poppler_page_render_to_pixbuf( pagesVec[i], 0, 0, width, height, 1, 0, gdkPixbuf );
-
-		// Convert the Gdkpixbuf to the Gdk::Pixbuf of gtkmm	
-		pixbufVec[i] = new Glib::RefPtr<Gdk::Pixbuf>;
-		*(pixbufVec[i]) = Glib::wrap( gdkPixbuf );
+		pagesVec[i] = NULL;
+		pixbufVec[i] = NULL;
+	}
 
 
-#ifdef DEBUG_MESSAGES_DEF
-	cout << "\t Done\n";
-#endif
+	renderPage( currentPage );
 
-	};
 
 	prev.set_stock_id( Gtk::Stock::GO_BACK);
 	prev.signal_clicked().connect( sigc::mem_fun( this, &DisplayFilePDF::prevPage) );
@@ -74,7 +54,7 @@ DisplayFilePDF::DisplayFilePDF( string name ) : DisplayFile( name )
  
  	stringstream string;
  	
- 	string << "  of " << nPages;
+ 	string << "1  of " << nPages;
   
  	pageLabel.set_label( string.str() );
  	pageLabel.show();
@@ -82,22 +62,14 @@ DisplayFilePDF::DisplayFilePDF( string name ) : DisplayFile( name )
 	bar.append( prev );
 	bar.append( next );
 	bar.append( sep1 );
-	pageBox.pack_start( pageNumberEntry );
 	pageBox.pack_start( pageLabel );	
 	itemPage.add( pageBox );	
 	bar.append( itemPage );
 	bar.append( sep2 );
 
-	Gtk::Adjustment adjustment(1, 1, nPages );
-	pageNumberEntry.configure( adjustment, 1, 0 );
-	pageNumberEntry.set_numeric();
-	pageNumberEntry.set_update_policy( Gtk::UPDATE_ALWAYS );
-	pageNumberEntry.signal_value_changed().connect( sigc::mem_fun( this, &DisplayFilePDF::spinPage) );
-	pageNumberEntry.update();
 
-	
 	scrolledWindow.set_policy( Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC );
-	image.set( *(pixbufVec[0]) );
+	image.set( *(pixbufVec[currentPage]) );
 	scrolledWindow.add( image );
 	
 	box.pack_start( bar, Gtk::PACK_SHRINK  );
@@ -155,31 +127,25 @@ void DisplayFilePDF::prevPage()
 //-----------------------------------------------------------------------------
 
 
-void DisplayFilePDF::spinPage()
-{
-	cout << "old page number: " << pageNumberEntry.get_value_as_int() << "\n";
-	showPage( pageNumberEntry.get_value_as_int() );
-};
-
-//-----------------------------------------------------------------------------
-
-
 void DisplayFilePDF::showPage( int pageNum )
 {
 	// Check for valid page number.
-	if( (pageNum <= nPages) && (pageNum > 0) )
+	if( (pageNum < nPages) && (pageNum >= 0) )
 	{
 		// Set the current page number to the new value.
 		currentPage = pageNum;
-		pageNumberEntry.set_value( currentPage );
-		cout << "Current page: " << currentPage << "\tspin value: " <<  pageNumberEntry.get_value_as_int() << "\n";
-		pageNumberEntry.update();
-		
+	 	stringstream string;
+	 	
+	 	string << currentPage+1 << " of " << nPages;
+	 	pageLabel.set_label( string.str() );
+
 		
 		image.clear();
 		
+		if( pixbufVec[currentPage] == NULL ) renderPage( currentPage );
+
 		// Create an image from the pixbuf and display it in the scrolled window.
-		image.set( *(pixbufVec[currentPage-1]) );
+		image.set( *(pixbufVec[currentPage]) );
 	}
 	
 
@@ -189,8 +155,50 @@ void DisplayFilePDF::showPage( int pageNum )
 //-----------------------------------------------------------------------------
 
 
+void DisplayFilePDF::renderPage( int page )
+{
 
-//#endif
+	double width, height = 0.0;
+	GdkPixbuf* gdkPixbuf;
 
+
+#ifdef DEBUG_MESSAGES_DEF
+	cout << "Creating page "<< page  <<" ...";
+#endif
+
+	// Store the pages in the pages vector
+	pagesVec[page] = poppler_document_get_page( document, page );
+
+	// Obtain the size of the page
+  poppler_page_get_size( pagesVec[page], &width, &height);
+
+	// Create an pixbuf
+	gdkPixbuf =  gdk_pixbuf_new( GDK_COLORSPACE_RGB, FALSE, 8, (int)(width*scale), (int)(height*scale) ); //(Colorspace colorspace, bool has_alpha, int bits_per_sample, int width, int height)
+
+	// Render the page to the Gdkpixbuf
+	poppler_page_render_to_pixbuf( pagesVec[page], 0, 0, width, height, scale, 0, gdkPixbuf );
+
+	// Convert the Gdkpixbuf to the Gdk::Pixbuf of gtkmm	
+	pixbufVec[page] = new Glib::RefPtr<Gdk::Pixbuf>;
+	*(pixbufVec[page]) = Glib::wrap( gdkPixbuf );
+
+
+#ifdef DEBUG_MESSAGES_DEF
+	cout << "\t Done\n";
+#endif
+
+
+};
+
+
+
+//-----------------------------------------------------------------------------
+
+
+
+//-----------------------------------------------------------------------------
+
+
+//-----------------------------------------------------------------------------
 
 
