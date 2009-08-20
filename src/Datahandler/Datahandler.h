@@ -136,7 +136,7 @@ class Datahandler
 		vector<string> getFileTypes();
 
 		//! Returns the categories vector.
-		vector<categories*> getCategories();
+		vector<Category*> getCategories();
 
 
 	private:
@@ -166,7 +166,7 @@ class Datahandler
 		vector<string> folders;
 		vector<bool> recursive; // The data in the recursive vector corresponds to the data at the same index in the folders vector.
 	
-		vector<string> fileType;
+		vector<string> fileTypes;
 		vector<Category*> categories; // The data in the categories vector corresponds to the data at the same index in the fileType vector.
 
 

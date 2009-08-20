@@ -43,9 +43,6 @@ class Engine
 
 
 
-	protected:
-
-
 		// --- Functions relating to the general program flow ---------------------
 
 		virtual void quit(){};

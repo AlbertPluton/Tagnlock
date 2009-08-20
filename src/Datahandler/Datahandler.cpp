@@ -10,7 +10,9 @@
 #include "Datahandler.h"
 
 
-
+#include <iostream>
+#include <fstream>
+#include <sstream>
 
 
 //-----------------------------------------------------------------------------
@@ -272,7 +274,7 @@ bool Datahandler::save( string fileName )
 
 
 	// Check to see if the category name is not equal to "". In that case throw an exception.
-	if( name.compare("") == 0 )
+	if( fileName.compare("") == 0 )
 	{
 		// TODO throw
 	}
@@ -291,7 +293,7 @@ bool Datahandler::save( string fileName )
 		for( int i = 0; i < folders.size(); i++ )
 		{
 			file << "Folder: " << folders[i] << "\n";
-			file << "Recursive: "<< this->boolToString( Recursive[i] ) << "\n";
+			file << "Recursive: "<< this->boolToString( recursive[i] ) << "\n";
 		};
 
 
@@ -383,7 +385,7 @@ bool Datahandler::load( string fileName, Engine* engine )
 			if( found!=string::npos )
 			{
 				inputString.erase(0, 6);
-				fileType.push_back( inputString );
+				fileTypes.push_back( inputString );
 				continue;
 			}	
 
@@ -426,15 +428,15 @@ bool Datahandler::load( string fileName, Engine* engine )
 		if( folders.size() != recursive.size() )
 		{
 // TODO Throw
-			cout << "ERROR in Datahandler::load: the vectors folders and recursive do not have the same size."
+			cout << "ERROR in Datahandler::load: the vectors folders and recursive do not have the same size.\n";
 			return false;
 		}
 
 		// Check if things went correct
-		if( fileType.size() != categories.size() )
+		if( fileTypes.size() != categories.size() )
 		{
 // TODO Throw
-			cout << "ERROR in Datahandler::load: the vectors fileType and categories do not have the same size."
+			cout << "ERROR in Datahandler::load: the vectors fileType and categories do not have the same size.\n";
 			return false;
 		}
 		
@@ -481,7 +483,7 @@ vector<bool> Datahandler::getRecursive()
 
 //-----------------------------------------------------------------------------
 
-void Datahandler::addFileType( string type, Category* cat );
+void Datahandler::addFileType( string type, Category* cat )
 {
 	fileTypes.push_back( type );
 	categories.push_back( cat );
@@ -497,10 +499,10 @@ vector<string> Datahandler::getFileTypes()
 
 //-----------------------------------------------------------------------------
 
-vector<categories*> Datahandler::getCategories()
+vector<Category*> Datahandler::getCategories()
 {
 	return categories;
-};
+};			 
 
 //-----------------------------------------------------------------------------
 
@@ -518,7 +520,8 @@ bool Datahandler::stringToBool( string input )
 	}
 	else
 	{
-		throw FieldException( 4 ); 	//throw Error: invalid convertion from string to bool.
+		// TODO implement this type of exception
+		// throw FieldException( 4 ); 	//throw Error: invalid convertion from string to bool.
 	}
 	
 	return output;
