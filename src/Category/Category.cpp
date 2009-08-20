@@ -167,7 +167,7 @@ void Category::loadCategory( string fileName )
 	else
 	{
 		// throw TODO 
-		cout << "Unable to open file for reading";
+		cout << "Unable to open file for reading in Category::loadCategory.\n";
 	}		
 	
 };
@@ -227,7 +227,7 @@ void Category::saveCategory( string fileName, bool overwrite )
 	else
 	{		
 		// throw TODO 
-		cout << "Unable to open file for writing";
+		cout << "Unable to open file for writing in Category::saveCategory.\n";
 	}	
 	
 };

@@ -68,6 +68,14 @@ Category* Engine::getCategory( int index )
 	}
 };
 
+
+//-----------------------------------------------------------------------------
+
+int Engine::getCategoriesSize()
+{
+	return categories.size();
+};
+
 //-----------------------------------------------------------------------------
 
 void Engine::deleteCategory( int index )

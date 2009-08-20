@@ -62,6 +62,9 @@ class Engine
 		//! Returns the category at the desired index.
 		Category* getCategory( int index );
 
+		//! Returns the size of the categories vector.
+		int getCategoriesSize();
+
 		//! Delete the category at the desired index from the vector.
 		void deleteCategory( int index );
 
