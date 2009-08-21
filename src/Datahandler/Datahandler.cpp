@@ -21,6 +21,7 @@ Datahandler::Datahandler()
 {
 	it = objectDataList.begin();
 	position = 0;
+	name = "";
 };
 
 //-----------------------------------------------------------------------------
@@ -313,19 +314,19 @@ bool Datahandler::save( string fileName )
 
 		
 		file.close();	
-		
+		name = fileName;
 	}
 	else
 	{		
 		// throw TODO 
-		cout << "Unable to open file for writing in Datahandler::save.\n";
+		cout << "Error in Datahandler::save: Unable to open file " << fileName << "\n";
 	}	
 
 };
 
 //-----------------------------------------------------------------------------
 
-bool Datahandler::load( string fileName, Engine* engine )
+bool Datahandler::load( string fileName,  vector<Category*>* catVec )
 {
 
 	fstream file;								// Create file object.
@@ -394,11 +395,11 @@ bool Datahandler::load( string fileName, Engine* engine )
 			if( found!=string::npos )
 			{
 				inputString.erase(0, 10);
-				for( int i = 0; i < engine->getCategoriesSize(); i++ )
+				for( int i = 0; i < catVec->size(); i++ )
 				{
-					if( engine->getCategory(i)->getName() == inputString )
+					if( (*catVec)[i]->getName() == inputString )
 					{					
-						categories.push_back( engine->getCategory(i) );
+						categories.push_back( (*catVec)[i] );
 						continue;				
 					}
 				};
@@ -452,6 +453,8 @@ bool Datahandler::load( string fileName, Engine* engine )
 		return false;
 	}	
 
+
+	name = fileName;
 	return true;
 
 };
@@ -503,6 +506,14 @@ vector<Category*> Datahandler::getCategories()
 {
 	return categories;
 };			 
+
+//-----------------------------------------------------------------------------
+
+string Datahandler::getName()
+{
+	return name;
+};
+
 
 //-----------------------------------------------------------------------------
 

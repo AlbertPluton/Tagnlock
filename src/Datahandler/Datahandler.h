@@ -19,7 +19,6 @@
 
 #include "ObjectData.h"
 
-#include "Engine.h"
 
 
 using namespace std;
@@ -108,10 +107,10 @@ class Datahandler
 		//! Load the datahandler from a file.
 		/*!
 			\param fileName the name of the file to load.
-			\param engine is a pointer to the current engine. This is required to generate the categories vector.
+			\param catVec is a vector with all currently known categories by the engine.
 			\return True is returned when all went well.
 		*/
-		bool load( string fileName, Engine* engine );
+		bool load( string fileName, vector<Category*>* catVec );
 
 
 
@@ -137,6 +136,10 @@ class Datahandler
 
 		//! Returns the categories vector.
 		vector<Category*> getCategories();
+
+
+		//! Returns the name of this datahandler. Name is set by the functions load and save.
+		string getName();
 
 
 	private:
@@ -170,7 +173,7 @@ class Datahandler
 		vector<Category*> categories; // The data in the categories vector corresponds to the data at the same index in the fileType vector.
 
 
-
+		string name;
 
 
 		static bool stringToBool( string input );

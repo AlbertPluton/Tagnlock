@@ -48,8 +48,9 @@ class DataWindowGTKMM : public EngineGTKMM
 		void readDataFromUI();
 
 		void newButton_clicked();
-
 		void openButton_clicked();
+		void saveButton_clicked();
+		void saveAsButton_clicked();
 
 
 	protected:

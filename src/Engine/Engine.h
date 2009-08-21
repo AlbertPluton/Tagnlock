@@ -65,6 +65,9 @@ class Engine
 		//! Delete the category at the desired index from the vector.
 		void deleteCategory( int index );
 
+		//! Returns a pointer to categories.
+		vector<Category*>* getCatVec();
+
 		//! The return value of this function indicates wheather or not a category object has been modified.
 		bool getCategoryModified( int index );
 		

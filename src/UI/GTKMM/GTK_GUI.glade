@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Wed Aug 12 17:27:23 2009 -->
+<!--Generated with glade3 3.4.5 on Fri Aug 21 13:05:47 2009 -->
 <glade-interface>
   <widget class="GtkWindow" id="DataWindow">
     <property name="title" translatable="yes">Data</property>
@@ -169,6 +169,15 @@
               <widget class="GtkToolButton" id="toolbutton27">
                 <property name="visible">True</property>
                 <property name="stock_id">gtk-save</property>
+              </widget>
+              <packing>
+                <property name="expand">False</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkToolButton" id="toolbutton33">
+                <property name="visible">True</property>
+                <property name="stock_id">gtk-save-as</property>
               </widget>
               <packing>
                 <property name="expand">False</property>
@@ -830,6 +839,15 @@
               <widget class="GtkToolButton" id="toolbutton16">
                 <property name="visible">True</property>
                 <property name="stock_id">gtk-save</property>
+              </widget>
+              <packing>
+                <property name="expand">False</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkToolButton" id="toolbutton32">
+                <property name="visible">True</property>
+                <property name="stock_id">gtk-save-as</property>
               </widget>
               <packing>
                 <property name="expand">False</property>

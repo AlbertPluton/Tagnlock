@@ -93,6 +93,13 @@ void Engine::deleteCategory( int index )
 
 //-----------------------------------------------------------------------------
 
+vector<Category*>* Engine::getCatVec()
+{
+	return &categories;
+};
+
+//-----------------------------------------------------------------------------
+
 bool Engine::getCategoryModified( int index )
 {
 	if( (index >= 0) && (index < categoryModified.size()) )
