@@ -282,6 +282,18 @@ void DataWindowGTKMM::readDataFromUI()
 void DataWindowGTKMM::newButton_clicked()
 {
 
+
+	// Create an assistant.
+//	Gtk::Assistant assistant;
+
+//	assistant.show();
+
+//TODO make a seperate class for the assistant returning an new datahandler.
+
+
+
+
+/*
 #ifdef TODO_DEF
 #warning TODO Make real code instead of test code in DataWindowGTKMM::newButton_clicked().
 #endif
@@ -297,6 +309,8 @@ void DataWindowGTKMM::newButton_clicked()
 	
 	this->displayDatahandlerObject();
 	
+*/
+
 };
 
 //-----------------------------------------------------------------------------
@@ -382,7 +396,7 @@ void DataWindowGTKMM::saveAsButton_clicked()
 {
 	
 	// Create a dialog to choose a file.
-	Gtk::FileChooserDialog dialog( *dataWindow, "Save as", Gtk::FILE_CHOOSER_ACTION_OPEN); //Gtk::FILE_CHOOSER_ACTION_SELECT_FOLDER 	 );
+	Gtk::FileChooserDialog dialog( *dataWindow, "Save as", Gtk::FILE_CHOOSER_ACTION_SAVE); //Gtk::FILE_CHOOSER_ACTION_SELECT_FOLDER 	 );
 
   //Add response buttons the the dialog:
   dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);

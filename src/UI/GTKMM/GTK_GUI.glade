@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Fri Aug 21 13:05:47 2009 -->
+<!--Generated with glade3 3.4.5 on Fri Aug 21 14:16:53 2009 -->
 <glade-interface>
   <widget class="GtkWindow" id="DataWindow">
+    <property name="width_request">1000</property>
+    <property name="height_request">750</property>
     <property name="title" translatable="yes">Data</property>
     <child>
       <widget class="GtkVBox" id="vbox1">
@@ -239,6 +241,7 @@
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="position">450</property>
+            <property name="position_set">True</property>
             <child>
               <widget class="GtkVBox" id="vbox4">
                 <property name="visible">True</property>
@@ -249,18 +252,27 @@
                     <property name="n_columns">2</property>
                     <property name="column_spacing">5</property>
                     <child>
-                      <widget class="GtkComboBoxEntry" id="comboboxentry1">
+                      <widget class="GtkLabel" id="label2">
                         <property name="visible">True</property>
-                        <child internal-child="entry">
-                          <widget class="GtkEntry" id="comboboxentry-entry1">
-                            <property name="visible">True</property>
-                            <property name="can_focus">True</property>
-                          </widget>
-                        </child>
+                        <property name="xalign">0</property>
+                        <property name="label" translatable="yes">Datahandler:</property>
                       </widget>
                       <packing>
-                        <property name="left_attach">1</property>
-                        <property name="right_attach">2</property>
+                        <property name="top_attach">1</property>
+                        <property name="bottom_attach">2</property>
+                        <property name="x_options"></property>
+                        <property name="y_options">GTK_FILL</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <widget class="GtkLabel" id="label1">
+                        <property name="visible">True</property>
+                        <property name="xalign">0.89999997615814209</property>
+                        <property name="label" translatable="yes">Location:</property>
+                      </widget>
+                      <packing>
+                        <property name="x_options"></property>
+                        <property name="y_options">GTK_FILL</property>
                       </packing>
                     </child>
                     <child>
@@ -276,27 +288,18 @@
                       </packing>
                     </child>
                     <child>
-                      <widget class="GtkLabel" id="label1">
+                      <widget class="GtkComboBoxEntry" id="comboboxentry1">
                         <property name="visible">True</property>
-                        <property name="xalign">0.89999997615814209</property>
-                        <property name="label" translatable="yes">Location:</property>
+                        <child internal-child="entry">
+                          <widget class="GtkEntry" id="comboboxentry-entry1">
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                          </widget>
+                        </child>
                       </widget>
                       <packing>
-                        <property name="x_options"></property>
-                        <property name="y_options">GTK_FILL</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <widget class="GtkLabel" id="label2">
-                        <property name="visible">True</property>
-                        <property name="xalign">0</property>
-                        <property name="label" translatable="yes">Datahandler:</property>
-                      </widget>
-                      <packing>
-                        <property name="top_attach">1</property>
-                        <property name="bottom_attach">2</property>
-                        <property name="x_options"></property>
-                        <property name="y_options">GTK_FILL</property>
+                        <property name="left_attach">1</property>
+                        <property name="right_attach">2</property>
                       </packing>
                     </child>
                   </widget>
