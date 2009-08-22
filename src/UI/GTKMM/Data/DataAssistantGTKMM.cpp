@@ -13,15 +13,59 @@
 
 
 DataAssistantGTKMM::DataAssistantGTKMM( ) : 
-
-																						introLabel("This wizard will guide you through the process of creating a new datahandler."),
-
-
-																						nameChooser(Gtk::FILE_CHOOSER_ACTION_SAVE)
+																							nameButton( Gtk::Stock::SAVE_AS )
+//																						nameChooser(Gtk::FILE_CHOOSER_ACTION_SAVE)
 																						
 {
 
+#ifdef DEBUG_MESSAGES_DEF
+	cout << "Constructing a DataAssisTantGTKMM object.\n";
+#endif
 
+
+
+  set_title("Creating a new datahandler");
+  set_default_size(300, 400);
+
+	signal_cancel().connect(sigc::mem_fun(*this, &DataAssistantGTKMM::on_cancel));
+  signal_close().connect(sigc::mem_fun(*this, &DataAssistantGTKMM::on_cancel));
+
+
+	// Page 0 Intro ---------------------------------------
+	introLabel.set_label( "This wizard will guide you through the process of creating a new datahandler." );
+	append_page( introLabel );
+	set_page_complete( introLabel, true);
+  set_page_type( introLabel, Gtk::ASSISTANT_PAGE_INTRO);
+  set_page_title( introLabel, "This is the intro page!");
+
+
+	// Page 1 Name ----------------------------------------
+	nameLabel.set_label( "Name: " );
+	nameBox.pack_start( nameLabel );
+	nameBox.pack_start( nameEntry );
+	nameBox.pack_start( nameButton );
+	nameBox.show_all();
+
+	nameButton.signal_clicked().connect(sigc::mem_fun(*this, &DataAssistantGTKMM::on_nameButton));
+
+	append_page( nameBox );
+  set_page_type( nameBox, Gtk::ASSISTANT_PAGE_CONTENT);
+  set_page_title( nameBox, "Name");
+	set_page_complete( nameBox, true);
+
+
+
+	// Page 5 Overview ------------------------------------
+	confirmLabel.set_label( "Please confirm your settings for the datahandler to be created." );
+	append_page( confirmLabel );
+  set_page_type( confirmLabel, Gtk::ASSISTANT_PAGE_CONFIRM);
+  set_page_title( confirmLabel, "Confirm");
+	
+
+
+	show_all();
+
+/*
         // create two example pages - this could be every Gtk::Widget
         Gtk::Button* p1;
         Gtk::Button* p2;
@@ -60,7 +104,7 @@ DataAssistantGTKMM::DataAssistantGTKMM( ) :
                 sigc::mem_fun(*this, &DataAssistantGTKMM::on_summary_finished));
 
         show_all();
-
+*/
 
 };
 
@@ -70,6 +114,13 @@ DataAssistantGTKMM::DataAssistantGTKMM( ) :
 
 DataAssistantGTKMM::~DataAssistantGTKMM()
 {
+
+#ifdef DEBUG_MESSAGES_DEF
+	cout << "Destroying a DataAssistantGTKMM	object.\n";
+#endif	
+
+
+
 /*        std::list< Widget* >::iterator iter = pages.begin();
 
         while( iter != pages.end() ) 
@@ -136,6 +187,33 @@ void DataAssistantGTKMM::on_cancel(void)
 
 //-----------------------------------------------------------------------------
 
+void DataAssistantGTKMM::on_nameButton()
+{
+
+	// Create a dialog to choose a datahandler from a file.
+	Gtk::FileChooserDialog dialog( *this, "Save as", Gtk::FILE_CHOOSER_ACTION_SAVE);
+
+  //Add response buttons the the dialog:
+  dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+  dialog.add_button(Gtk::Stock::OPEN, Gtk::RESPONSE_OK);
+
+	int result = dialog.run();
+
+  //Handle the response:
+  switch(result)
+  {
+    case(Gtk::RESPONSE_OK):
+    {	
+			nameEntry.set_text( dialog.get_uri() );
+			set_page_complete( nameBox, true);		  
+      break;
+    }
+     default:
+    {
+      break;
+    }	
+	};	
+};
 
 
 //-----------------------------------------------------------------------------

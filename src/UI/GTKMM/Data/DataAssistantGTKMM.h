@@ -14,6 +14,7 @@
 #include "Datahandler.h"
 #include "Category.h"
 
+#include <iostream>
 #include <string>
 using namespace std;
 
@@ -49,19 +50,20 @@ class DataAssistantGTKMM : public Gtk::Assistant
 
 
 		// Page 0 Intro ---------------------------------------
-		Gtk::Label* introLabel;
+		Gtk::Label introLabel;
 
 
 		// Page 1 Name ----------------------------------------
-		Gtk::FileChooserWidget nameChooser;
+		Gtk::Label nameLabel;
+		Gtk::Entry nameEntry;
+		Gtk::Button nameButton;
+		Gtk::HBox nameBox;
 
 
 		// Page 2 Folder selecting ----------------------------
-
+		Gtk::VBox folderBox;
 		Gtk::HButtonBox folderButtonBox;
 		Gtk::Button addFolder, delFolder;
-
-		Gtk::FileChooserWidget folderChooser;
 
 		Gtk::ScrolledWindow folderScrolledWindow;
 		Gtk::TreeView folderTreeView;
@@ -89,8 +91,32 @@ class DataAssistantGTKMM : public Gtk::Assistant
 		// Page 4	Category selecting --------------------------
 
 
-		// Page 5 Overview ------------------------------------
+		// Page 5 Confirm -------------------------------------
+		Gtk::Label confirmLabel;
 
+
+
+
+
+		// FUCNTIONS --------------------------------------------------------------
+
+		// Page 0 Intro ---------------------------------------
+
+		// Page 1 Name ----------------------------------------
+		void on_nameButton();
+
+		// Page 2 Folder selecting ----------------------------
+		void on_addFolder();
+		void on_delFolder();
+
+
+		// Page 3 File type selecting -------------------------
+
+
+		// Page 4	Category selecting --------------------------
+
+
+		// Page 5 Confirm -------------------------------------
 
 };
 

@@ -17,7 +17,7 @@ DataWindowGTKMM::DataWindowGTKMM(  int argc, char **argv, string gladeFileName )
 {
 
 #ifdef DEBUG_MESSAGES_DEF
-	cout << "Constructing DataWindowGTKMM	object.\n";
+	cout << "Constructing a DataWindowGTKMM	object.\n";
 #endif
 
 	dataWindow = NULL;
@@ -66,6 +66,7 @@ DataWindowGTKMM::DataWindowGTKMM(  int argc, char **argv, string gladeFileName )
 	if( category ) categoryScrolledWindow->add( (Gtk::Widget&)*category );
 //	categoryScrolledWindow->show_all();
 
+
   if(dataWindow)
   {
 
@@ -84,7 +85,7 @@ DataWindowGTKMM::DataWindowGTKMM(  int argc, char **argv, string gladeFileName )
 DataWindowGTKMM::~DataWindowGTKMM()
 {
 #ifdef DEBUG_MESSAGES_DEF
-	cout << "Destroying DataWindowGTKMM	object.\n";
+	cout << "Destroying a DataWindowGTKMM	object.\n";
 #endif	
 
 	delete dataWindow;
