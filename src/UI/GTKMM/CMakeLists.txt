@@ -44,6 +44,7 @@ SET (	SRCS_EngineGTKMM
 			Data/DataWindowGTKMM.cpp
 			Data/DisplayFile.cpp
 			Data/DisplayFilePDF.cpp
+			Data/DataAssistantGTKMM.cpp
 			Category/CategoryWindowGTKMM.cpp
 			Category/Fields/FieldGTKMM.cpp
 			Category/Fields/TextFieldGTKMM.cpp

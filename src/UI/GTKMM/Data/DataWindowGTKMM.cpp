@@ -10,6 +10,7 @@
 
 
 
+
 //-----------------------------------------------------------------------------
 
 DataWindowGTKMM::DataWindowGTKMM(  int argc, char **argv, string gladeFileName ) : EngineGTKMM( argc, argv, gladeFileName )
@@ -25,7 +26,8 @@ DataWindowGTKMM::DataWindowGTKMM(  int argc, char **argv, string gladeFileName )
 	displayFile	 = NULL;
 	category = NULL;
 	
-	
+
+
 
 
 
@@ -57,6 +59,7 @@ DataWindowGTKMM::DataWindowGTKMM(  int argc, char **argv, string gladeFileName )
   refXml->get_widget("DataWindow", dataWindow);
   refXml->get_widget("scrolledwindow1", categoryScrolledWindow);
   refXml->get_widget("alignment3", displayWindow);
+	datahandlerAssistant = new DataAssistantGTKMM( );
 
 
 	category = new CategoryGTKMM( );   
@@ -68,6 +71,7 @@ DataWindowGTKMM::DataWindowGTKMM(  int argc, char **argv, string gladeFileName )
 
 		connectSignals();
     dataWindow->show();
+		datahandlerAssistant->hide_all();
  		kit->run();
 	}
 	
@@ -283,15 +287,7 @@ void DataWindowGTKMM::newButton_clicked()
 {
 
 
-	// Create an assistant.
-//	Gtk::Assistant assistant;
-
-//	assistant.show();
-
-//TODO make a seperate class for the assistant returning an new datahandler.
-
-
-
+	datahandlerAssistant->show_all();
 
 /*
 #ifdef TODO_DEF

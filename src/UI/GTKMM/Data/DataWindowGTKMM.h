@@ -17,6 +17,8 @@
 #include <libglademm/xml.h>
 #include <gtkmm.h>
 
+#include "DataAssistantGTKMM.h"
+
 #include <iostream>
 #include <string>
 using namespace std;
@@ -69,6 +71,10 @@ class DataWindowGTKMM : public EngineGTKMM
 			DisplayFile* displayFile;
 
 			CategoryGTKMM* category;
+
+
+			DataAssistantGTKMM* datahandlerAssistant;
+
 
 };
 
