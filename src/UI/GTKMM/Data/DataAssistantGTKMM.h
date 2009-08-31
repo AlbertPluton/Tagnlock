@@ -60,6 +60,8 @@ class DataAssistantGTKMM : public Gtk::Assistant
 		Gtk::Table nameTable;
 
 
+
+
 		// Page 2 Folder selecting ----------------------------
 		Gtk::VBox folderBox;
 		Gtk::HButtonBox folderButtonBox;
@@ -70,18 +72,28 @@ class DataAssistantGTKMM : public Gtk::Assistant
 		Glib::RefPtr<Gtk::ListStore> folderRefTreeModel;
 		Glib::RefPtr<Gtk::TreeSelection> folderTreeSelection;
 		
-		int rowIndex;
+		int rowIndexFolder;
 
 
 
 
 
 		// Page 3 File type and Category selecting -------------------------
-		Gtk::Table fileTable;
-		Gtk::Label fileLabel;
-		Gtk::ComboBoxEntryText fileEntry;
+		Gtk::VBox fileBox;
+		Gtk::HButtonBox fileButtonBox;
+		Gtk::Button addFile, delFile;
 
+		Gtk::ScrolledWindow fileScrolledWindow;
+		Gtk::TreeView fileTreeView;
+		Glib::RefPtr<Gtk::ListStore> fileRefTreeModel;
+		Glib::RefPtr<Gtk::TreeSelection> fileTreeSelection;
+		Gtk::CellRendererCombo* fileColumnCombo;
+
+		int rowIndexFile;
 	
+		// Page 4 Category selecting --------------------------
+
+
 
 		// Page 5 Confirm -------------------------------------
 		Gtk::Label confirmLabel;
@@ -99,7 +111,7 @@ class DataAssistantGTKMM : public Gtk::Assistant
 			Gtk::TreeModelColumn<Glib::ustring> col_folder;
 			Gtk::TreeModelColumn<bool> col_recursive;
 			Gtk::TreeModelColumn<Glib::ustring> col_type;
-			Gtk::TreeModleColumn<Glib::ustring> col_category;
+			Gtk::TreeModelColumn<Glib::ustring> col_category;
 			
 		};
 		
@@ -119,7 +131,9 @@ class DataAssistantGTKMM : public Gtk::Assistant
 
 
 		// Page 3 File type selecting -------------------------
-		void on_entry_changed();
+		void on_addFile();
+		void on_delFile();
+
 
 		// Page 4	Category selecting --------------------------
 

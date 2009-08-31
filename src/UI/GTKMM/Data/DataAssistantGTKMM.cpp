@@ -17,7 +17,8 @@ DataAssistantGTKMM::DataAssistantGTKMM( ) :
 																							nameButton( Gtk::Stock::SAVE_AS ),
 																							addFolder( Gtk::Stock::ADD ),
 																							delFolder( Gtk::Stock::DELETE ),
-																							fileTable( 1, 2 )																					
+																							addFile( Gtk::Stock::ADD ),
+																							delFile( Gtk::Stock::DELETE )
 //																						nameChooser(Gtk::FILE_CHOOSER_ACTION_SAVE)
 																						
 {
@@ -35,12 +36,18 @@ DataAssistantGTKMM::DataAssistantGTKMM( ) :
   signal_close().connect(sigc::mem_fun(*this, &DataAssistantGTKMM::on_cancel));
 
 
+
+
 	// Page 0 Intro ---------------------------------------
 	introLabel.set_label( "This wizard will guide you through the process of creating a new datahandler." );
 	append_page( introLabel );
 	set_page_complete( introLabel, true);
   set_page_type( introLabel, Gtk::ASSISTANT_PAGE_INTRO);
   set_page_title( introLabel, "This is the intro page!");
+
+
+
+
 
 
 	// Page 1 Name ----------------------------------------
@@ -55,6 +62,7 @@ DataAssistantGTKMM::DataAssistantGTKMM( ) :
   set_page_type( nameTable, Gtk::ASSISTANT_PAGE_CONTENT);
   set_page_title( nameTable, "Name");
 	set_page_complete( nameTable, true);
+
 
 
 
@@ -78,6 +86,7 @@ DataAssistantGTKMM::DataAssistantGTKMM( ) :
 	folderRefTreeModel = Gtk::ListStore::create( mColumns );
 	folderTreeView.set_model( folderRefTreeModel );
 	folderTreeSelection = folderTreeView.get_selection();
+	rowIndexFolder = -1;
 
   //Add the TreeView's view columns:
   //m_TreeView.append_column_editable("ID", ModelColumns.col_id);
@@ -91,7 +100,6 @@ DataAssistantGTKMM::DataAssistantGTKMM( ) :
 	set_page_type( folderBox, Gtk::ASSISTANT_PAGE_CONTENT );
 	set_page_title( folderBox, "Select source forlder(s)" );
 	set_page_complete( folderBox, true );
-	rowIndex = -1;
 
 	Gtk::TreeViewColumn* 	col = folderTreeView.get_column(0);
 	col->set_resizable( true );
@@ -101,17 +109,59 @@ DataAssistantGTKMM::DataAssistantGTKMM( ) :
 //	col->set_fixed_width(20);
 
 
+
+
+
 	// Page 3 File type  and Category selecting -------------------------
-	fileLabel.set_label("Select or enter file types (e.g. *.pdf):");
-	fileEntry.append_text("*.pdf");
-	fileEntry.signal_changed().connect(sigc::mem_fun(*this, &DataAssistantGTKMM::on_entry_changed) );
+	fileScrolledWindow.add( fileTreeView );
+	fileScrolledWindow.set_policy( Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC );
 
-	fileTable.attach( fileLabel, 0, 1, 0, 1, Gtk::SHRINK, Gtk::EXPAND, 2, 0);
-	fileTable.attach( fileEntry, 1, 2, 0, 1, Gtk::EXPAND|Gtk::FILL, Gtk::EXPAND, 2, 0);
+	fileBox.add( fileScrolledWindow );
+	fileBox.pack_start( fileButtonBox, Gtk::PACK_SHRINK );
+	fileBox.set_border_width(5);
 
-	append_page( fileTable );
-	set_page_type( fileTable, Gtk::ASSISTANT_PAGE_CONTENT );
-	set_page_title( fileTable, "Select file type(s)");
+	fileButtonBox.pack_start( delFile, Gtk::PACK_SHRINK );
+	fileButtonBox.pack_start( addFile, Gtk::PACK_SHRINK );
+  fileButtonBox.set_spacing(5);
+  fileButtonBox.set_layout( Gtk::BUTTONBOX_END );
+  
+	addFile.signal_clicked().connect( sigc::mem_fun( *this, &DataAssistantGTKMM::on_addFile ) );
+	delFile.signal_clicked().connect( sigc::mem_fun( *this, &DataAssistantGTKMM::on_delFile ) );
+
+	//Create the Tree model:
+	fileRefTreeModel = Gtk::ListStore::create( mColumns );
+	fileTreeView.set_model( fileRefTreeModel );
+	fileTreeSelection = fileTreeView.get_selection();
+	rowIndexFile = -1;
+
+  //Add the TreeView's view columns:
+  //m_TreeView.append_column_editable("ID", ModelColumns.col_id);
+
+ 	//Display a combo text entry to select the file type
+  fileColumnCombo = Gtk::manage(new Gtk::CellRendererCombo);
+  int cols_count = fileTreeView.append_column("File type", *fileColumnCombo);
+  Gtk::TreeViewColumn* pColumn = fileTreeView.get_column(cols_count - 1);
+  if(pColumn)
+  {
+#ifdef GLIBMM_PROPERTIES_ENABLED
+    pColumn->add_attribute(fileColumnCombo->property_text_column(), mColumns.col_type);
+#else
+    pColumn->add_attribute(*fileColumnCombo, "Type", mColumns.col_type);
+#endif
+  }
+	fileTreeView.append_column_editable("Category", mColumns.col_category);
+
+
+
+	append_page( fileBox );
+	set_page_type( fileBox, Gtk::ASSISTANT_PAGE_CONTENT );
+	set_page_title( fileBox, "Select file type(s) and category" );
+	set_page_complete( fileBox, true );
+
+
+
+
+
 
 
 	// Page 5 Overview ------------------------------------
@@ -256,8 +306,8 @@ void DataAssistantGTKMM::on_addFolder()
     {	
 
 			Gtk::TreeModel::Row row = *(folderRefTreeModel->append());
-			rowIndex++;
-			row[mColumns.col_id] = rowIndex;
+			rowIndexFolder++;
+			row[mColumns.col_id] = rowIndexFolder;
   		row[mColumns.col_folder] = dialog.get_uri();
   		row[mColumns.col_recursive] = false;
 
@@ -281,18 +331,31 @@ void DataAssistantGTKMM::on_delFolder()
 	if(iter) //If anything is selected
 	{
 		folderRefTreeModel->erase(iter);
+		rowIndexFolder--;
 	}
 };
 
 //-----------------------------------------------------------------------------
 
-void DataAssistantGTKMM::on_entry_changed()
+void DataAssistantGTKMM::on_addFile()
 {
-	set_page_complete( fileTable, true );
+
+		cout << "Add file type\n";
+		Gtk::TreeModel::Row row = *(fileRefTreeModel->append());
+		rowIndexFile++;
+		row[mColumns.col_id] = rowIndexFile;
+		row[mColumns.col_type] = " ";
+		row[mColumns.col_category] = " ";
+
 };
+
 
 //-----------------------------------------------------------------------------
 
+void DataAssistantGTKMM::on_delFile()
+{
+	cout << "Delete file type\n";
+};
 
 
 //-----------------------------------------------------------------------------
