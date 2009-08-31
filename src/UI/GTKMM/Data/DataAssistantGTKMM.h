@@ -57,7 +57,7 @@ class DataAssistantGTKMM : public Gtk::Assistant
 		Gtk::Label nameLabel;
 		Gtk::Entry nameEntry;
 		Gtk::Button nameButton;
-		Gtk::HBox nameBox;
+		Gtk::Table nameTable;
 
 
 		// Page 2 Folder selecting ----------------------------
@@ -68,34 +68,42 @@ class DataAssistantGTKMM : public Gtk::Assistant
 		Gtk::ScrolledWindow folderScrolledWindow;
 		Gtk::TreeView folderTreeView;
 		Glib::RefPtr<Gtk::ListStore> folderRefTreeModel;
-
-			//Tree model columns:
-			class ModelColumns : public Gtk::TreeModel::ColumnRecord
-			{
-			public:
-
-				ModelColumns()
-				{ add(col_id); add(col_folder); add(col_recursive); }
-
-				Gtk::TreeModelColumn<unsigned int> col_id;
-				Gtk::TreeModelColumn<Glib::ustring> col_folder;
-				Gtk::TreeModelColumn<bool> col_recursive;
-			};
+		Glib::RefPtr<Gtk::TreeSelection> folderTreeSelection;
 		
+		int rowIndex;
 
 
 
-		// Page 3 File type selecting -------------------------
 
 
-		// Page 4	Category selecting --------------------------
+		// Page 3 File type and Category selecting -------------------------
+		Gtk::Table fileTable;
+		Gtk::Label fileLabel;
+		Gtk::ComboBoxEntryText fileEntry;
 
+	
 
 		// Page 5 Confirm -------------------------------------
 		Gtk::Label confirmLabel;
 
 
+		//Tree model columns:
+		class ModelColumns : public Gtk::TreeModel::ColumnRecord
+		{
+		public:
 
+			ModelColumns()
+			{ add(col_id); add(col_folder); add(col_recursive); add(col_type); add(col_category); }
+
+			Gtk::TreeModelColumn<unsigned int> col_id;
+			Gtk::TreeModelColumn<Glib::ustring> col_folder;
+			Gtk::TreeModelColumn<bool> col_recursive;
+			Gtk::TreeModelColumn<Glib::ustring> col_type;
+			Gtk::TreeModleColumn<Glib::ustring> col_category;
+			
+		};
+		
+		ModelColumns mColumns;
 
 
 		// FUCNTIONS --------------------------------------------------------------
@@ -111,7 +119,7 @@ class DataAssistantGTKMM : public Gtk::Assistant
 
 
 		// Page 3 File type selecting -------------------------
-
+		void on_entry_changed();
 
 		// Page 4	Category selecting --------------------------
 

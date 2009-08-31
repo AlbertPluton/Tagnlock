@@ -13,7 +13,11 @@
 
 
 DataAssistantGTKMM::DataAssistantGTKMM( ) : 
-																							nameButton( Gtk::Stock::SAVE_AS )
+																							nameTable( 1, 3 ),																							
+																							nameButton( Gtk::Stock::SAVE_AS ),
+																							addFolder( Gtk::Stock::ADD ),
+																							delFolder( Gtk::Stock::DELETE ),
+																							fileTable( 1, 2 )																					
 //																						nameChooser(Gtk::FILE_CHOOSER_ACTION_SAVE)
 																						
 {
@@ -41,18 +45,73 @@ DataAssistantGTKMM::DataAssistantGTKMM( ) :
 
 	// Page 1 Name ----------------------------------------
 	nameLabel.set_label( "Name: " );
-	nameBox.pack_start( nameLabel );
-	nameBox.pack_start( nameEntry );
-	nameBox.pack_start( nameButton );
-	nameBox.show_all();
+	nameTable.attach( nameLabel, 0, 1, 0, 1, Gtk::SHRINK, Gtk::EXPAND, 2, 0);
+	nameTable.attach( nameEntry, 1, 2, 0, 1, Gtk::EXPAND|Gtk::FILL, Gtk::EXPAND, 2, 0);
+	nameTable.attach( nameButton, 2, 3, 0, 1, Gtk::SHRINK, Gtk::EXPAND, 2, 0);
 
 	nameButton.signal_clicked().connect(sigc::mem_fun(*this, &DataAssistantGTKMM::on_nameButton));
 
-	append_page( nameBox );
-  set_page_type( nameBox, Gtk::ASSISTANT_PAGE_CONTENT);
-  set_page_title( nameBox, "Name");
-	set_page_complete( nameBox, true);
+	append_page( nameTable );
+  set_page_type( nameTable, Gtk::ASSISTANT_PAGE_CONTENT);
+  set_page_title( nameTable, "Name");
+	set_page_complete( nameTable, true);
 
+
+
+	// Page 2 Folder selecting ----------------------------
+	folderScrolledWindow.add( folderTreeView );
+	folderScrolledWindow.set_policy( Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC );
+
+	folderBox.add( folderScrolledWindow );
+	folderBox.pack_start( folderButtonBox, Gtk::PACK_SHRINK );
+	folderBox.set_border_width(5);
+
+	folderButtonBox.pack_start( delFolder, Gtk::PACK_SHRINK );
+	folderButtonBox.pack_start( addFolder, Gtk::PACK_SHRINK );
+  folderButtonBox.set_spacing(5);
+  folderButtonBox.set_layout( Gtk::BUTTONBOX_END );
+  
+	addFolder.signal_clicked().connect( sigc::mem_fun( *this, &DataAssistantGTKMM::on_addFolder ) );
+	delFolder.signal_clicked().connect( sigc::mem_fun( *this, &DataAssistantGTKMM::on_delFolder ) );
+
+	//Create the Tree model:
+	folderRefTreeModel = Gtk::ListStore::create( mColumns );
+	folderTreeView.set_model( folderRefTreeModel );
+	folderTreeSelection = folderTreeView.get_selection();
+
+  //Add the TreeView's view columns:
+  //m_TreeView.append_column_editable("ID", ModelColumns.col_id);
+  folderTreeView.append_column_editable("Folder", mColumns.col_folder);
+  folderTreeView.append_column_editable("Recursive", mColumns.col_recursive);
+
+//	mColumns.col_folder->set_resizable( true );
+//	mColumns.col_recursive->set_resizable( true );
+
+	append_page( folderBox );
+	set_page_type( folderBox, Gtk::ASSISTANT_PAGE_CONTENT );
+	set_page_title( folderBox, "Select source forlder(s)" );
+	set_page_complete( folderBox, true );
+	rowIndex = -1;
+
+	Gtk::TreeViewColumn* 	col = folderTreeView.get_column(0);
+	col->set_resizable( true );
+	col->set_min_width(420);
+//	col = folderTreeView.get_column(1);
+//	col->set_sizing( Gtk::TREE_VIEW_COLUMN_AUTOSIZE ); // TREE_VIEW_COLUMN_FIXED
+//	col->set_fixed_width(20);
+
+
+	// Page 3 File type  and Category selecting -------------------------
+	fileLabel.set_label("Select or enter file types (e.g. *.pdf):");
+	fileEntry.append_text("*.pdf");
+	fileEntry.signal_changed().connect(sigc::mem_fun(*this, &DataAssistantGTKMM::on_entry_changed) );
+
+	fileTable.attach( fileLabel, 0, 1, 0, 1, Gtk::SHRINK, Gtk::EXPAND, 2, 0);
+	fileTable.attach( fileEntry, 1, 2, 0, 1, Gtk::EXPAND|Gtk::FILL, Gtk::EXPAND, 2, 0);
+
+	append_page( fileTable );
+	set_page_type( fileTable, Gtk::ASSISTANT_PAGE_CONTENT );
+	set_page_title( fileTable, "Select file type(s)");
 
 
 	// Page 5 Overview ------------------------------------
@@ -65,51 +124,11 @@ DataAssistantGTKMM::DataAssistantGTKMM( ) :
 
 	show_all();
 
-/*
-        // create two example pages - this could be every Gtk::Widget
-        Gtk::Button* p1;
-        Gtk::Button* p2;
-
-        set_title("AssistantExample");
-        set_default_size(300, 400);
-
-        signal_cancel().connect(sigc::mem_fun(*this, &DataAssistantGTKMM::on_cancel));
-        signal_close().connect(sigc::mem_fun(*this, &DataAssistantGTKMM::on_cancel));
-
-        // create the pages.
-        p1 = new Gtk::Button("This is page 1\nClick me to proceed");
-        p2 = new Gtk::Button("This is page 2\nClick me to restart");
-
-        // hold the pages in a list so we can delete theese later
-        pages.push_back(p1);
-        pages.push_back(p2);
-
-        // append the first page to the Assistant
-        append_page(*p1);
-
-        // set the page's type to indicate this is the introduction page
-        set_page_type(*p1, Gtk::ASSISTANT_PAGE_INTRO);
-
-        // set the title of the page
-        set_page_title(*p1, "This is the intro page!");
-
-        // prepare the second page - as above
-        append_page(*p2);
-        set_page_type(*p2, Gtk::ASSISTANT_PAGE_SUMMARY);
-        set_page_title(*p2, "This is the summary");
-
-        p1->signal_clicked().connect(
-                sigc::mem_fun(*this, &DataAssistantGTKMM::on_intro_finished));
-        p2->signal_clicked().connect(
-                sigc::mem_fun(*this, &DataAssistantGTKMM::on_summary_finished));
-
-        show_all();
-*/
-
 };
 
  
 //-----------------------------------------------------------------------------
+
 
 
 DataAssistantGTKMM::~DataAssistantGTKMM()
@@ -205,7 +224,7 @@ void DataAssistantGTKMM::on_nameButton()
     case(Gtk::RESPONSE_OK):
     {	
 			nameEntry.set_text( dialog.get_uri() );
-			set_page_complete( nameBox, true);		  
+			set_page_complete( nameTable, true);		  
       break;
     }
      default:
@@ -218,6 +237,72 @@ void DataAssistantGTKMM::on_nameButton()
 
 //-----------------------------------------------------------------------------
 
+void DataAssistantGTKMM::on_addFolder()
+{
+
+	// Create a dialog to choose a datahandler from a file.
+	Gtk::FileChooserDialog dialog( *this, "Select folder", Gtk::FILE_CHOOSER_ACTION_SELECT_FOLDER);
+
+  //Add response buttons the the dialog:
+  dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+  dialog.add_button(Gtk::Stock::OPEN, Gtk::RESPONSE_OK);
+
+	int result = dialog.run();
+
+  //Handle the response:
+  switch(result)
+  {
+    case(Gtk::RESPONSE_OK):
+    {	
+
+			Gtk::TreeModel::Row row = *(folderRefTreeModel->append());
+			rowIndex++;
+			row[mColumns.col_id] = rowIndex;
+  		row[mColumns.col_folder] = dialog.get_uri();
+  		row[mColumns.col_recursive] = false;
+
+			set_page_complete( folderBox, true);		  
+      break;
+    }
+     default:
+    {
+      break;
+    }	
+	};	
+
+};
+
+
+//-----------------------------------------------------------------------------
+
+void DataAssistantGTKMM::on_delFolder()
+{
+	Gtk::TreeModel::iterator iter = folderTreeSelection->get_selected();
+	if(iter) //If anything is selected
+	{
+		folderRefTreeModel->erase(iter);
+	}
+};
+
+//-----------------------------------------------------------------------------
+
+void DataAssistantGTKMM::on_entry_changed()
+{
+	set_page_complete( fileTable, true );
+};
+
+//-----------------------------------------------------------------------------
+
+
+
+//-----------------------------------------------------------------------------
+
+
+
+//-----------------------------------------------------------------------------
+
+
+
 
 
 //-----------------------------------------------------------------------------
@@ -225,4 +310,14 @@ void DataAssistantGTKMM::on_nameButton()
 
 
 //-----------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
 
