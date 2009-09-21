@@ -286,7 +286,12 @@ void DataWindowGTKMM::readDataFromUI()
 
 void DataWindowGTKMM::newButton_clicked()
 {
+	// This is test code
+	Category* cat = new Category();
+	cat->loadCategory ("./testSaveCategory.cat");
+	this->addCategory(cat);
 
+	datahandlerAssistant->updateCategories( this->getCatVec () );
 
 	datahandlerAssistant->show_all();
 

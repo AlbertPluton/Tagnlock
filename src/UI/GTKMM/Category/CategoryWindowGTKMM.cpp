@@ -220,56 +220,13 @@ void CategoryWindowGTKMM::connectSignals()
 
 void CategoryWindowGTKMM::loadCategory()
 {
-  Gtk::FileChooserDialog dialog("Please choose a file", Gtk::FILE_CHOOSER_ACTION_OPEN);
-  dialog.set_transient_for(*categoryWindow);
 
-  //Add response buttons the the dialog:
-  dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
-  dialog.add_button(Gtk::Stock::OPEN, Gtk::RESPONSE_OK);
-
-  //Add filters, so that only certain file types can be selected:
-#ifdef TODO_DEF
-#warning TODO Make a good filter
-#endif
-/*	TODO Make a good filter for the files.
-  Gtk::FileFilter filter_cat;
-  filter_cat.set_name("Category files");
-  filter_cat.add_pattern("cat");
-  dialog.add_filter(filter_cat);
-*/
-  Gtk::FileFilter filter_any;
-  filter_any.set_name("Any files");
-  filter_any.add_pattern("*");
-  dialog.add_filter(filter_any);
-
-  //Show the dialog and wait for a user response:
-  int result = dialog.run();
-
-  //Handle the response:
-  switch(result)
-  {
-    case(Gtk::RESPONSE_OK):
-    {
-      //Notice that this is a std::string, not a Glib::ustring.
-      std::string fileName = dialog.get_filename();
+	if( loadCategoryWithDialog() )
+	{
+  	// Display the current category which is the new one.
+    this->displayCategory( this->getIndexCurrentCategory() );
+  }; 
       
-      // Load a new category from the file and add it to the vector of category objects.
-      Category* cat = new Category();
-      cat->loadCategory( fileName );
-      this->addCategory( cat );  
-      
-      // Display the current category which is the new one.
-      this->displayCategory( this->getIndexCurrentCategory() );
-      
-      //std::cout << "Number of categories is: " << this->getNumberOfCategories() << ".\tCurrent category is: " << this->getCurrentCategory() << "\n" ;
-      
-      break;
-    }
-     default:
-    {
-      break;
-    }
-  }
 };
 
 

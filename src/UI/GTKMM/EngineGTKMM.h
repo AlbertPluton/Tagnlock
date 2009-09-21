@@ -49,6 +49,12 @@ class EngineGTKMM : public Engine
 		
 		~EngineGTKMM();
 	
+		//! Load a category by opening a dialog.
+		/*!
+			\returns true if all was succesfull.
+		*/
+		bool loadCategoryWithDialog();	
+	
 	
 		// === The following functions are implementations of the virtual functions in the Engine class ====================
 

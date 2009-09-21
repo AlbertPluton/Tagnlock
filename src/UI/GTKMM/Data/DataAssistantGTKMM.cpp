@@ -128,31 +128,99 @@ DataAssistantGTKMM::DataAssistantGTKMM( ) :
 	addFile.signal_clicked().connect( sigc::mem_fun( *this, &DataAssistantGTKMM::on_addFile ) );
 	delFile.signal_clicked().connect( sigc::mem_fun( *this, &DataAssistantGTKMM::on_delFile ) );
 
+  //Create and fill the combo models
+  // The file type combo
+  fileRefTreeModelTypeCombo = Gtk::ListStore::create(columnsTypeCombo);
+  Gtk::TreeModel::Row row = *(fileRefTreeModelTypeCombo->append());
+  row[columnsTypeCombo.col_choice] = "*.pdf";
+  row = *(fileRefTreeModelTypeCombo->append());
+  row[columnsTypeCombo.col_choice] = "*.*";
+
+	// The category combo
+	fileRefTreeModelCategoryCombo = Gtk::ListStore::create(columnsCategoryCombo);
+	for( int i = 0; i < categories.size(); i++ )
+	{
+		row = *(fileRefTreeModelCategoryCombo->append());	
+		row[columnsTypeCombo.col_choice] = categories[i]->getName();
+	}
+
+
 	//Create the Tree model:
 	fileRefTreeModel = Gtk::ListStore::create( mColumns );
 	fileTreeView.set_model( fileRefTreeModel );
 	fileTreeSelection = fileTreeView.get_selection();
 	rowIndexFile = -1;
 
+	// Add the first file type row.
+	on_addFile();
+
   //Add the TreeView's view columns:
-  //m_TreeView.append_column_editable("ID", ModelColumns.col_id);
 
- 	//Display a combo text entry to select the file type
-  fileColumnCombo = Gtk::manage(new Gtk::CellRendererCombo);
-  int cols_count = fileTreeView.append_column("File type", *fileColumnCombo);
-  Gtk::TreeViewColumn* pColumn = fileTreeView.get_column(cols_count - 1);
-  if(pColumn)
-  {
+//  fileTreeView.append_column_editable("ID", mColumns.col_id);
+
+  //Create a Combo CellRenderer for the type column
+  Gtk::TreeView::Column* pColumn = Gtk::manage( new Gtk::TreeView::Column("File type") ); 
+  Gtk::CellRendererCombo* pRenderer = Gtk::manage( new Gtk::CellRendererCombo);
+  pColumn->pack_start(*pRenderer);
+  fileTreeView.append_column(*pColumn);
+  //Make this View column represent the m_col_itemchosen model column:
 #ifdef GLIBMM_PROPERTIES_ENABLED
-    pColumn->add_attribute(fileColumnCombo->property_text_column(), mColumns.col_type);
+  pColumn->add_attribute(pRenderer->property_text(), mColumns.col_type);
 #else
-    pColumn->add_attribute(*fileColumnCombo, "Type", mColumns.col_type);
+  pColumn->add_attribute(*pRenderer, "text", mColumns.col_type);
 #endif
-  }
-	fileTreeView.append_column_editable("Category", mColumns.col_category);
+	// Set the entry combo to use the combo model.
+	pRenderer->property_model() = fileRefTreeModelTypeCombo;
+  // This must be a text column, in fileRefTreeModelCombo
+#ifdef GLIBMM_PROPERTIES_ENABLED
+  pRenderer->property_text_column() = 0; 
+#else
+  pRenderer->set_property("text_column", 0);
+#endif
+  //Allow the user to edit the column:
+  //This is done automatically when we use View::append_column(model_column), but that uses a simple Text CellRenderer.
+#ifdef GLIBMM_PROPERTIES_ENABLED
+  pRenderer->property_editable() = true;
+#else
+  pRenderer->set_property("editable", true);
+#endif
+  pRenderer->signal_edited().connect( sigc::mem_fun(*this, &DataAssistantGTKMM::on_cellrenderer_type_edited) );
 
 
+  //Create a Combo CellRenderer for the category column
+  pColumn = Gtk::manage( new Gtk::TreeView::Column("Category") ); 
+  pRenderer = Gtk::manage( new Gtk::CellRendererCombo);
+  pColumn->pack_start(*pRenderer);
+  fileTreeView.append_column(*pColumn);
+  //Make this View column represent the m_col_itemchosen model column:
+#ifdef GLIBMM_PROPERTIES_ENABLED
+  pColumn->add_attribute(pRenderer->property_text(), mColumns.col_category);
+#else
+  pColumn->add_attribute(*pRenderer, "text", mColumns.col_category);
+#endif
+	// Set the entry combo to use the combo model.
+	pRenderer->property_model() = fileRefTreeModelCategoryCombo;
+  // This must be a text column, in fileRefTreeModelCombo
+#ifdef GLIBMM_PROPERTIES_ENABLED
+  pRenderer->property_text_column() = 0; 
+#else
+  pRenderer->set_property("text_column", 0);
+#endif
+  //Allow the user to edit the column:
+  //This is done automatically when we use View::append_column(model_column), but that uses a simple Text CellRenderer.
+#ifdef GLIBMM_PROPERTIES_ENABLED
+  pRenderer->property_editable() = true;
+#else
+  pRenderer->set_property("editable", true);
+#endif
+  pRenderer->signal_edited().connect( sigc::mem_fun(*this, &DataAssistantGTKMM::on_cellrenderer_category_edited) );
 
+
+	col = fileTreeView.get_column(0);
+	col->set_resizable( true );
+	col->set_min_width(150);
+	
+	
 	append_page( fileBox );
 	set_page_type( fileBox, Gtk::ASSISTANT_PAGE_CONTENT );
 	set_page_title( fileBox, "Select file type(s) and category" );
@@ -202,6 +270,19 @@ DataAssistantGTKMM::~DataAssistantGTKMM()
 
 
 
+
+//-----------------------------------------------------------------------------
+
+void DataAssistantGTKMM::updateCategories( vector<Category*> * cat)
+{
+	Gtk::TreeModel::Row row;
+	for( int i = 0; i < cat->size(); i++ )
+	{
+		row = *(fileRefTreeModelCategoryCombo->append());	
+		row[columnsTypeCombo.col_choice] = (*cat)[i]->getName();
+	}
+
+}; 
 
 //-----------------------------------------------------------------------------
 
@@ -344,8 +425,8 @@ void DataAssistantGTKMM::on_addFile()
 		Gtk::TreeModel::Row row = *(fileRefTreeModel->append());
 		rowIndexFile++;
 		row[mColumns.col_id] = rowIndexFile;
-		row[mColumns.col_type] = " ";
-		row[mColumns.col_category] = " ";
+		row[mColumns.col_type] = "click here";
+		row[mColumns.col_category] = "click here";
 
 };
 
@@ -360,10 +441,38 @@ void DataAssistantGTKMM::on_delFile()
 
 //-----------------------------------------------------------------------------
 
+void DataAssistantGTKMM::on_cellrenderer_type_edited( const Glib::ustring& path_string, const Glib::ustring& new_text)
+{
+  Gtk::TreePath path(path_string);
 
+  //Get the row from the path:
+  Gtk::TreeModel::iterator iter = fileRefTreeModel->get_iter(path);
+  if(iter)
+  {
+      //Store the user's new text in the model:
+      Gtk::TreeRow row = *iter;
+      row[mColumns.col_type] = new_text;
+  }
+}
 
 //-----------------------------------------------------------------------------
 
+
+void DataAssistantGTKMM::on_cellrenderer_category_edited( const Glib::ustring& path_string, const Glib::ustring& new_text)
+{
+  Gtk::TreePath path(path_string);
+
+  //Get the row from the path:
+  Gtk::TreeModel::iterator iter = fileRefTreeModel->get_iter(path);
+  if(iter)
+  {
+      //Store the user's new text in the model:
+      Gtk::TreeRow row = *iter;
+      row[mColumns.col_category] = new_text;
+  }
+}
+
+//-----------------------------------------------------------------------------
 
 
 
