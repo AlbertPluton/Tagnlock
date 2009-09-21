@@ -12,13 +12,14 @@
 //-----------------------------------------------------------------------------
 
 
-DataAssistantGTKMM::DataAssistantGTKMM( ) : 
+DataAssistantGTKMM::DataAssistantGTKMM( EngineGTKMM* parentWindow ) : 
 																							nameTable( 1, 3 ),																							
 																							nameButton( Gtk::Stock::SAVE_AS ),
 																							addFolder( Gtk::Stock::ADD ),
 																							delFolder( Gtk::Stock::DELETE ),
 																							addFile( Gtk::Stock::ADD ),
-																							delFile( Gtk::Stock::DELETE )
+																							delFile( Gtk::Stock::DELETE ),
+																							loadCat( Gtk::Stock::OPEN )
 //																						nameChooser(Gtk::FILE_CHOOSER_ACTION_SAVE)
 																						
 {
@@ -27,6 +28,7 @@ DataAssistantGTKMM::DataAssistantGTKMM( ) :
 	cout << "Constructing a DataAssisTantGTKMM object.\n";
 #endif
 
+	parent = parentWindow;
 
 
   set_title("Creating a new datahandler");
@@ -122,11 +124,13 @@ DataAssistantGTKMM::DataAssistantGTKMM( ) :
 
 	fileButtonBox.pack_start( delFile, Gtk::PACK_SHRINK );
 	fileButtonBox.pack_start( addFile, Gtk::PACK_SHRINK );
+	fileButtonBox.pack_end( loadCat, Gtk::PACK_SHRINK );
   fileButtonBox.set_spacing(5);
   fileButtonBox.set_layout( Gtk::BUTTONBOX_END );
   
 	addFile.signal_clicked().connect( sigc::mem_fun( *this, &DataAssistantGTKMM::on_addFile ) );
 	delFile.signal_clicked().connect( sigc::mem_fun( *this, &DataAssistantGTKMM::on_delFile ) );
+	loadCat.signal_clicked().connect( sigc::mem_fun( *this, &DataAssistantGTKMM::on_loadCat ) );
 
   //Create and fill the combo models
   // The file type combo
@@ -441,6 +445,13 @@ void DataAssistantGTKMM::on_delFile()
 
 //-----------------------------------------------------------------------------
 
+void DataAssistantGTKMM::on_loadCat()
+{
+	parent->loadCategory();
+};
+		
+//-----------------------------------------------------------------------------
+		
 void DataAssistantGTKMM::on_cellrenderer_type_edited( const Glib::ustring& path_string, const Glib::ustring& new_text)
 {
   Gtk::TreePath path(path_string);

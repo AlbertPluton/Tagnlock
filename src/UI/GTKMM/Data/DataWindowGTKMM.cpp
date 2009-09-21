@@ -59,7 +59,7 @@ DataWindowGTKMM::DataWindowGTKMM(  int argc, char **argv, string gladeFileName )
   refXml->get_widget("DataWindow", dataWindow);
   refXml->get_widget("scrolledwindow1", categoryScrolledWindow);
   refXml->get_widget("alignment3", displayWindow);
-	datahandlerAssistant = new DataAssistantGTKMM( );
+	datahandlerAssistant = new DataAssistantGTKMM( this );
 
 
 	category = new CategoryGTKMM( );   

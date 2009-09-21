@@ -18,6 +18,7 @@
 #include <string>
 using namespace std;
 
+#include "EngineGTKMM.h"
 
 
 //! This class forms an assistant UI to guide the user in the process of creating a new datahandler.
@@ -28,7 +29,7 @@ class DataAssistantGTKMM : public Gtk::Assistant
 	public:
 
 		//! The default constructor.
-		DataAssistantGTKMM( ); 
+		DataAssistantGTKMM( EngineGTKMM* parentWindow ); 
 
 		//! The default destructor.
 		~DataAssistantGTKMM(); 
@@ -43,6 +44,8 @@ class DataAssistantGTKMM : public Gtk::Assistant
 
 	private:
 
+		EngineGTKMM* parent;
+		
 
     virtual void on_cancel(void);
     virtual void on_intro_finished(void);
@@ -86,7 +89,7 @@ class DataAssistantGTKMM : public Gtk::Assistant
 		// Page 3 File type and Category selecting -------------------------
 		Gtk::VBox fileBox;
 		Gtk::HButtonBox fileButtonBox;
-		Gtk::Button addFile, delFile;
+		Gtk::Button addFile, delFile, loadCat;
 
 		Gtk::ScrolledWindow fileScrolledWindow;
 		Gtk::TreeView fileTreeView;
@@ -170,6 +173,7 @@ class DataAssistantGTKMM : public Gtk::Assistant
 		// Page 3 File type selecting -------------------------
 		void on_addFile();
 		void on_delFile();
+		void on_loadCat();
 		void on_cellrenderer_type_edited(const Glib::ustring& path_string, const Glib::ustring& new_text);
 		void on_cellrenderer_category_edited(const Glib::ustring& path_string, const Glib::ustring& new_text);
 
