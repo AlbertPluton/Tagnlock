@@ -38,8 +38,8 @@ class CategoryWindowGTKMM : public EngineGTKMM
 		~CategoryWindowGTKMM();
 
 
-		void loadCategory();
-		void saveCategory();
+		void loadShowCategory();
+		bool saveCategory();
 		void newField();
 		void modifyField();
 		void displayCategory( int index );

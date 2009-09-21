@@ -184,7 +184,7 @@ void EngineGTKMM::modifyToolchainNode()
 
 
 
-bool EngineGTKMM::loadCategoryWithDialog()
+bool EngineGTKMM::loadCategory()
 {
   Gtk::FileChooserDialog dialog("Please choose a file", Gtk::FILE_CHOOSER_ACTION_OPEN);
 //  dialog.set_transient_for(*this);

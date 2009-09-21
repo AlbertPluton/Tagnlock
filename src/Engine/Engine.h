@@ -106,10 +106,10 @@ class Engine
 		void setCurrentCategory( int index );
 
 		//! This virtual function is UI dependent. The UI should give the user the option to load a category from a file.
-		virtual void loadCategory(){};
+		virtual bool loadCategory(){};
 
 		//! This virtual function is UI dependent. The UI should give the user the option to save a category to a file.
-		virtual void saveCategory(){};
+		virtual bool saveCategory(){};
 
 		//! This virtual function is UI dependent. It should ask the user what kind of field to add to the current category.
 		/*!

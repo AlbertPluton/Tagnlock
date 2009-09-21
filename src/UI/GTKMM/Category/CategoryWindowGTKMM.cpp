@@ -122,7 +122,7 @@ void CategoryWindowGTKMM::connectSignals()
     refXml->get_widget("toolbutton15", pToolButton);
     if(pToolButton)
     {
-      pToolButton->signal_clicked().connect( sigc::mem_fun( this, &CategoryWindowGTKMM::loadCategory) );
+      pToolButton->signal_clicked().connect( sigc::mem_fun( this, &CategoryWindowGTKMM::loadShowCategory) );
     }
     else
     {
@@ -218,21 +218,22 @@ void CategoryWindowGTKMM::connectSignals()
 
 //-----------------------------------------------------------------------------
 
-void CategoryWindowGTKMM::loadCategory()
+void CategoryWindowGTKMM::loadShowCategory()
 {
 
-	if( loadCategoryWithDialog() )
+	if( loadCategory() )
 	{
   	// Display the current category which is the new one.
     this->displayCategory( this->getIndexCurrentCategory() );
   }; 
-      
+
+    
 };
 
 
 //-----------------------------------------------------------------------------
 
-void CategoryWindowGTKMM::saveCategory()
+bool CategoryWindowGTKMM::saveCategory()
 {
 
 };

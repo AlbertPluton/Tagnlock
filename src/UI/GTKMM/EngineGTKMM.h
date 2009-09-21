@@ -53,7 +53,7 @@ class EngineGTKMM : public Engine
 		/*!
 			\returns true if all was succesfull.
 		*/
-		bool loadCategoryWithDialog();	
+		virtual bool loadCategory();	
 	
 	
 		// === The following functions are implementations of the virtual functions in the Engine class ====================
