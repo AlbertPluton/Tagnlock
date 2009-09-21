@@ -291,8 +291,6 @@ void DataWindowGTKMM::newButton_clicked()
 	cat->loadCategory ("./testSaveCategory.cat");
 	this->addCategory(cat);
 
-	datahandlerAssistant->updateCategories( this->getCatVec () );
-
 	datahandlerAssistant->show_all();
 
 /*

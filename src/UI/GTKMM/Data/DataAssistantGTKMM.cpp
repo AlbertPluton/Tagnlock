@@ -292,6 +292,7 @@ void DataAssistantGTKMM::updateCategories( vector<Category*> * cat)
 
 void DataAssistantGTKMM::on_intro_finished(void) 
 {
+	
 /*
 
         // when the buttons is clicked we set the page as comlete so the user
@@ -448,6 +449,7 @@ void DataAssistantGTKMM::on_delFile()
 void DataAssistantGTKMM::on_loadCat()
 {
 	parent->loadCategory();
+	updateCategories( parent->getCatVec() );
 };
 		
 //-----------------------------------------------------------------------------

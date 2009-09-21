@@ -34,18 +34,14 @@ class DataAssistantGTKMM : public Gtk::Assistant
 		//! The default destructor.
 		~DataAssistantGTKMM(); 
 
-		//! Update the list of current categories known to the assistant.
-		/*!
-			This is used by the combo field from which the categories are chosen.
-			It should be run before the assitant is shown to the user.
-		*/
-  	void updateCategories( vector<Category*> * cat); 
 
 
 	private:
 
 		EngineGTKMM* parent;
 		
+
+  	void updateCategories( vector<Category*> * cat); 
 
     virtual void on_cancel(void);
     virtual void on_intro_finished(void);
