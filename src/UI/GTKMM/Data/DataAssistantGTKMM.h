@@ -34,14 +34,14 @@ class DataAssistantGTKMM : public Gtk::Assistant
 		//! The default destructor.
 		~DataAssistantGTKMM(); 
 
-
+		void activate();
 
 	private:
 
 		EngineGTKMM* parent;
 		
 
-  	void updateCategories( vector<Category*> * cat); 
+  	void updateCategories( ); 
 
     virtual void on_cancel(void);
     virtual void on_intro_finished(void);
@@ -93,12 +93,9 @@ class DataAssistantGTKMM : public Gtk::Assistant
 		Glib::RefPtr<Gtk::ListStore> fileRefTreeModelTypeCombo;
 		Glib::RefPtr<Gtk::ListStore> fileRefTreeModelCategoryCombo;
 		Glib::RefPtr<Gtk::TreeSelection> fileTreeSelection;
-//		Gtk::CellRendererCombo* fileTypeColumnCombo;
-//		Gtk::CellRendererCombo* fileCategoryColumnCombo;
-
 
 		int rowIndexFile;
-  
+ 
 		//Tree models for the Combo CellRenderer in the TreeView column:
 		class ModelColumnsTypeCombo : public Gtk::TreeModel::ColumnRecord
 		{
@@ -124,17 +121,22 @@ class DataAssistantGTKMM : public Gtk::Assistant
 
 		
 		
-		
-		
 	
-		// Page 4 Category selecting --------------------------
+	
+	
 
 
+		// Page 4 Confirm -------------------------------------
+		Gtk::Label confirmLabel, confirmName, confirmFolder, confirmType;
+		Gtk::Table confirmTable;
+		Gtk::Entry confirmNameEntry;
+		Gtk::ScrolledWindow confirmFolderScrolledWindow, confirmFileScrolledWindow;
+		Gtk::TreeView confirmFolderTreeView, confirmFileTreeView;
+		Glib::RefPtr<Gtk::ListStore> confirmFolderRefTreeModel, confirmFileRefTreeModel;
+		Gtk::HSeparator confirmSep1, confirmSep2;
 
-		// Page 5 Confirm -------------------------------------
-		Gtk::Label confirmLabel;
 
-
+		//-----------------------------------------------------
 		//Tree model columns:
 		class ModelColumns : public Gtk::TreeModel::ColumnRecord
 		{
@@ -148,7 +150,6 @@ class DataAssistantGTKMM : public Gtk::Assistant
 			Gtk::TreeModelColumn<bool> col_recursive;
 			Gtk::TreeModelColumn<Glib::ustring> col_type;
 			Gtk::TreeModelColumn<Glib::ustring> col_category;
-			
 		};
 		
 		ModelColumns mColumns;
@@ -173,11 +174,11 @@ class DataAssistantGTKMM : public Gtk::Assistant
 		void on_cellrenderer_type_edited(const Glib::ustring& path_string, const Glib::ustring& new_text);
 		void on_cellrenderer_category_edited(const Glib::ustring& path_string, const Glib::ustring& new_text);
 
+		void checkFileDone();
 
-		// Page 4	Category selecting --------------------------
 
 
-		// Page 5 Confirm -------------------------------------
+		// Page 4 Confirm -------------------------------------
 
 };
 

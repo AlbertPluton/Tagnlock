@@ -9,6 +9,26 @@
 #include "DataAssistantGTKMM.h"
 
 
+
+#define confirmTableWidth 	12
+
+#define confirmTableLabelStart	0
+#define confirmTableLabelEnd 	  confirmTableWidth
+#define confirmTableLabelHeight 1
+
+#define confirmTableDataStart 	1
+#define confirmTableDataEnd   	confirmTableWidth-2
+#define confirmTableDataHeight  5
+#define confirmTableDataEntryHeight 1
+
+#define confirmTableSepStart	0
+#define confirmTableSepEnd		confirmTableWidth-1
+#define confirmTableSepHeight 1
+
+#define confirmTableHeight 	4*confirmTableLabelHeight + 1*confirmTableDataEntryHeight + 2*confirmTableDataHeight + 2*confirmTableSepHeight
+
+
+
 //-----------------------------------------------------------------------------
 
 
@@ -19,9 +39,12 @@ DataAssistantGTKMM::DataAssistantGTKMM( EngineGTKMM* parentWindow ) :
 																							delFolder( Gtk::Stock::DELETE ),
 																							addFile( Gtk::Stock::ADD ),
 																							delFile( Gtk::Stock::DELETE ),
-																							loadCat( Gtk::Stock::OPEN )
-//																						nameChooser(Gtk::FILE_CHOOSER_ACTION_SAVE)
-																						
+																							loadCat( "Open Category" ),
+																							confirmTable( confirmTableWidth, confirmTableHeight, false ),
+																							confirmLabel( "<b>Please confirm your settings for the datahandler to be created.</b>", Gtk::ALIGN_LEFT ),
+																							confirmName( "Datahandler name:", Gtk::ALIGN_LEFT ),
+																							confirmFolder( "Folders to be search for source files:", Gtk::ALIGN_LEFT ),
+																							confirmType( "Desired file type(s) and associated categories:", Gtk::ALIGN_LEFT )																		
 {
 
 #ifdef DEBUG_MESSAGES_DEF
@@ -63,6 +86,8 @@ DataAssistantGTKMM::DataAssistantGTKMM( EngineGTKMM* parentWindow ) :
 	append_page( nameTable );
   set_page_type( nameTable, Gtk::ASSISTANT_PAGE_CONTENT);
   set_page_title( nameTable, "Name");
+
+// TODO
 	set_page_complete( nameTable, true);
 
 
@@ -100,7 +125,9 @@ DataAssistantGTKMM::DataAssistantGTKMM( EngineGTKMM* parentWindow ) :
 
 	append_page( folderBox );
 	set_page_type( folderBox, Gtk::ASSISTANT_PAGE_CONTENT );
-	set_page_title( folderBox, "Select source forlder(s)" );
+	set_page_title( folderBox, "Select source folder(s)" );
+
+// TODO
 	set_page_complete( folderBox, true );
 
 	Gtk::TreeViewColumn* 	col = folderTreeView.get_column(0);
@@ -122,9 +149,10 @@ DataAssistantGTKMM::DataAssistantGTKMM( EngineGTKMM* parentWindow ) :
 	fileBox.pack_start( fileButtonBox, Gtk::PACK_SHRINK );
 	fileBox.set_border_width(5);
 
+	fileButtonBox.pack_start( loadCat, Gtk::PACK_SHRINK );
 	fileButtonBox.pack_start( delFile, Gtk::PACK_SHRINK );
 	fileButtonBox.pack_start( addFile, Gtk::PACK_SHRINK );
-	fileButtonBox.pack_end( loadCat, Gtk::PACK_SHRINK );
+
   fileButtonBox.set_spacing(5);
   fileButtonBox.set_layout( Gtk::BUTTONBOX_END );
   
@@ -154,7 +182,7 @@ DataAssistantGTKMM::DataAssistantGTKMM( EngineGTKMM* parentWindow ) :
 	fileTreeView.set_model( fileRefTreeModel );
 	fileTreeSelection = fileTreeView.get_selection();
 	rowIndexFile = -1;
-
+    
 	// Add the first file type row.
 	on_addFile();
 
@@ -217,6 +245,9 @@ DataAssistantGTKMM::DataAssistantGTKMM( EngineGTKMM* parentWindow ) :
 #else
   pRenderer->set_property("editable", true);
 #endif
+	// Make the sure this combo box does not allow user typed in put, only the possibility to select something from the list.
+	pRenderer->property_has_entry() = false;
+	// Conect the signal to the signal handler function.
   pRenderer->signal_edited().connect( sigc::mem_fun(*this, &DataAssistantGTKMM::on_cellrenderer_category_edited) );
 
 
@@ -227,7 +258,9 @@ DataAssistantGTKMM::DataAssistantGTKMM( EngineGTKMM* parentWindow ) :
 	
 	append_page( fileBox );
 	set_page_type( fileBox, Gtk::ASSISTANT_PAGE_CONTENT );
-	set_page_title( fileBox, "Select file type(s) and category" );
+	set_page_title( fileBox, "Select file type(s) and associated category" );
+
+//TODO
 	set_page_complete( fileBox, true );
 
 
@@ -236,11 +269,37 @@ DataAssistantGTKMM::DataAssistantGTKMM( EngineGTKMM* parentWindow ) :
 
 
 
-	// Page 5 Overview ------------------------------------
-	confirmLabel.set_label( "Please confirm your settings for the datahandler to be created." );
-	append_page( confirmLabel );
-  set_page_type( confirmLabel, Gtk::ASSISTANT_PAGE_CONFIRM);
-  set_page_title( confirmLabel, "Confirm");
+	// Page 4 Overview ------------------------------------
+
+	confirmLabel.set_use_markup(true); // required for bold text.
+		
+	confirmFolderScrolledWindow.set_policy( Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC );
+	confirmFileScrolledWindow.set_policy( Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC );
+	confirmFolderScrolledWindow.add( confirmFolderTreeView );
+	confirmFileScrolledWindow.add( confirmFileTreeView );
+	confirmFolderTreeView.set_model( folderRefTreeModel );
+	confirmFileTreeView.set_model( fileRefTreeModel );
+
+	// Add every thing to the table
+	int ypos1 = 0;
+	int ypos2 = confirmTableLabelHeight;
+	
+	confirmTable.attach( confirmLabel, confirmTableLabelStart, confirmTableLabelEnd, ypos1, ypos2, Gtk::FILL, Gtk::SHRINK, 5, 5 ); ypos1 = ypos2; ypos2 += confirmTableLabelHeight;
+	
+	confirmTable.attach( confirmName, confirmTableLabelStart, confirmTableLabelEnd, ypos1, ypos2, Gtk::FILL, Gtk::SHRINK, 5, 5 ); ypos1 = ypos2; ypos2 += confirmTableLabelHeight;
+  confirmTable.attach( confirmNameEntry, confirmTableDataStart, confirmTableDataEnd, ypos1, ypos2, Gtk::EXPAND|Gtk::FILL, Gtk::EXPAND|Gtk::FILL, 0, 5 ); ypos1 = ypos2; ypos2 += confirmTableDataEntryHeight;
+	confirmTable.attach( confirmSep1, confirmTableSepStart, confirmTableSepEnd, ypos1, ypos2, Gtk::EXPAND|Gtk::FILL, Gtk::SHRINK, 5, 5 ); ypos1 = ypos2; ypos2 += confirmTableSepHeight;
+	
+	
+	confirmTable.attach( confirmFolder, confirmTableLabelStart, confirmTableLabelEnd, ypos1, ypos2, Gtk::FILL, Gtk::SHRINK, 5, 5 ); ypos1 = ypos2; ypos2 += confirmTableLabelHeight;
+  confirmTable.attach( confirmFolderScrolledWindow, confirmTableDataStart, confirmTableDataEnd, ypos1, ypos2, Gtk::EXPAND|Gtk::FILL, Gtk::EXPAND|Gtk::FILL, 0, 5 ); ypos1 = ypos2; ypos2 += confirmTableDataHeight;
+	confirmTable.attach( confirmSep2, confirmTableSepStart, confirmTableSepEnd, ypos1, ypos2, Gtk::EXPAND|Gtk::FILL, Gtk::SHRINK, 5, 5 ); ypos1 = ypos2; ypos2 += confirmTableSepHeight;
+	
+	confirmTable.attach( confirmType, confirmTableLabelStart, confirmTableLabelEnd, ypos1, ypos2, Gtk::FILL, Gtk::SHRINK, 5, 5 ); ypos1 = ypos2; ypos2 += confirmTableLabelHeight;
+	confirmTable.attach( confirmFileScrolledWindow, confirmTableDataStart, confirmTableDataEnd, ypos1, ypos2, Gtk::EXPAND|Gtk::FILL, Gtk::EXPAND|Gtk::FILL, 0, 5 ); ypos1 = ypos2; ypos2 += confirmTableDataHeight;
+	append_page( confirmTable );
+  set_page_type( confirmTable, Gtk::ASSISTANT_PAGE_CONFIRM);
+  set_page_title( confirmTable, "Confirm");
 	
 
 
@@ -277,8 +336,26 @@ DataAssistantGTKMM::~DataAssistantGTKMM()
 
 //-----------------------------------------------------------------------------
 
-void DataAssistantGTKMM::updateCategories( vector<Category*> * cat)
+void DataAssistantGTKMM::activate()
 {
+
+	show_all();
+	updateCategories(); 
+	
+};
+
+//-----------------------------------------------------------------------------
+
+void DataAssistantGTKMM::updateCategories( )
+{
+
+	// Update the list of categories known to the program.
+	vector<Category*> * cat = parent->getCatVec();
+
+	// Clear the list
+	fileRefTreeModelCategoryCombo->clear();
+
+	// Put the categories in rows to display in the combo button.
 	Gtk::TreeModel::Row row;
 	for( int i = 0; i < cat->size(); i++ )
 	{
@@ -433,6 +510,8 @@ void DataAssistantGTKMM::on_addFile()
 		row[mColumns.col_type] = "click here";
 		row[mColumns.col_category] = "click here";
 
+		checkFileDone();
+
 };
 
 
@@ -441,6 +520,15 @@ void DataAssistantGTKMM::on_addFile()
 void DataAssistantGTKMM::on_delFile()
 {
 	cout << "Delete file type\n";
+	
+	Gtk::TreeModel::iterator iter = fileTreeSelection->get_selected();
+	
+	if( iter )
+	{
+		fileRefTreeModel->erase(iter);
+		checkFileDone();
+	};
+	
 };
 
 
@@ -449,7 +537,7 @@ void DataAssistantGTKMM::on_delFile()
 void DataAssistantGTKMM::on_loadCat()
 {
 	parent->loadCategory();
-	updateCategories( parent->getCatVec() );
+	updateCategories( );
 };
 		
 //-----------------------------------------------------------------------------
@@ -465,6 +553,7 @@ void DataAssistantGTKMM::on_cellrenderer_type_edited( const Glib::ustring& path_
       //Store the user's new text in the model:
       Gtk::TreeRow row = *iter;
       row[mColumns.col_type] = new_text;
+      checkFileDone();
   }
 }
 
@@ -482,12 +571,51 @@ void DataAssistantGTKMM::on_cellrenderer_category_edited( const Glib::ustring& p
       //Store the user's new text in the model:
       Gtk::TreeRow row = *iter;
       row[mColumns.col_category] = new_text;
+      checkFileDone();
   }
 }
 
 //-----------------------------------------------------------------------------
 
+void DataAssistantGTKMM::checkFileDone()
+{
+	// Get all rows as itertor
+	Gtk::TreeModel::Children rows = fileRefTreeModel->children(); 
+	
+	Gtk::TreeModel::iterator r; 
+	
+	// A single row
+	Gtk::TreeModel::Row row;
+	
+	bool complete = false;
+	
+	// Loop over all rows
+	for(r=rows.begin(); r!=rows.end(); r++)
+	{
+ 		row=*r; 
+ 		
 
+ 		Glib::ustring ustr1 = row[mColumns.col_type];
+ 		Glib::ustring ustr2 = row[mColumns.col_category];
+
+		bool a = ustr1.compare("click here") != 0;
+		bool b = ustr2.compare("click here") != 0;
+
+		if( a && b )
+		{
+			complete = true;
+		}
+		else
+		{			
+			complete = false;
+			break;
+		}
+
+	};
+	
+	set_page_complete( fileBox, complete );
+	
+};
 
 
 //-----------------------------------------------------------------------------
