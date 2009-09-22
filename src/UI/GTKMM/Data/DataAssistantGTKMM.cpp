@@ -82,13 +82,13 @@ DataAssistantGTKMM::DataAssistantGTKMM( EngineGTKMM* parentWindow ) :
 	nameTable.attach( nameButton, 2, 3, 0, 1, Gtk::SHRINK, Gtk::EXPAND, 2, 0);
 
 	nameButton.signal_clicked().connect(sigc::mem_fun(*this, &DataAssistantGTKMM::on_nameButton));
-
+  nameEntry.signal_changed().connect(sigc::mem_fun(*this, &DataAssistantGTKMM::nameChanged));
+  
 	append_page( nameTable );
   set_page_type( nameTable, Gtk::ASSISTANT_PAGE_CONTENT);
   set_page_title( nameTable, "Name");
 
-// TODO
-	set_page_complete( nameTable, true);
+	set_page_complete( nameTable, false);
 
 
 
@@ -127,8 +127,7 @@ DataAssistantGTKMM::DataAssistantGTKMM( EngineGTKMM* parentWindow ) :
 	set_page_type( folderBox, Gtk::ASSISTANT_PAGE_CONTENT );
 	set_page_title( folderBox, "Select source folder(s)" );
 
-// TODO
-	set_page_complete( folderBox, true );
+	set_page_complete( folderBox, false );
 
 	Gtk::TreeViewColumn* 	col = folderTreeView.get_column(0);
 	col->set_resizable( true );
@@ -191,15 +190,15 @@ DataAssistantGTKMM::DataAssistantGTKMM( EngineGTKMM* parentWindow ) :
 //  fileTreeView.append_column_editable("ID", mColumns.col_id);
 
   //Create a Combo CellRenderer for the type column
-  Gtk::TreeView::Column* pColumn = Gtk::manage( new Gtk::TreeView::Column("File type") ); 
+  Gtk::TreeView::Column* pColumnType = Gtk::manage( new Gtk::TreeView::Column("File type") ); 
   Gtk::CellRendererCombo* pRenderer = Gtk::manage( new Gtk::CellRendererCombo);
-  pColumn->pack_start(*pRenderer);
-  fileTreeView.append_column(*pColumn);
+  pColumnType->pack_start(*pRenderer);
+  fileTreeView.append_column(*pColumnType);
   //Make this View column represent the m_col_itemchosen model column:
 #ifdef GLIBMM_PROPERTIES_ENABLED
-  pColumn->add_attribute(pRenderer->property_text(), mColumns.col_type);
+  pColumnType->add_attribute(pRenderer->property_text(), mColumns.col_type);
 #else
-  pColumn->add_attribute(*pRenderer, "text", mColumns.col_type);
+  pColumnType->add_attribute(*pRenderer, "text", mColumns.col_type);
 #endif
 	// Set the entry combo to use the combo model.
 	pRenderer->property_model() = fileRefTreeModelTypeCombo;
@@ -220,15 +219,15 @@ DataAssistantGTKMM::DataAssistantGTKMM( EngineGTKMM* parentWindow ) :
 
 
   //Create a Combo CellRenderer for the category column
-  pColumn = Gtk::manage( new Gtk::TreeView::Column("Category") ); 
+  Gtk::TreeView::Column* pColumnCategory = Gtk::manage( new Gtk::TreeView::Column("Category") ); 
   pRenderer = Gtk::manage( new Gtk::CellRendererCombo);
-  pColumn->pack_start(*pRenderer);
-  fileTreeView.append_column(*pColumn);
+  pColumnCategory->pack_start(*pRenderer);
+  fileTreeView.append_column(*pColumnCategory);
   //Make this View column represent the m_col_itemchosen model column:
 #ifdef GLIBMM_PROPERTIES_ENABLED
-  pColumn->add_attribute(pRenderer->property_text(), mColumns.col_category);
+  pColumnCategory->add_attribute(pRenderer->property_text(), mColumns.col_category);
 #else
-  pColumn->add_attribute(*pRenderer, "text", mColumns.col_category);
+  pColumnCategory->add_attribute(*pRenderer, "text", mColumns.col_category);
 #endif
 	// Set the entry combo to use the combo model.
 	pRenderer->property_model() = fileRefTreeModelCategoryCombo;
@@ -260,8 +259,7 @@ DataAssistantGTKMM::DataAssistantGTKMM( EngineGTKMM* parentWindow ) :
 	set_page_type( fileBox, Gtk::ASSISTANT_PAGE_CONTENT );
 	set_page_title( fileBox, "Select file type(s) and associated category" );
 
-//TODO
-	set_page_complete( fileBox, true );
+	set_page_complete( fileBox, false );
 
 
 
@@ -272,13 +270,21 @@ DataAssistantGTKMM::DataAssistantGTKMM( EngineGTKMM* parentWindow ) :
 	// Page 4 Overview ------------------------------------
 
 	confirmLabel.set_use_markup(true); // required for bold text.
+	confirmNameEntry.set_editable(false);
 		
 	confirmFolderScrolledWindow.set_policy( Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC );
-	confirmFileScrolledWindow.set_policy( Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC );
 	confirmFolderScrolledWindow.add( confirmFolderTreeView );
+ 	confirmFolderTreeView.set_model( folderRefTreeModel );
+ 	confirmFolderTreeView.append_column("Folder", mColumns.col_folder);
+  confirmFolderTreeView.append_column("Recursive", mColumns.col_recursive);
+
+
+	confirmFileScrolledWindow.set_policy( Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC );
 	confirmFileScrolledWindow.add( confirmFileTreeView );
-	confirmFolderTreeView.set_model( folderRefTreeModel );
 	confirmFileTreeView.set_model( fileRefTreeModel );
+	confirmFileTreeView.append_column( "File type", mColumns.col_type);
+	confirmFileTreeView.append_column( "Category", mColumns.col_category);
+
 
 	// Add every thing to the table
 	int ypos1 = 0;
@@ -300,6 +306,7 @@ DataAssistantGTKMM::DataAssistantGTKMM( EngineGTKMM* parentWindow ) :
 	append_page( confirmTable );
   set_page_type( confirmTable, Gtk::ASSISTANT_PAGE_CONFIRM);
   set_page_title( confirmTable, "Confirm");
+  set_page_complete( confirmTable, true );
 	
 
 
@@ -450,6 +457,26 @@ void DataAssistantGTKMM::on_nameButton()
 
 //-----------------------------------------------------------------------------
 
+void DataAssistantGTKMM::nameChanged()
+{
+
+	if( nameEntry.get_text().compare("") != 0 )
+	{
+		set_page_complete( nameTable, true);
+		confirmNameEntry.set_text( nameEntry.get_text() );
+	}
+	else
+	{
+		set_page_complete( nameTable, false);
+	}
+	
+
+};
+
+
+//-----------------------------------------------------------------------------
+
+
 void DataAssistantGTKMM::on_addFolder()
 {
 
@@ -495,6 +522,8 @@ void DataAssistantGTKMM::on_delFolder()
 	{
 		folderRefTreeModel->erase(iter);
 		rowIndexFolder--;
+		
+		if( rowIndexFolder <= -1 ) set_page_complete( folderBox, false);	
 	}
 };
 

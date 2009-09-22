@@ -161,6 +161,7 @@ class DataAssistantGTKMM : public Gtk::Assistant
 
 		// Page 1 Name ----------------------------------------
 		void on_nameButton();
+		void nameChanged();
 
 		// Page 2 Folder selecting ----------------------------
 		void on_addFolder();
