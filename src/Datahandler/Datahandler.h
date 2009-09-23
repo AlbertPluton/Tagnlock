@@ -19,7 +19,7 @@
 
 #include "ObjectData.h"
 
-
+#include <dirent.h>
 
 using namespace std;
 
@@ -172,9 +172,9 @@ class Datahandler
 		void decrementIT();
 		
 
-		vector<string> todo;
-		vector<ObjectData*> processing;
-		vector<string> done;
+		vector<string> todo; 	// TODO List ???
+		vector<ObjectData*> processing; // TODO double
+		vector<string> done;	// TODO List ???
 
 		vector<string> folders;
 		vector<bool> recursive; // The data in the recursive vector corresponds to the data at the same index in the folders vector.
@@ -196,7 +196,10 @@ class Datahandler
 			\param rec Boolean indicating if the directroy should be search recursively.
 			\returns A vector of strings with all file names with correct file type.
 		*/
-		vector<string> searchDirectory( DIR* pdir, bool rec );
+		vector<string>* searchDirectory( string folder, bool rec );
+
+		//! Check to see if a file has the desired type.
+		bool correctType( string name );
 
 };
 

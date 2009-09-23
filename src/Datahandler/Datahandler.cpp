@@ -14,7 +14,7 @@
 #include <fstream>
 #include <sstream>
 
-#include <dirent.h>
+
 
 
 //-----------------------------------------------------------------------------
@@ -271,45 +271,56 @@ void Datahandler::fileFinished( ObjectData* object )
 
 void Datahandler::updateFileList()
 {
-	const unsigned char isFile = 0x8;
-	const unsigned char isFolder = 0x4;
 
-	DIR *pdir = NULL; 
-	struct dirent *dptr;
+
+
+	vector<string>* foundFiles;	
 
 	for( int iFolder = 0; iFolder < folders.size(); iFolder++ )
 	{
 		
 		// Open folder
-		const char* folderName = folders[iFolder].c_str();
-		pdir = opendir( folderName );
+		foundFiles = searchDirectory( folders[iFolder], recursive[iFolder] );
 		
-
-		
-			
-		
-		}
-		else
+		for( int iFiles = 0; iFiles < foundFiles->size(); iFiles++ )
 		{
-			// TODO throw
-			cout << "ERROR: Datahandler::updateFileList: unable to open directory: " << folders[iFolder] << "\n";
-		}
+			todo.push_back( (*foundFiles)[iFiles] );
+		}	
 
-		// Reset folder pointer to see if the next one is opened
-		closedir(pdir);
-		pdir = NULL;
+		delete foundFiles;
 		
-		
-	} 
+	}
+	
+	
 	
 };
 
 //-----------------------------------------------------------------------------
 
 
-vector<string> Datahandler::searchDirectory( DIR* pdir, bool rec )
+vector<string>* Datahandler::searchDirectory( string folder, bool rec )
 {
+	const unsigned char isFile = 0x8;
+	const unsigned char isFolder = 0x4;
+	
+	struct dirent *dptr;
+	DIR *pdir = NULL; 	
 
+//	try
+//	{
+		vector<string>* foundFiles = new vector<string>;
+//	}
+//	catch( exception& e )
+//	{
+		// TODO
+//	}
+	
+	vector<string> foundFolders;	
+	
+	// Open folder
+	const char* folderName = folder.c_str();
+	pdir = opendir( folderName );
+	
 	if( pdir != NULL ) 
 	{
 
@@ -317,10 +328,98 @@ vector<string> Datahandler::searchDirectory( DIR* pdir, bool rec )
     {
       string fileNameFound = dptr->d_name;
       
-      for( iType = 0; iType < 
-      
-  	}
 
+			if ( dptr->d_type == isFile)
+			{
+      	// A file is found
+      	string name = dptr->d_name;
+      	
+      	if( correctType( name ) )
+      	{
+      		// See if it is not allready done
+      		bool doneBool = false;
+      		for( int i = 0; i < done.size(); i++ )
+      		{
+      			if( name.compare( done[i] ) == 0 )
+      			{
+      				doneBool = true;
+      				break;
+      			}
+      		}
+      		
+      		// Add it
+      		if( !doneBool ) foundFiles->push_back( folder + name ); 
+      		
+      	};
+      };
+
+     
+ 			if( rec && (dptr->d_type == isFile) )
+   		{
+ 				// A directory is found and we are in a recursive folder		
+ 				// Add it to the list of folders todo.
+ 				foundFolders.push_back( folder + dptr->d_name );
+  		};
+
+		};
+
+		closedir(pdir);
+
+	}
+	else
+	{
+		// TODO throw
+		cout << "ERROR: Datahandler::searchDirectory: unable to open directory: " << folder << "\n";
+	}
+	
+	// Loop over all directories which are to be done in recursive mode.
+	for( int i = 0; i < foundFolders.size(); i++ )
+	{
+		vector<string>* foundFilesInSubfolder = searchDirectory( folder + foundFolders[i], rec );
+		for( int j = 0; j < foundFilesInSubfolder->size(); j++ )
+		{
+			foundFiles->push_back( (*foundFilesInSubfolder)[j] );
+		}
+		delete foundFilesInSubfolder;
+	}
+	
+	
+	return foundFiles;
+}
+
+//-----------------------------------------------------------------------------
+
+
+bool Datahandler::correctType( string name )
+{
+
+ 	// Loop over file types
+  for( int i = 0; i < fileTypes.size(); i++ )
+  {
+		
+		// if all files are desired add the file.
+		if( fileTypes[i].compare("*.*") == 0 )
+		{
+			return true;
+		}
+		
+		// Find the last . in the fileType or *. Using the as wild card.
+		size_t posDot = fileTypes[i].find_last_of( ".*" ) + 1;		
+			
+		// Take only the part after the period to get rid of * and .		
+		string type = fileTypes[i].substr( posDot );
+		string typeOfFile = name.substr( name.length() - 1 - posDot  );			
+						
+  	// Compare extension
+		if( type.compare( typeOfFile ) == 0 )
+		{
+			return true;
+		}
+		 
+  };
+  
+  return false;
+  
 };
 
 
