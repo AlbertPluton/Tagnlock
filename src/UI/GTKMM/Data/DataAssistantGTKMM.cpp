@@ -8,7 +8,7 @@
 
 #include "DataAssistantGTKMM.h"
 
-
+#include "DataWindowGTKMM.h"
 
 #define confirmTableWidth 	12
 
@@ -169,12 +169,6 @@ DataAssistantGTKMM::DataAssistantGTKMM( EngineGTKMM* parentWindow ) :
 
 	// The category combo
 	fileRefTreeModelCategoryCombo = Gtk::ListStore::create(columnsCategoryCombo);
-	for( int i = 0; i < categories.size(); i++ )
-	{
-		row = *(fileRefTreeModelCategoryCombo->append());	
-		row[columnsTypeCombo.col_choice] = categories[i]->getName();
-	}
-
 
 	//Create the Tree model:
 	fileRefTreeModel = Gtk::ListStore::create( mColumns );
@@ -443,7 +437,7 @@ void DataAssistantGTKMM::on_nameButton()
   {
     case(Gtk::RESPONSE_OK):
     {	
-			nameEntry.set_text( dialog.get_uri() );
+			nameEntry.set_text( dialog.get_filename() );
 			set_page_complete( nameTable, true);		  
       break;
     }
@@ -498,7 +492,7 @@ void DataAssistantGTKMM::on_addFolder()
 			Gtk::TreeModel::Row row = *(folderRefTreeModel->append());
 			rowIndexFolder++;
 			row[mColumns.col_id] = rowIndexFolder;
-  		row[mColumns.col_folder] = dialog.get_uri();
+  		row[mColumns.col_folder] = dialog.get_filename();
   		row[mColumns.col_recursive] = false;
 
 			set_page_complete( folderBox, true);		  
@@ -649,12 +643,85 @@ void DataAssistantGTKMM::checkFileDone()
 
 //-----------------------------------------------------------------------------
 
+void DataAssistantGTKMM::on_apply()
+{
+
+	Datahandler* newDatahandler = new Datahandler();
+	
+	newDatahandler->setName( confirmNameEntry.get_text() );
+	
+	// Add all directorys -----------------------------------
+	Gtk::TreeModel::Children rows = folderRefTreeModel->children(); 	// Get all rows 
+	Gtk::TreeModel::iterator r; // iterator 
+	Gtk::TreeModel::Row row; 	// A single row
+
+	// Loop over all rows
+	for(r=rows.begin(); r!=rows.end(); r++)
+	{
+ 		row=*r; 
+ 		string folder =  ((Glib::ustring)row[mColumns.col_folder]).raw();
+ 		bool rec = row[mColumns.col_recursive];
+ 		newDatahandler->addFolder( folder, rec );
+	};
+	
+	
+
+	// Add the file types and categories --------------------
+	rows = fileRefTreeModel->children(); 	// Get all rows 
+	vector<Category*> * cat = parent->getCatVec();
+	
+	// Loop over all rows
+	for(r=rows.begin(); r!=rows.end(); r++)
+	{
+ 		row=*r; 
+ 		
+ 		Glib::ustring ustr1 = row[mColumns.col_type];
+ 		Glib::ustring ustr2 = row[mColumns.col_category];
+	
+		// Search for the category pointer.
+		for( int i = 0; i < cat->size(); i++ )
+		{
+			// Compare category names 		TODO this is not very solid. There might be mulitple cats with the same. This is not very handy but reality for now. 23-09-2009
+			if( ustr2.compare( (*cat)[i]->getName()) == 0 )
+			{
+				// Add the file type and category
+				newDatahandler->addFileType( ustr1, (*cat)[i] );
+				break;
+			};
+		};
+	
+	};
+
+	// Update the file list of the dh
+	newDatahandler->updateFileList();
+
+	// Add the new datahandler to the engine
+	parent->addDatahandler( newDatahandler );
+
+	// Display the first object to do.
+	parent->displayDatahandlerObject();
+	
+};
+
+//-----------------------------------------------------------------------------
+
 
 
 //-----------------------------------------------------------------------------
 
 
 
+//-----------------------------------------------------------------------------
+
+
+//-----------------------------------------------------------------------------
+
+
+
+//-----------------------------------------------------------------------------
+
+
+//-----------------------------------------------------------------------------
 
 
 

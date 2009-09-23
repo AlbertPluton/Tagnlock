@@ -97,8 +97,15 @@ class Datahandler
 
 
 
+		//! Save the datahandler to a file with the name given in Datahandler::name.
+		/*!
+			\return True will be returned is the save is succesfull.
+		*/		
+		bool save( );
+
 		//! Save the datahandler to a file.
 		/*!
+			\param fileName The name of the file. If equele to "" the name given in Datahandler::name
 			\return True will be returned is the save is succesfull.
 		*/
 		bool save( string fileName );
@@ -137,6 +144,9 @@ class Datahandler
 		//! Returns the categories vector.
 		vector<Category*> getCategories();
 
+
+		//! Sets the name of this datahandler.
+		void setName( string strName );
 
 		//! Returns the name of this datahandler. Name is set by the functions load and save.
 		string getName();
@@ -179,6 +189,14 @@ class Datahandler
 		static bool stringToBool( string input );
 		static string boolToString( bool input );
 		
+
+		//! Function used by updateFileList to search for files in a dir
+		/*!
+			\param pdir Pointer to the directory beeing searched.
+			\param rec Boolean indicating if the directroy should be search recursively.
+			\returns A vector of strings with all file names with correct file type.
+		*/
+		vector<string> searchDirectory( DIR* pdir, bool rec );
 
 };
 

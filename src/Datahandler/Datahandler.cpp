@@ -14,6 +14,8 @@
 #include <fstream>
 #include <sstream>
 
+#include <dirent.h>
+
 
 //-----------------------------------------------------------------------------
 
@@ -111,7 +113,8 @@ ObjectData* Datahandler::getLastObject()
 
 ObjectData* Datahandler::getCurrentObject()
 {
-	return (*(this->it));	// A bit strange notation to get the pointer from the list
+	if( objectDataList.size() > 0 )	return (*(this->it));	// A bit strange notation to get the pointer from the list
+	return NULL;
 };
 
 //-----------------------------------------------------------------------------
@@ -119,7 +122,8 @@ ObjectData* Datahandler::getCurrentObject()
 ObjectData* Datahandler::getNextObject()
 {
 	incrementIT();
- 	return (*(this->it));	// A bit strange notation to get the pointer from the list
+ 	if( objectDataList.size() > 0 ) return (*(this->it));	// A bit strange notation to get the pointer from the list
+	return NULL;
 };
 
 //-----------------------------------------------------------------------------
@@ -127,7 +131,8 @@ ObjectData* Datahandler::getNextObject()
 ObjectData* Datahandler::getPreviousObject()
 {
 	decrementIT();
-	return (*(this->it)); // A bit strange notation to get the pointer from the list
+	if( objectDataList.size() > 0 ) return (*(this->it)); // A bit strange notation to get the pointer from the list
+	return NULL;
 };
 
 //-----------------------------------------------------------------------------
@@ -209,6 +214,8 @@ decrementIT()
 string Datahandler::getNextFile()
 {
 
+	//TODO
+
 };
 
 //-----------------------------------------------------------------------------
@@ -264,21 +271,86 @@ void Datahandler::fileFinished( ObjectData* object )
 
 void Datahandler::updateFileList()
 {
-// TODO
+	const unsigned char isFile = 0x8;
+	const unsigned char isFolder = 0x4;
+
+	DIR *pdir = NULL; 
+	struct dirent *dptr;
+
+	for( int iFolder = 0; iFolder < folders.size(); iFolder++ )
+	{
+		
+		// Open folder
+		const char* folderName = folders[iFolder].c_str();
+		pdir = opendir( folderName );
+		
+
+		
+			
+		
+		}
+		else
+		{
+			// TODO throw
+			cout << "ERROR: Datahandler::updateFileList: unable to open directory: " << folders[iFolder] << "\n";
+		}
+
+		// Reset folder pointer to see if the next one is opened
+		closedir(pdir);
+		pdir = NULL;
+		
+		
+	} 
+	
 };
 
+//-----------------------------------------------------------------------------
+
+
+vector<string> Datahandler::searchDirectory( DIR* pdir, bool rec )
+{
+
+	if( pdir != NULL ) 
+	{
+
+		while( dptr=readdir(pdir) )
+    {
+      string fileNameFound = dptr->d_name;
+      
+      for( iType = 0; iType < 
+      
+  	}
+
+};
+
+
+//-----------------------------------------------------------------------------
+
+bool Datahandler::save( )
+{
+	return this->save( "" );
+};
 
 //-----------------------------------------------------------------------------
 
 bool Datahandler::save( string fileName )
 {
 
-
-	// Check to see if the category name is not equal to "". In that case throw an exception.
+	// If fileName is equel to "" use the name given in Datahandler::name
 	if( fileName.compare("") == 0 )
 	{
-		// TODO throw
-	}
+	
+		fileName = this->name;
+		
+		// Check to see if the fileName is still not equal to "". If it is, throw an exception.
+		if( fileName.compare("") == 0 )
+		{
+			// TODO throw
+		};	
+		
+	};	
+
+
 
 
 	// Create file object.
@@ -394,20 +466,30 @@ bool Datahandler::load( string fileName,  vector<Category*>* catVec )
 			found = inputString.find("Category:", 0);	
 			if( found!=string::npos )
 			{
+				
+				bool found_cat = false;
+			
 				inputString.erase(0, 10);
 				for( int i = 0; i < catVec->size(); i++ )
 				{
-					if( (*catVec)[i]->getName() == inputString )
+					if( inputString.compare((*catVec)[i]->getName()) == 0 )
 					{					
 						categories.push_back( (*catVec)[i] );
-						continue;				
+						found_cat = true;
+						break;
 					}
 				};
 
-				//TODO find category autmaticly if fails throw error.
-				cout << "ERROR in Datahandler::load: Unable to fine category: " << inputString << "\n";	
-				return false;	
-			}	
+				if( !found_cat )
+				{
+					//TODO find category autmaticly if fails throw error.
+					cout << "ERROR in Datahandler::load: Unable to fined category: " << inputString << "\n";	
+					return false;	
+				};
+				
+				continue;
+				
+			};	
 
 			// Search for completed files
 			found = inputString.find("Done:", 0);	
@@ -506,6 +588,13 @@ vector<Category*> Datahandler::getCategories()
 {
 	return categories;
 };			 
+
+//-----------------------------------------------------------------------------
+
+void Datahandler::setName( string strName )
+{
+	name = strName;
+};
 
 //-----------------------------------------------------------------------------
 

@@ -48,10 +48,6 @@ class DataAssistantGTKMM : public Gtk::Assistant
     virtual void on_summary_finished(void);
 
 
-		vector<string> folders;
-		vector<string> fileTypes;
-		vector<Category*> categories;
-
 
 		// Page 0 Intro ---------------------------------------
 		Gtk::Label introLabel;
@@ -180,6 +176,8 @@ class DataAssistantGTKMM : public Gtk::Assistant
 
 
 		// Page 4 Confirm -------------------------------------
+		void on_apply();
+
 
 };
 

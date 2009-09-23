@@ -333,33 +333,21 @@ void DataWindowGTKMM::openButton_clicked()
   {
     case(Gtk::RESPONSE_OK):
     {	
-    	Glib::ustring result = dialog.get_uri();
-			string result_2 = result.raw();
+    	Glib::ustring result_name = dialog.get_filename();//dialog.get_uri();
+			string result_2 = result_name.raw();
 			cout << result_2 << "\n";
 
 			Datahandler* newDatahandler = new Datahandler();
 			if( newDatahandler->load( result_2, this->getCatVec() ) )
 			{
 				this->addDatahandler( newDatahandler );
+				this->displayDatahandlerObject();
 			}
 			else
 			{
 				// TODO throw / catch
 				cout << "ERROR in DataWindowGTKMM::openButton_clicked: Unable to open datahandler file: " << result_2 << "\n";
 			}
-      
-/*      if( displayFile != NULL ) 
-      {
-      	displayWindow->remove();
-      	delete displayFile;
-      }
-      displayFile = DisplayFile::getDisplay( result_2 );
-      Gtk::Widget* widget = displayFile->getDisplayWidget();
-
-			displayWindow->add( *widget );      
-
-      displayWindow->show_all();
-*/      
       
       break;
     }
@@ -381,7 +369,7 @@ void DataWindowGTKMM::saveButton_clicked()
 	// Check if this datahanlder has a file name if not got saveAsButton_clicked.
 	if( curDat->getName() != "" )
 	{
-		curDat->save( curDat->getName() );
+		curDat->save( );
 	}
 	else
 	{
