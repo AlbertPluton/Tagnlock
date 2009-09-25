@@ -437,7 +437,7 @@ void DataAssistantGTKMM::on_nameButton()
   {
     case(Gtk::RESPONSE_OK):
     {	
-			nameEntry.set_text( dialog.get_filename() );
+			nameEntry.set_text( dialog.get_uri() );
 			set_page_complete( nameTable, true);		  
       break;
     }
@@ -492,7 +492,7 @@ void DataAssistantGTKMM::on_addFolder()
 			Gtk::TreeModel::Row row = *(folderRefTreeModel->append());
 			rowIndexFolder++;
 			row[mColumns.col_id] = rowIndexFolder;
-  		row[mColumns.col_folder] = dialog.get_filename();
+  		row[mColumns.col_folder] = dialog.get_uri();
   		row[mColumns.col_recursive] = false;
 
 			set_page_complete( folderBox, true);		  
@@ -691,15 +691,20 @@ void DataAssistantGTKMM::on_apply()
 		};
 	
 	};
-
+	
+	
+	// Cast the parent EngineGTKMM object to a DataWindowGTKMM object.
+	// I used a EngineGTKMM object because otherwise DataWindowGTKMM.h and DataAssistantGTKMM.h would include each other this geve compiler errors.
+	DataWindowGTKMM* parentData =  static_cast<DataWindowGTKMM*>(parent);
+	
 	// Update the file list of the dh
 	newDatahandler->updateFileList();
 
 	// Add the new datahandler to the engine
-	parent->addDatahandler( newDatahandler );
+	parentData->addDatahandler( newDatahandler );
 
 	// Display the first object to do.
-	parent->displayDatahandlerObject();
+	parentData->displayNextObjectData();
 	
 };
 

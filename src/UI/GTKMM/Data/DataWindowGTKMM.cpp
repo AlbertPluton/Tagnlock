@@ -184,6 +184,7 @@ void DataWindowGTKMM::connectSignals()
 void DataWindowGTKMM::displayDatahandlerObject()
 {
 
+	// Read data enterd by the user incase we are going to display an other object.
 	this->readDataFromUI();
 
   ObjectData* object = (this->getCurrentDatahandler())->getCurrentObject();
@@ -217,16 +218,16 @@ void DataWindowGTKMM::displayDatahandlerObject()
 void DataWindowGTKMM::displayNextDatahandler()
 {
 	// Only perform the action if there is a datahandler in the vector.
-	if( currentData >= 0 )
+	if( currentDatahandler >= 0 )
 	{
-		currentData++;
-		if( currentData < data.size() )	
+		currentDatahandler++;
+		if( currentDatahandler < data.size() )	
 		{
 			this->displayDatahandlerObject();
 		}
 		else
 		{
-			currentData--;
+			currentDatahandler--;
 		};
 	};
 };
@@ -235,14 +236,14 @@ void DataWindowGTKMM::displayNextDatahandler()
 
 void DataWindowGTKMM::displayPreviousDatahandler()
 {
-		currentData--;
-		if( currentData >= 0 )
+		currentDatahandler--;
+		if( currentDatahandler >= 0 )
 		{
 			this->displayDatahandlerObject();
 		}
 		else
 		{
-			currentData++;
+			currentDatahandler++;
 		};
 };
 
@@ -250,8 +251,8 @@ void DataWindowGTKMM::displayPreviousDatahandler()
 
 void DataWindowGTKMM::displayNextObjectData()
 {
-	// Only perform the action if there are multiple objects in the vector.
-	if( currentData > 0 )
+	// Only perform the action if there datahandlers in the vector.
+	if( currentDatahandler >= 0 )
 	{
 		// A little abuse of the getNextObject function only to update the value of the current object in the datahandler.
 		(this->getCurrentDatahandler())->getNextObject();
@@ -264,8 +265,8 @@ void DataWindowGTKMM::displayNextObjectData()
 
 void DataWindowGTKMM::displayPreviousObjectData()
 {
-	// Only perform the action if there are multiple objects in the vector.
-	if( currentData > 0 )
+	// Only perform the action if there are datahandlers in the vector.
+	if( currentDatahandler >= 0 )
 	{
 		// A little abuse of the getPreviousObject function only to update the value of the current object in the datahandler.
 		(this->getCurrentDatahandler())->getPreviousObject();
@@ -279,7 +280,7 @@ void DataWindowGTKMM::displayPreviousObjectData()
 
 void DataWindowGTKMM::readDataFromUI()
 {
-
+	//TODO
 };
 
 //-----------------------------------------------------------------------------

@@ -76,19 +76,20 @@ class Datahandler
 		int getPosition();
 
 	
-		//! Returns the name and directory of the next file to process
+		//! Returns the name and directory of the next file to process. This removes the file from the todo vector!!
+		/*!
+			To be correct, this function does not return item no. 1 of the todo vector but it pops the back.
+			\returns A string with the file name and directory. If todo is empty the string will be equel to "" and a error is generated.
+		*/
 		string getNextFile();
 
 		//! Returns a vector of strings of all files which still need to be processed. The first string is the string getNextFile returns.
 		vector<string> filesToDo();
 
-		//! Retruns a vector of all the file names currently being edited.
-		vector<ObjectData*> filesBeingProcessed();
-
 		//! Returns a vector of strings containing the names of the already processed files. 
 		vector<string> filesDone();
 
-		//! Updatas the done vector from the succes fully processed files. This function should be called when the toolchain has processed this object.
+		//! Updatas the objectDataList from the succes fully processed files. This function should be called when the toolchain has processed this object.
 		void fileFinished( ObjectData* object );
 
 
@@ -172,9 +173,8 @@ class Datahandler
 		void decrementIT();
 		
 
-		vector<string> todo; 	// TODO List ???
-		vector<ObjectData*> processing; // TODO double
-		vector<string> done;	// TODO List ???
+		vector<string> todo; 	
+		vector<string> done;	
 
 		vector<string> folders;
 		vector<bool> recursive; // The data in the recursive vector corresponds to the data at the same index in the folders vector.
@@ -194,12 +194,18 @@ class Datahandler
 		/*!
 			\param pdir Pointer to the directory beeing searched.
 			\param rec Boolean indicating if the directroy should be search recursively.
-			\returns A vector of strings with all file names with correct file type.
+			\returns A list of strings with all file names with desired file type(s).
 		*/
-		vector<string>* searchDirectory( string folder, bool rec );
+		list<string>* searchDirectory( string folder, bool rec );
 
-		//! Check to see if a file has the desired type.
+		//! Check to see if a file has one of the desired types.
 		bool correctType( string name );
+		
+		//! Search for a category matching the type of the given file.
+		/*!
+			\returns A pointer to the category. NULL if none was found.
+		*/
+		Category* getCategoryFromType( string fileName );
 
 };
 

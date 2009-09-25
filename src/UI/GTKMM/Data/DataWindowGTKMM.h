@@ -42,13 +42,25 @@ class DataWindowGTKMM : public EngineGTKMM
 
 
 
+		//! Display the current data object of the current datahandler.
 		void displayDatahandlerObject();
+		
+		//! Go to the next datahandler and display its current data object.
 		void displayNextDatahandler();
+		//! Go to the previous datahandler and display its current data object.
 		void displayPreviousDatahandler();
+		
+		//! Display the next object in the current datahandler.
 		void displayNextObjectData();
+		//! Display the previous object in the current datahandler.
 		void displayPreviousObjectData();
+
+		//! Read data from the UI and store it in a objectData object.
 		void readDataFromUI();
 
+
+		// Functions for buttons
+		
 		void newButton_clicked();
 		void openButton_clicked();
 		void saveButton_clicked();

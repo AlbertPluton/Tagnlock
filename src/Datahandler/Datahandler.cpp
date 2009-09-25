@@ -122,7 +122,36 @@ ObjectData* Datahandler::getCurrentObject()
 ObjectData* Datahandler::getNextObject()
 {
 	incrementIT();
- 	if( objectDataList.size() > 0 ) return (*(this->it));	// A bit strange notation to get the pointer from the list
+ 	if( objectDataList.size() > 0 ) 
+ 	{
+ 		return (*(this->it));	// A bit strange notation to get the pointer from the list
+ 	}
+ 	else if( this->it == objectDataList.end() );
+ 	{
+ 		// If the datahandler is empty / at the end of known objects, make a new dataobject.
+ 		
+ 		string fileName = getNextFile();
+ 		
+ 		// If the file name is empty some thing went wrong so do nothing.
+ 		if( fileName.compare("") != 0 )
+ 		{
+ 			
+ 			// Find the file category matching the file type of this function.
+ 			Category* cat = getCategoryFromType( fileName );
+
+ 			if( cat ) // If a category is found
+			{
+				addNewObject( cat, fileName );
+				return getCurrentObject();
+			}
+			else
+			{
+				// TODO throw found no category suiteble for this file. This is very strange as it was might have been / should have been to get her, during the updating of the todo vector.		
+			}
+			
+ 		}
+ 	}
+ 	
 	return NULL;
 };
 
@@ -197,10 +226,7 @@ void Datahandler::incrementIT()
 
 //-----------------------------------------------------------------------------
 
-void Datahandler::
-
-
-decrementIT()
+void Datahandler::decrementIT()
 {
 	if( position > 1 )	// To prevent invalid data acces
 	{
@@ -214,7 +240,19 @@ decrementIT()
 string Datahandler::getNextFile()
 {
 
-	//TODO
+	string file = "";
+	if( todo.size() != 0 )
+	{
+		// Get the last element from the vector and deleted it from the vector.
+		file = todo.back();
+		todo.pop_back();
+	}
+	else
+	{
+		// TODO trow
+		cout << "ERROR: Datahandler::getNextFile : todo is empty.\n";
+	}
+	return file;
 
 };
 
@@ -223,13 +261,6 @@ string Datahandler::getNextFile()
 vector<string> Datahandler::filesToDo()
 {
 	return todo;
-};
-
-//-----------------------------------------------------------------------------
-
-vector<ObjectData*> Datahandler::filesBeingProcessed()
-{
-	return processing;
 };
 
 //-----------------------------------------------------------------------------
@@ -247,15 +278,17 @@ void Datahandler::fileFinished( ObjectData* object )
 
 	bool found = false;
 
-	for( int i = 0; i < (int)processing.size(); i++ )
+	list<ObjectData*>::iterator it = objectDataList.begin();
+	
+	for (list<ObjectData*>::iterator it= objectDataList.begin(); it!= objectDataList.end(); ++it)
 	{
-		if( object == processing[i] )
+		if( object == *it )
 		{
 			found = true;
-			processing.erase( processing.begin() + i );
+			objectDataList.erase( it );
 			done.push_back( object->getObjectName() );		
 			break;		
-		}
+		}		
 	};
 
 	if( !found )
@@ -274,18 +307,23 @@ void Datahandler::updateFileList()
 
 
 
-	vector<string>* foundFiles;	
+	list<string>* foundFiles;	
 
 	for( int iFolder = 0; iFolder < folders.size(); iFolder++ )
 	{
 		
-		// Open folder
+		// Search a folder and return a list of files which have the desired type(s).
 		foundFiles = searchDirectory( folders[iFolder], recursive[iFolder] );
 		
-		for( int iFiles = 0; iFiles < foundFiles->size(); iFiles++ )
+		if( !foundFiles->empty() )
 		{
-			todo.push_back( (*foundFiles)[iFiles] );
-		}	
+			todo.insert( todo.end(), foundFiles->begin(), foundFiles->end() );
+		}
+		
+//		for( int iFiles = 0; iFiles < foundFiles->size(); iFiles++ )
+//		{
+//			todo.push_back( (*foundFiles)[iFiles] );
+//		}	
 
 		delete foundFiles;
 		
@@ -298,7 +336,7 @@ void Datahandler::updateFileList()
 //-----------------------------------------------------------------------------
 
 
-vector<string>* Datahandler::searchDirectory( string folder, bool rec )
+list<string>* Datahandler::searchDirectory( string folder, bool rec )
 {
 	const unsigned char isFile = 0x8;
 	const unsigned char isFolder = 0x4;
@@ -308,17 +346,20 @@ vector<string>* Datahandler::searchDirectory( string folder, bool rec )
 
 //	try
 //	{
-		vector<string>* foundFiles = new vector<string>;
+		list<string>* foundFiles = new list<string>;
 //	}
 //	catch( exception& e )
 //	{
 		// TODO
 //	}
 	
-	vector<string> foundFolders;	
+	list<string> foundFolders;	
 	
 	// Open folder
-	const char* folderName = folder.c_str();
+#warning "Using not so smart way to convert uri to normal location"
+	// Remove file://
+	string folder2 = folder.substr( 6 );	
+	const char* folderName = folder2.c_str();
 	pdir = opendir( folderName );
 	
 	if( pdir != NULL ) 
@@ -332,15 +373,16 @@ vector<string>* Datahandler::searchDirectory( string folder, bool rec )
 			if ( dptr->d_type == isFile)
 			{
       	// A file is found
-      	string name = dptr->d_name;
+      	string nameOfFile = dptr->d_name;
       	
-      	if( correctType( name ) )
+      	// See if the file has the correct type
+      	if( correctType( nameOfFile ) )
       	{
       		// See if it is not allready done
       		bool doneBool = false;
       		for( int i = 0; i < done.size(); i++ )
       		{
-      			if( name.compare( done[i] ) == 0 )
+      			if( nameOfFile.compare( done[i] ) == 0 )
       			{
       				doneBool = true;
       				break;
@@ -348,13 +390,11 @@ vector<string>* Datahandler::searchDirectory( string folder, bool rec )
       		}
       		
       		// Add it
-      		if( !doneBool ) foundFiles->push_back( folder + name ); 
+      		if( !doneBool ) foundFiles->push_back( folder + "/" +nameOfFile ); 
       		
       	};
-      };
-
-     
- 			if( rec && (dptr->d_type == isFile) )
+      }
+      else if( rec && (dptr->d_type == isFile) )
    		{
  				// A directory is found and we are in a recursive folder		
  				// Add it to the list of folders todo.
@@ -373,24 +413,37 @@ vector<string>* Datahandler::searchDirectory( string folder, bool rec )
 	}
 	
 	// Loop over all directories which are to be done in recursive mode.
-	for( int i = 0; i < foundFolders.size(); i++ )
+	while( !foundFolders.empty() )
 	{
-		vector<string>* foundFilesInSubfolder = searchDirectory( folder + foundFolders[i], rec );
-		for( int j = 0; j < foundFilesInSubfolder->size(); j++ )
-		{
-			foundFiles->push_back( (*foundFilesInSubfolder)[j] );
-		}
+		// Search a subfolder and return a list of files found in there.
+		list<string>* foundFilesInSubfolder = searchDirectory( folder + foundFolders.front(), rec );
+
+		// Add the file found in the subfolder to the files found in the current folder 
+		foundFiles->insert( foundFiles->end(), foundFilesInSubfolder->begin(), foundFilesInSubfolder->end() );
+
+		// wrap up
 		delete foundFilesInSubfolder;
+		foundFolders.pop_front();	
 	}
-	
-	
+
+
 	return foundFiles;
 }
 
 //-----------------------------------------------------------------------------
 
 
-bool Datahandler::correctType( string name )
+bool Datahandler::correctType( string nameOfFile )
+{
+
+	if( getCategoryFromType( nameOfFile ) ) return true;
+  return false;
+  
+};
+
+//-----------------------------------------------------------------------------
+
+Category* Datahandler::getCategoryFromType( string nameOfFile )
 {
 
  	// Loop over file types
@@ -400,7 +453,7 @@ bool Datahandler::correctType( string name )
 		// if all files are desired add the file.
 		if( fileTypes[i].compare("*.*") == 0 )
 		{
-			return true;
+			return categories[i];
 		}
 		
 		// Find the last . in the fileType or *. Using the as wild card.
@@ -408,17 +461,17 @@ bool Datahandler::correctType( string name )
 			
 		// Take only the part after the period to get rid of * and .		
 		string type = fileTypes[i].substr( posDot );
-		string typeOfFile = name.substr( name.length() - 1 - posDot  );			
+		string typeOfFile = nameOfFile.substr( nameOfFile.length() - 1 - posDot  );			
 						
   	// Compare extension
 		if( type.compare( typeOfFile ) == 0 )
 		{
-			return true;
+			return categories[i];
 		}
 		 
   };
   
-  return false;
+  return NULL;
   
 };
 

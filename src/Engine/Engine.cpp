@@ -18,7 +18,7 @@ Engine::Engine()
 {		
 	currentCategory = -1;
 	currentField = -1;
-	currentData = -1;
+	currentDatahandler = -1;
 	currentToolchain = -1;
 	currentToolchainNode = NULL;
 
@@ -203,14 +203,14 @@ void Engine::addDatahandler( Datahandler* newData )
 {
 	data.push_back( newData );
 	dataModified.push_back( true );
-	currentData = data.size()-1;
+	currentDatahandler = data.size()-1;
 };
 
 //-----------------------------------------------------------------------------
 
 Datahandler* Engine::getCurrentDatahandler( )
 {
-	return data.at( currentData );
+	return data.at( currentDatahandler );
 };
 
 //-----------------------------------------------------------------------------
@@ -241,11 +241,14 @@ void Engine::deleteDatahandler( int index )
 	{
 		//TODO throw
 	}	
+	
+	// If the deleted item is the current datahandler, set the currentDatahandler to the last handler in the vector
+	if( index == currentDatahandler ) currentDatahandler = data.size() - 1;
 };
 
 //-----------------------------------------------------------------------------
 
-bool Engine::getDataModified( int index )
+bool Engine::getDatahandlerModified( int index )
 {
 	if( (index >= 0) && (index < dataModified.size()) )
 	{
@@ -261,7 +264,7 @@ bool Engine::getDataModified( int index )
 
 //-----------------------------------------------------------------------------
 
-void Engine::setDataModified( int index, bool mod )
+void Engine::setDatahandlerModified( int index, bool mod )
 {
 	if( (index >= 0) && (index < dataModified.size()) )
 	{
@@ -276,18 +279,18 @@ void Engine::setDataModified( int index, bool mod )
 
 //-----------------------------------------------------------------------------
 
-int Engine::getCurrentData()
+int Engine::getCurrentDatahandlerIndex()
 {
-	return currentData;
+	return currentDatahandler;
 };
 
 //-----------------------------------------------------------------------------
 
-void Engine::setCurrentData( int index )
+void Engine::setCurrentDatahandler( int index )
 {
 	if( (index >= 0) && (index < data.size()) )
 	{
-		currentData = index;
+		currentDatahandler = index;
 	}
 	else
 	{
@@ -330,7 +333,7 @@ void Engine::executeToolchain( int index )
 		Toolchain* toolchain = toolchains.at( index );
 	
 		// Set the current Datahandler object as the input for the toolchain.
-		toolchain->setInput( data.at( currentData ) );
+		toolchain->setInput( data.at( currentDatahandler ) );
 	
 		// Execute the toolchain.
 		toolchain->execute();	

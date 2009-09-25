@@ -141,21 +141,21 @@ class Engine
 		void deleteDatahandler( int index );
 
 		//! The return value of this function indicates wheather or not a datahandler object has been modified.
-		bool getDataModified( int index );
+		bool getDatahandlerModified( int index );
 		
-		//! This function is used to alter teh boolean indicating that changes have been made to a certain datahandler object.
+		//! This function is used to alter the boolean indicating that changes have been made to a certain datahandler object.
 		/*!
 		This function should for example be used in a function like readDataFromUI.
 		\param index the datahandler which has been (un)changed
 		\param mod the value to which the boolean should be set TRUE to indicate modifications.
 		*/
-		void setDataModified( int index, bool mod );		
+		void setDatahandlerModified( int index, bool mod );		
 
 		//! Returns the index of the current Datahandler.
-		int getCurrentData();
+		int getCurrentDatahandlerIndex();
 		
-		//! Sets the currentData index.
-		void setCurrentData( int index );
+		//! Sets the currentDatahandler index.
+		void setCurrentDatahandler( int index );
 		
 		//! This virtual function is UI dependent. It should display the current data object of the current Datahandler.
 		virtual void displayDatahandlerObject(){};
@@ -251,7 +251,7 @@ class Engine
 
 		vector<Datahandler*> data;
 		vector<bool> dataModified;				// Used to keep track of objects which are modified.
-		int currentData;
+		int currentDatahandler;
 
 		vector<Toolchain*> toolchains;		
 		vector<bool> toolchainModified;		// Used to keep track of objects which are modified.
