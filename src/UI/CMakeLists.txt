@@ -13,6 +13,7 @@ include_directories (	${CMAKE_BINARY_DIR}/src/Category
 											${GTKMM_INCLUDE_DIRS}
 											${GLADEMM_INCLUDE_DIRS}
 											${POPPLER_GLIB_INCLUDE_DIRS}
+											${CMAKE_BINARY_DIR}/src/FileHandling		
 										)
 
 # Make sure the linker can find the library once it is built.

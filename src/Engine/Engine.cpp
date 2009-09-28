@@ -22,7 +22,8 @@ Engine::Engine()
 	currentToolchain = -1;
 	currentToolchainNode = NULL;
 
-	// TODO
+	// TODO 28092009 what is there todo??
+
 };
 
 //-----------------------------------------------------------------------------

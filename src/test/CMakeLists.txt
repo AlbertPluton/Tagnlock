@@ -7,6 +7,7 @@ INCLUDE_DIRECTORIES (	${CMAKE_BINARY_DIR}/src/Category
 											${CMAKE_BINARY_DIR}/src/Toolchain/Operations
 											${GTKMM_INCLUDE_DIRS}
 											${GLADEMM_INCLUDE_DIRS}
+											${CMAKE_BINARY_DIR}/src/FileHandling
 										)
 
 

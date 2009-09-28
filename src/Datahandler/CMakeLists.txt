@@ -6,6 +6,8 @@ include_directories ( ${CMAKE_BINARY_DIR}/src/Category
 											${CMAKE_BINARY_DIR}/src/Datahandler
 											${CMAKE_BINARY_DIR}/src/Engine
 											${CMAKE_BINARY_DIR}/src/Toolchain
+											${CMAKE_BINARY_DIR}/src/FileHandling
+											/usr/include/uriparser
 										)
 
 
@@ -23,7 +25,6 @@ SET (	SRCS_Datahandler
 			ObjectData.cpp
 		)
 
-		
 
 # Create a libary named Field
 ADD_LIBRARY (Datahandler ${SRCS_Datahandler})

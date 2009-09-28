@@ -63,7 +63,7 @@ void Datahandler::addObject( ObjectData* data )
 
 //-----------------------------------------------------------------------------
 
-void Datahandler::addNewObject( Category* category, string name )
+void Datahandler::addNewObject( Category* category, UriUriA name )
 {
 		// TODO throw incase of memory shortage
 		ObjectData* data = new ObjectData( category, name ); 
@@ -130,7 +130,7 @@ ObjectData* Datahandler::getNextObject()
  	{
  		// If the datahandler is empty / at the end of known objects, make a new dataobject.
  		
- 		string fileName = getNextFile();
+ 		fileName = getNextFile();
  		
  		// If the file name is empty some thing went wrong so do nothing.
  		if( fileName.compare("") != 0 )
@@ -258,14 +258,14 @@ string Datahandler::getNextFile()
 
 //-----------------------------------------------------------------------------
 
-vector<string> Datahandler::filesToDo()
+vector<UriUriA> Datahandler::filesToDo()
 {
 	return todo;
 };
 
 //-----------------------------------------------------------------------------
 
-vector<string> Datahandler::filesDone()
+vector<UriUriA> Datahandler::filesDone()
 {
 	return done;
 };
@@ -362,6 +362,8 @@ list<string>* Datahandler::searchDirectory( string folder, bool rec )
 	const char* folderName = folder2.c_str();
 	pdir = opendir( folderName );
 	
+	cout << "Folder name is: \"" << folderName << "\"\n";
+	
 	if( pdir != NULL ) 
 	{
 
@@ -409,7 +411,7 @@ list<string>* Datahandler::searchDirectory( string folder, bool rec )
 	else
 	{
 		// TODO throw
-		cout << "ERROR: Datahandler::searchDirectory: unable to open directory: " << folder << "\n";
+		cout << "ERROR: Datahandler::searchDirectory: unable to open directory: \"" << folder << "\"\n";
 	}
 	
 	// Loop over all directories which are to be done in recursive mode.

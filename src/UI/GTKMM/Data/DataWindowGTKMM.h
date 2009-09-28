@@ -75,17 +75,25 @@ class DataWindowGTKMM : public EngineGTKMM
 
 	private:
 	
-			Gtk::Window* dataWindow;
+		Gtk::Window* dataWindow;
 
-			Gtk::ScrolledWindow* categoryScrolledWindow;
+		Gtk::ScrolledWindow* categoryScrolledWindow;
 
-			Gtk::Alignment* displayWindow;
-			DisplayFile* displayFile;
+		Gtk::Alignment* displayWindow;
+		DisplayFile* displayFile;
 
-			CategoryGTKMM* category;
+		CategoryGTKMM* category;
 
 
-			DataAssistantGTKMM* datahandlerAssistant;
+		DataAssistantGTKMM* datahandlerAssistant;
+			
+			
+		Gtk::ComboBoxText* comboDatahandlers;
+		Gtk::ComboBoxText* comboFilesTodo;
+			
+		// Functions to update combo lists
+		void update_comboDatahandlers();
+		void update_comboFilesTodo();
 
 
 };

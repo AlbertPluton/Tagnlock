@@ -21,6 +21,8 @@
 
 #include <dirent.h>
 
+#include "Uri.h"
+
 using namespace std;
 
 
@@ -55,7 +57,7 @@ class Datahandler
 				\param name the name and or directory of the file/folder under consideration.
 
 		*/
-		void addNewObject( Category* category, string name );
+		void addNewObject( Category* category, UriUriA name );
 
 		
 		//! Get the first data object in the list. This functions updates the value of the internal iterator.
@@ -84,10 +86,10 @@ class Datahandler
 		string getNextFile();
 
 		//! Returns a vector of strings of all files which still need to be processed. The first string is the string getNextFile returns.
-		vector<string> filesToDo();
+		vector<UriUriA> filesToDo();
 
 		//! Returns a vector of strings containing the names of the already processed files. 
-		vector<string> filesDone();
+		vector<UriUriA> filesDone();
 
 		//! Updatas the objectDataList from the succes fully processed files. This function should be called when the toolchain has processed this object.
 		void fileFinished( ObjectData* object );
@@ -173,8 +175,8 @@ class Datahandler
 		void decrementIT();
 		
 
-		vector<string> todo; 	
-		vector<string> done;	
+		vector<UriUriA> todo; 	
+		vector<UriUriA> done;	
 
 		vector<string> folders;
 		vector<bool> recursive; // The data in the recursive vector corresponds to the data at the same index in the folders vector.

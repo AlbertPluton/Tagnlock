@@ -25,10 +25,11 @@ DataWindowGTKMM::DataWindowGTKMM(  int argc, char **argv, string gladeFileName )
 	displayWindow = NULL;
 	displayFile	 = NULL;
 	category = NULL;
-	
+	comboDatahandlers = NULL;
+	comboFilesTodo = NULL;
 
-
-
+	// Used to place the datahandler and todo files combo.
+	Gtk::Table* comboTable = NULL;
 
 
   //Load the Glade file and instiate its widgets:
@@ -59,7 +60,21 @@ DataWindowGTKMM::DataWindowGTKMM(  int argc, char **argv, string gladeFileName )
   refXml->get_widget("DataWindow", dataWindow);
   refXml->get_widget("scrolledwindow1", categoryScrolledWindow);
   refXml->get_widget("alignment3", displayWindow);
+  refXml->get_widget("table1", comboTable);
 	datahandlerAssistant = new DataAssistantGTKMM( this );
+
+
+	if( comboTable )
+	{
+		comboDatahandlers = new Gtk::ComboBoxText();
+		comboFilesTodo = new Gtk::ComboBoxText();
+		comboTable->attach( *comboDatahandlers, 1, 2, 0, 1 );
+		comboTable->attach( *comboFilesTodo, 1, 2, 1, 2 );
+	}
+	else
+	{
+		// TODO Faild to obtain table.
+	}
 
 
 	category = new CategoryGTKMM( );   
@@ -71,7 +86,7 @@ DataWindowGTKMM::DataWindowGTKMM(  int argc, char **argv, string gladeFileName )
   {
 
 		connectSignals();
-    dataWindow->show();
+    dataWindow->show_all();
 		datahandlerAssistant->hide_all();
  		kit->run();
 	}
@@ -205,6 +220,8 @@ void DataWindowGTKMM::displayDatahandlerObject()
 		displayWindow->add( *widget );      
     displayWindow->show_all();
 
+		// Update the current datahandler combo
+		comboDatahandlers->set_active( this->getCurrentDatahandlerIndex() );
 
 	}
 
@@ -342,6 +359,8 @@ void DataWindowGTKMM::openButton_clicked()
 			if( newDatahandler->load( result_2, this->getCatVec() ) )
 			{
 				this->addDatahandler( newDatahandler );
+				this->update_comboDatahandlers();
+				this->update_comboFilesTodo();
 				this->displayDatahandlerObject();
 			}
 			else
@@ -423,10 +442,28 @@ void DataWindowGTKMM::saveAsButton_clicked()
 
 //-----------------------------------------------------------------------------
 
-
+void DataWindowGTKMM::update_comboDatahandlers()
+{
+	comboDatahandlers->clear_items();
+	for( int i = 0; i < data.size(); i++ )
+	{
+		comboDatahandlers->append_text( data[i]->getName() );
+	}
+	comboDatahandlers->set_active( this->getCurrentDatahandlerIndex() );
+};
+		
 //-----------------------------------------------------------------------------
 
-
+void DataWindowGTKMM::update_comboFilesTodo()
+{
+	comboFilesTodo->clear_items();
+	Datahandler* dh = this->getCurrentDatahandler();
+	vector<string> todo = dh->filesToDo();
+	for( int i = 0; i < todo.size(); i++ )
+	{
+		comboFilesTodo->append_text( todo[i] );
+	}
+};
 
 //-----------------------------------------------------------------------------
 

@@ -28,6 +28,7 @@ include_directories (	${CMAKE_BINARY_DIR}/src/Category
 											${GTKMM_INCLUDE_DIRS}
 											${GLADEMM_INCLUDE_DIRS}
 											${POPPLER_GLIB_INCLUDE_DIRS}
+  										${CMAKE_BINARY_DIR}/src/FileHandling		
 										)
 
 LINK_DIRECTORIES ( ${LIBRARY_OUTPUT_PATH}

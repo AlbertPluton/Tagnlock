@@ -17,6 +17,8 @@ using namespace std;
 #include "FieldData.h"
 #include "Category.h"
 
+#include "Uri.h"
+
 //! This class is used to hold data about a specific catogery.
 
 class ObjectData
@@ -29,7 +31,7 @@ class ObjectData
 			\param categoryPointer it is required to give a pointer to a Category object, this to beable to generate a data structure.
 			\param name the name and or directory of the file/folder under consideration.
 		*/
-		ObjectData( Category* categoryPointer, string name );
+		ObjectData( Category* categoryPointer, UriUriA name );
 		
 		//! The default destructor
 		~ObjectData();	
@@ -58,10 +60,10 @@ class ObjectData
 	
 	
 		//! Returns the file/folder name and or directory of the object under consideration.
-		string getObjectName();
+		UriUriA getObjectName();
 		
 		//! Set the name and or directory of the file/folder under consideration.
-		void setObjectName( string name );
+		void setObjectName( UriUriA name );
 	
 	
 	private:
@@ -69,7 +71,7 @@ class ObjectData
 		vector<FieldData*> fieldDataVec;
 		
 		Category* category;
-		string objectName;
+		UriUriA objectName;
 
 };
 

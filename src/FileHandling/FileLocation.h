@@ -9,23 +9,22 @@
 #include <string>
 using namespace std;
 
-//! A class to store file names and locations
+//! A class to store file names 
 class FileLocation
 {
 
 	public:
 
-		FileLocation( string uriString );
+		FileLocation( string fileName );
 		~FileLocation();
 		
 		string getUri();
 		string getFileName();
-		string getFileLocationUri();
-		string getFileLocation();
+
 
 	private:
 	
-		string uri;
+		string name;
 
 
 
