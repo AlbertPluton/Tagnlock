@@ -21,7 +21,7 @@
 
 #include <dirent.h>
 
-#include "Uri.h"
+#include "URIobject.h"
 
 using namespace std;
 
@@ -57,7 +57,7 @@ class Datahandler
 				\param name the name and or directory of the file/folder under consideration.
 
 		*/
-		void addNewObject( Category* category, UriUriA name );
+		void addNewObject( Category* category, URIobject* name );
 
 		
 		//! Get the first data object in the list. This functions updates the value of the internal iterator.
@@ -83,13 +83,13 @@ class Datahandler
 			To be correct, this function does not return item no. 1 of the todo vector but it pops the back.
 			\returns A string with the file name and directory. If todo is empty the string will be equel to "" and a error is generated.
 		*/
-		string getNextFile();
+		URIobject* getNextFile();
 
 		//! Returns a vector of strings of all files which still need to be processed. The first string is the string getNextFile returns.
-		vector<UriUriA> filesToDo();
+		list<URIobject*> * filesToDo();
 
 		//! Returns a vector of strings containing the names of the already processed files. 
-		vector<UriUriA> filesDone();
+		list<URIobject*> * filesDone();
 
 		//! Updatas the objectDataList from the succes fully processed files. This function should be called when the toolchain has processed this object.
 		void fileFinished( ObjectData* object );
@@ -129,10 +129,10 @@ class Datahandler
 			/pram folder a string with the folder name.
 			/pram searchRecursive a boolean indicating if subdirectories of folder should be used.
 		*/
-		void addFolder( string folder, bool searchRecursive );
+		void addFolder( URIobject folder, bool searchRecursive );
 
 		//! Returns a vector with all folders used by this datahandler.
-		vector<string> getFolders();
+		vector<URIobject> getFolders();
 
 		//! Returns a vector of booleans indicating which folders should be looked at recursively.
 		vector<bool> getRecursive();
@@ -175,10 +175,10 @@ class Datahandler
 		void decrementIT();
 		
 
-		vector<UriUriA> todo; 	
-		vector<UriUriA> done;	
+		list<URIobject*> todo; 	
+		list<URIobject*> done;	
 
-		vector<string> folders;
+		vector<URIobject> folders;
 		vector<bool> recursive; // The data in the recursive vector corresponds to the data at the same index in the folders vector.
 	
 		vector<string> fileTypes;
@@ -198,7 +198,7 @@ class Datahandler
 			\param rec Boolean indicating if the directroy should be search recursively.
 			\returns A list of strings with all file names with desired file type(s).
 		*/
-		list<string>* searchDirectory( string folder, bool rec );
+		list<URIobject*> * searchDirectory( URIobject folder, bool rec );
 
 		//! Check to see if a file has one of the desired types.
 		bool correctType( string name );

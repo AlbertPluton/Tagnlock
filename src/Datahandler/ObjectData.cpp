@@ -20,7 +20,7 @@ using namespace std;
 
 //-----------------------------------------------------------------------------
 
-ObjectData::ObjectData( Category* categoryPointer, string name )
+ObjectData::ObjectData( Category* categoryPointer, URIobject* name )
 {
 	category = categoryPointer;
 	objectName = name;
@@ -150,14 +150,14 @@ bool ObjectData::compareCategory( ObjectData* data )
 
 //-----------------------------------------------------------------------------
 
-string ObjectData::getObjectName()
+URIobject* ObjectData::getObjectName()
 {
 	return objectName;
 };
 
 //-----------------------------------------------------------------------------
 		
-void ObjectData::setObjectName( string name )
+void ObjectData::setObjectName( URIobject* name )
 {
 	objectName = name;
 };

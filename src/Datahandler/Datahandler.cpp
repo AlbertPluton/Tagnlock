@@ -63,7 +63,7 @@ void Datahandler::addObject( ObjectData* data )
 
 //-----------------------------------------------------------------------------
 
-void Datahandler::addNewObject( Category* category, UriUriA name )
+void Datahandler::addNewObject( Category* category, URIobject* name )
 {
 		// TODO throw incase of memory shortage
 		ObjectData* data = new ObjectData( category, name ); 
@@ -130,14 +130,14 @@ ObjectData* Datahandler::getNextObject()
  	{
  		// If the datahandler is empty / at the end of known objects, make a new dataobject.
  		
- 		fileName = getNextFile();
+ 		URIobject* fileName = getNextFile();
  		
  		// If the file name is empty some thing went wrong so do nothing.
- 		if( fileName.compare("") != 0 )
+ 		if( fileName )//fileName.compare("") != 0 )
  		{
  			
  			// Find the file category matching the file type of this function.
- 			Category* cat = getCategoryFromType( fileName );
+ 			Category* cat = getCategoryFromType( fileName->getFileName() );
 
  			if( cat ) // If a category is found
 			{
@@ -237,37 +237,38 @@ void Datahandler::decrementIT()
 
 //-----------------------------------------------------------------------------
 
-string Datahandler::getNextFile()
+URIobject* Datahandler::getNextFile()
 {
 
-	string file = "";
+	//URIobject file;
 	if( todo.size() != 0 )
 	{
-		// Get the last element from the vector and deleted it from the vector.
-		file = todo.back();
+		// Get the last element from the vector and deleted it from the list.
+		URIobject* file = todo.back();
 		todo.pop_back();
+		return file;
 	}
 	else
 	{
 		// TODO trow
 		cout << "ERROR: Datahandler::getNextFile : todo is empty.\n";
 	}
-	return file;
-
+	
+	return NULL;
 };
 
 //-----------------------------------------------------------------------------
 
-vector<UriUriA> Datahandler::filesToDo()
+list<URIobject*> * Datahandler::filesToDo()
 {
-	return todo;
+	return &todo;
 };
 
 //-----------------------------------------------------------------------------
 
-vector<UriUriA> Datahandler::filesDone()
+list<URIobject*> * Datahandler::filesDone()
 {
-	return done;
+	return &done;
 };
 
 //-----------------------------------------------------------------------------
@@ -294,7 +295,10 @@ void Datahandler::fileFinished( ObjectData* object )
 	if( !found )
 	{
 // TODO throw error
-		cout <<	"ERROR in Datahandler::fileFinished: Unable to find object in datahandler. Object is: " << object->getObjectName() << "\n";
+    char * uriString;
+    int charsRequired;
+    URIobject* uri = object->getObjectName();
+		cout <<	"ERROR in Datahandler::fileFinished: Unable to find object in datahandler. Object is: " << uri->getUriString() << "\n";
 	}
 	
 };
@@ -307,7 +311,7 @@ void Datahandler::updateFileList()
 
 
 
-	list<string>* foundFiles;	
+	list<URIobject*>* foundFiles;	
 
 	for( int iFolder = 0; iFolder < folders.size(); iFolder++ )
 	{
@@ -336,30 +340,30 @@ void Datahandler::updateFileList()
 //-----------------------------------------------------------------------------
 
 
-list<string>* Datahandler::searchDirectory( string folder, bool rec )
+list<URIobject*> * Datahandler::searchDirectory( URIobject folder, bool rec )
 {
+
+#ifdef TODO_DEF
+#warning TODO in file __FILE__ at line __LINE__. The folder seach perforemd in this function should have its own class. In this class a function should just return a function.
+#endif
+
 	const unsigned char isFile = 0x8;
 	const unsigned char isFolder = 0x4;
 	
 	struct dirent *dptr;
 	DIR *pdir = NULL; 	
 
-//	try
-//	{
-		list<string>* foundFiles = new list<string>;
-//	}
-//	catch( exception& e )
-//	{
-		// TODO
-//	}
+	// TODO try
+	list<URIobject*> * foundFiles = new list<URIobject*>;
+
 	
-	list<string> foundFolders;	
+	list<URIobject> foundFolders;	
 	
 	// Open folder
 #warning "Using not so smart way to convert uri to normal location"
 	// Remove file://
-	string folder2 = folder.substr( 6 );	
-	const char* folderName = folder2.c_str();
+	string folderString = (folder.getUriString()).substr( 6 );	
+	const char* folderName = folderString.c_str();
 	pdir = opendir( folderName );
 	
 	cout << "Folder name is: \"" << folderName << "\"\n";
@@ -382,9 +386,9 @@ list<string>* Datahandler::searchDirectory( string folder, bool rec )
       	{
       		// See if it is not allready done
       		bool doneBool = false;
-      		for( int i = 0; i < done.size(); i++ )
+      		for( list<URIobject*>::iterator it = done.begin(); it != done.end(); it++ )
       		{
-      			if( nameOfFile.compare( done[i] ) == 0 )
+      			if( nameOfFile.compare( (*it)->getUriString() ) == 0 )
       			{
       				doneBool = true;
       				break;
@@ -392,7 +396,9 @@ list<string>* Datahandler::searchDirectory( string folder, bool rec )
       		}
       		
       		// Add it
-      		if( !doneBool ) foundFiles->push_back( folder + "/" +nameOfFile ); 
+      		string uriString = folder.getUriString() + "/" + nameOfFile;
+      		URIobject* uri = new URIobject( uriString );
+      		if( !doneBool ) foundFiles->push_back( uri ); 
       		
       	};
       }
@@ -400,7 +406,9 @@ list<string>* Datahandler::searchDirectory( string folder, bool rec )
    		{
  				// A directory is found and we are in a recursive folder		
  				// Add it to the list of folders todo.
- 				foundFolders.push_back( folder + dptr->d_name );
+      		string uriString = folder.getUriString() + dptr->d_name; // TODO ??? -> "/"
+      		URIobject uri( uriString );
+      		foundFolders.push_back( uri );
   		};
 
 		};
@@ -411,14 +419,14 @@ list<string>* Datahandler::searchDirectory( string folder, bool rec )
 	else
 	{
 		// TODO throw
-		cout << "ERROR: Datahandler::searchDirectory: unable to open directory: \"" << folder << "\"\n";
+		cout << "ERROR: Datahandler::searchDirectory: unable to open directory: \"" << folder.getUriString() << "\"\n";
 	}
 	
 	// Loop over all directories which are to be done in recursive mode.
 	while( !foundFolders.empty() )
 	{
 		// Search a subfolder and return a list of files found in there.
-		list<string>* foundFilesInSubfolder = searchDirectory( folder + foundFolders.front(), rec );
+		list<URIobject*>* foundFilesInSubfolder = searchDirectory( foundFolders.front(), rec );
 
 		// Add the file found in the subfolder to the files found in the current folder 
 		foundFiles->insert( foundFiles->end(), foundFilesInSubfolder->begin(), foundFilesInSubfolder->end() );
@@ -519,7 +527,7 @@ bool Datahandler::save( string fileName )
 		// Write all the folders to the file and whether or not the folder should be searched recursively.
 		for( int i = 0; i < folders.size(); i++ )
 		{
-			file << "Folder: " << folders[i] << "\n";
+			file << "Folder: " << folders[i].getUriString() << "\n";
 			file << "Recursive: "<< this->boolToString( recursive[i] ) << "\n";
 		};
 
@@ -533,9 +541,9 @@ bool Datahandler::save( string fileName )
 
 
 		// Write the file names of the already processed files
-		for( int i = 0; i < done.size(); i++ )
+		for( list<URIobject*>::iterator it = done.begin(); it != done.end(); it++ )
 		{
-			file << "Done: " << done[i] << "\n";
+			file << "Done: " << (*it)->getUriString() << "\n";
 		}
 
 		
@@ -594,7 +602,8 @@ bool Datahandler::load( string fileName,  vector<Category*>* catVec )
 			if( found!=string::npos )
 			{
 				inputString.erase(0, 8);
-				folders.push_back( inputString );
+				URIobject folderURI(inputString);
+				folders.push_back( folderURI );
 				continue;
 			}	
 
@@ -647,10 +656,12 @@ bool Datahandler::load( string fileName,  vector<Category*>* catVec )
 
 			// Search for completed files
 			found = inputString.find("Done:", 0);	
+			URIobject* uri = NULL;
 			if( found!=string::npos )
 			{
 				inputString.erase(0, 6);
-				done.push_back( inputString );
+				uri = new URIobject( inputString );
+				done.push_back( uri );
 				continue;
 			}	
 
@@ -697,7 +708,7 @@ bool Datahandler::load( string fileName,  vector<Category*>* catVec )
 
 //-----------------------------------------------------------------------------
 
-void Datahandler::addFolder( string folder, bool searchRecursive )
+void Datahandler::addFolder( URIobject folder, bool searchRecursive )
 {
 	folders.push_back( folder );
 	recursive.push_back( searchRecursive );
@@ -706,7 +717,7 @@ void Datahandler::addFolder( string folder, bool searchRecursive )
 
 //-----------------------------------------------------------------------------
 
-vector<string> Datahandler::getFolders()
+vector<URIobject> Datahandler::getFolders()
 {
 	return folders;
 };
