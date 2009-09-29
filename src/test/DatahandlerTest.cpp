@@ -11,6 +11,8 @@
 
 #include <exception>
 
+#include "URIobject.h"
+
 #include <iostream>
 #include <vector>
 
@@ -85,6 +87,7 @@ int main (int argc, const char* argv[] )
 	category_test.setName("testName");
 
 
+
 	// Lets load a second Category from a definition file.
 	Category category_GPL;
 	category_GPL.loadCategory("src/test/testCategory.txt");
@@ -92,6 +95,7 @@ int main (int argc, const char* argv[] )
 	
 	// Generate data for these categories and add them to a Datahandler.
 	Datahandler dataHandler;
+	string location = ""; URIobject uri(location);
 	ObjectData* objectData;
 	FieldData* fieldData;
 	
@@ -99,7 +103,7 @@ int main (int argc, const char* argv[] )
 	// Data for the first category
 	for( int i = 1; i <= 5; i++ )
 	{
-		dataHandler.addNewObject( &category_test, "" );
+		dataHandler.addNewObject( &category_test, &uri );
 		objectData = dataHandler.getCurrentObject();
 		(objectData->getDataAt( 0 ))->set( (string)"First string" );	
 		(objectData->getDataAt( 1 ))->set( true );	
@@ -125,7 +129,7 @@ int main (int argc, const char* argv[] )
 	
 	for( int i = 0; i < 3; i++ )
 	{
-		dataHandler.addNewObject( &category_GPL, "" );
+		dataHandler.addNewObject( &category_GPL, &uri );
 		objectData = dataHandler.getCurrentObject();
 		(objectData->getDataAt( 0 ))->set( read[i] );
 		(objectData->getDataAt( 1 ))->set( name[i] );

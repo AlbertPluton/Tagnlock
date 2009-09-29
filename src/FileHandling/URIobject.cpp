@@ -13,7 +13,7 @@
 
 URIobject::URIobject( string fileName )
 { 
-	UriobjectStateA state;
+	UriParserStateA state;
   state.uri = &uri;
   if (uriParseUriA(&state, fileName.c_str()) != URI_SUCCESS) 
   {
@@ -59,9 +59,9 @@ string URIobject::getUriString()
   }
   charsRequired++; // Incrementing charsRequired by 1 is required since uriToStringCharsRequiredA() returns the length of the string as strlen() does, but uriToStringA() works with the number of maximum characters to be written including the zero-terminator.
 
-  uriCString = malloc(charsRequired * sizeof(char));
+  uriCString = new char[charsRequired]; //malloc(charsRequired * sizeof(char));
 
-  if( uriString == NULL )
+  if( uriCString == NULL )
   {
 	  /* Failure */
   }
@@ -81,11 +81,11 @@ string URIobject::getUriString()
 
 string URIobject::getFileName()
 {
-  const char * const uriCString = getUriCString().c_str();
+  const char * const uriCString = getUriString().c_str();
   const int bytesNeeded = strlen(uriCString) + 1 - 7;
-  char * CFileName = malloc(bytesNeeded * sizeof(char));
+  char * CFileName = new char[bytesNeeded]; //malloc(bytesNeeded * sizeof(char));
 
-  if( uriUriStringToUnixFilenameA(uriCString, CFIleName) != URI_SUCCESS )
+  if( uriUriStringToUnixFilenameA(uriCString, CFileName) != URI_SUCCESS )
   {
 		/* Failure */
 		free( CFileName );
@@ -107,12 +107,12 @@ string URIobject::getFolder()
 
 //-----------------------------------------------------------------------------
 
-void URIobject::normalizeURI()
+void URIobject::normalizeUri()
 {
 	const unsigned int dirtyParts = uriNormalizeSyntaxMaskRequiredA(&uri);
 	if (uriNormalizeSyntaxExA(&uri, dirtyParts) != URI_SUCCESS) 
 	{
-		      /* Failure */
+    /* Failure */
 	}
 };
 
@@ -121,7 +121,7 @@ void URIobject::normalizeURI()
 URIobject URIobject::operator+ (URIobject param)
 {
 	string left = this->getUriString();
-	string right = param->getUriString();
+	string right = param.getUriString();
 	return URIobject( left + right );
 	
 };

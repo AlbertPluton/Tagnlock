@@ -7,7 +7,7 @@ INCLUDE_DIRECTORIES (	${CMAKE_BINARY_DIR}/src/Category
 											${CMAKE_BINARY_DIR}/src/Toolchain/Operations
 											${GTKMM_INCLUDE_DIRS}
 											${GLADEMM_INCLUDE_DIRS}
-											${CMAKE_BINARY_DIR}/src/FileHandling
+											${URIPARSER_INCLUDE_DIRS}
 										)
 
 
@@ -15,6 +15,7 @@ INCLUDE_DIRECTORIES (	${CMAKE_BINARY_DIR}/src/Category
 LINK_DIRECTORIES ( ${LIBRARY_OUTPUT_PATH}
 									 ${GTKMM_LIBRARY_DIRS}
 									 ${GLADEMM_LIBRARY_DIRS}
+									 ${URIPARSER_LIBRARY_DIRS}
 								 )
 
 
@@ -38,7 +39,7 @@ TARGET_LINK_LIBRARIES (CategoryTest Field Category Exceptions)
 ADD_EXECUTABLE (DatahandlerTest DatahandlerTest.cpp)
 
 # Link the executable to the libaries Field and Category
-TARGET_LINK_LIBRARIES (DatahandlerTest Field Category Exceptions Datahandler)
+TARGET_LINK_LIBRARIES (DatahandlerTest Field Category Exceptions Datahandler ${URIPARSER_LIBRARIES} )
 
 
 

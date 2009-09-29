@@ -31,6 +31,11 @@ pkg_check_modules( GTKMM gtkmm-2.4 )
 pkg_check_modules( GLADEMM libglademm-2.4 )
 pkg_check_modules( POPPLER_GLIB poppler-glib )
 
+# This lib is not found by pkg-config, for now this will do 29092009
+SET( URIPARSER_INCLUDE_DIRS /usr/include/uriparser ${CMAKE_BINARY_DIR}/src/FileHandling )
+SET( URIPARSER_LIBRARY_DIRS /usr/lib/ )
+SET( URIPARSER_LIBRARIES Datahandler Toolchain )
+
 
 # Put all the libaries in the /lib directory
 SET ( LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib/ )
