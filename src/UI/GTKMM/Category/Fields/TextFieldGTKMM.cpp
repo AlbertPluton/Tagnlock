@@ -44,9 +44,9 @@ void TextFieldGTKMM::updateProperties()
 		
 void TextFieldGTKMM::getData()
 {
-#ifdef TODO_DEF
-#warning TODO in ...FieldGTKMM::getData
-#endif	
+
+	data->set( textEntry.get_text() );
+
 };
 
 
@@ -55,9 +55,9 @@ void TextFieldGTKMM::getData()
 				
 void TextFieldGTKMM::setData()
 {
-#ifdef TODO_DEF
-#warning TODO in ...FieldGTKMM::setData
-#endif	
+
+	textEntry.set_text( data->getString() );
+
 };
 
 

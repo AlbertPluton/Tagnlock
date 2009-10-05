@@ -37,6 +37,7 @@ class TextFileStorage : public ToolchainOperation<Datahandler*, string>
 		
 		//! Constructor with parameters
 		/*!
+			\param parent is a pointer to the parent node of this toolchain operation object.
 			\param loc is the location in which to store the file(s).
 			\param name is the file(s). If each object is stored in an individual file a number will be concatenated to this name.
 			\param individual if this Boolean is true each object in the Datahandler will be stored in an individual file.

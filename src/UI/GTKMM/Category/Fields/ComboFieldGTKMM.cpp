@@ -270,9 +270,38 @@ void ComboFieldGTKMM::updateProperties()
 		
 void ComboFieldGTKMM::getData()
 {
-#ifdef TODO_DEF
-#warning TODO in ...FieldGTKMM::getData
-#endif	
+
+	string fieldType = baseField->getType();
+
+	if( fieldType.compare("Combo") == 0 )	//-------------------------------
+	{
+		data->set( comboBoxText->get_active_text() );
+	}
+	else if( fieldType.compare("ComboEntry") == 0 )	//---------------------------
+	{
+		data->set( comboBoxEntry->get_active_text() );
+	}
+	else if( fieldType.compare("ComboRadio") == 0 )	//---------------------------
+	{
+		// Loop over all radio buttons
+		for( int i = 1; i < comboField->getComboSize(); i++ )
+		{
+			// If the button is active store the label.
+			if( (radioButtons[i]).get_active() )
+			{
+				string label = (radioButtons[i]).get_label();
+				data->set( label );
+				break;
+			}	
+			
+		}
+	}
+	else
+	{
+		// TODO Send error because the field type is unknown.
+	}
+	
+
 };
 
 
@@ -281,9 +310,57 @@ void ComboFieldGTKMM::getData()
 				
 void ComboFieldGTKMM::setData()
 {
-#ifdef TODO_DEF
-#warning TODO in ...FieldGTKMM::setData
-#endif	
+
+	string fieldType = baseField->getType();
+
+	if( fieldType.compare("Combo") == 0 )	//-------------------------------
+	{
+		string dataString = data->getString();
+		if( dataString.compare( "" ) != 0 )
+		{		
+			comboBoxText->set_active_text( data->getString() );
+		}
+		else
+		{
+			comboBoxText->set_active(-1);
+		}
+	}
+	else if( fieldType.compare("ComboEntry") == 0 )	//---------------------------
+	{
+		string dataString = data->getString();
+		if( dataString.compare( "" ) != 0 )
+		{
+			comboBoxEntry->set_active_text( dataString );
+		}
+		else
+		{
+			comboBoxEntry->set_active(-1);
+		}
+	}
+	else if( fieldType.compare("ComboRadio") == 0 )	//---------------------------
+	{
+		string label = "";
+		// Loop over all radio buttons
+		for( int i = 0; i < comboField->getComboSize(); i++ )
+		{
+			// Deactivate all buttons
+			(radioButtons[i]).set_active( false );					
+			
+			// See if the labels match
+			label = (radioButtons[i]).get_label();
+			if( label.compare( data->getString() ) == 0 )
+			{
+				(radioButtons[i]).set_active( );		
+			}
+		}
+	}
+
+
+
+	else
+	{
+		// TODO Send error because the field type is unknown.
+	}
 };
 
 

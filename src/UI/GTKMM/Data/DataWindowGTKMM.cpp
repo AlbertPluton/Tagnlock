@@ -199,9 +199,6 @@ void DataWindowGTKMM::connectSignals()
 void DataWindowGTKMM::displayDatahandlerObject()
 {
 
-	// Read data enterd by the user incase we are going to display an other object.
-	this->readDataFromUI();
-
   ObjectData* object = (this->getCurrentDatahandler())->getCurrentObject();
 	Category* cat1 = object->getCategory();
 	Category* cat2 = NULL;
@@ -241,9 +238,14 @@ void DataWindowGTKMM::displayDatahandlerObject()
 
 void DataWindowGTKMM::displayNextDatahandler()
 {
+
+
 	// Only perform the action if there is a datahandler in the vector.
 	if( currentDatahandler >= 0 )
 	{
+		// Read data enterd by the user incase we are going to display an other object.
+		this->readDataFromUI();
+
 		currentDatahandler++;
 		if( currentDatahandler < data.size() )	
 		{
@@ -254,21 +256,25 @@ void DataWindowGTKMM::displayNextDatahandler()
 			currentDatahandler--;
 		};
 	};
+	
 };
 
 //-----------------------------------------------------------------------------
 
 void DataWindowGTKMM::displayPreviousDatahandler()
 {
+
+	if( currentDatahandler >= 1 )
+	{
+		
+		// Read data enterd by the user incase we are going to display an other object.
+		this->readDataFromUI();
+	
 		currentDatahandler--;
-		if( currentDatahandler >= 0 )
-		{
-			this->displayDatahandlerObject();
-		}
-		else
-		{
-			currentDatahandler++;
-		};
+		this->displayDatahandlerObject();
+		
+	}	
+	
 };
 
 //-----------------------------------------------------------------------------
@@ -278,6 +284,10 @@ void DataWindowGTKMM::displayNextObjectData()
 	// Only perform the action if there datahandlers in the vector.
 	if( currentDatahandler >= 0 )
 	{
+	
+		// Read data enterd by the user incase we are going to display an other object.
+		this->readDataFromUI();
+		
 		// A little abuse of the getNextObject function only to update the value of the current object in the datahandler.
 		(this->getCurrentDatahandler())->getNextObject();
 
@@ -289,9 +299,14 @@ void DataWindowGTKMM::displayNextObjectData()
 
 void DataWindowGTKMM::displayPreviousObjectData()
 {
+
 	// Only perform the action if there are datahandlers in the vector.
 	if( currentDatahandler >= 0 )
 	{
+	
+		// Read data enterd by the user incase we are going to display an other object.
+		this->readDataFromUI();
+		
 		// A little abuse of the getPreviousObject function only to update the value of the current object in the datahandler.
 		(this->getCurrentDatahandler())->getPreviousObject();
 
@@ -304,7 +319,7 @@ void DataWindowGTKMM::displayPreviousObjectData()
 
 void DataWindowGTKMM::readDataFromUI()
 {
-	//TODO
+	category->readFromTable( (this->getCurrentDatahandler())->getCurrentObject() );
 };
 
 //-----------------------------------------------------------------------------

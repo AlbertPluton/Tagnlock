@@ -15,7 +15,7 @@
 #include "FieldGTKMM.h"
 
 
-
+//! Class to display a Spin field in GTKMM.
 class SpinFieldGTKMM : public FieldGTKMM
 {
 

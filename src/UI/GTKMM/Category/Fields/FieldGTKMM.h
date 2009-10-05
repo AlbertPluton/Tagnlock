@@ -25,7 +25,7 @@ class FieldGTKMM : public Gtk::EventBox
 	
 		//! Constructor which specifies the base field, index  and the corresponding data field. It is preferred to use the NewFieldGTKMM functions to create new objects because these are able to create the derived class based on the type of field.
 		/*!
-			\param field A pointer to the original field object.
+			\param pField A pointer to the original field object.
 			\param dat A pointer to the correspond FieldData object.
 			\param i The index of the base class.
 		*/		

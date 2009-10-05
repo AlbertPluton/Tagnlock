@@ -16,7 +16,7 @@
 
 
 
-
+//! Class to display a Text field in GTKMM.
 class TextFieldGTKMM : public FieldGTKMM
 {
 

@@ -47,9 +47,6 @@ class Toolchain : public ToolchainOperation<Datahandler*, Datahandler*>
 		
 		
 		//! Execute the toolchain
-		/*!
-			\param handler Is the data handler of which the data should be processed by the tool-chain.
-		*/
 		void execute( );//Datahandler* handler );
 		
 		

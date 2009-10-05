@@ -29,9 +29,6 @@ class CategoryWindowGTKMM : public EngineGTKMM
 	public:
 	
 		//! The default constructor.
-		/*!
-			\param data is a pointer to the data window.
-		*/
 		CategoryWindowGTKMM( int argc, char **argv, string gladeFileName );
 		
 		//! The default destructor.

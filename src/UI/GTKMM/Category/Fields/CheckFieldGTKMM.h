@@ -14,7 +14,7 @@
 #include "CheckField.h"
 #include "FieldGTKMM.h"
 
-
+//! Class to display a Check Field in GTKMM.
 class CheckFieldGTKMM : public FieldGTKMM
 {
 

@@ -15,7 +15,7 @@
 #include "FieldGTKMM.h"
 
 
-
+//! Class to display a Combo field in GTKMM
 class ComboFieldGTKMM : public FieldGTKMM
 {
 

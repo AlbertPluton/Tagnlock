@@ -34,7 +34,7 @@ class ComboField : public Field
 		//! The constructor 
 		/*!
 			\sa Field::Field()
-			\param fieldCobo an array with different combo options.
+			\param fieldCombo an array with different combo options.
 			\param fieldType defines the different types of field combos: Combo, ComboEntry, ComboRadio.
 		*/	
 		ComboField( string fieldLabel, bool fieldRequired, bool fieldReset, vector<string> * fieldCombo, ComboType fieldType );

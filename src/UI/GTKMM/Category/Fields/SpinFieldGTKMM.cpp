@@ -102,9 +102,9 @@ void SpinFieldGTKMM::updateProperties()
 		
 void SpinFieldGTKMM::getData()
 {
-#ifdef TODO_DEF
-#warning TODO in ...FieldGTKMM::getData
-#endif	
+
+	data->set( spinButton.get_value() );
+
 };
 
 
@@ -113,9 +113,9 @@ void SpinFieldGTKMM::getData()
 				
 void SpinFieldGTKMM::setData()
 {
-#ifdef TODO_DEF
-#warning TODO in ...FieldGTKMM::setData
-#endif	
+
+	spinButton.set_value( data->getDouble() );
+	
 };
 
 

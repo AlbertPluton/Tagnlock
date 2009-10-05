@@ -80,7 +80,7 @@ class Category
 		
 		//! Return the type of a specific field
 		/*!
-			\param The index number of the desired field.
+			\param index The index number of the desired field.
 			\return The type of field in string form.
 		*/
 		string getFieldTypeAt( int index );

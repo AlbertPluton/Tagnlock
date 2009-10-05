@@ -47,9 +47,9 @@ void CheckFieldGTKMM::updateProperties()
 		
 void CheckFieldGTKMM::getData()
 {
-#ifdef TODO_DEF
-#warning TODO in ...FieldGTKMM::getData
-#endif	
+
+	data->set( checkButton.get_active() );
+
 };
 
 
@@ -58,9 +58,9 @@ void CheckFieldGTKMM::getData()
 				
 void CheckFieldGTKMM::setData()
 {
-#ifdef TODO_DEF
-#warning TODO in ...FieldGTKMM::setData
-#endif	
+
+	checkButton.set_active( data->getBool() );
+
 };
 
 
