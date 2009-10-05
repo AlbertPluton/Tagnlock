@@ -23,6 +23,8 @@
 #include <iostream>
 #include <vector>
 
+#include "URIobject.h"
+
 using namespace std;
 
 
@@ -77,9 +79,10 @@ int main (int argc, const char* argv[] )
 	
 	// Generate data for this category and add it to a Datahandler.
 	Datahandler dataHandler;
+	string uriString = ""; URIobject uri( uriString );
 	ObjectData* objectData;
 	FieldData* fieldData;
-	
+		
 	
 	
 	// Data for the second category
@@ -94,7 +97,7 @@ int main (int argc, const char* argv[] )
 	
 	for( int i = 0; i < 3; i++ )
 	{
-		dataHandler.addNewObject( &category_GPL, "" );
+		dataHandler.addNewObject( &category_GPL, &uri );
 		objectData = dataHandler.getCurrentObject();
 		(objectData->getDataAt( 0 ))->set( read[i] );
 		(objectData->getDataAt( 1 ))->set( name[i] );

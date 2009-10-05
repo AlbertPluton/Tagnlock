@@ -14,11 +14,11 @@ using namespace std;
 
 //-----------------------------------------------------------------------------
 
-DisplayFilePDF::DisplayFilePDF( string name ) : DisplayFile( name )
+DisplayFilePDF::DisplayFilePDF( URIobject nameURI ) : DisplayFile( nameURI )
 {
 
-
-	document = poppler_document_new_from_file( name.c_str(), NULL, NULL );
+	string nameString = nameURI.getUriString();
+	document = poppler_document_new_from_file( nameString.c_str(), NULL, NULL );
 	nPages = poppler_document_get_n_pages( this->document );
 	pagesVec.reserve(nPages);
 	pixbufVec.reserve(nPages);

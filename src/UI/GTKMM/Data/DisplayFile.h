@@ -9,6 +9,8 @@
 #ifndef DISPLAYFILE_H
 #define DISPLAYFILE_H
 
+#include "URIobject.h"
+
 #include <gtkmm.h>
 
 #include <iostream>
@@ -23,26 +25,26 @@ class DisplayFile
 	public:
 		
 		//! Default constructor.
-		DisplayFile( string name );
+		DisplayFile( URIobject nameURI );
 		
 		//! Default destructor.
 		~DisplayFile();
 		
 		
 		//! This function returns a child of this class based on what type of file has been given.
-		static DisplayFile* getDisplay( string fileName );
+		static DisplayFile* getDisplay( URIobject fileNameURI );
 		
 	
 		//! This function returns a widget which displays the file.
 		virtual Gtk::Widget* getDisplayWidget();
 	
 		//! return the name of the file.
-		string getFileName();
+		URIobject getFileName();
 	
 	
 	protected:
 
-		string fileName;
+		URIobject fileNameURI;
 		
 		Gtk::Widget* widget;
 		

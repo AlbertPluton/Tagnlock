@@ -66,6 +66,10 @@ class DataWindowGTKMM : public EngineGTKMM
 		void saveButton_clicked();
 		void saveAsButton_clicked();
 
+		// Functions to update combo lists
+		void update_comboDatahandlers();
+		void update_comboFilesTodo();
+
 
 	protected:
 
@@ -91,9 +95,6 @@ class DataWindowGTKMM : public EngineGTKMM
 		Gtk::ComboBoxText* comboDatahandlers;
 		Gtk::ComboBoxText* comboFilesTodo;
 			
-		// Functions to update combo lists
-		void update_comboDatahandlers();
-		void update_comboFilesTodo();
 
 
 };

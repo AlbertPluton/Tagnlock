@@ -4,7 +4,7 @@ include_directories ( ${CMAKE_BINARY_DIR}/src/Category
 											${CMAKE_BINARY_DIR}/src/Datahandler
 											${CMAKE_BINARY_DIR}/src/Toolchain
 											${CMAKE_BINARY_DIR}/src/Toolchain/Operations
-											$${URIPARSER_INCLUDE_DIRS}								
+											${URIOBJECT_INCLUDE_DIRS}								
 										)
 
 

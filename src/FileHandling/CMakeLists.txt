@@ -1,11 +1,11 @@
 
 
 # Make sure the compiler can find include files from our library.
-include_directories ( ${URIPARSER_INCLUDE_DIRS}
+include_directories ( ${URIOBJECT_INCLUDE_DIRS}
 										)
 
 
-LINK_DIRECTORIES ( ${URIPARSER_LIBRARY_DIRS}
+LINK_DIRECTORIES ( ${URIOBJECT_LIBRARY_DIRS}
 								 )
 								 
 # Add all source files in a variable

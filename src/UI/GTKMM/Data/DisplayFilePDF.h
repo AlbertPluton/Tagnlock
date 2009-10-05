@@ -16,6 +16,8 @@
 
 #include "DisplayFile.h"
 
+#include "URIobject.h"
+
 
 //! This class is able to create a widget which displays a PDF file. For this it uses poppler.
 
@@ -24,7 +26,7 @@ class DisplayFilePDF : public DisplayFile
 
 	public:
 	
-		DisplayFilePDF( string name );
+		DisplayFilePDF( URIobject nameURI );
 		
 		~DisplayFilePDF( );
 	

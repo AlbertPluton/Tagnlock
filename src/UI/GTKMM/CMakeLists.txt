@@ -1,16 +1,16 @@
 
 
-MESSAGE ( "gtkmm include: \n ${GTKMM_INCLUDE_DIRS} \n " )
-MESSAGE ( "glademm include: \n ${GLADEMM_INCLUDE_DIRS} \n " )
-MESSAGE ( "poppler include: \n ${POPPLER_INCLUDE_DIRS} \n " )
+#MESSAGE ( "gtkmm include: \n ${GTKMM_INCLUDE_DIRS} \n " )
+#MESSAGE ( "glademm include: \n ${GLADEMM_INCLUDE_DIRS} \n " )
+#MESSAGE ( "poppler include: \n ${POPPLER_INCLUDE_DIRS} \n " )
 
 
-MESSAGE ( "gtkmm library: \n ${GTKMM_LIBRARY_DIRS} \n " )
-MESSAGE ( "glademm library: \n ${GLADEMM_LIBRARY_DIRS} \n " )
-MESSAGE ( "poppler library: \n ${POPPLER_LIBRARY_DIRS} \n " )
+#MESSAGE ( "gtkmm library: \n ${GTKMM_LIBRARY_DIRS} \n " )
+#MESSAGE ( "glademm library: \n ${GLADEMM_LIBRARY_DIRS} \n " )
+#MESSAGE ( "poppler library: \n ${POPPLER_LIBRARY_DIRS} \n " )
 
 
-MESSAGE ( "Lib output path: ${LIBRARY_OUTPUT_PATH} \n " )
+#MESSAGE ( "Lib output path: ${LIBRARY_OUTPUT_PATH} \n " )
 
 
 
@@ -28,13 +28,14 @@ include_directories (	${CMAKE_BINARY_DIR}/src/Category
 											${GTKMM_INCLUDE_DIRS}
 											${GLADEMM_INCLUDE_DIRS}
 											${POPPLER_GLIB_INCLUDE_DIRS}
-  										${CMAKE_BINARY_DIR}/src/FileHandling		
+  										${URIOBJECT_INCLUDE_DIRS}
 										)
 
 LINK_DIRECTORIES ( ${LIBRARY_OUTPUT_PATH}
 									 ${GTKMM_LIBRARY_DIRS}
 									 ${GLADEMM_LIBRARY_DIRS}
 									 ${POPPLER_GLIB_LIBRARY_DIRS}
+									 ${URIOBJECT_LIBRARY_DIRS}
 								 )
 
 

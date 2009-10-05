@@ -203,10 +203,17 @@ void DataWindowGTKMM::displayDatahandlerObject()
 	this->readDataFromUI();
 
   ObjectData* object = (this->getCurrentDatahandler())->getCurrentObject();
+	Category* cat1 = object->getCategory();
+	Category* cat2 = NULL;
+	if( category->getObjectData() ) cat2 = (category->getObjectData())->getCategory(); // THe objectData from category might be NULL for the first datahandler.
 
-	if( (object != NULL) && true ) // TODO compare the category
+	if( (object != NULL) ) 
 	{	
-		category->makeNewTable( object );
+		// If the two categories are not the same, make a new table.
+		if( cat1 != cat2 )
+		{
+			category->makeNewTable( object );
+		};
 		category->fillTable( object );
 
     if( displayFile != NULL ) 
@@ -215,13 +222,13 @@ void DataWindowGTKMM::displayDatahandlerObject()
     	delete displayFile;
     }
 
-    displayFile = DisplayFile::getDisplay( object->getObjectName() );
+    displayFile = DisplayFile::getDisplay( *(object->getObjectName()) );
     Gtk::Widget* widget = displayFile->getDisplayWidget();
 		displayWindow->add( *widget );      
     displayWindow->show_all();
 
 		// Update the current datahandler combo
-		comboDatahandlers->set_active( this->getCurrentDatahandlerIndex() );
+		comboFilesTodo->set_active( (this->getCurrentDatahandler())->getPosition()-1 );
 
 	}
 
@@ -310,7 +317,7 @@ void DataWindowGTKMM::newButton_clicked()
 	this->addCategory(cat);
 
 	datahandlerAssistant->activate();
-	
+	displayNextObjectData();
 
 /*
 #ifdef TODO_DEF
@@ -351,22 +358,22 @@ void DataWindowGTKMM::openButton_clicked()
   {
     case(Gtk::RESPONSE_OK):
     {	
-    	Glib::ustring result_name = dialog.get_filename();//dialog.get_uri();
-			string result_2 = result_name.raw();
-			cout << result_2 << "\n";
+    	Glib::ustring result_name = dialog.get_uri();
+			URIobject uri( result_name.raw() );
+			cout << result_name << "\n";
 
 			Datahandler* newDatahandler = new Datahandler();
-			if( newDatahandler->load( result_2, this->getCatVec() ) )
+			if( newDatahandler->load( uri, this->getCatVec() ) )
 			{
 				this->addDatahandler( newDatahandler );
 				this->update_comboDatahandlers();
 				this->update_comboFilesTodo();
-				this->displayDatahandlerObject();
+				this->displayNextObjectData();
 			}
 			else
 			{
 				// TODO throw / catch
-				cout << "ERROR in DataWindowGTKMM::openButton_clicked: Unable to open datahandler file: " << result_2 << "\n";
+				cout << "ERROR in DataWindowGTKMM::openButton_clicked: Unable to open datahandler file: " << result_name << "\n";
 			}
       
       break;
@@ -387,7 +394,8 @@ void DataWindowGTKMM::saveButton_clicked()
 	Datahandler* curDat = this->getCurrentDatahandler();
 
 	// Check if this datahanlder has a file name if not got saveAsButton_clicked.
-	if( curDat->getName() != "" )
+	string fileNameString = (curDat->getName()).getFileName();
+	if(  fileNameString.compare( "" ) != 0 )
 	{
 		curDat->save( );
 	}
@@ -419,13 +427,13 @@ void DataWindowGTKMM::saveAsButton_clicked()
     case(Gtk::RESPONSE_OK):
     {	
     	Glib::ustring result = dialog.get_uri();
-			string result_2 = result.raw();
-			cout << result_2 << "\n";
+			URIobject uri( result.raw() );
+			cout << result.raw() << "\n";
 
-  		if( this->getCurrentDatahandler()->save( result_2 ) != true )
+  		if( this->getCurrentDatahandler()->save( uri ) != true )
 			{
 				// TODO catch / throw
-				cout << "In DataWindowGTKMM::saveAsButton_clicked: unalbe to save datahandler in file: " << result_2 << "\n";
+				cout << "In DataWindowGTKMM::saveAsButton_clicked: unalbe to save datahandler in file: " << result.raw() << "\n";
 			};
 
       
@@ -444,10 +452,12 @@ void DataWindowGTKMM::saveAsButton_clicked()
 
 void DataWindowGTKMM::update_comboDatahandlers()
 {
+	string name;
 	comboDatahandlers->clear_items();
 	for( int i = 0; i < data.size(); i++ )
 	{
-		comboDatahandlers->append_text( data[i]->getName() );
+		name = ((data[i])->getName()).getUriString();
+		comboDatahandlers->append_text( name );
 	}
 	comboDatahandlers->set_active( this->getCurrentDatahandlerIndex() );
 };
@@ -458,11 +468,12 @@ void DataWindowGTKMM::update_comboFilesTodo()
 {
 	comboFilesTodo->clear_items();
 	Datahandler* dh = this->getCurrentDatahandler();
-	vector<string> todo = dh->filesToDo();
-	for( int i = 0; i < todo.size(); i++ )
+	list<URIobject*> * todo = dh->filesToDo();
+	for( list<URIobject*>::iterator it = todo->begin(); it != todo->end(); ++it )
 	{
-		comboFilesTodo->append_text( todo[i] );
+		comboFilesTodo->append_text( (*it)->getUriString() );
 	}
+	
 };
 
 //-----------------------------------------------------------------------------

@@ -1,4 +1,10 @@
 
+
+# Make sure the compiler can find include files from our library.
+include_directories (	${URIOBJECT_INCLUDE_DIRS}
+										)
+										
+										
 # Add all source files in a variable
 SET (	SRCS_Field
 			Field.cpp

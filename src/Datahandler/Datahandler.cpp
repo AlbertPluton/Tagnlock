@@ -19,11 +19,11 @@
 
 //-----------------------------------------------------------------------------
 
-Datahandler::Datahandler()
+Datahandler::Datahandler() : name("")
 {
 	it = objectDataList.begin();
 	position = 0;
-	name = "";
+//	name = "";
 };
 
 //-----------------------------------------------------------------------------
@@ -121,12 +121,8 @@ ObjectData* Datahandler::getCurrentObject()
 
 ObjectData* Datahandler::getNextObject()
 {
-	incrementIT();
- 	if( objectDataList.size() > 0 ) 
- 	{
- 		return (*(this->it));	// A bit strange notation to get the pointer from the list
- 	}
- 	else if( this->it == objectDataList.end() );
+
+ 	if( getPosition() == objectDataList.size() )
  	{
  		// If the datahandler is empty / at the end of known objects, make a new dataobject.
  		
@@ -142,6 +138,7 @@ ObjectData* Datahandler::getNextObject()
  			if( cat ) // If a category is found
 			{
 				addNewObject( cat, fileName );
+				incrementIT();
 				return getCurrentObject();
 			}
 			else
@@ -150,6 +147,11 @@ ObjectData* Datahandler::getNextObject()
 			}
 			
  		}
+ 	} 
+ 	else if( objectDataList.size() > 0 ) 
+ 	{
+ 		incrementIT();
+ 		return (*(this->it));	// A bit strange notation to get the pointer from the list
  	}
  	
 	return NULL;
@@ -217,7 +219,7 @@ int Datahandler::getPosition()
 
 void Datahandler::incrementIT()
 {
-	if( position < objectDataList.size()-1 )	// To prevent invalid data acces
+	if( position < objectDataList.size() )	// To prevent invalid data acces
 	{
 		(this->it)++;
 		position++;
@@ -360,9 +362,7 @@ list<URIobject*> * Datahandler::searchDirectory( URIobject folder, bool rec )
 	list<URIobject> foundFolders;	
 	
 	// Open folder
-#warning "Using not so smart way to convert uri to normal location"
-	// Remove file://
-	string folderString = (folder.getUriString()).substr( 6 );	
+	string folderString = folder.getFileName();	
 	const char* folderName = folderString.c_str();
 	pdir = opendir( folderName );
 	
@@ -388,7 +388,7 @@ list<URIobject*> * Datahandler::searchDirectory( URIobject folder, bool rec )
       		bool doneBool = false;
       		for( list<URIobject*>::iterator it = done.begin(); it != done.end(); it++ )
       		{
-      			if( nameOfFile.compare( (*it)->getUriString() ) == 0 )
+      			if( nameOfFile.compare( (*it)->getFileName() ) == 0 )
       			{
       				doneBool = true;
       				break;
@@ -490,19 +490,21 @@ Category* Datahandler::getCategoryFromType( string nameOfFile )
 
 bool Datahandler::save( )
 {
-	return this->save( "" );
+	return this->save( name );
 };
 
 //-----------------------------------------------------------------------------
 
-bool Datahandler::save( string fileName )
+bool Datahandler::save( URIobject fileNameUri )
 {
+	string fileName = fileNameUri.getFileName();
 
+/*	
 	// If fileName is equel to "" use the name given in Datahandler::name
 	if( fileName.compare("") == 0 )
 	{
 	
-		fileName = this->name;
+//		fileName = (this->name).getUriString();
 		
 		// Check to see if the fileName is still not equal to "". If it is, throw an exception.
 		if( fileName.compare("") == 0 )
@@ -511,7 +513,7 @@ bool Datahandler::save( string fileName )
 		};	
 		
 	};	
-
+*/
 
 
 
@@ -560,19 +562,22 @@ bool Datahandler::save( string fileName )
 
 //-----------------------------------------------------------------------------
 
-bool Datahandler::load( string fileName,  vector<Category*>* catVec )
+bool Datahandler::load( URIobject fileNameUri,  vector<Category*>* catVec )
 {
 
 	fstream file;								// Create file object.
 	string inputString;					// This string is used to read the file line by line.
 	size_t found;								// Used for the string function find.
 	vector<string> description;	// All the lines containing information about the field.	
-	
+	string fileNameString = fileNameUri.getFileName();
+
 	// Open the file
-	file.open( fileName.c_str() );
+	file.open( fileNameString.c_str() );
 
 	if( file.is_open() )
 	{
+		
+		setName( fileNameUri );
 		
 		while( !file.eof() )
 		{
@@ -618,7 +623,7 @@ bool Datahandler::load( string fileName,  vector<Category*>* catVec )
 
 			// Search for file types
 			found = inputString.find("Type:", 0);	
-			if( found!=string::npos )
+			if( found!=string::npos )			
 			{
 				inputString.erase(0, 6);
 				fileTypes.push_back( inputString );
@@ -696,12 +701,12 @@ bool Datahandler::load( string fileName,  vector<Category*>* catVec )
 	else
 	{
 		// throw TODO 
-		cout << "Unable to open file for reading in Datahandler::load.\n";
+		cout << "Unable to open file for reading in Datahandler::load, file name: \"" << fileNameString << "\"\n";
 		return false;
 	}	
 
 
-	name = fileName;
+	name = fileNameUri;
 	return true;
 
 };
@@ -756,14 +761,14 @@ vector<Category*> Datahandler::getCategories()
 
 //-----------------------------------------------------------------------------
 
-void Datahandler::setName( string strName )
+void Datahandler::setName( URIobject uriName )
 {
-	name = strName;
+	name = uriName;
 };
 
 //-----------------------------------------------------------------------------
 
-string Datahandler::getName()
+URIobject Datahandler::getName()
 {
 	return name;
 };

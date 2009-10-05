@@ -21,18 +21,27 @@ class URIobject
 {
 
 	public:
+	
+		//! Default constructor
+		URIobject( );
 
 		//! Constructor which creates an URI from the string fileName.
-		URIobject( string fileName );
+		URIobject( string stringUri );
 		
 		//! Constructor which creates on object by setting uri to the c style uri.
-		URIobject( UriUriA uriCstyle );
+//		URIobject( UriUriA uriCstyle );
+		
+		//! Normal copy constructor.
+//		URIobject( const URIobject& uriObject );
 		
 		//! Destructor
 		~URIobject();
 		
+				
+		//! Convert the uriString to an UriUriA object.
+		void setUri( string stringUri );
 		
-		
+				
 		//! Get the c style uri.
 		UriUriA getUri();
 		
@@ -42,6 +51,8 @@ class URIobject
 		//! Get the file name.
 		string getFileName();
 		
+		//! Get the file name.
+		string getFileName( string uriString );
 		
 		//! Return the folder TODO ????
 		string getFolder();
@@ -57,10 +68,16 @@ class URIobject
 		*/
 		URIobject operator+ (URIobject);
 
+
+		//! Overload the = operator.
+//		URIobject operator= (URIobject);
+
 	private:
 
-		UriUriA uri;
 
+
+		UriUriA uri;
+		string uriString;
 
 
 };

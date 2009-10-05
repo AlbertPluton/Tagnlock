@@ -12,9 +12,9 @@
 
 //-----------------------------------------------------------------------------
 
-DisplayFile::DisplayFile( string name )
+DisplayFile::DisplayFile( URIobject nameURI )
 {
-	fileName = name;
+	fileNameURI = nameURI;
 	this->widget = NULL;
 	cout << "Creating an DisplayFile object.\n";
 };
@@ -30,10 +30,11 @@ DisplayFile::~DisplayFile()
 
 //-----------------------------------------------------------------------------
 
-DisplayFile* DisplayFile::getDisplay( string fileName )
+DisplayFile* DisplayFile::getDisplay( URIobject fileNameURI )
 {
 	string::size_type idx;
 	string extension = "";
+	string fileName = fileNameURI.getUriString();
 
 	// Find the file type
 	idx = fileName.rfind('.');
@@ -74,9 +75,9 @@ Gtk::Widget* DisplayFile::getDisplayWidget()
 
 //-----------------------------------------------------------------------------
 
-string DisplayFile::getFileName()
+URIobject DisplayFile::getFileName()
 {
-	return fileName;
+	return fileNameURI;
 };
 
 //-----------------------------------------------------------------------------

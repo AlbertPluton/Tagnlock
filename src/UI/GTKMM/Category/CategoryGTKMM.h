@@ -87,6 +87,8 @@ class CategoryGTKMM : public Gtk::Table
   	type_signal_selectionChange get_signal_selectionChange( void );
 		
 		
+		ObjectData* getObjectData();
+		
 	private:
 	
 		ObjectData* objectData;

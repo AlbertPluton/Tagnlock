@@ -111,7 +111,7 @@ class Datahandler
 			\param fileName The name of the file. If equele to "" the name given in Datahandler::name
 			\return True will be returned is the save is succesfull.
 		*/
-		bool save( string fileName );
+		bool save( URIobject fileName );
 
 
 		//! Load the datahandler from a file.
@@ -120,7 +120,7 @@ class Datahandler
 			\param catVec is a vector with all currently known categories by the engine.
 			\return True is returned when all went well.
 		*/
-		bool load( string fileName, vector<Category*>* catVec );
+		bool load( URIobject fileName, vector<Category*>* catVec );
 
 
 
@@ -149,10 +149,10 @@ class Datahandler
 
 
 		//! Sets the name of this datahandler.
-		void setName( string strName );
+		void setName( URIobject uriName );
 
 		//! Returns the name of this datahandler. Name is set by the functions load and save.
-		string getName();
+		URIobject getName();
 
 
 	private:
@@ -185,7 +185,7 @@ class Datahandler
 		vector<Category*> categories; // The data in the categories vector corresponds to the data at the same index in the fileType vector.
 
 
-		string name;
+		URIobject name;
 
 
 		static bool stringToBool( string input );

@@ -11,31 +11,59 @@
 
 //-----------------------------------------------------------------------------
 
-URIobject::URIobject( string fileName )
+URIobject::URIobject(  )
 { 
-	UriParserStateA state;
-  state.uri = &uri;
-  if (uriParseUriA(&state, fileName.c_str()) != URI_SUCCESS) 
-  {
-  				// TODO throw
-          /* Failure */
-          uriFreeUriMembersA(&uri);
-  }
-  uriFreeUriMembersA(&uri);
+	setUri( "" );
 };
+
 
 //-----------------------------------------------------------------------------
 
+URIobject::URIobject( string stringUri )
+{ 
+	setUri( stringUri );
+	uriString = stringUri;
+};
+
+//-----------------------------------------------------------------------------
+/*
 URIobject::URIobject( UriUriA uriCstyle )
 {
 	uri = uriCstyle;
 };
-
+*/
 //-----------------------------------------------------------------------------
+/*
+URIobject::URIobject( const URIobject& uriObject )
+{
+	uri = uriObject.uri;
+	uriString = uriObject.uriString;
+};
+*/
+//-----------------------------------------------------------------------------
+
+
 
 URIobject::~URIobject()
 {
 
+};
+
+
+//-----------------------------------------------------------------------------
+
+void URIobject::setUri( string stringUri )
+{
+	UriParserStateA state;
+  state.uri = &(this->uri);
+  if (uriParseUriA(&state, stringUri.c_str()) != URI_SUCCESS) 
+  {
+  				// TODO throw
+          /* Failure */
+          cout << "ERROR: URIobject::setUri, line " << __LINE__ << "\n";
+          uriFreeUriMembersA(&uri);
+  }
+  uriFreeUriMembersA(&uri);
 };
 
 //-----------------------------------------------------------------------------
@@ -47,15 +75,20 @@ UriUriA URIobject::getUri()
 
 //-----------------------------------------------------------------------------
 
+
 string URIobject::getUriString()
 {
 
+	return uriString;
+
+/*
   char * uriCString;
   int charsRequired;
 
   if( uriToStringCharsRequiredA(&uri, &charsRequired) != URI_SUCCESS )
   {
-		/* Failure */
+		// Failure 
+		cout << "ERROR: URIobject::getUriString, line " << __LINE__ << "\n";
   }
   charsRequired++; // Incrementing charsRequired by 1 is required since uriToStringCharsRequiredA() returns the length of the string as strlen() does, but uriToStringA() works with the number of maximum characters to be written including the zero-terminator.
 
@@ -63,39 +96,53 @@ string URIobject::getUriString()
 
   if( uriCString == NULL )
   {
-	  /* Failure */
+	  // Failure 
+	  cout << "ERROR: URIobject::getUriString, line " << __LINE__ << "\n";
   }
 
   if( uriToStringA(uriCString, &uri, charsRequired, NULL) != URI_SUCCESS )
   {
-		/* Failure */
+		// Failure 
+		cout << "ERROR: URIobject::getUriString, line " << __LINE__ << "\n";
   }
 
 	string uriString = uriCString;
 	free( uriCString );
 	return uriString;
+*/
 
 };
+
 
 //-----------------------------------------------------------------------------
 
 string URIobject::getFileName()
 {
-  const char * const uriCString = getUriString().c_str();
+	return getFileName( uriString );  
+};
+
+
+//-----------------------------------------------------------------------------
+
+
+string URIobject::getFileName( string stringUri )
+{
+  const char * const uriCString = stringUri.c_str();
   const int bytesNeeded = strlen(uriCString) + 1 - 7;
   char * CFileName = new char[bytesNeeded]; //malloc(bytesNeeded * sizeof(char));
 
   if( uriUriStringToUnixFilenameA(uriCString, CFileName) != URI_SUCCESS )
   {
 		/* Failure */
+		cout << "ERROR: URIobject::getFileName, line " << __LINE__ << "\n";
 		free( CFileName );
   }
 
 	string fileName = CFileName;
   free( CFileName );
   return fileName;
-  
 };
+
 
 //-----------------------------------------------------------------------------
 
@@ -113,6 +160,7 @@ void URIobject::normalizeUri()
 	if (uriNormalizeSyntaxExA(&uri, dirtyParts) != URI_SUCCESS) 
 	{
     /* Failure */
+    cout << "ERROR: URIobject::normalizeUri, line " << __LINE__ << "\n";
 	}
 };
 
@@ -128,7 +176,13 @@ URIobject URIobject::operator+ (URIobject param)
 
 //-----------------------------------------------------------------------------
 
-
+/*
+URIobject URIobject::operator= (URIobject param)
+{
+	uri = param.uri;
+	uriString = param.uriString;
+};
+*/
 
 //-----------------------------------------------------------------------------
 

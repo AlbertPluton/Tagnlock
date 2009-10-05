@@ -7,7 +7,7 @@ INCLUDE_DIRECTORIES (	${CMAKE_BINARY_DIR}/src/Category
 											${CMAKE_BINARY_DIR}/src/Toolchain/Operations
 											${GTKMM_INCLUDE_DIRS}
 											${GLADEMM_INCLUDE_DIRS}
-											${URIPARSER_INCLUDE_DIRS}
+											${URIOBJECT_INCLUDE_DIRS}
 										)
 
 
@@ -15,7 +15,7 @@ INCLUDE_DIRECTORIES (	${CMAKE_BINARY_DIR}/src/Category
 LINK_DIRECTORIES ( ${LIBRARY_OUTPUT_PATH}
 									 ${GTKMM_LIBRARY_DIRS}
 									 ${GLADEMM_LIBRARY_DIRS}
-									 ${URIPARSER_LIBRARY_DIRS}
+									 ${URIOBJECT_LIBRARY_DIRS}
 								 )
 
 
@@ -31,7 +31,7 @@ TARGET_LINK_LIBRARIES (FieldTest Field Exceptions)
 ADD_EXECUTABLE (CategoryTest CategoryTest.cpp)
 
 # Link the executable to the libaries Field and Category
-TARGET_LINK_LIBRARIES (CategoryTest Field Category Exceptions)
+TARGET_LINK_LIBRARIES (CategoryTest Field Category Exceptions ${URIOBJECT_LIBRARIES} )
 
 
 
@@ -39,7 +39,7 @@ TARGET_LINK_LIBRARIES (CategoryTest Field Category Exceptions)
 ADD_EXECUTABLE (DatahandlerTest DatahandlerTest.cpp)
 
 # Link the executable to the libaries Field and Category
-TARGET_LINK_LIBRARIES (DatahandlerTest Field Category Exceptions Datahandler ${URIPARSER_LIBRARIES} )
+TARGET_LINK_LIBRARIES (DatahandlerTest Field Category Exceptions Datahandler ${URIOBJECT_LIBRARIES} )
 
 
 
@@ -48,7 +48,7 @@ TARGET_LINK_LIBRARIES (DatahandlerTest Field Category Exceptions Datahandler ${U
 ADD_EXECUTABLE (ToolchainTest ToolchainTest.cpp)
 
 # Link the executable to the libaries Field and Category
-TARGET_LINK_LIBRARIES (ToolchainTest Field Category Exceptions Datahandler Toolchain)
+TARGET_LINK_LIBRARIES (ToolchainTest Field Category Exceptions Datahandler Toolchain ${URIOBJECT_LIBRARIES})
 
 
 
@@ -59,5 +59,12 @@ ADD_EXECUTABLE (GTKMMTest GTKMMTest.cpp)
 # Link the executable to the libaries Field and Category
 TARGET_LINK_LIBRARIES (GTKMMTest ${GTKMM_LIBRARIES} ${GLADEMM_LIBRARIES} )
 
+
+
+# Add executable called CategoryTest
+ADD_EXECUTABLE (URIobjectTest URIobjectTest.cpp)
+
+# Link the executable to the libaries Field and Category
+TARGET_LINK_LIBRARIES (URIobjectTest ${URIOBJECT_LIBRARIES})
 
 
