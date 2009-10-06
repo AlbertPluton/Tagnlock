@@ -328,24 +328,24 @@ void ComboFieldGTKMM::setData()
 	else if( fieldType.compare("ComboEntry") == 0 )	//---------------------------
 	{
 		string dataString = data->getString();
+		int active = comboBoxEntry->get_text_column();
 		if( dataString.compare( "" ) != 0 )
 		{
 			comboBoxEntry->set_active_text( dataString );
 		}
 		else
 		{
-			comboBoxEntry->set_active(-1);
+			comboBoxEntry->set_active_text( "" );
 		}
 	}
 	else if( fieldType.compare("ComboRadio") == 0 )	//---------------------------
 	{
 		string label = "";
+		// Set by default the first one active.
+		radioButtons[0].set_active();
 		// Loop over all radio buttons
 		for( int i = 0; i < comboField->getComboSize(); i++ )
-		{
-			// Deactivate all buttons
-			(radioButtons[i]).set_active( false );					
-			
+		{	
 			// See if the labels match
 			label = (radioButtons[i]).get_label();
 			if( label.compare( data->getString() ) == 0 )
