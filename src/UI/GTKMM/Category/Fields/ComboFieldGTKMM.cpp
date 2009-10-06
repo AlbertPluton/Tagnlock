@@ -279,7 +279,10 @@ void ComboFieldGTKMM::getData()
 	}
 	else if( fieldType.compare("ComboEntry") == 0 )	//---------------------------
 	{
-		data->set( comboBoxEntry->get_active_text() );
+		Gtk::Entry* entry = comboBoxEntry->get_entry();
+		string active = entry->get_text();
+		data->set( active );
+		entry->set_text( "" ); // To clear the field
 	}
 	else if( fieldType.compare("ComboRadio") == 0 )	//---------------------------
 	{
@@ -327,16 +330,31 @@ void ComboFieldGTKMM::setData()
 	}
 	else if( fieldType.compare("ComboEntry") == 0 )	//---------------------------
 	{
+		
 		string dataString = data->getString();
-		int active = comboBoxEntry->get_text_column();
+		
+		// If the data is not empty
 		if( dataString.compare( "" ) != 0 )
 		{
+			// Loop over all elements
+			for( int i = 0; i < comboField->getComboSize(); i++ )
+			{
+				// If the data matches the element.
+				if( dataString.compare( comboField->getComboElement(i) ) == 0 )
+				{
+					// Set it active
+					comboBoxEntry->set_active_text( dataString );
+					break;
+				}				
+			};
+			
+			// If this point is reached it means that the data is not empty but it was not found among the standard elements.
+			// Therefor the user must have entered something him self. Lets add it to the combo and set it active.
+			comboBoxEntry->append_text( dataString );
 			comboBoxEntry->set_active_text( dataString );
-		}
-		else
-		{
-			comboBoxEntry->set_active_text( "" );
-		}
+			
+		};
+		
 	}
 	else if( fieldType.compare("ComboRadio") == 0 )	//---------------------------
 	{
