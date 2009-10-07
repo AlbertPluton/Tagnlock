@@ -91,8 +91,10 @@ class DataWindowGTKMM : public EngineGTKMM
 			
 		Gtk::ComboBoxText* comboDatahandlers;
 		Gtk::ComboBoxText* comboFilesTodo;
-			
-
+		
+		// Signal functions for the combo's	
+		void comboDatahandlers_changed();
+		void comboFilesTodo_changed();
 
 };
 

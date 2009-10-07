@@ -24,6 +24,7 @@ include_directories (	${CMAKE_BINARY_DIR}/src/Category
 											${CMAKE_BINARY_DIR}/src/UI/GTKMM/Category
 											${CMAKE_BINARY_DIR}/src/UI/GTKMM/Category/Fields
 											${CMAKE_BINARY_DIR}/src/UI/GTKMM/Data
+											${CMAKE_BINARY_DIR}/src/UI/GTKMM/Toolchain
 											${CMAKE_BINARY_DIR}/src/UI/GTKMM/GeneralGTKMM																		
 											${GTKMM_INCLUDE_DIRS}
 											${GLADEMM_INCLUDE_DIRS}
@@ -60,6 +61,7 @@ SET (	SRCS_EngineGTKMM
 			Category/Fields/FieldComboEditWidgetGTKMM.cpp
 			${CMAKE_BINARY_DIR}/src/Engine/Engine.cpp	
 			GeneralGTKMM/YesNoToggleButtonGTKMM.cpp
+			Toolchain/ToolchainWindowGTKMM.cpp
 		)
 
 		

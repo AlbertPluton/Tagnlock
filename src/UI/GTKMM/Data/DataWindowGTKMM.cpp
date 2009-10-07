@@ -66,10 +66,15 @@ DataWindowGTKMM::DataWindowGTKMM(  int argc, char **argv, string gladeFileName )
 
 	if( comboTable )
 	{
+	
 		comboDatahandlers = new Gtk::ComboBoxText();
 		comboFilesTodo = new Gtk::ComboBoxText();
+	
 		comboTable->attach( *comboDatahandlers, 1, 2, 0, 1 );
 		comboTable->attach( *comboFilesTodo, 1, 2, 1, 2 );
+	
+		comboDatahandlers->signal_changed().connect(sigc::mem_fun(*this, &DataWindowGTKMM::comboDatahandlers_changed));
+		comboFilesTodo->signal_changed().connect(sigc::mem_fun(*this, &DataWindowGTKMM::comboFilesTodo_changed));
 	}
 	else
 	{
@@ -493,11 +498,28 @@ void DataWindowGTKMM::update_comboFilesTodo()
 
 //-----------------------------------------------------------------------------
 
-
+void DataWindowGTKMM::comboDatahandlers_changed()
+{
+#ifdef TODO_DEF
+#warning TODO DataWindowGTKMM::comboDatahandlers_changed()
+#endif	
+// change the current datahandler to the selected one.
+};
+		
 
 //-----------------------------------------------------------------------------
 
-
+void DataWindowGTKMM::comboFilesTodo_changed()
+{
+#ifdef TODO_DEF
+#warning TODO DataWindowGTKMM::comboFilesTodo_changed()
+#endif
+	
+	int row = comboFilesTodo->get_active_row_number();
+	Datahandler* dh =	this->getCurrentDatahandler();
+	
+	
+};
 
 //-----------------------------------------------------------------------------
 

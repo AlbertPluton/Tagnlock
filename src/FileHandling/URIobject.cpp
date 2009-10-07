@@ -21,7 +21,10 @@ URIobject::URIobject(  )
 
 URIobject::URIobject( string stringUri )
 { 
-	setUri( stringUri );
+#ifdef TODO_DEF
+#warning TODO in URIobject::URIobject: Make the Uri work with white spaces some how, and than uncomment setUri.
+#endif	
+	//setUri( stringUri );
 	uriString = stringUri;
 };
 
@@ -56,7 +59,8 @@ void URIobject::setUri( string stringUri )
 {
 	UriParserStateA state;
   state.uri = &(this->uri);
-  if (uriParseUriA(&state, stringUri.c_str()) != URI_SUCCESS) 
+  const char * const uriCString = stringUri.c_str();
+  if (uriParseUriA(&state, uriCString) != URI_SUCCESS) 
   {
   				// TODO throw
           /* Failure */
@@ -127,7 +131,7 @@ string URIobject::getFileName()
 
 string URIobject::getFileName( string stringUri )
 {
-  const char * const uriCString = stringUri.c_str();
+  const char * const uriCString =  stringUri.c_str();
   const int bytesNeeded = strlen(uriCString) + 1 - 7;
   char * CFileName = new char[bytesNeeded]; //malloc(bytesNeeded * sizeof(char));
 
@@ -186,6 +190,29 @@ URIobject URIobject::operator= (URIobject param)
 
 //-----------------------------------------------------------------------------
 
+
+const char* URIobject::replaceWhiteSpaces( const char* str )
+{
+	string slash = ("\\");
+	string returnString = "";
+	int i = 0;
+	int c;
+	
+	while( str[i] )
+	{
+		c = str[i];
+		if( isspace(c) )
+		{
+			returnString += slash ;
+		}		
+		returnString.push_back( str[i] );
+		i++;
+	}
+	
+	const char* returnCString = returnString.c_str();
+	return returnCString;
+	
+};
 
 //-----------------------------------------------------------------------------
 

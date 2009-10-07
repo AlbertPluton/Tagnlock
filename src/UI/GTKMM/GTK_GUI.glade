@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Mon Sep 28 10:16:00 2009 -->
+<!--Generated with glade3 3.4.5 on Wed Oct  7 14:05:26 2009 -->
 <glade-interface>
   <widget class="GtkWindow" id="DataWindow">
     <property name="width_request">1000</property>
@@ -213,24 +213,6 @@
               </packing>
             </child>
             <child>
-              <widget class="GtkToolItem" id="toolbutton31">
-                <property name="visible">True</property>
-                <child>
-                  <widget class="GtkSpinButton" id="spinbutton1">
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="adjustment">0 0 100 1 10 10</property>
-                    <property name="climb_rate">1</property>
-                    <property name="numeric">True</property>
-                  </widget>
-                </child>
-              </widget>
-              <packing>
-                <property name="expand">False</property>
-                <property name="homogeneous">False</property>
-              </packing>
-            </child>
-            <child>
               <widget class="GtkSeparatorToolItem" id="toolbutton34">
                 <property name="visible">True</property>
               </widget>
@@ -276,19 +258,6 @@
                       <placeholder/>
                     </child>
                     <child>
-                      <widget class="GtkLabel" id="label2">
-                        <property name="visible">True</property>
-                        <property name="xalign">0.94999998807907104</property>
-                        <property name="label" translatable="yes">Datahandler:</property>
-                        <property name="justify">GTK_JUSTIFY_RIGHT</property>
-                      </widget>
-                      <packing>
-                        <property name="x_options"></property>
-                        <property name="y_options">GTK_SHRINK</property>
-                        <property name="x_padding">2</property>
-                      </packing>
-                    </child>
-                    <child>
                       <widget class="GtkLabel" id="label1">
                         <property name="visible">True</property>
                         <property name="xalign">0.94999998807907104</property>
@@ -299,6 +268,19 @@
                         <property name="top_attach">1</property>
                         <property name="bottom_attach">2</property>
                         <property name="x_options">GTK_FILL</property>
+                        <property name="y_options">GTK_SHRINK</property>
+                        <property name="x_padding">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <widget class="GtkLabel" id="label2">
+                        <property name="visible">True</property>
+                        <property name="xalign">0.94999998807907104</property>
+                        <property name="label" translatable="yes">Datahandler:</property>
+                        <property name="justify">GTK_JUSTIFY_RIGHT</property>
+                      </widget>
+                      <packing>
+                        <property name="x_options"></property>
                         <property name="y_options">GTK_SHRINK</property>
                         <property name="x_padding">2</property>
                       </packing>
@@ -525,18 +507,18 @@
           <widget class="GtkToolbar" id="toolbar1">
             <property name="visible">True</property>
             <child>
-              <widget class="GtkToolButton" id="toolbutton2">
+              <widget class="GtkToolButton" id="toolbutton5">
                 <property name="visible">True</property>
-                <property name="stock_id">gtk-save</property>
+                <property name="stock_id">gtk-new</property>
               </widget>
               <packing>
                 <property name="expand">False</property>
               </packing>
             </child>
             <child>
-              <widget class="GtkToolButton" id="toolbutton5">
+              <widget class="GtkToolButton" id="toolbutton2">
                 <property name="visible">True</property>
-                <property name="stock_id">gtk-new</property>
+                <property name="stock_id">gtk-save</property>
               </widget>
               <packing>
                 <property name="expand">False</property>
@@ -632,15 +614,6 @@
                 <property name="homogeneous">False</property>
               </packing>
             </child>
-            <child>
-              <widget class="GtkToolButton" id="toolbutton1">
-                <property name="visible">True</property>
-                <property name="stock_id">gtk-execute</property>
-              </widget>
-              <packing>
-                <property name="expand">False</property>
-              </packing>
-            </child>
           </widget>
           <packing>
             <property name="expand">False</property>
@@ -654,7 +627,11 @@
             <property name="hscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
             <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
             <child>
-              <placeholder/>
+              <widget class="GtkTreeView" id="treeview1">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="headers_clickable">True</property>
+              </widget>
             </child>
           </widget>
           <packing>

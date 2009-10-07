@@ -13,7 +13,7 @@
 using namespace std;
 
 
-//! A ToolchainNode object sibolizes the link between two operations (a ToolchainOberation object) or the start of the chain (a Toolchain object) and an operation. 
+//! A ToolchainNode object symbolizes the link between two operations (a ToolchainOberation object) or the start of the chain (a Toolchain object) and an operation. 
 
 class ToolchainNode
 {
@@ -42,7 +42,7 @@ class ToolchainNode
 		//! Swamps the position of the node with its predecessor in the nodeVector.
 		void moveNodeUp( ToolchainNode* node );
 		
-		//! Swamps the position of the node with its higher nightbour in the nodeVector.
+		//! Swamps the position of the node with its higher neighbour in the nodeVector.
 		void moveNodeDown( ToolchainNode* node );
 	
 		//! Returns the child node at the number index in the nodeVector.
@@ -55,7 +55,7 @@ class ToolchainNode
 		ToolchainNode* getParentNode();
 		
 	
-		//! This function is implemented in the childeren of the class.
+		//! This function is implemented in the children of the class.
 		virtual void execute( ){};
 		
 		

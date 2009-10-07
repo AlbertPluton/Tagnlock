@@ -74,7 +74,7 @@ class URIobject
 
 	private:
 
-
+		const char* replaceWhiteSpaces( const char* str );
 
 		UriUriA uri;
 		string uriString;

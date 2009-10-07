@@ -84,7 +84,7 @@ class ExecuteSystemCommand : public ToolchainOperation<string, int>
 			
 			//! Function to add arguments without deleting any existing arguments.
 			/*!
-				\param args String with arguments. Spaces in the string are considered to be the end of an argument unless that part of the string is place in "" or ''. Otherwise the individual arguments are phrased in to the string vector arguments.	
+				\param args String with arguments. Spaces in the string are considered to be the end of an argument unless that part of the string is placed in "" or ''. Otherwise the individual arguments are phrased in to the string vector arguments.	
 			*/				
 			void addArguments( string args );			
 			

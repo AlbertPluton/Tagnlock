@@ -113,7 +113,11 @@ ObjectData* Datahandler::getLastObject()
 
 ObjectData* Datahandler::getCurrentObject()
 {
-	if( objectDataList.size() > 0 )	return (*(this->it));	// A bit strange notation to get the pointer from the list
+	// See if there are objects in the list.
+	if( objectDataList.size() > 0 )	
+	{
+		return (*(this->it));	// A bit strange notation to get the pointer from the list
+	}
 	return NULL;
 };
 
@@ -139,7 +143,8 @@ ObjectData* Datahandler::getNextObject()
 			{
 				addNewObject( cat, fileName );
 				incrementIT();
-				return getCurrentObject();
+				ObjectData* object = getCurrentObject();
+				return object;
 			}
 			else
 			{
@@ -165,7 +170,7 @@ ObjectData* Datahandler::getPreviousObject()
 	if( objectDataList.size() > 0 ) return (*(this->it)); // A bit strange notation to get the pointer from the list
 	return NULL;
 };
-
+		
 //-----------------------------------------------------------------------------
 
 ObjectData* Datahandler::getObjectAt( int index )
@@ -402,13 +407,18 @@ list<URIobject*> * Datahandler::searchDirectory( URIobject folder, bool rec )
       		
       	};
       }
-      else if( rec && (dptr->d_type == isFile) )
+      else if( rec && (dptr->d_type == isFolder)  )
    		{
- 				// A directory is found and we are in a recursive folder		
- 				// Add it to the list of folders todo.
-      		string uriString = folder.getUriString() + dptr->d_name; // TODO ??? -> "/"
-      		URIobject uri( uriString );
-      		foundFolders.push_back( uri );
+		 		string nameOfFolder = dptr->d_name;
+		 		// Check to see if it equal to .. of ., we don't want to recursively search backwards ;-)
+		 		if( ! ((nameOfFolder.compare("..") == 0) || (nameOfFolder.compare(".") == 0)) )
+		 		{
+	 				// A directory is found and we are in a recursive folder		
+	 				// Add it to the list of folders todo.
+		   		string uriString = folder.getUriString() + "/" + nameOfFolder;
+		   		URIobject uri( uriString );
+		   		foundFolders.push_back( uri );
+		   	}
   		};
 
 		};
