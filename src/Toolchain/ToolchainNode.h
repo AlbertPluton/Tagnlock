@@ -8,6 +8,7 @@
 #ifndef TOOLCHAINNODE_H
 #define TOOLCHAINNODE_H
 
+#include <iostream>
 #include <string>
 #include <vector>
 using namespace std;
@@ -74,14 +75,18 @@ class ToolchainNode
 		
 
 	
+		//! Overload this operator to serialize the (derived) classes of ToolchainNode. 
+		friend ostream& operator<< (ostream& out, const ToolchainNode& node);
+
+		//! Overload this operator to extract a serialized (derived) class of ToolchainNode.
+		friend istream& operator>> (istream& in, ToolchainNode& node);
+				
+	
 	protected:
 	
 		//! This function can be called in the derived execute function to execute the children of a node.
 		virtual void executeChildren(){};
-		
-	
-	private:
-	
+
 	
 			//! This function is used by the parent class when it is destructed of the child node is removed from the nodeVector.
 			void deleteParentNode();

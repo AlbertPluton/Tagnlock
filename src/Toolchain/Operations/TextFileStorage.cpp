@@ -301,6 +301,35 @@ void TextFileStorage::saveToIndividualFile()
 
 };
 
+
+//-----------------------------------------------------------------------------
+
+ostream& operator<< (ostream& out, const TextFileStorage& node)
+{
+	ToolchainNode base = (ToolchainNode)node;
+	out << base;
+	out << node.location << 't';
+	out << node.fileName << 't';
+	out << node.individualFiles << endl;
+	return out;
+};
+
+
+//-----------------------------------------------------------------------------
+
+istream& operator>> (istream& in, TextFileStorage& node)
+{
+	ToolchainNode base = (ToolchainNode)node;
+	in >> base;
+	in >> node.location;
+	in >> node.fileName;
+	in >> node.individualFiles;
+	return in;
+};
+
+
+//-----------------------------------------------------------------------------
+
 //-----------------------------------------------------------------------------
 
 

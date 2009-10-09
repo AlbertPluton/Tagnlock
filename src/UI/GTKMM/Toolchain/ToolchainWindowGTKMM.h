@@ -36,7 +36,7 @@ class ToolchainWindowGTKMM : public EngineGTKMM
 		//! Default destructor
 		~ToolchainWindowGTKMM();
 
-	private
+	private:
 
 
 

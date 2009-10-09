@@ -15,9 +15,11 @@
 #include "Datahandler.h"
 #include "ObjectData.h"
 #include "FieldData.h"
-
+#include <ostream>
 #include <typeinfo>
 
+#include "ExecuteSystemCommand.h"
+#include "TextFileStorage.h"
 
 //! A Toolchain object is the start of a tooolchain.
 
@@ -57,12 +59,16 @@ class Toolchain : public ToolchainOperation<Datahandler*, Datahandler*>
 		//! Returns the type of output this object giver, Datahandler*.
 		//type_info getTypeOut();
 	
-	
-	
+		friend ostream& operator+= ( ostream& out, ToolchainNode* parent );
+		
 	private:
 		
 		Datahandler* data;
+		
 
+		
+		
+		
 };
 
 

@@ -191,6 +191,24 @@ void ToolchainNode::setName( string n )
 
 //-----------------------------------------------------------------------------
 
+ostream& operator<< (ostream& out, const ToolchainNode& node)
+{
+	out << node.name << '\n';
+	out << node.description << endl;
+	return out;	
+};
+
+//-----------------------------------------------------------------------------
+
+istream& operator>> (istream& in, ToolchainNode& node)
+{
+	in >> node.name;
+	in >> node.description;
+	return in;
+};
+
+//-----------------------------------------------------------------------------
+
 void ToolchainNode::deleteParentNode()
 {
 	parentNode = NULL;

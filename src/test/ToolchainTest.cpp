@@ -111,16 +111,16 @@ int main (int argc, const char* argv[] )
 
 	
 	// Display the data
-	objectData = dataHandler.getFirstObject();
-	for( int i = 0; i < 8; i++ )
+	for( int i = 0; i < 3; i++ )
 	{
+		objectData = dataHandler.getObjectAt(i);
 		cout << "\n";
 		for( int j = 0; j < objectData->getSize(); j++ )
 		{
 			fieldData = objectData->getDataAt(j);
 			printData( fieldData );
 		}
-		objectData = dataHandler.getNextObject();
+		
 	}
 
 	
@@ -162,6 +162,10 @@ int main (int argc, const char* argv[] )
 
 	// execute the toolchain.
 	toolchain->execute();
+	
+	
+	// Lets try to save the toolchain to a file.
+  toolchain->saveToolchain( "toolchainSave.txt");
 
 };
 

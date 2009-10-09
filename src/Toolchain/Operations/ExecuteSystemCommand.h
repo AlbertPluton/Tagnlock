@@ -8,7 +8,7 @@
 #ifndef EXECUTESYSTEMCOMMAND_H
 #define EXECUTESYSTEMCOMMAND_H
 
-
+#include <iostream>
 #include <string>
 #include <vector>
 using namespace std;
@@ -30,80 +30,86 @@ class ExecuteSystemCommand : public ToolchainOperation<string, int>
 
 	public:
 
-			//! The default constructor.	
-			ExecuteSystemCommand( ToolchainNode* parent );
-			
-			//! Constructor with parameter
-			/*!
-				\param parent Pointer to the parent node of the object.
-				\param comm The command itself.
-			*/			
-			ExecuteSystemCommand( ToolchainNode* parent, string comm );
+		//! The default constructor.	
+		ExecuteSystemCommand( ToolchainNode* parent );
+		
+		//! Constructor with parameter
+		/*!
+			\param parent Pointer to the parent node of the object.
+			\param comm The command itself.
+		*/			
+		ExecuteSystemCommand( ToolchainNode* parent, string comm );
 
-			//! Constructor with parameters
-			/*!
-				\param parent Pointer to the parent node of the object.
-				\param comm The command itself.
-				\param args String with arguments. Spaces in the string are considered to be the end of an argument unless part of the string is in "", '' or a \\ is place in front of the white space. Otherwise the individual arguments are phrased in to the string vector arguments.	
-			*/			
-			ExecuteSystemCommand( ToolchainNode* parent, string comm, string args );
-			
-			//! Constructor with parameters
-			/*!
-				\param parent Pointer to the parent node of the object.
-				\param comm The command itself.
-				\param args Vector of arguments, each argument has its own vector element.			
-			*/
-			ExecuteSystemCommand( ToolchainNode* parent, string comm, vector<string> args );
-
-	
-			//! The default destructor.
-			~ExecuteSystemCommand( );
-			
-			
-			
-			//! Execute the command with the arguments as defined in the vector arguments.
-			void execute();
-			
-						
-			//! Sets the command. This function overwrites the current command.
-			void setCommand( string comm );
-						
-			//! Retuns a string with the current command.
-			string getCommand( );			
+		//! Constructor with parameters
+		/*!
+			\param parent Pointer to the parent node of the object.
+			\param comm The command itself.
+			\param args String with arguments. Spaces in the string are considered to be the end of an argument unless part of the string is in "", '' or a \\ is place in front of the white space. Otherwise the individual arguments are phrased in to the string vector arguments.	
+		*/			
+		ExecuteSystemCommand( ToolchainNode* parent, string comm, string args );
+		
+		//! Constructor with parameters
+		/*!
+			\param parent Pointer to the parent node of the object.
+			\param comm The command itself.
+			\param args Vector of arguments, each argument has its own vector element.			
+		*/
+		ExecuteSystemCommand( ToolchainNode* parent, string comm, vector<string> args );
 
 
-			//! This function deletes all the old arguments and adds new.
-			/*!
-				\param args String with arguments. Spaces in the string are considered to be the end of an argument unless part of the string is in "", '' or a \\ is place in front of the white space. Otherwise the individual arguments are phrased in to the string vector arguments.	
-			*/	
-			void setArguments( string args );
+		//! The default destructor.
+		~ExecuteSystemCommand( );
+		
+		
+		
+		//! Execute the command with the arguments as defined in the vector arguments.
+		void execute();
+		
+					
+		//! Sets the command. This function overwrites the current command.
+		void setCommand( string comm );
+					
+		//! Retuns a string with the current command.
+		string getCommand( );			
+
+
+		//! This function deletes all the old arguments and adds new.
+		/*!
+			\param args String with arguments. Spaces in the string are considered to be the end of an argument unless part of the string is in "", '' or a \\ is place in front of the white space. Otherwise the individual arguments are phrased in to the string vector arguments.	
+		*/	
+		void setArguments( string args );
+		
+		//! This function deletes all the old arguments and adds new.			
+		void setArguments( vector<string> args );
+		
+		//! Function to add arguments without deleting any existing arguments.
+		/*!
+			\param args String with arguments. Spaces in the string are considered to be the end of an argument unless that part of the string is placed in "" or ''. Otherwise the individual arguments are phrased in to the string vector arguments.	
+		*/				
+		void addArguments( string args );			
+		
+		//! Function to add an argument without deleting any existing arguments.
+		void addArguments( vector<string> args );				
+		
+		//! Function which can be used to delete an argument at the desired index.
+		void deleteArgument( int index );
+		
+		//! Deletes the whole arguments vector.
+		void deleteAllArguments( );
+		
+		//! Returns a string with the current arguments.
+		string getArguments( );
+		
+		//! Retruns a string with the argument at the desired index.
+		string getArgument( int index );			
+
+		//! Overload this operator to serialize the derived classes of ToolchainNode. 
+		friend ostream& operator<< (ostream& out, const ExecuteSystemCommand& node);
+
+		//! Overload this operator to extract a serialized cerived class of ToolchainNode.
+		friend istream& operator>> (istream& in, ExecuteSystemCommand& node);
+
 			
-			//! This function deletes all the old arguments and adds new.			
-			void setArguments( vector<string> args );
-			
-			//! Function to add arguments without deleting any existing arguments.
-			/*!
-				\param args String with arguments. Spaces in the string are considered to be the end of an argument unless that part of the string is placed in "" or ''. Otherwise the individual arguments are phrased in to the string vector arguments.	
-			*/				
-			void addArguments( string args );			
-			
-			//! Function to add an argument without deleting any existing arguments.
-			void addArguments( vector<string> args );				
-			
-			//! Function which can be used to delete an argument at the desired index.
-			void deleteArgument( int index );
-			
-			//! Deletes the whole arguments vector.
-			void deleteAllArguments( );
-			
-			//! Returns a string with the current arguments.
-			string getArguments( );
-			
-			//! Retruns a string with the argument at the desired index.
-			string getArgument( int index );			
-	
-	
 	private:
 
 		// The command itself. 
@@ -123,6 +129,9 @@ class ExecuteSystemCommand : public ToolchainOperation<string, int>
 
 };
 
+
+
+	
 
 
 #endif

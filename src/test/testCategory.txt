@@ -45,7 +45,7 @@ Maximum: 1990
 Stepsize: 1
 AdhereStep: true
 Decimals: 0
-AdhereDec: true
+AlwaysUpdate: true
 
 
 Type: Combo
@@ -76,7 +76,7 @@ Maximum: 31
 Stepsize: 1
 AdhereStep: true
 Decimals: 0
-AdhereDec: true
+AlwaysUpdate: true
 
 
 
