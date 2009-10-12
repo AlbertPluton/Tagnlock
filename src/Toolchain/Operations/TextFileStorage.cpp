@@ -308,8 +308,8 @@ ostream& operator<< (ostream& out, const TextFileStorage& node)
 {
 	ToolchainNode base = (ToolchainNode)node;
 	out << base;
-	out << node.location << 't';
-	out << node.fileName << 't';
+	out << node.location << "\t";
+	out << node.fileName << "\t";
 	out << node.individualFiles << endl;
 	return out;
 };

@@ -8,7 +8,7 @@
 
 
 #include "Toolchain.h"
-
+#include <sstream>
 
 
 //-----------------------------------------------------------------------------
@@ -33,13 +33,21 @@ void Toolchain::saveToolchain( string fileName )
 	// Create file object.
 	ofstream file;
 
+	// Toolchain structure string
+	string structure = "";
+
 	// Open the file
 	file.open( fileName.c_str() );
 	
 	if( file.is_open() )
 	{
 
-
+		file << "Structure:\n";
+		file << typeid(*this).name(); file << "\n";
+		file << generateNodeStructure( this, "" );
+		file << "End structure\n";
+		
+		file << "\n# Toolchain nodes:\n";
 		file += this;
 
 
@@ -59,7 +67,90 @@ void Toolchain::saveToolchain( string fileName )
 
 void Toolchain::loadToolchain( string fileName )
 {
-	// TODO
+	string inputString;	
+	bool structureStart = false;
+	bool structureEnd = false;
+	
+	// Create file object.
+	ifstream file;
+
+	// Toolchain structure string
+	string structure = "";
+
+	// Open the file
+	file.open( fileName.c_str() );
+	
+	if( file.is_open() )
+	{
+
+		while( !file.eof() && !structureEnd )
+		{
+						
+			// throw TODO
+			getline(file, inputString);		
+			
+			// Delete comments
+			string delimiter = "#";
+			found = inputString.find_first_of( delimiter );
+			if( found != string::npos ) inputString.erase( found, inputString.size() );
+			
+			// Delete whitespaces infront and after the data
+			delimiter = " \t\n\r\v\f";
+			found = inputString.find_first_not_of( delimiter );
+			if( found != string::npos ) inputString.erase( 0, found );
+			if( found == string::npos ) inputString.erase( 0, inputString.size() );
+			found = inputString.find_last_not_of( delimiter );
+			if( found != string::npos ) inputString.erase( found+1, inputString.size() );
+
+			// If the string is empty continue with the next line.			
+			if( inputString.empty() ) continue;	
+			
+			// Search for the start of a toolchain strucutre
+			if( inputString.compare("Structure:") == 0 )
+			{
+				structureStart = true;
+				continue;
+			}			
+
+			// Create the toolchain structure in memory.
+			if( structureStart )
+			{
+				if( inputString.compare( typeid( TextFileStorage ).name() ) == 0 )
+				{
+					TextFileStorage node = new TextFileStorage 
+				}
+				else if( inputString.compare( ) == 0 )
+				{
+					node = new
+				}
+			
+			}
+			
+			// The end of the structure has been found
+			if( inputString.compare("End structure:") == 0 )
+			{
+				structureEnd = true;
+			}
+
+		};
+		
+		
+		// Create the toolchain nodes from the structure
+
+		file.close();	
+		name = fileName;
+	}
+	else
+	{		
+		// throw TODO 
+		cout << "Error in Toolchain::saveToolchain: Unable to open file " << fileName << "\n";
+	}	
+	
+	
+	
+	
+	
+	
 };
 
 //-----------------------------------------------------------------------------
@@ -125,6 +216,24 @@ ostream& operator+= ( ostream& out, ToolchainNode* node )
 
 //-----------------------------------------------------------------------------
 
+string Toolchain::generateNodeStructure( ToolchainNode* parent, string indent )
+{
+	string structure = "";
+	ToolchainNode* child = NULL;
+	
+	indent += "\t";
+	
+	for( int i = 0; i < parent->getNodeVectorSize(); i++ )
+	{
+		child = parent->getChildNode(i);
+		structure = structure + indent + typeid(*child).name() + "\n";
+		structure += generateNodeStructure( child, indent );	
+	};		
+	
+	return structure;
+};
+		
+		
 //-----------------------------------------------------------------------------
 
 //-----------------------------------------------------------------------------

@@ -62,9 +62,9 @@ TARGET_LINK_LIBRARIES (GTKMMTest ${GTKMM_LIBRARIES} ${GLADEMM_LIBRARIES} )
 
 
 # Add executable called CategoryTest
-ADD_EXECUTABLE (URIobjectTest URIobjectTest.cpp)
+#ADD_EXECUTABLE (URIobjectTest URIobjectTest.cpp)
 
 # Link the executable to the libaries Field and Category
-TARGET_LINK_LIBRARIES (URIobjectTest ${URIOBJECT_LIBRARIES})
+#TARGET_LINK_LIBRARIES (URIobjectTest ${URIOBJECT_LIBRARIES})
 
 

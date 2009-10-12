@@ -341,7 +341,7 @@ ostream& operator<< (ostream& out, const ExecuteSystemCommand& node)
 {
 	ToolchainNode base = (ToolchainNode)node; 
 	out << base;
-	out << node.command << 't';
+	out << node.command << "\t";
 	for( int i = 0; i < node.arguments.size(); i++ )
 	{
 		string arg = node.arguments[i];
