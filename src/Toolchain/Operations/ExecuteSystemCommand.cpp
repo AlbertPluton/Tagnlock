@@ -337,8 +337,95 @@ vector<string> ExecuteSystemCommand::stringToVector( string str )
 
 //-----------------------------------------------------------------------------
 
+string ExecuteSystemCommand::toString()
+{
+	string comm = this->getCommand();
+	if( comm.compare( "" ) == 0 )
+	{
+		// TODO throw error
+	}
+	string output = this->ToolchainNode::toString() + "Command: \"\"" + comm + "\"\"\nArguments: \"\"" + this->getArguments() + "\"\"\n";
+	return output;
+};
+
 
 //-----------------------------------------------------------------------------
+
+void ExecuteSystemCommand::fromString( string input )
+{
+	size_t found_command, found_quote1, found_quote2, found_quote3, found_quote4, found_args;
+
+	// Read the base class variables from the string
+	this->ToolchainNode::fromString( input );
+
+	// Search for the command identifier
+  found_command = input.find("Command: ");
+  if( found_command != string::npos )
+  {
+  	// Search for quotes " and ' at the beginning of the name from where name was found
+  	found_quote1 = input.find("\"\"", found_command+9 );
+  	if( found_quote1 != string::npos )
+  	{
+  		// Search for the end quote
+  		found_quote2 = input.find("\"\"", found_quote1+2 );
+			if( found_quote2 != string::npos )
+			{
+				// Set the name of this object
+				this->setCommand( input.substr( found_quote1+2, found_quote2-(found_quote1+2) ) );
+			}
+			else
+			{
+				// TODO throw
+				cout << "ERROR in ExecuteSystemCommand::fromString, line " << __LINE__ << ": unable to find quote 2 for command.\n";
+			} 	  		 		
+  	}
+  	else
+  	{
+  		// TODO throw
+  		cout << "ERROR in ExecuteSystemCommand::fromString, line " << __LINE__ << ": unable to find quote 1 for command.\n";
+  	} 	
+  }
+  else
+  {
+  	// TODO throw
+  	cout << "ERROR in ExecuteSystemCommand::fromString line " << __LINE__ << ": no command found for object with input: \n\"" << input << "\"\n";
+  }
+  
+	// Search for the arguments identifier
+  found_args = input.find("Arguments: ");
+  if( found_args != string::npos )
+  {
+  	// Search for quotes " and ' at the beginning of the name from where name was found
+  	found_quote3 = input.find("\"\"", found_args+11 );
+  	if( found_quote3 != string::npos )
+  	{
+  		// Search for the end quote
+  		found_quote4 = input.find("\"\"", found_quote3+2 );
+			if( found_quote4 != string::npos )
+			{
+				// Set the description of this object
+				this->setArguments( input.substr( found_quote3+2, found_quote4-(found_quote3+2) ) );
+			}
+			else
+			{
+				// TODO throw
+				cout << "ERROR in ExecuteSystemCommand::fromString, line " << __LINE__ << ": unable to find quote 4 for arguments.\n";
+			} 	  		 		
+  	}
+  	else
+  	{
+  		// TODO throw
+  		cout << "ERROR in ExecuteSystemCommand::fromString, line " << __LINE__ << ": unable to find quote 3 for argurments.\n";
+  	} 	
+  }	
+  else
+  {
+  	// TODO throw
+  	// This might nog be a problem as the command does not need any arguments.
+  	cout << "WARNING in ExecuteSystemCommand::fromString line " << __LINE__ << ": no arguments found for object with input: \n\"" << input << "\"\n";
+  } 
+   
+};
 
 
 //-----------------------------------------------------------------------------

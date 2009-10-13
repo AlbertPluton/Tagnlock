@@ -36,6 +36,12 @@ class ToolchainNode
 		//! Adds a node object at the end of the nodeVector.
 		void addNode( ToolchainNode* node );
 		
+		//! Adds a node object at the indicated index in the nodeVector.
+		/*!
+			Incase the index is larger than the nodeVector size, the new node is added at the end of the vector.
+		*/
+		void addNode( ToolchainNode* node, int index );
+		
 		//! Removes a node from the nodeVector
 		void removeNode( ToolchainNode* node );
 		
@@ -72,7 +78,13 @@ class ToolchainNode
 		
 		//! Set function for the name of this node.
 		void setName( string n );
+
+
+		//! Convert the class to a string for saving or display purposes
+		virtual string toString();		
 		
+		//! Set the variables of the class by description given in the string
+		virtual void fromString( string input );
 
 
 	protected:

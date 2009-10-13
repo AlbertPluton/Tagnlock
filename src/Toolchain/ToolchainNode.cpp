@@ -48,12 +48,26 @@ ToolchainNode::~ToolchainNode()
 
 
 //-----------------------------------------------------------------------------
+
 void ToolchainNode::addNode( ToolchainNode* node )
 {
 	nodeVector.push_back( node );
 };
 
+//-----------------------------------------------------------------------------
 
+void ToolchainNode::addNode( ToolchainNode* node, int index )
+{
+	if( index >= nodeVector.size() )
+	{
+		this->addNode( node );
+	}
+	else
+	{
+		vector<ToolchainNode*>::iterator it = nodeVector.begin() + index;
+		nodeVector.insert( it, node );
+	}
+};
 
 //-----------------------------------------------------------------------------
 
@@ -199,5 +213,94 @@ void ToolchainNode::deleteParentNode()
 
 //-----------------------------------------------------------------------------
 
+string ToolchainNode::toString()
+{
+	string type = typeid(*this).name();
+	string output = "Class type: \"\"" + type + "\"\"\nName: \"\"" + this->getName() + "\"\"\nDescription: \"\"" + this->getDescription() + "\"\"\n";
+	return output;
+};	
 
+
+//-----------------------------------------------------------------------------
+
+void ToolchainNode::fromString( string input )
+{  
+	size_t found_name, found_quote1, found_quote2, found_quote3, found_quote4, found_des;
+
+	// Search for the name identifier
+  found_name = input.find("Name: ");
+  if( found_name != string::npos )
+  {
+  	// Search for quotes " and ' at the beginning of the name from where name was found
+  	found_quote1 = input.find("\"\"", found_name+5 );
+  	if( found_quote1 != string::npos )
+  	{
+  		// Search for the end quote
+  		found_quote2 = input.find("\"\"", found_quote1+2 );
+			if( found_quote2 != string::npos )
+			{
+				// Set the name of this object
+				this->setName( input.substr( found_quote1+2, found_quote2-(found_quote1+2) ) );
+			}
+			else
+			{
+				// TODO throw
+				cout << "ERROR in ToolchainNode::fromString, line " << __LINE__ << ": unable to find quote 2 for name.\n";
+			} 	  		 		
+  	}
+  	else
+  	{
+  		// TODO throw
+  		cout << "ERROR in ToolchainNode::fromString, line " << __LINE__ << ": unable to find quote 1 for name.\n";
+  	} 	
+  }
+  else
+  {
+  	// TODO throw
+  	cout << "WARNING in ToolchainNode::fromString line " << __LINE__ << ": no name found for object with input: \n\"" << input << "\"\n";
+  }
+  
+	// Search for the description identifier
+  found_des = input.find("Description: ");
+  if( found_des != string::npos )
+  {
+  	// Search for quotes " and ' at the beginning of the name from where name was found
+  	found_quote3 = input.find("\"\"", found_des+13 );
+  	if( found_quote3 != string::npos )
+  	{
+  		// Search for the end quote
+  		found_quote4 = input.find("\"\"", found_quote3+2 );
+			if( found_quote4 != string::npos )
+			{
+				// Set the description of this object
+				this->setDescription( input.substr( found_quote3+2, found_quote4-(found_quote3+2) ) );
+			}
+			else
+			{
+				// TODO throw
+				cout << "ERROR in ToolchainNode::fromString, line " << __LINE__ << ": unable to find quote 4 for description.\n";
+			} 	  		 		
+  	}
+  	else
+  	{
+  		// TODO throw
+  		cout << "ERROR in ToolchainNode::fromString, line " << __LINE__ << ": unable to find quote 3 for description.\n";
+  	} 	
+  }	
+  else
+  {
+  	// TODO throw
+  	cout << "WARNING in ToolchainNode::fromString line " << __LINE__ << ": no description found for object with input: \n\"" << input << "\"\n";
+  }  
+  
+};
+
+//-----------------------------------------------------------------------------
+
+
+//-----------------------------------------------------------------------------
+
+//-----------------------------------------------------------------------------
+
+//-----------------------------------------------------------------------------
 

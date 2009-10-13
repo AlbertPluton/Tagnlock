@@ -71,7 +71,12 @@ class TextFileStorage : public ToolchainOperation<Datahandler*, string>
 		//! Returns the Boolean indicating whether or not all objects are stored in individual files.
 		bool getIndividualFiles( );
 		
-
+		//! Convert the class to a string for saving or display purposes
+		virtual string toString();		
+		
+		//! Set the variables of the class by description given in the string
+		virtual void fromString( string input );	
+		
 	private:
 
 		string location;
@@ -88,6 +93,11 @@ class TextFileStorage : public ToolchainOperation<Datahandler*, string>
 		void saveToIndividualFile();
 		
 
+		//! A function to convert strings to booleans.
+		bool stringToBool( string input );
+		
+		//! A function to convert booleans to strings.
+		string boolToString( bool input );
 
 };
 

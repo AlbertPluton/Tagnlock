@@ -304,11 +304,173 @@ void TextFileStorage::saveToIndividualFile()
 
 //-----------------------------------------------------------------------------
 
-//-----------------------------------------------------------------------------
+string TextFileStorage::toString()
+{
+	string loc = this->getLocation();
+	if( loc.compare("") == 0 )
+	{
+		// TODO throw error
+	}
+	
+	string name = this->getFileName();
+	if( name.compare( "" ) == 0 )
+	{
+		// TODO throw error
+	}
+	
+	string output = this->ToolchainNode::toString() + "Location: \"\"" + loc + "\"\"\nFile name: \"\"" + name + "\"\"\nIndividual: \"\"" + this->boolToString(this->getIndividualFiles()) + "\"\"\n"; 
+	return output;
+};		
 
 //-----------------------------------------------------------------------------
 
+void TextFileStorage::fromString( string input )
+{
+	size_t found_location, found_file, found_indi, found_quote1, found_quote2, found_quote3, found_quote4, found_quote5, found_quote6;
 
+	// Read the base class variables from the string
+	this->ToolchainNode::fromString( input );
+
+	// Search for the location identifier
+  found_location = input.find("Location: ");
+  if( found_location != string::npos )
+  {
+  	// Search for quotes " and ' at the beginning of the name from where name was found
+  	found_quote1 = input.find("\"\"", found_location+10 );
+  	if( found_quote1 != string::npos )
+  	{
+  		// Search for the end quote
+  		found_quote2 = input.find("\"\"", found_quote1+2 );
+			if( found_quote2 != string::npos )
+			{
+				// Set the name of this object
+				this->setLocation( input.substr( found_quote1+2, found_quote2-(found_quote1+2) ) );
+			}
+			else
+			{
+				// TODO throw
+				cout << "ERROR in TextFileStorage::fromString, line " << __LINE__ << ": unable to find quote 2 for location.\n";
+			} 	  		 		
+  	}
+  	else
+  	{
+  		// TODO throw
+  		cout << "ERROR in TextFileStorage::fromString, line " << __LINE__ << ": unable to find quote 1 for location.\n";
+  	} 	
+  }
+  else
+  {
+  	// TODO throw
+  	cout << "ERROR in TextFileStorage::fromString line " << __LINE__ << ": no location found for object with input: \n\"" << input << "\"\n";
+  }
+  
+  
+	// Search for the file name identifier
+  found_file = input.find("File name: ");
+  if( found_file != string::npos )
+  {
+  	// Search for quotes " and ' at the beginning of the name from where name was found
+  	found_quote3 = input.find("\"\"", found_file+11 );
+  	if( found_quote3 != string::npos )
+  	{
+  		// Search for the end quote
+  		found_quote4 = input.find("\"\"", found_quote3+2 );
+			if( found_quote4 != string::npos )
+			{
+				// Set the description of this object
+				this->setFileName( input.substr( found_quote3+2, found_quote4-(found_quote3+2) ) );
+			}
+			else
+			{
+				// TODO throw
+				cout << "ERROR in TextFileStorage::fromString, line " << __LINE__ << ": unable to find quote 4 for file name.\n";
+			} 	  		 		
+  	}
+  	else
+  	{
+  		// TODO throw
+  		cout << "ERROR in TextFileStorage::fromString, line " << __LINE__ << ": unable to find quote 3 for file name.\n";
+  	} 	
+  }	
+  else
+  {
+  	// TODO throw
+  	cout << "ERROR in TextFileStorage::fromString line " << __LINE__ << ": no file name found for object with input: \n\"" << input << "\"\n";
+  }
+  
+  
+	// Search for the Individual files identifier
+  found_indi = input.find("Individual: ");
+  if( found_indi != string::npos )
+  {
+  	// Search for quotes " and ' at the beginning of the name from where name was found
+  	found_quote5 = input.find("\"\"", found_indi+12 );
+  	if( found_quote5 != string::npos )
+  	{
+  		// Search for the end quote
+  		found_quote6 = input.find("\"\"", found_quote5+2 );
+			if( found_quote6 != string::npos )
+			{
+				// Set the description of this object
+				this->setIndividualFiles( this->stringToBool(input.substr( found_quote5+2, found_quote6-(found_quote5+2) )) );
+			}
+			else
+			{
+				// TODO throw
+				cout << "ERROR in TextFileStorage::fromString, line " << __LINE__ << ": unable to find quote 6 for individual files.\n";
+			} 	  		 		
+  	}
+  	else
+  	{
+  		// TODO throw
+  		cout << "ERROR in TextFileStorage::fromString, line " << __LINE__ << ": unable to find quote 5 for file individual files.\n";
+  	} 	
+  }	
+  else
+  {
+  	// TODO throw
+  	// This might nog be a problem as the command does not need any arguments.
+  	cout << "Warning in TextFileStorage::fromString line " << __LINE__ << ": no individual files boolean found for object with input: \n\"" << input << "\"\n";
+  }  
+  
+};
+
+//-----------------------------------------------------------------------------
+
+
+bool TextFileStorage::stringToBool( string input )
+{
+	bool output;
+	
+	if( input.compare(0, 4, "true") == 0 || input.compare(0, 4, "TRUE") == 0 || input.compare(0, 4, "True") == 0 )
+	{ 
+		output = true;
+	}
+	else if( input.compare(0, 5, "false") == 0 || input.compare(0, 5, "FALSE") == 0 || input.compare(0, 5, "False") == 0 )
+	{
+	 output = false;
+	}
+	else
+	{
+		// TODO
+		//throw Error: invalid convertion from string to bool.
+	}
+	
+	return output;
+};
+
+
+
+//-----------------------------------------------------------------------------
+
+
+string TextFileStorage::boolToString( bool input )
+{
+	string output = "false";
+	if( input ) output = "true";	
+	
+	return output;
+};
 //-----------------------------------------------------------------------------
 
 

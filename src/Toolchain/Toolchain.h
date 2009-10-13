@@ -45,7 +45,7 @@ class Toolchain : public ToolchainOperation<Datahandler*, Datahandler*>
 		/*!
 			\param fileName The name and location of the desired file.
 		*/
-		void loadToolchain( string fileName );
+		static Toolchain* loadToolchain( string fileName );
 		
 		
 		//! Execute the toolchain
@@ -58,13 +58,15 @@ class Toolchain : public ToolchainOperation<Datahandler*, Datahandler*>
 		
 		//! Returns the type of output this object giver, Datahandler*.
 		//type_info getTypeOut();
-	
 
+				
 	private:
 		
 		Datahandler* data;
 		
-
+		string getChilderen( ToolchainNode* parent, string parentID );
+		
+		void addNodeFromString( string id, string type, string node );
 		
 		
 };

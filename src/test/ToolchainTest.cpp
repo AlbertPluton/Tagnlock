@@ -165,7 +165,10 @@ int main (int argc, const char* argv[] )
 	
 	
 	// Lets try to save the toolchain to a file.
-  toolchain->saveToolchain( "toolchainSave.txt");
+  toolchain->saveToolchain( "toolchainSave.txt" );
+
+	// Lets try to load a toolchain.
+	Toolchain* newToolchain = Toolchain::loadToolchain( "toolchainSave.txt" );
 
 };
 

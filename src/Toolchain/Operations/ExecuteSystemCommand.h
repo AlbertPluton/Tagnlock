@@ -103,7 +103,13 @@ class ExecuteSystemCommand : public ToolchainOperation<string, int>
 		//! Retruns a string with the argument at the desired index.
 		string getArgument( int index );			
 
-			
+		//! Convert the class to a string for saving or display purposes
+		virtual string toString();		
+		
+		//! Set the variables of the class by description given in the string
+		virtual void fromString( string input );		
+
+
 	private:
 
 		// The command itself. 
