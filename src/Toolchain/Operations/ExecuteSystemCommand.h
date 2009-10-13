@@ -103,12 +103,6 @@ class ExecuteSystemCommand : public ToolchainOperation<string, int>
 		//! Retruns a string with the argument at the desired index.
 		string getArgument( int index );			
 
-		//! Overload this operator to serialize the derived classes of ToolchainNode. 
-		friend ostream& operator<< (ostream& out, const ExecuteSystemCommand& node);
-
-		//! Overload this operator to extract a serialized cerived class of ToolchainNode.
-		friend istream& operator>> (istream& in, ExecuteSystemCommand& node);
-
 			
 	private:
 

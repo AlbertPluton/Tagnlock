@@ -72,13 +72,6 @@ class TextFileStorage : public ToolchainOperation<Datahandler*, string>
 		bool getIndividualFiles( );
 		
 
-		
-		//! Overload this operator to serialize the derived classes of ToolchainNode. 
-		friend ostream& operator<< (ostream& out, const TextFileStorage& node);
-
-		//! Overload this operator to extract a serialized cerived class of ToolchainNode.
-		friend istream& operator>> (istream& in, TextFileStorage& node);		
-	
 	private:
 
 		string location;

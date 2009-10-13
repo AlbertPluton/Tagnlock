@@ -59,18 +59,11 @@ class Toolchain : public ToolchainOperation<Datahandler*, Datahandler*>
 		//! Returns the type of output this object giver, Datahandler*.
 		//type_info getTypeOut();
 	
-		friend ostream& operator+= ( ostream& out, ToolchainNode* node );
-		
+
 	private:
 		
 		Datahandler* data;
 		
-		//! This function generates a structure of node number representing the toolchain structure. This to save and load it from text files.
-		/*!
-			\param parent is the pointer to the parent of which the childeren need to be examind.
-			\param indent is the level of indentation of the parent.
-		*/
-		string generateNodeStructure( ToolchainNode* parent, string indent );
 
 		
 		

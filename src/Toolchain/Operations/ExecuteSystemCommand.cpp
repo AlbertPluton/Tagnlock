@@ -337,33 +337,6 @@ vector<string> ExecuteSystemCommand::stringToVector( string str )
 
 //-----------------------------------------------------------------------------
 
-ostream& operator<< (ostream& out, const ExecuteSystemCommand& node)
-{
-	ToolchainNode base = (ToolchainNode)node; 
-	out << base;
-	out << node.command << "\t";
-	for( int i = 0; i < node.arguments.size(); i++ )
-	{
-		string arg = node.arguments[i];
-		out << arg << " ";
-	}
-	out << endl;
-	return out;	
-};
-
-
-//-----------------------------------------------------------------------------
-
-istream& operator>> (istream& in, ExecuteSystemCommand& node)
-{
-	ToolchainNode base = (ToolchainNode)node; 
-	in >> base;
-	in >> node.command;
-	string args;
-	in >> args;
-	node.arguments = node.stringToVector(args);
-};
-
 
 //-----------------------------------------------------------------------------
 

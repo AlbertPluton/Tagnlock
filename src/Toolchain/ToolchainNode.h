@@ -74,14 +74,7 @@ class ToolchainNode
 		void setName( string n );
 		
 
-	
-		//! Overload this operator to serialize the (derived) classes of ToolchainNode. 
-		friend ostream& operator<< (ostream& out, const ToolchainNode& node);
 
-		//! Overload this operator to extract a serialized (derived) class of ToolchainNode.
-		friend istream& operator>> (istream& in, ToolchainNode& node);
-				
-	
 	protected:
 	
 		//! This function can be called in the derived execute function to execute the children of a node.
