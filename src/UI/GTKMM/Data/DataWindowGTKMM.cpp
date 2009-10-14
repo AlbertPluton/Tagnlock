@@ -17,7 +17,7 @@ DataWindowGTKMM::DataWindowGTKMM(  int argc, char **argv, string gladeFileName )
 {
 
 #ifdef DEBUG_MESSAGES_DEF
-	cout << "Constructing a DataWindowGTKMM	object.\n";
+	cout << "Constructing a DataWindowGTKMM object.\n";
 #endif
 
 	dataWindow = NULL;
@@ -105,7 +105,7 @@ DataWindowGTKMM::DataWindowGTKMM(  int argc, char **argv, string gladeFileName )
 DataWindowGTKMM::~DataWindowGTKMM()
 {
 #ifdef DEBUG_MESSAGES_DEF
-	cout << "Destroying a DataWindowGTKMM	object.\n";
+	cout << "Destroying a DataWindowGTKMM object.\n";
 #endif	
 
 	delete dataWindow;

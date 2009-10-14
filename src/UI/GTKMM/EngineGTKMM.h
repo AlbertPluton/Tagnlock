@@ -67,9 +67,6 @@ class EngineGTKMM : public Engine
 		
 		// --- Functions relating to Toolchain ------------------------------------
 		
-		void dispalyToolchain( );
-		void addToolchainOperation();
-		void modifyToolchainNode();
 
 
 

@@ -1,29 +1,10 @@
 
 
 # Make sure the compiler can find include files from our library.
-include_directories (	${CMAKE_BINARY_DIR}/src/Category
-											${CMAKE_BINARY_DIR}/src/Datahandler
-											${CMAKE_BINARY_DIR}/src/Toolchain
-											${CMAKE_BINARY_DIR}/src/Toolchain/Operations
-											${CMAKE_BINARY_DIR}/src/Engine
-											${CMAKE_BINARY_DIR}/src/UI/GTKMM
-											${CMAKE_BINARY_DIR}/src/UI/GTKMM/Category
-											${CMAKE_BINARY_DIR}/src/UI/GTKMM/Category/Fields
-											${CMAKE_BINARY_DIR}/src/UI/GTKMM/Data						
-											${CMAKE_BINARY_DIR}/src/UI/GTKMM/GeneralGTKMM
-											${GTKMM_INCLUDE_DIRS}
-											${GLADEMM_INCLUDE_DIRS}
-											${POPPLER_GLIB_INCLUDE_DIRS}
-											${URIOBJECT_INCLUDE_DIRS}
-										)
+include_directories (	${ALL_INCLUDE_DIRS} )
 
 # Make sure the linker can find the library once it is built.
-LINK_DIRECTORIES ( ${LIBRARY_OUTPUT_PATH}
-									 ${GTKMM_LIBRARY_DIRS}
-									 ${GLADEMM_LIBRARY_DIRS}
-									 ${POPPLER_GLIB_LIBRARY_DIRS}
-									 ${URIOBJECT_LIBRARY_DIRS}
-								 )
+LINK_DIRECTORIES ( ${ALL_LINK_DIRS} )
 
 
 

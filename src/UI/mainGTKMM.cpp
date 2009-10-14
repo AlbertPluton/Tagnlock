@@ -7,6 +7,7 @@
 
 #include "CategoryWindowGTKMM.h"
 #include "DataWindowGTKMM.h"
+#include "ToolchainWindowGTKMM.h"
 #include <string>
 using namespace std;
 
@@ -18,7 +19,7 @@ int main (int argc, char **argv)
 
 // CategoryWindowGTKMM engine( argc, argv, fileName);
 
- DataWindowGTKMM engine( argc, argv, fileName);
+// DataWindowGTKMM engine( argc, argv, fileName);
 
-
+ 	ToolchainWindowGTKMM engine( argc, argv, fileName);
 }

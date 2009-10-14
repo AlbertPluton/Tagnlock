@@ -50,6 +50,37 @@ SET ( EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin/ )
 SET ( CMAKE_CXX_FLAGS_DEBUG -gstabs+ )
 
 
+
+# Make a central variable of all include directories
+SET ( ALL_INCLUDE_DIRS
+			${CMAKE_BINARY_DIR}/src/Category
+			${CMAKE_BINARY_DIR}/src/Datahandler
+			${CMAKE_BINARY_DIR}/src/Toolchain
+			${CMAKE_BINARY_DIR}/src/Toolchain/Operations
+			${CMAKE_BINARY_DIR}/src/Engine
+			${CMAKE_BINARY_DIR}/src/UI/GTKMM
+			${CMAKE_BINARY_DIR}/src/UI/GTKMM/Category
+			${CMAKE_BINARY_DIR}/src/UI/GTKMM/Category/Fields
+			${CMAKE_BINARY_DIR}/src/UI/GTKMM/Data						
+			${CMAKE_BINARY_DIR}/src/UI/GTKMM/GeneralGTKMM
+			${CMAKE_BINARY_DIR}/src/UI/GTKMM/Toolchain
+			${GTKMM_INCLUDE_DIRS}
+			${GLADEMM_INCLUDE_DIRS}
+			${POPPLER_GLIB_INCLUDE_DIRS}
+			${URIOBJECT_INCLUDE_DIRS}
+		)
+		
+		
+# Make a central variable of all link directories
+SET (	ALL_LINK_DIRS
+			${LIBRARY_OUTPUT_PATH}
+		 	${GTKMM_LIBRARY_DIRS}
+		 	${GLADEMM_LIBRARY_DIRS}
+		 	${POPPLER_GLIB_LIBRARY_DIRS}
+		 	${URIOBJECT_LIBRARY_DIRS}
+		)
+
+
 ADD_SUBDIRECTORY (src/Category)
 ADD_SUBDIRECTORY (src/test)
 ADD_SUBDIRECTORY (src/Datahandler)

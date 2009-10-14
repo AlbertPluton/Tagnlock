@@ -16,6 +16,9 @@
 #include <libglademm/xml.h>
 #include <gtkmm.h>
 
+#include "Datahandler.h"
+#include "Toolchain.h"
+
 #include <iostream>
 #include <string>
 using namespace std;
@@ -36,9 +39,51 @@ class ToolchainWindowGTKMM : public EngineGTKMM
 		//! Default destructor
 		~ToolchainWindowGTKMM();
 
+
+		void dispalyToolchain( );
+		void addToolchainOperation();
+		void modifyToolchainNode();
+
+
+	protected:
+	
+		//! This function connects signals to the corresponding functions
+		void connectSignals();
+		
+		void newButton_clicked();
+		void saveButton_clicked();
+		void openButton_clicked();
+		void addButton_clicked();
+		void deleteButton_clicked();
+		void upButton_clicked();
+		void downButton_clicked();
+		
 	private:
+		
+		// Pointer to the main window
+		Gtk::Window* toolchainWindow;
+
+		Gtk::TreeView* treeView; 
+		Gtk::TextView* textView;
+		
+		
+		// The model used byt the treeview
+		class ModelColumns : public Gtk::TreeModelColumnRecord
+		{
+		public:
+
+			ModelColumns()
+				{  add(col_number); add(col_name); add(col_description); add(col_nodePointer);}
 
 
+			Gtk::TreeModelColumn<int> col_number;
+			Gtk::TreeModelColumn<Glib::ustring> col_name;
+			Gtk::TreeModelColumn<Glib::ustring> col_description;			
+			Gtk::TreeModelColumn<ToolchainNode*> col_nodePointer;
+			
+		};
+
+		ModelColumns treeViewColumns;
 
 };
 

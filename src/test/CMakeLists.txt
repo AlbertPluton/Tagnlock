@@ -35,7 +35,7 @@ TARGET_LINK_LIBRARIES (CategoryTest Field Category Exceptions ${URIOBJECT_LIBRAR
 
 
 
-# Add executable called CategoryTest
+# Add executable called DatahandlerTest
 ADD_EXECUTABLE (DatahandlerTest DatahandlerTest.cpp)
 
 # Link the executable to the libaries Field and Category
@@ -44,7 +44,7 @@ TARGET_LINK_LIBRARIES (DatahandlerTest Field Category Exceptions Datahandler ${U
 
 
 
-# Add executable called CategoryTest
+# Add executable called ToolchainTest
 ADD_EXECUTABLE (ToolchainTest ToolchainTest.cpp)
 
 # Link the executable to the libaries Field and Category
@@ -53,7 +53,7 @@ TARGET_LINK_LIBRARIES (ToolchainTest Field Category Exceptions Datahandler Toolc
 
 
 
-# Add executable called CategoryTest
+# Add executable called GTKMMTest
 ADD_EXECUTABLE (GTKMMTest GTKMMTest.cpp)
 
 # Link the executable to the libaries Field and Category
@@ -61,10 +61,10 @@ TARGET_LINK_LIBRARIES (GTKMMTest ${GTKMM_LIBRARIES} ${GLADEMM_LIBRARIES} )
 
 
 
-# Add executable called CategoryTest
-#ADD_EXECUTABLE (URIobjectTest URIobjectTest.cpp)
+# Add executable called URIobjectTest
+ADD_EXECUTABLE (URIobjectTest URIobjectTest.cpp)
 
 # Link the executable to the libaries Field and Category
-#TARGET_LINK_LIBRARIES (URIobjectTest ${URIOBJECT_LIBRARIES})
+TARGET_LINK_LIBRARIES (URIobjectTest ${URIOBJECT_LIBRARIES})
 
 
