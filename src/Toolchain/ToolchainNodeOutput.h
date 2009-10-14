@@ -25,6 +25,9 @@ class ToolchainNodeOutput : public ToolchainNodeInput<type_input>
 		//! The default constructor.
 		ToolchainNodeOutput( ToolchainNode* parent );
 	
+		//! Constructor extended with desired position of the new node.
+		ToolchainNodeOutput( ToolchainNode* parent, int index );
+		
 		//! The default destructor.
 		~ToolchainNodeOutput( );
 		
@@ -52,6 +55,14 @@ class ToolchainNodeOutput : public ToolchainNodeInput<type_input>
 
 template <class type_input, class type_output>
 ToolchainNodeOutput<type_input, type_output>::ToolchainNodeOutput( ToolchainNode* parent ) : ToolchainNodeInput<type_input>( parent )
+{
+
+};
+
+//-----------------------------------------------------------------------------
+
+template <class type_input, class type_output>
+ToolchainNodeOutput<type_input, type_output>::ToolchainNodeOutput( ToolchainNode* parent, int index ) : ToolchainNodeInput<type_input>( parent, index )
 {
 
 };

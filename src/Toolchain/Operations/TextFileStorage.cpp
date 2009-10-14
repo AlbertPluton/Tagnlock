@@ -25,6 +25,19 @@ TextFileStorage::TextFileStorage( ToolchainNode* parent ) : ToolchainOperation<D
 
 //-----------------------------------------------------------------------------
 
+TextFileStorage::TextFileStorage( ToolchainNode* parent, int index ) : ToolchainOperation<Datahandler*, string>( parent, index )
+{
+	
+	// Set the input to a default value.
+	this->setInput( NULL );
+
+	// Set the output to a default value.
+	this->setOutput( (string)("") );
+
+
+};
+
+//-----------------------------------------------------------------------------
 TextFileStorage::TextFileStorage( ToolchainNode* parent, string loc, string name, bool individual ) : ToolchainOperation<Datahandler*, string>( parent )
 {
 	location = loc;

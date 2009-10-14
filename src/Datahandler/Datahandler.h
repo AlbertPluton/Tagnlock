@@ -72,11 +72,13 @@ class Datahandler
 		ObjectData* getPreviousObject();
 		//! Get the data object at a certain position in the list. This functions updates the value of the internal iterator.
 		ObjectData* getObjectAt( int index );
+
 		//! Get the size of the list.
 		int getListSize();
 		//! Returns the current position in the list
 		int getPosition();
-
+		//! Sets the position of this datahandler to the value of index.
+		void setPosition( int index );
 	
 		//! Returns the name and directory of the next file to process. This removes the file from the todo vector!!
 		/*!

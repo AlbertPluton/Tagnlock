@@ -266,10 +266,13 @@ string Toolchain::getChilderen( ToolchainNode* parent, string parentID)
 		// Add the id and child descriptio to the output
 		output = output + "NODE_ID: " + childID + "\n" + child->toString() + "NODE_END\n\n";
 		
-		// Obtain childeren of the child
-		output = output + getChilderen( child, childID );
+		// Obtain childeren of the child if any
+		if( child->getNodeVectorSize() > 0 )
+		{
+			output = output + getChilderen( child, childID );
+		}
 	}
-	
+
 	return output;
 };
 
@@ -278,8 +281,6 @@ string Toolchain::getChilderen( ToolchainNode* parent, string parentID)
 
 void Toolchain::addNodeFromString( string id, string type, string node )
 {
-
-	ToolchainNode* newNode = NULL;
 	
 	// Split the id string into parts and convert to integers.
 	vector<int> idVec;
@@ -300,7 +301,7 @@ void Toolchain::addNodeFromString( string id, string type, string node )
 
 	// Obtain the parent of the new node
 	ToolchainNode* parent = this;
-	for( int i = 1; i < idVec.size()-1; i++ )
+	for( int i = 0; i < idVec.size()-2; i++ )
 	{
 		// Check to see if the id is valid. If it is not larger to what is currently in the memory.
 		if( i < parent->getNodeVectorSize() )
@@ -310,7 +311,13 @@ void Toolchain::addNodeFromString( string id, string type, string node )
 		else
 		{
 			// TODO throw
-			cout << "ERROR in Toolchain::addNodeFromString: id incorrect: \"" << id << "\"\n";
+			cout << "ERROR in Toolchain::addNodeFromString: id incorrect: \"";
+			for( int j = 0; j < idVec.size(); j++) 
+			{
+				cout << idVec[j];
+				if( j < idVec.size() - 1 ) cout << ":";
+			}
+			cout << "\"\tParent name: " << parent->getName() <<"\n";
 		}
 	};
 
@@ -320,15 +327,15 @@ void Toolchain::addNodeFromString( string id, string type, string node )
 	// Create the new node based on its type and node string.
 	if( type.compare( typeid(ExecuteSystemCommand).name() ) == 0 )
 	{
-		ExecuteSystemCommand* commandNode = new ExecuteSystemCommand( parent );
+		// Create a new node and let the constructor place it in the list of the parent.
+		ExecuteSystemCommand* commandNode = new ExecuteSystemCommand( parent, idVec[idVec.size()-1] );
 		commandNode->fromString( node );
-		newNode = commandNode;
 	}
 	else if( type.compare( typeid(TextFileStorage).name() ) == 0 )
 	{
-		TextFileStorage* storageNode = new TextFileStorage( parent );
+		// Create a new node and let the constructor place it in the list of the parent.
+		TextFileStorage* storageNode = new TextFileStorage( parent, idVec[idVec.size()-1] );
 		storageNode->fromString( node );
-		newNode = storageNode;
 	}
 	else
 	{
@@ -338,9 +345,6 @@ void Toolchain::addNodeFromString( string id, string type, string node )
 
 
 
-	
-	// Add the new node to the parent
-	parent->addNode( newNode, idVec[idVec.size()-1] );
 
 
 };

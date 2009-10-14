@@ -222,6 +222,32 @@ int Datahandler::getPosition()
 
 //-----------------------------------------------------------------------------
 
+void Datahandler::setPosition( int index )
+{
+	if( index > 0 )
+	{
+		if( index < objectDataList.size() )	
+		{
+			this->it = objectDataList.begin();
+			position = 0;
+			while( index != position ) { incrementIT(); }; // Loop till the desired position is reached.
+		}
+		else	// If index exceeds the size of the list, set the position to the end of the list.
+		{
+			this->it = objectDataList.end();
+			position = objectDataList.size() - 1;
+		}
+	}
+	else	// If index is below equal or below zero set it to zero.
+	{
+		this->it = objectDataList.begin();
+		position = 0;
+	}
+
+};
+
+//-----------------------------------------------------------------------------
+
 void Datahandler::incrementIT()
 {
 	if( position < objectDataList.size() )	// To prevent invalid data acces

@@ -143,6 +143,7 @@ int main (int argc, const char* argv[] )
 
 	// Save the datahandler to 1 file
 	TextFileStorage saveNode( toolchain );	
+	saveNode.setName( "saveNode" );
 	saveNode.setLocation( loc );
 	saveNode.setFileName( fileName );
 	saveNode.setIndividualFiles( false );
@@ -150,11 +151,13 @@ int main (int argc, const char* argv[] )
 
 	// Copy the one file to a new file.
 	ExecuteSystemCommand command( &saveNode, (string)"cp" );
+	command.setName( "command" );
 	command.addArguments( loc + (string)"\'testFile 2 b\'" );
 
 
 	// Save the objects in the data handler to individual files.
 	TextFileStorage saveNode2( toolchain );	
+	saveNode2.setName( "saveNode2" );	
 	saveNode2.setLocation( loc );
 	saveNode2.setFileName( fileName );
 	saveNode2.setIndividualFiles( true );
@@ -169,6 +172,15 @@ int main (int argc, const char* argv[] )
 
 	// Lets try to load a toolchain.
 	Toolchain* newToolchain = Toolchain::loadToolchain( "toolchainSave.txt" );
+	newToolchain->saveToolchain( "toolchainSave2.txt" );
+	
+	cout << "\n\nToolchain name: " << newToolchain->getName() << "\n";
+	cout << "Description: " << newToolchain->getDescription() << "\nExecuting...";
+	dataHandler.setPosition( 0 );
+	newToolchain->setInput( &dataHandler );
+	newToolchain->execute();
+	cout << "Done\n";
+	
 
 };
 

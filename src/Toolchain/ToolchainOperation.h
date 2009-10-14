@@ -38,7 +38,9 @@ class ToolchainOperation : public ToolchainNodeOutput<type_input, type_output>
 			\param parent Pointer to the parent node of this operation.
 		*/
 		ToolchainOperation( ToolchainNode* parent );
-
+		
+		//! Constructor extended with desired position of the new node.
+		ToolchainOperation( ToolchainNode* parent, int index );
 		
 		//! The default destructor.
 		~ToolchainOperation( );
@@ -62,6 +64,14 @@ class ToolchainOperation : public ToolchainNodeOutput<type_input, type_output>
 
 template <class type_in, class type_out>
 ToolchainOperation<type_in, type_out>::ToolchainOperation( ToolchainNode* parent ) : ToolchainNodeOutput<type_in, type_out>( parent )
+{
+
+};
+
+//-----------------------------------------------------------------------------
+
+template <class type_in, class type_out>
+ToolchainOperation<type_in, type_out>::ToolchainOperation( ToolchainNode* parent, int index ) : ToolchainNodeOutput<type_in, type_out>( parent, index )
 {
 
 };

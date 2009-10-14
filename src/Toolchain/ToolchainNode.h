@@ -28,6 +28,13 @@ class ToolchainNode
 		*/
 		ToolchainNode( ToolchainNode* parent );
 
+		//! The constructor. 
+		/*!
+			\param parent A pointer to the parent node is required as a parameter.
+			\param index The index at which the new node is placed within the list of the parent.
+		*/
+		ToolchainNode( ToolchainNode* parent, int index );
+
 		//! The default destructor.
 		~ToolchainNode();
 

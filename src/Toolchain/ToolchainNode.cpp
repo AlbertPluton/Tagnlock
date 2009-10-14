@@ -22,6 +22,16 @@ ToolchainNode::ToolchainNode( ToolchainNode* parent )
 
 };
 
+//-----------------------------------------------------------------------------
+
+ToolchainNode::ToolchainNode( ToolchainNode* parent, int index )
+{
+	parentNode = parent;
+
+	// Let the parent know it has a new child, unless parent == NULL which means it is a Toolchain object, the start of the chain.
+	if( parent != NULL) parent->addNode( this, index );
+};
+
 
 //-----------------------------------------------------------------------------
 

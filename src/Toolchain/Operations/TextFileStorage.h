@@ -34,6 +34,8 @@ class TextFileStorage : public ToolchainOperation<Datahandler*, string>
 		//! The default constructor
 		TextFileStorage( ToolchainNode* parent );
 		
+		//! Constructor which parameter for the desired place in the list.
+		TextFileStorage( ToolchainNode* parent, int index );
 		
 		//! Constructor with parameters
 		/*!

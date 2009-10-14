@@ -32,6 +32,9 @@ class ExecuteSystemCommand : public ToolchainOperation<string, int>
 
 		//! The default constructor.	
 		ExecuteSystemCommand( ToolchainNode* parent );
+
+		//! Constructor which parameter for the desired place in the list.
+		ExecuteSystemCommand( ToolchainNode* parent, int index );
 		
 		//! Constructor with parameter
 		/*!

@@ -24,6 +24,21 @@ ExecuteSystemCommand::ExecuteSystemCommand( ToolchainNode* parent ) : ToolchainO
 
 };
 
+
+//-----------------------------------------------------------------------------
+
+ExecuteSystemCommand::ExecuteSystemCommand( ToolchainNode* parent, int index ) : ToolchainOperation<string, int>( parent, index )
+{
+
+	// Set the input to a default value.
+	this->setInput( (string)("") );
+
+	// Set the output to a default value.
+	this->setOutput( 0 );
+
+};
+
+
 //-----------------------------------------------------------------------------
 
 ExecuteSystemCommand::ExecuteSystemCommand( ToolchainNode* parent, string comm ) : ToolchainOperation<string, int>( parent )
