@@ -326,6 +326,13 @@ Toolchain* Engine::getToolchain( int index )
 
 //-----------------------------------------------------------------------------
 
+int Engine::getToolchainsSize()
+{
+	return toolchains.size();
+};
+
+//-----------------------------------------------------------------------------
+
 void Engine::executeToolchain( int index )
 {
 	if( (index >= 0) && (index < toolchains.size()) )

@@ -10,8 +10,8 @@
 
 
 
-#ifndef ENGINEGTK_H
-#define ENGINEGTK_H
+#ifndef ENGINEGTKMM_H
+#define ENGINEGTKMM_H
 
 #include "Engine.h"
 

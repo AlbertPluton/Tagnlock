@@ -5,8 +5,8 @@
 //
 //
 
-#ifndef TOOLCHAINWINDOWGTKMM
-#define TOOLCHAINWINDOWGTKMM
+#ifndef TOOLCHAINWINDOWGTKMM_H
+#define TOOLCHAINWINDOWGTKMM_H
 
 
 
@@ -17,7 +17,10 @@
 #include <gtkmm.h>
 
 #include "Datahandler.h"
+
 #include "Toolchain.h"
+
+
 
 #include <iostream>
 #include <string>
@@ -84,7 +87,10 @@ class ToolchainWindowGTKMM : public EngineGTKMM
 		};
 
 		ModelColumns treeViewColumns;
-
+		Glib::RefPtr<Gtk::TreeStore> refTreeViewModel;
+	
+	
+	
 };
 
 #endif

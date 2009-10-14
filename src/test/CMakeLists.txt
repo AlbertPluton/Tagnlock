@@ -1,23 +1,28 @@
 
 
 # Make sure the compiler can find include files from our library.
-INCLUDE_DIRECTORIES (	${CMAKE_BINARY_DIR}/src/Category 
-											${CMAKE_BINARY_DIR}/src/Datahandler 
-											${CMAKE_BINARY_DIR}/src/Toolchain 
-											${CMAKE_BINARY_DIR}/src/Toolchain/Operations
-											${GTKMM_INCLUDE_DIRS}
-											${GLADEMM_INCLUDE_DIRS}
-											${URIOBJECT_INCLUDE_DIRS}
-										)
+#INCLUDE_DIRECTORIES (	${CMAKE_BINARY_DIR}/src/Category 
+#											${CMAKE_BINARY_DIR}/src/Datahandler 
+#											${CMAKE_BINARY_DIR}/src/Toolchain 
+#											${CMAKE_BINARY_DIR}/src/Toolchain/Operations
+#											${GTKMM_INCLUDE_DIRS}
+#											${GLADEMM_INCLUDE_DIRS}
+#											${URIOBJECT_INCLUDE_DIRS}
+#										)
 
 
 # Make sure the linker can find the library once it is built.
-LINK_DIRECTORIES ( ${LIBRARY_OUTPUT_PATH}
-									 ${GTKMM_LIBRARY_DIRS}
-									 ${GLADEMM_LIBRARY_DIRS}
-									 ${URIOBJECT_LIBRARY_DIRS}
-								 )
+#LINK_DIRECTORIES ( ${LIBRARY_OUTPUT_PATH}
+#									 ${GTKMM_LIBRARY_DIRS}
+#									 ${GLADEMM_LIBRARY_DIRS}
+#									 ${URIOBJECT_LIBRARY_DIRS}
+#								 )
 
+# Make sure the compiler can find include files from our library.
+include_directories (	${ALL_INCLUDE_DIRS} )
+
+# Make sure the linker can find the library once it is built.
+LINK_DIRECTORIES ( ${ALL_LINK_DIRS} )
 
 # Add executable called FieldTest
 ADD_EXECUTABLE (FieldTest FieldTest.cpp)

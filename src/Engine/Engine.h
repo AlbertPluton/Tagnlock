@@ -190,6 +190,9 @@ class Engine
 		//! Returns the Toolchain an the desired index.
 		Toolchain* getToolchain( int index );
 
+		//! Returns the number of Toolchains in the engine.
+		int getToolchainsSize();
+
 		//! Execute a Toolchain on the current Datahandler object.
 		void executeToolchain( int index );
 

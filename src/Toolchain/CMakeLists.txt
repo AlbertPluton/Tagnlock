@@ -1,11 +1,18 @@
 
 # Make sure the compiler can find include files from our library.
-include_directories ( ${CMAKE_BINARY_DIR}/src/Category 
-											${CMAKE_BINARY_DIR}/src/Datahandler
-											${CMAKE_BINARY_DIR}/src/Toolchain
-											${CMAKE_BINARY_DIR}/src/Toolchain/Operations
-											${URIOBJECT_INCLUDE_DIRS}								
-										)
+#include_directories ( ${CMAKE_BINARY_DIR}/src/Category 
+#											${CMAKE_BINARY_DIR}/src/Datahandler
+#											${CMAKE_BINARY_DIR}/src/Toolchain
+#											${CMAKE_BINARY_DIR}/src/Toolchain/Operations
+#											${URIOBJECT_INCLUDE_DIRS}								
+#										)
+
+
+# Make sure the compiler can find include files from our library.
+include_directories (	${ALL_INCLUDE_DIRS} )
+
+# Make sure the linker can find the library once it is built.
+LINK_DIRECTORIES ( ${ALL_LINK_DIRS} )
 
 
 

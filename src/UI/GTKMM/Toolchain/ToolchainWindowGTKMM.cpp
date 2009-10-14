@@ -49,6 +49,20 @@ ToolchainWindowGTKMM::ToolchainWindowGTKMM(  int argc, char **argv, string glade
 	refXml->get_widget("treeview1", treeView);
 	refXml->get_widget("textview1", textView);
 	
+	if( treeView )
+	{
+		// Create the Tree model
+		refTreeViewModel = Gtk::TreeStore::create(treeViewColumns);
+		treeView->set_model(refTreeViewModel);
+
+		// Append columns
+		treeView->append_column( "Name", treeViewColumns.col_name );
+		treeView->append_column( "Description", treeViewColumns.col_description );
+	}
+	else
+	{
+		// TODO throw
+	}
 	
   if(toolchainWindow)
   {
@@ -168,6 +182,22 @@ void ToolchainWindowGTKMM::connectSignals()
 void ToolchainWindowGTKMM::dispalyToolchain( )
 {
 
+
+	Gtk::TreeModel::Row row;
+	Toolchain* toolchain = NULL;
+	ToolchainNode* node = NULL;
+	
+	// Loop over all the toolchains in the engine.
+	for( int i = 0; i < this->getToolchainsSize(); i++ )
+	{
+		toolchain = this->getToolchain(i);
+		for( int j = 0; i < toolchain->getNodeVectorSize(); i++ )
+		{
+					//--------------------------------------------------------------------------------------------------------------------------------------------------
+		} 
+	};
+	
+	
 };
 
 //-----------------------------------------------------------------------------
