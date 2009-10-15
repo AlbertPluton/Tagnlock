@@ -56,6 +56,15 @@ class EngineGTKMM : public Engine
 		virtual bool loadCategory();	
 	
 	
+		//! Load a toolchain by opening a dialog.
+		/*!
+			\returns true if all was succesfull.
+		*/
+		virtual bool loadToolchain();	
+		
+		//! A dialog to save as a toolchain.
+		virtual bool saveAsToolchain();
+	
 		// === The following functions are implementations of the virtual functions in the Engine class ====================
 
 
@@ -88,10 +97,6 @@ void on_toolbutton25_clicked(  );
 		
 	private:
 
-
-		Gtk::Window* toolchainWindow;
-
-		
 
 
 

@@ -24,6 +24,6 @@ int main (int argc, char **argv)
  	ToolchainWindowGTKMM engine( argc, argv, fileName);
 
 
-	//DataWindowGTKMM engine2( argc, argv, fileName);
+	DataWindowGTKMM engine2( argc, argv, fileName);
 
 };

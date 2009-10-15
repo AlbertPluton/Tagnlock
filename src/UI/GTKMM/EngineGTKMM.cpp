@@ -22,10 +22,8 @@ EngineGTKMM::EngineGTKMM( int argc, char **argv, string gladeFileName )
 
 	kit = new Gtk::Main(argc, argv);
 
-	toolchainWindow = NULL;
-
  
-	
+/*	
   //Load the Glade file and instiate its widgets:
 	#ifdef GLIBMM_EXCEPTIONS_ENABLED
 		try
@@ -48,11 +46,13 @@ EngineGTKMM::EngineGTKMM( int argc, char **argv, string gladeFileName )
 		  //return 1;
 		}
 	#endif	
+*/
+	
 	
 	// Get the Glade-instantiated windows and dialogs.
 
 //  refXml->get_widget("DataWindow", dataWindow);
-  refXml->get_widget("ToolchainWindow", toolchainWindow);
+//  refXml->get_widget("ToolchainWindow", toolchainWindow);
 //  refXml->get_widget("CategoryWindow", categoryWindow);
   
 /*  
@@ -101,7 +101,7 @@ EngineGTKMM::~EngineGTKMM()
 #endif
 
 //	delete dataWindow;
-	delete toolchainWindow;
+//	delete toolchainWindow;
 //	delete categoryWindow;
 	
 
@@ -227,12 +227,81 @@ bool EngineGTKMM::loadCategory()
 //-----------------------------------------------------------------------------
 // --- Functions relating to Toolchain ----------------------------------------
 
+bool EngineGTKMM::loadToolchain()
+{
+	bool succes = false;
 
+	// Create a dialog to load a toolchain from a file.
+	Gtk::FileChooserDialog dialog( "Please a toolchain file.", Gtk::FILE_CHOOSER_ACTION_OPEN); 
 
+  //Add response buttons the the dialog:
+  dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+  dialog.add_button(Gtk::Stock::OPEN, Gtk::RESPONSE_OK);
+
+	int result = dialog.run();
+
+  //Handle the response:
+  switch(result)
+  {
+    case(Gtk::RESPONSE_OK):
+    {	
+    	string result_name = dialog.get_filename();
+			cout << result_name << "\n";
+
+			Toolchain* newToolchain = Toolchain::loadToolchain( result_name );
+			this->addToolchain( newToolchain );
+			succes = true;
+     
+      break;
+    }
+     default:
+    {
+      break;
+    }	
+	};
+	
+	return succes;
+
+};
 
 //-----------------------------------------------------------------------------
 
+bool EngineGTKMM::saveAsToolchain()
+{
+	bool succes = false;
 
+	// Create a dialog to save a toolchain to a file.
+	Gtk::FileChooserDialog dialog( "Please select a file name.", Gtk::FILE_CHOOSER_ACTION_OPEN); 
+
+  //Add response buttons the the dialog:
+  dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+  dialog.add_button(Gtk::Stock::SAVE, Gtk::RESPONSE_OK);
+
+	int result = dialog.run();
+
+  //Handle the response:
+  switch(result)
+  {
+    case(Gtk::RESPONSE_OK):
+    {	
+    	string result_name = dialog.get_filename();
+			cout << result_name << "\n";
+
+			Toolchain* toolchain = this->getCurrentToolchain();
+			toolchain->saveToolchain( result_name );
+     	succes = true;
+     	
+      break;
+    }
+     default:
+    {
+      break;
+    }	
+	};
+	
+	return succes;
+	
+};
 
 //-----------------------------------------------------------------------------
 

@@ -307,6 +307,7 @@ void Engine::setCurrentDatahandler( int index )
 void Engine::addToolchain( Toolchain* chain )
 {
 	toolchains.push_back( chain );
+	currentToolchain = toolchains.size()-1;
 	toolchainModified.push_back( true );
 };
 
@@ -316,13 +317,28 @@ Toolchain* Engine::getToolchain( int index )
 {
 	if( (index >= 0) && (index < toolchains.size()) )
 	{
-		return toolchains.at( index );
+		return toolchains[index];
 	}
 	else
 	{
 		return NULL;
 	}
 };
+
+//-----------------------------------------------------------------------------
+
+Toolchain* Engine::getCurrentToolchain( )
+{
+	if( (currentToolchain >= 0) && (currentToolchain < toolchains.size()) )
+	{
+		return toolchains[currentToolchain];
+	}
+	else
+	{
+		return NULL;
+	}		
+};		
+
 
 //-----------------------------------------------------------------------------
 
@@ -398,7 +414,7 @@ void Engine::setToolchainModified( int index, bool mod )
 
 //-----------------------------------------------------------------------------
 
-int Engine::getCurrentToolchain()
+int Engine::getCurrentToolchainIndex()
 {
 	return currentToolchain;
 };
@@ -428,7 +444,58 @@ ToolchainNode* Engine::getCurrentToolchainNode()
 
 void Engine::setCurrentToolchainNode( ToolchainNode* node )
 {
-	currentToolchainNode = node;
+	if( node != NULL )
+	{
+		currentToolchainNode = node;
+		
+		// search for the toolchain object
+		ToolchainNode* searchNode = node;		
+		while( searchNode->getParentNode() != NULL ) // If the parent is not NULL get the parent and search on.
+		{
+			searchNode = searchNode->getParentNode();
+		};
+		
+		// The parent was NULL lets see if this is really a Toolchain object
+		if( typeid(*searchNode) == typeid(Toolchain) )
+		{
+			// So we have the toolchain object
+			// Lets see if we can find in in the toolchain vector
+			int i = 0;
+			bool found = false;
+			while( !found && (i < toolchains.size()) )
+			{
+				if( searchNode == toolchains[i] )
+				{
+					// We found the same toolchain object.
+					found = true;
+				}
+				else
+				{
+					// No result jet continue iterating.
+					i++;
+				}
+			}
+			
+			if( found )
+			{
+				// We found the index, lets set the current toolchain index to this value.
+				this->setCurrentToolchain(i);
+			}
+			else
+			{
+				// We have NOT found the desired toolchain in the vectro. 
+				// TODO throw
+				cout << "ERROR in Engine::setCurrentToolchainNode: unable to find Toolchain object in toolchains vector.\n";			
+			}
+					
+		}
+		else
+		{
+			// TODO throw
+			cout << "ERROR in Engine::setCurrentToolchainNode: unable to find parent Toolchain object.\n";
+		} 
+		
+	};
 };
 
 //-----------------------------------------------------------------------------

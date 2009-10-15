@@ -64,6 +64,9 @@ class ToolchainNode
 				
 		//! Returns the amount of childeren this node has.
 		int getNodeVectorSize();
+		
+		//! Returns the index of this node within the vector of the parent. This function will return -1 if no parent was found.
+		int getNodeIndex();
 				
 		//! Returns the parent node.
 		ToolchainNode* getParentNode();

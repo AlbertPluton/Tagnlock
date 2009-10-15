@@ -70,6 +70,7 @@ SET (	SRCS_EngineGTKMM
 			${CMAKE_BINARY_DIR}/src/Engine/Engine.cpp	
 			GeneralGTKMM/YesNoToggleButtonGTKMM.cpp
 			Toolchain/ToolchainWindowGTKMM.cpp
+			Toolchain/DialogOperationChooserGTKMM.cpp
 		)
 
 		

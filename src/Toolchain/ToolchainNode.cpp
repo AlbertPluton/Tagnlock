@@ -178,6 +178,34 @@ int ToolchainNode::getNodeVectorSize()
 	return (int)nodeVector.size();
 };
 
+
+//-----------------------------------------------------------------------------
+
+int ToolchainNode::getNodeIndex()
+{
+	ToolchainNode* parent = this->getParentNode();
+	if( parent )
+	{
+		int i = 0;
+		bool found = false;
+		
+		// Loop over all the childeren of the parent
+		while( !found && (i < parent->getNodeVectorSize()) )
+		{
+			if( this != parent->getChildNode(i) ) found = true;
+			else i++; 
+		}
+		
+		if( found ) return i;
+		
+	}
+	else
+	{
+		return -1;
+	}
+	return -1;
+};
+
 //-----------------------------------------------------------------------------
 
 ToolchainNode* ToolchainNode::getParentNode()

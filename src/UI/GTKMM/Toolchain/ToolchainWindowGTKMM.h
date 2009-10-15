@@ -24,6 +24,7 @@
 
 #include <iostream>
 #include <string>
+#include <sstream>
 using namespace std;
 
 
@@ -43,7 +44,7 @@ class ToolchainWindowGTKMM : public EngineGTKMM
 		~ToolchainWindowGTKMM();
 
 
-		void dispalyToolchain( );
+		void displayToolchain( );
 		void addToolchainOperation();
 		void modifyToolchainNode();
 
@@ -53,13 +54,20 @@ class ToolchainWindowGTKMM : public EngineGTKMM
 		//! This function connects signals to the corresponding functions
 		void connectSignals();
 		
+		
+		//! Signal handlers relating to the toolbar buttons.
 		void newButton_clicked();
 		void saveButton_clicked();
+		void saveAsButton_clicked();
 		void openButton_clicked();
 		void addButton_clicked();
 		void deleteButton_clicked();
 		void upButton_clicked();
 		void downButton_clicked();
+		
+		//! Signal handlers relating to the selection of rows in the treeview.
+		void treeViewRowSelected(const Gtk::TreeModel::Path& path, Gtk::TreeViewColumn* column);
+		
 		
 	private:
 		
@@ -68,7 +76,7 @@ class ToolchainWindowGTKMM : public EngineGTKMM
 
 		Gtk::TreeView* treeView; 
 		Gtk::TextView* textView;
-		
+		Gtk::TreeModel::Row* selectedRow;
 		
 		// The model used byt the treeview
 		class ModelColumns : public Gtk::TreeModelColumnRecord
@@ -77,7 +85,6 @@ class ToolchainWindowGTKMM : public EngineGTKMM
 
 			ModelColumns()
 				{  add(col_number); add(col_name); add(col_description); add(col_nodePointer);}
-
 
 			Gtk::TreeModelColumn<int> col_number;
 			Gtk::TreeModelColumn<Glib::ustring> col_name;
@@ -88,8 +95,14 @@ class ToolchainWindowGTKMM : public EngineGTKMM
 
 		ModelColumns treeViewColumns;
 		Glib::RefPtr<Gtk::TreeStore> refTreeViewModel;
+
 	
-	
+		//! Function to add childeren of a node to the treeview
+		/*!
+			\param parent is a pointer to the parent node.
+			\param parentRow is the row of the parent in the tree view.
+		*/
+		void addChilderenToTree( ToolchainNode* parent, Gtk::TreeModel::Row* parentRow );
 	
 };
 

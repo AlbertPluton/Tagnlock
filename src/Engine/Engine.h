@@ -189,6 +189,9 @@ class Engine
 	
 		//! Returns the Toolchain an the desired index.
 		Toolchain* getToolchain( int index );
+		
+		//! Returns the current Toolchain
+		Toolchain* getCurrentToolchain( );		
 
 		//! Returns the number of Toolchains in the engine.
 		int getToolchainsSize();
@@ -214,7 +217,7 @@ class Engine
 		void setToolchainModified( int index, bool mod );		
 
 		//! Returns the index of the current toolchain.
-		int getCurrentToolchain();
+		int getCurrentToolchainIndex();
 		
 		//! Sets the currentToolchain index.
 		void setCurrentToolchain( int index );
@@ -222,11 +225,11 @@ class Engine
 		//! Returns a pointer to the current ToolchainNode object
 		ToolchainNode* getCurrentToolchainNode();
 		
-		//! Sets the currentToolchainNode pointer to node.
+		//! Sets the currentToolchainNode pointer to node. It also alters the current toolchain.
 		void setCurrentToolchainNode( ToolchainNode* node );
 
 		//! This virutal function is UI dependent. It should display the current toolchain.
-		virtual void dispalyToolchain(){};
+		virtual void displayToolchain(){};
 		
 		//! This virutal function is UI dependent. It should handel modifications to the current toolchain.
 		/*!
