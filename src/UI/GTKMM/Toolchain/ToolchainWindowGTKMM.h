@@ -60,13 +60,18 @@ class ToolchainWindowGTKMM : public EngineGTKMM
 		void saveButton_clicked();
 		void saveAsButton_clicked();
 		void openButton_clicked();
+		
 		void addButton_clicked();
+		void addChildButton_clicked();
 		void deleteButton_clicked();
+		
 		void upButton_clicked();
 		void downButton_clicked();
+		void leftButton_clicked();
+		void rightButton_clicked();
 		
 		//! Signal handlers relating to the selection of rows in the treeview.
-		void treeViewRowSelected(const Gtk::TreeModel::Path& path, Gtk::TreeViewColumn* column);
+		void treeViewRowSelected( ); // const Gtk::TreeModel::Path& path, Gtk::TreeViewColumn* column);
 		
 		
 	private:
@@ -76,7 +81,7 @@ class ToolchainWindowGTKMM : public EngineGTKMM
 
 		Gtk::TreeView* treeView; 
 		Gtk::TextView* textView;
-		Gtk::TreeModel::Row* selectedRow;
+
 		
 		// The model used byt the treeview
 		class ModelColumns : public Gtk::TreeModelColumnRecord
@@ -95,8 +100,9 @@ class ToolchainWindowGTKMM : public EngineGTKMM
 
 		ModelColumns treeViewColumns;
 		Glib::RefPtr<Gtk::TreeStore> refTreeViewModel;
+		Glib::RefPtr<Gtk::TreeSelection> refTreeViewSelection; 
 
-	
+		
 		//! Function to add childeren of a node to the treeview
 		/*!
 			\param parent is a pointer to the parent node.

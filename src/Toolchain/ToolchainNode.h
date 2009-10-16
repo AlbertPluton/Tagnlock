@@ -50,14 +50,44 @@ class ToolchainNode
 		void addNode( ToolchainNode* node, int index );
 		
 		//! Removes a node from the nodeVector
-		void removeNode( ToolchainNode* node );
+		/*!
+			\returns true if the operation was successful.
+		*/
+		bool removeNode( ToolchainNode* node );
 		
 		
 		//! Swamps the position of the node with its predecessor in the nodeVector.
-		void moveNodeUp( ToolchainNode* node );
+		/*!
+			\returns true if the operation was successful.
+		*/
+		bool moveNodeUp( );
 		
 		//! Swamps the position of the node with its higher neighbour in the nodeVector.
-		void moveNodeDown( ToolchainNode* node );
+		/*!
+			\returns true if the operation was successful.
+		*/
+		bool moveNodeDown( );
+		
+		//! Make this node a brother/sister of its current parent.
+		/*!
+			\returns true if the operation was successful.
+		*/
+		bool moveNodeLeft( );
+
+		//! Make this node a child of the node above it.		
+		/*!
+			\returns true if the operation was successful.
+		*/
+		bool moveNodeRight( );
+		
+		//! Moves this node to a different parent specified by the newParent parameter. Childeren of this node are moved to. The node can be placed at a specified index.
+		/*!
+			\returns true if the operation was successful.
+			\param newParent the new parent of this node.
+			\param index the index at which this node is placed in the new parent vector. If left empty this node is placed at the end of the vector.
+		*/
+		bool changeParent( ToolchainNode* newParent, int index = -1 );
+	
 	
 		//! Returns the child node at the number index in the nodeVector.
 		ToolchainNode* getChildNode( int index );

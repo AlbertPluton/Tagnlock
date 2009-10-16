@@ -21,7 +21,6 @@ ToolchainWindowGTKMM::ToolchainWindowGTKMM(  int argc, char **argv, string glade
 	toolchainWindow = NULL;
 	treeView = NULL;
 	textView = NULL;
-	selectedRow = NULL;
 
   //Load the Glade file and instiate its widgets:
 	#ifdef GLIBMM_EXCEPTIONS_ENABLED
@@ -61,9 +60,15 @@ ToolchainWindowGTKMM::ToolchainWindowGTKMM(  int argc, char **argv, string glade
 		treeView->append_column( "Name", treeViewColumns.col_name );
 		treeView->append_column( "Description", treeViewColumns.col_description );
 
-		//Connect signal:
-		treeView->signal_row_activated().connect(sigc::mem_fun(*this, &ToolchainWindowGTKMM::treeViewRowSelected) );
+		// Connect signal:
+		//treeView->signal_row_activated().connect(sigc::mem_fun(*this, &ToolchainWindowGTKMM::treeViewRowSelected) );
 
+		// Get a selection object
+		refTreeViewSelection = treeView->get_selection();
+		
+		// Connect signal
+		refTreeViewSelection->signal_changed().connect(sigc::mem_fun(*this, &ToolchainWindowGTKMM::treeViewRowSelected) );
+		
 	}
 	else
 	{
@@ -157,6 +162,18 @@ void ToolchainWindowGTKMM::connectSignals()
   }
   
   
+  // Add child button
+  refXml->get_widget("toolbutton10", pToolButton);
+  if(pToolButton)
+  {
+    pToolButton->signal_clicked().connect( sigc::mem_fun( this, &ToolchainWindowGTKMM::addChildButton_clicked) );
+  }
+  else
+  {
+  	// TODO throw error
+  }  
+  
+  
   // Delete button
   refXml->get_widget("toolbutton7", pToolButton);
   if(pToolButton)
@@ -192,7 +209,30 @@ void ToolchainWindowGTKMM::connectSignals()
   	// TODO throw error
   }    
   
+   
+  // Left button
+  refXml->get_widget("toolbutton3", pToolButton);
+  if(pToolButton)
+  {
+    pToolButton->signal_clicked().connect( sigc::mem_fun( this, &ToolchainWindowGTKMM::leftButton_clicked) );
+  }
+  else
+  {
+  	// TODO throw error
+  }
   
+  
+  // Right button
+  refXml->get_widget("toolbutton9", pToolButton);
+  if(pToolButton)
+  {
+    pToolButton->signal_clicked().connect( sigc::mem_fun( this, &ToolchainWindowGTKMM::rightButton_clicked) );
+  }
+  else
+  {
+  	// TODO throw error
+  }    
+   
 };
 
 //-----------------------------------------------------------------------------
@@ -222,9 +262,29 @@ void ToolchainWindowGTKMM::displayToolchain( )
 		// Add childeren of the toolchain to the treeview
 		addChilderenToTree( toolchain, &row );
 		
-		// TODO add empty row??
+		// Add an empty row for clear views on the different Toolchain objects.
+		refTreeViewModel->append();
 	};
+
+	// TODO make the expand more sefisticated remember what was expended and what not.
+	treeView->expand_all();
 	
+	
+	// TODO should this be here
+	// Set the current selection in the treeview
+	Gtk::TreeModel::iterator iter = refTreeViewModel->children().begin();
+	for( Gtk::TreeModel::iterator iter = refTreeViewModel->children().begin(); iter <= refTreeViewModel->children().end(); iter++ )
+	{
+		if(iter)
+		{
+			if( (*iter)[treeViewColumns.col_nodePointer] == this->getCurrentToolchainNode() )
+			{
+  			refTreeViewSelection->select(iter);
+  			break;
+  		}
+  	}
+  	
+  }
 	
 };
 
@@ -248,8 +308,9 @@ void ToolchainWindowGTKMM::addToolchainOperation()
 	}
 
 	
-	// Add the row to the current toolchain.
-	if( (selectedRow == NULL) )
+	// Add the row to the current toolchain if no row is selected.
+	Gtk::TreeModel::iterator iter = refTreeViewSelection->get_selected();
+	if( !iter )
 	{
 		// No row is selected, insert the row at the end of the toolchain
 		Toolchain* toolchain = this->getCurrentToolchain();
@@ -261,14 +322,18 @@ void ToolchainWindowGTKMM::addToolchainOperation()
 	}
 	else
 	{
-		// Insert the row at the index of the selected row.
-		ToolchainNode* toolchainNode = this->getCurrentToolchainNode();
-		ToolchainNode* parent = toolchainNode->getParentNode();
-		dialog.chooseOperationNode( node, toolchainNode->getNodeIndex() );
+		// See if not an empty row is selected
+		if( (*iter)[treeViewColumns.col_nodePointer] )
+		{
+			// Insert the row at the index of the selected row.
+			ToolchainNode* toolchainNode = this->getCurrentToolchainNode();
+			ToolchainNode* parent = toolchainNode->getParentNode();
+			dialog.chooseOperationNode( parent, toolchainNode->getNodeIndex() + 1 );
 
-		// Display the toolchain with the new node.
-		this->displayToolchain();
-		
+			// Display the toolchain with the new node.
+			this->displayToolchain();
+		}
+
 	}
 	
 	
@@ -280,7 +345,15 @@ void ToolchainWindowGTKMM::addToolchainOperation()
 
 void ToolchainWindowGTKMM::modifyToolchainNode()
 {
-
+	
+	ToolchainNode* node = this->getCurrentToolchainNode();
+	if( node )
+	{
+		Glib::RefPtr<Gtk::TextBuffer> buffer = textView->get_buffer();
+		Glib::ustring text = node->toString();
+		buffer->set_text( text );
+	}
+	
 };
 
 //-----------------------------------------------------------------------------
@@ -335,36 +408,72 @@ void ToolchainWindowGTKMM::addButton_clicked()
 
 //-----------------------------------------------------------------------------
 
+void ToolchainWindowGTKMM::addChildButton_clicked()
+{
+	// TODO 
+};
+
+//-----------------------------------------------------------------------------
+
 void ToolchainWindowGTKMM::deleteButton_clicked()
 {
-
+	ToolchainNode* node = this->getCurrentToolchainNode();
+	ToolchainNode* parent = node->getParentNode();
+	
+	if( node && parent )
+	{
+		// Remove the node from the toolchain
+		if( parent->removeNode( node ) ) delete node;
+	}
+	
+	displayToolchain();
 };
 
 //-----------------------------------------------------------------------------
 
 void ToolchainWindowGTKMM::upButton_clicked()
 {
-
+	ToolchainNode* node = this->getCurrentToolchainNode();
+	if( node->moveNodeUp() ) displayToolchain();
 };
 
 //-----------------------------------------------------------------------------
 
 void ToolchainWindowGTKMM::downButton_clicked()
 {
-
+	ToolchainNode* node = this->getCurrentToolchainNode();
+	if( node->moveNodeDown() ) displayToolchain();
 };
 
 
 //-----------------------------------------------------------------------------
 
-void ToolchainWindowGTKMM::treeViewRowSelected(const Gtk::TreeModel::Path& path, Gtk::TreeViewColumn* column)
+void ToolchainWindowGTKMM::leftButton_clicked()
 {
-  Gtk::TreeModel::iterator iter = refTreeViewModel->get_iter(path);
+	ToolchainNode* node = this->getCurrentToolchainNode();
+	if( node->moveNodeLeft() ) displayToolchain();
+};
+
+//-----------------------------------------------------------------------------
+
+void ToolchainWindowGTKMM::rightButton_clicked()
+{
+	ToolchainNode* node = this->getCurrentToolchainNode();
+	if( node->moveNodeRight() ) displayToolchain();
+};
+
+
+//-----------------------------------------------------------------------------
+
+void ToolchainWindowGTKMM::treeViewRowSelected( ) //const Gtk::TreeModel::Path& path, Gtk::TreeViewColumn* column)
+{
+  Gtk::TreeModel::iterator iter = refTreeViewSelection->get_selected();
   if(iter)
   {
     Gtk::TreeModel::Row row = *iter;
-//    std::cout << "Row activated: ID=" << row[m_Columns.m_col_id] << ", Name=" << row[m_Columns.m_col_name] << std::endl;
-		
+    // Change the current ToolchainNode and Toolchain objects.
+		this->setCurrentToolchainNode( row[treeViewColumns.col_nodePointer] );
+		modifyToolchainNode();
   }
 
 };

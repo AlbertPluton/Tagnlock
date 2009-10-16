@@ -68,101 +68,203 @@ void ToolchainNode::addNode( ToolchainNode* node )
 
 void ToolchainNode::addNode( ToolchainNode* node, int index )
 {
-	if( index >= nodeVector.size() )
+	if( (index >= nodeVector.size()) || (index == -1) )
 	{
 		this->addNode( node );
 	}
 	else
 	{
 		vector<ToolchainNode*>::iterator it = nodeVector.begin() + index;
-		nodeVector.insert( it, node );
+		nodeVector.insert( nodeVector.begin() + index, node );
 	}
 };
 
 //-----------------------------------------------------------------------------
 
-void ToolchainNode::removeNode( ToolchainNode* node )
+bool ToolchainNode::removeNode( ToolchainNode* node )
 {
-	for( int i = 0; i < (int)nodeVector.size(); i++ )
+	for( int i = 0; i < this->getNodeVectorSize(); i++ )
 	{
 		if( nodeVector.at(i) == node )
 		{
 			nodeVector.erase( nodeVector.begin()+i );
-			i = (int)nodeVector.size(); // quite the loop
+			return true;
 		}	
 	}
+	return false;
 };
 
 
 //-----------------------------------------------------------------------------
 
-void ToolchainNode::moveNodeUp( ToolchainNode* node )
+bool ToolchainNode::moveNodeUp( )
 {
 	ToolchainNode* temp = NULL;
-
-	for( int i = 0; i < (int)nodeVector.size(); i++ )
-	{
-		if( nodeVector.at(i) == node )
-		{
-			if( i != 0 )
-			{
-				// Store the upper element.
-				temp = nodeVector.at(i-1);
-				// Switch them.
-				nodeVector.at(i-1) == node;
-				nodeVector.at(i) == temp;
-			}
-			else	// node is the first object in the vector thus it cant be moved further up.
-			{
-				// Fill temp because it did find node thus no exception has to be thrown.
-				temp = node;
-			}
-			i = (int)nodeVector.size(); // quite the loop
-		}
-	}
 	
-	// The switch was not performed
-	if( temp == NULL )
+	ToolchainNode* parent = this->getParentNode();
+
+	if( parent )
 	{
-		// TODO throw
-	}
+	
+		for( int i = 0; i < parent->nodeVector.size(); i++ )
+		{
+			if( parent->nodeVector[i] == this )
+			{
+				if( i != 0 )
+				{
+					// Store the upper element.
+					temp = parent->nodeVector[i-1];
+					// Switch them.
+					parent->nodeVector[i-1] = this;
+					parent->nodeVector[i] = temp;
+				}
+				else	// this node is the first object in the vector thus it cant be moved further up.
+				{
+					// Fill temp because it did find node thus no exception has to be thrown.
+					temp = this;
+				}
+
+				return true;
+			}
+		}
+
+		// The switch was not performed
+		if( temp == NULL )
+		{
+			// TODO throw
+
+		}
+		
+	};
+	
+	return false;
 };
 
 
 //-----------------------------------------------------------------------------
 
-void ToolchainNode::moveNodeDown( ToolchainNode* node )
+bool ToolchainNode::moveNodeDown( )
 {
 	ToolchainNode* temp = NULL;
-
-	for( int i = 0; i < (int)nodeVector.size(); i++ )
-	{
-		if( nodeVector.at(i) == node )
-		{
-			if( i != (int)nodeVector.size()-1 )
-			{
-				// Store the lower element.
-				temp = nodeVector.at(i+1);
-				// Switch them.
-				nodeVector.at(i+1) == node;
-				nodeVector.at(i) == temp;
-			}
-			else	// node is the first object in the vector thus it cant be moved further up.
-			{
-				// Fill temp because it did find node thus no exception has to be thrown.
-				temp = node;
-			}
-			i = (int)nodeVector.size(); // quite the loop
-		}
-	}
 	
-	// The switch was not performed
-	if( temp == NULL )
+	ToolchainNode* parent = this->getParentNode();
+
+	if( parent )
 	{
-		// TODO throw
-	}
+	
+		for( int i = 0; i < parent->nodeVector.size(); i++ )
+		{
+			if( parent->nodeVector[i] == this )
+			{
+				if( i != (int)parent->nodeVector.size()-1 )
+				{
+					// Store the lower element.
+					temp = parent->nodeVector[i+1];
+					// Switch them.
+					parent->nodeVector[i+1] = this;
+					parent->nodeVector[i] = temp;
+				}
+				else	// node is the first object in the vector thus it cant be moved further up.
+				{
+					// Fill temp because it did find node thus no exception has to be thrown.
+					temp = this;
+				}
+				
+				return true;
+			}
+		}
+	
+		// The switch was not performed
+		if( temp == NULL )
+		{
+			// TODO throw
+		}
+
+	};
+	
+	return false;
+
 };
 
+//-----------------------------------------------------------------------------
+
+bool ToolchainNode::moveNodeLeft( )
+{
+	
+	ToolchainNode* oldParent = this->getParentNode();
+	
+	// Check to see if this is not the first node aka a Toolchain object.
+	if( oldParent )
+	{
+		
+		ToolchainNode* newParent = oldParent->getParentNode();
+		
+		// See if the new parent excists, if so change parent
+		if( newParent ) 
+		{	
+			if( this->changeParent( newParent, newParent->getNodeIndex() + 1 ) )	return true;
+		}
+	
+	
+	}
+	
+	return false;
+};
+
+
+//-----------------------------------------------------------------------------
+
+bool ToolchainNode::moveNodeRight( )
+{
+	// See if this is not the first object in the toolchain
+	ToolchainNode* parent = this->getParentNode();
+	if( parent )
+	{
+		
+		// Search for the index of this node in the vector, but exclude the first node because he has no node above him to make the new parent.
+		for( int i = 1; i < parent->getNodeVectorSize(); i++ )
+		{
+			if( parent->getChildNode(i) == this )
+			{
+				// Make the brother/sister above this node the parent of it.
+				if( this->changeParent( parent->getChildNode(i-1) ) ) return true;
+				break; // no need to loop further on.
+			}
+		}
+	
+	}
+	return false;
+};
+
+
+//-----------------------------------------------------------------------------
+
+bool ToolchainNode::changeParent( ToolchainNode* newParent, int index )
+{
+
+	if( newParent )
+	{
+		// Get the old/current parent.
+		ToolchainNode* oldParent = this->getParentNode();
+		
+		// If there is no old parent it mostlikely meas this is a Toolchain object.
+		if( oldParent )
+		{
+			// Set the new parent of this node
+			this->parentNode = newParent;
+			
+			// Add the node to the new parent
+			newParent->addNode( this, index );
+			
+			// Remove this node from the old parent
+			oldParent->removeNode( this );
+						
+			return true;
+		}
+	}
+
+	return false;
+};
 
 //-----------------------------------------------------------------------------
 
@@ -192,8 +294,14 @@ int ToolchainNode::getNodeIndex()
 		// Loop over all the childeren of the parent
 		while( !found && (i < parent->getNodeVectorSize()) )
 		{
-			if( this != parent->getChildNode(i) ) found = true;
-			else i++; 
+			if( this == parent->getChildNode(i) ) 
+			{
+				found = true;
+			}
+			else
+			{
+				i++; 
+			}
 		}
 		
 		if( found ) return i;
