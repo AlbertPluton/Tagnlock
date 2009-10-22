@@ -49,6 +49,7 @@ ToolchainWindowGTKMM::ToolchainWindowGTKMM(  int argc, char **argv, string glade
 	refXml->get_widget("ToolchainWindow", toolchainWindow);
 	refXml->get_widget("treeview1", treeView);
 	refXml->get_widget("textview1", textView);
+	refXml->get_widget("scrolledwindow5", editView);
 	
 	if( treeView )
 	{
@@ -272,18 +273,20 @@ void ToolchainWindowGTKMM::displayToolchain( )
 	
 	// TODO should this be here
 	// Set the current selection in the treeview
-	Gtk::TreeModel::iterator iter = refTreeViewModel->children().begin();
-	for( Gtk::TreeModel::iterator iter = refTreeViewModel->children().begin(); iter <= refTreeViewModel->children().end(); iter++ )
+	if( this->getCurrentToolchainNode() )
 	{
-		if(iter)
+		for( Gtk::TreeModel::iterator iter = refTreeViewModel->children().begin(); iter != refTreeViewModel->children().end(); iter++ )
 		{
-			if( (*iter)[treeViewColumns.col_nodePointer] == this->getCurrentToolchainNode() )
+			if(iter)
 			{
-  			refTreeViewSelection->select(iter);
-  			break;
-  		}
-  	}
-  	
+				if( (*iter)[treeViewColumns.col_nodePointer] == this->getCurrentToolchainNode() )
+				{
+					refTreeViewSelection->select(iter);
+					treeView->show_all();
+					break;
+				}
+			}		
+		}
   }
 	
 };
@@ -328,7 +331,16 @@ void ToolchainWindowGTKMM::addToolchainOperation()
 			// Insert the row at the index of the selected row.
 			ToolchainNode* toolchainNode = this->getCurrentToolchainNode();
 			ToolchainNode* parent = toolchainNode->getParentNode();
-			dialog.chooseOperationNode( parent, toolchainNode->getNodeIndex() + 1 );
+			
+			// See if a Toolchain object is selected
+			if( !parent )
+			{
+				dialog.chooseOperationNode( toolchainNode );
+			}
+			else // A toolchainNode is selected
+			{
+				dialog.chooseOperationNode( parent, toolchainNode->getNodeIndex() + 1 );
+			}
 
 			// Display the toolchain with the new node.
 			this->displayToolchain();
@@ -349,9 +361,27 @@ void ToolchainWindowGTKMM::modifyToolchainNode()
 	ToolchainNode* node = this->getCurrentToolchainNode();
 	if( node )
 	{
-		Glib::RefPtr<Gtk::TextBuffer> buffer = textView->get_buffer();
-		Glib::ustring text = node->toString();
-		buffer->set_text( text );
+
+		updateTextView();
+		
+		// Remove the old edit widget
+		if( editConnection1 )
+		{
+			editView->remove();
+			editConnection1.disconnect();
+			editConnection2.disconnect();
+		}
+		
+		
+		
+		// Create a new edit widget
+		EditToolchainNodeGTKMM* editWidget = EditToolchainNodeGTKMM::newNodeEditWidget( node );
+		Gtk::Widget* widget = editWidget;
+		editView->add( *widget );
+		
+		// Connect signals
+		editConnection1 = editWidget->signal_changed().connect( sigc::mem_fun(*this, &ToolchainWindowGTKMM::displayToolchain) ); 
+		editConnection2 = editWidget->signal_changed().connect( sigc::mem_fun(*this, &ToolchainWindowGTKMM::updateTextView) ); 
 	}
 	
 };
@@ -480,6 +510,23 @@ void ToolchainWindowGTKMM::treeViewRowSelected( ) //const Gtk::TreeModel::Path& 
 
 //-----------------------------------------------------------------------------
 
+void ToolchainWindowGTKMM::updateTextView()
+{
+	
+	ToolchainNode* node = this->getCurrentToolchainNode();
+	if( node )
+	{
+		// Fill the text edit widget
+		Glib::RefPtr<Gtk::TextBuffer> buffer = textView->get_buffer();
+		Glib::ustring text = node->toString();
+		buffer->set_text( text );
+	}
+	
+};
+
+//-----------------------------------------------------------------------------
+		
+		
 void ToolchainWindowGTKMM::addChilderenToTree( ToolchainNode* parent, Gtk::TreeModel::Row* parentRow )
 {
 

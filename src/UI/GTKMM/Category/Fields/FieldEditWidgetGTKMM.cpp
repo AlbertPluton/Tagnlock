@@ -13,7 +13,10 @@
 
 //-----------------------------------------------------------------------------
 
-FieldEditWidgetGTKMM::FieldEditWidgetGTKMM( Field* pField, int i ) : typeLabel("Type: ", 0.98, 0.5), labelLabel("Label: ", 0.98, 0.5), requiredLabel("Required: ", 0.98, 0.5), resetLabel("Reset: ", 0.98, 0.5)
+FieldEditWidgetGTKMM::FieldEditWidgetGTKMM( Field* pField, int i ) : 	typeLabel("Type: ", 0.98, 0.5), 
+																																			labelLabel("Label: ", 0.98, 0.5), 
+																																			requiredLabel("Required: ", 0.98, 0.5), 
+																																			resetLabel("Reset: ", 0.98, 0.5)
 {
 #ifdef DEBUG_MESSAGES_DEF	
 	cout << "Constructing a FieldEditWidgetGTKMM object.\n";

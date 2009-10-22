@@ -20,7 +20,7 @@
 
 #include "Toolchain.h"
 
-
+#include "EditToolchainNodeGTKMM.h"
 
 #include <iostream>
 #include <string>
@@ -81,7 +81,14 @@ class ToolchainWindowGTKMM : public EngineGTKMM
 
 		Gtk::TreeView* treeView; 
 		Gtk::TextView* textView;
-
+		Gtk::ScrolledWindow*	editView;		
+		
+		// The connection between a EditToolchainNodeGTKMM object and this object.
+		// It is used to delete the connection just before removing the EditToolchainNodeGTKMM object
+		sigc::connection editConnection1, editConnection2;
+		
+		// Used to update the text edit field
+		void updateTextView();
 		
 		// The model used byt the treeview
 		class ModelColumns : public Gtk::TreeModelColumnRecord

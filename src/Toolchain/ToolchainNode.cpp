@@ -202,7 +202,7 @@ bool ToolchainNode::moveNodeLeft( )
 		// See if the new parent excists, if so change parent
 		if( newParent ) 
 		{	
-			if( this->changeParent( newParent, newParent->getNodeIndex() + 1 ) )	return true;
+			if( this->changeParent( newParent, oldParent->getNodeIndex() + 1 ) )	return true;
 		}
 	
 	
@@ -351,6 +351,14 @@ void ToolchainNode::setName( string n )
 
 //-----------------------------------------------------------------------------
 
+string ToolchainNode::getType()
+{
+	string type = typeid(*this).name();
+	return type;
+};
+
+//-----------------------------------------------------------------------------
+
 void ToolchainNode::deleteParentNode()
 {
 	parentNode = NULL;
@@ -361,8 +369,7 @@ void ToolchainNode::deleteParentNode()
 
 string ToolchainNode::toString()
 {
-	string type = typeid(*this).name();
-	string output = "Class type: \"\"" + type + "\"\"\nName: \"\"" + this->getName() + "\"\"\nDescription: \"\"" + this->getDescription() + "\"\"\n";
+	string output = "Class type: \"\"" + this->getType() + "\"\"\nName: \"\"" + this->getName() + "\"\"\nDescription: \"\"" + this->getDescription() + "\"\"\n";
 	return output;
 };	
 

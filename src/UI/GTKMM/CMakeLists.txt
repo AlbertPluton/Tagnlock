@@ -71,6 +71,9 @@ SET (	SRCS_EngineGTKMM
 			GeneralGTKMM/YesNoToggleButtonGTKMM.cpp
 			Toolchain/ToolchainWindowGTKMM.cpp
 			Toolchain/DialogOperationChooserGTKMM.cpp
+			Toolchain/EditToolchainNodeGTKMM.cpp
+			Toolchain/EditExecuteSystemCommandGTKMM.cpp
+			Toolchain/EditTextFileStorageGTKMM.cpp
 		)
 
 		

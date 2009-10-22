@@ -118,6 +118,10 @@ class ToolchainNode
 		
 		//! Set function for the name of this node.
 		void setName( string n );
+		
+		
+		//! Returns the type of object.
+		string getType();
 
 
 		//! Convert the class to a string for saving or display purposes
