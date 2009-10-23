@@ -167,6 +167,30 @@ void Engine::setCurrentField( int field )
 	currentField = field;
 };
 
+
+//-----------------------------------------------------------------------------
+
+void Engine::deleteField()
+{
+	// Get the category from which the field will be deleted
+	Category* cat = this->getCurrentCategory();
+	
+	if( cat )
+	{
+		// Get the index of the field to delete.
+		int index = this->getIndexCurrentField();
+		
+		// Check for a valid index.
+		if( index > -1 )
+		{
+			// Delete the field
+			cat->deleteField( index );
+			
+			currentField = -1;
+		}
+	}
+};
+
 //-----------------------------------------------------------------------------
 
 int Engine::getNumberOfCategories()

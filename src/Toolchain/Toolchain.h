@@ -35,6 +35,9 @@ class Toolchain : public ToolchainOperation<Datahandler*, Datahandler*>
 		~Toolchain();
 	
 		
+		//! Store the toolchain in a file. This function uses the name given in the variable fileName of this class. If non is given it will throw an error.
+		void saveToolchain( );
+		
 		//! Store the toolchain in a file.
 		/*!
 			\param fileName The name and location of the desired save file.
@@ -58,6 +61,12 @@ class Toolchain : public ToolchainOperation<Datahandler*, Datahandler*>
 		
 		//! Returns the type of output this object giver, Datahandler*.
 		//type_info getTypeOut();
+		
+		//! Returns the file name in which the toolchain is stored. Will return "" if non is given.
+		string getFileName();
+		
+		//! Set the file name of this toolchain
+		void setFileName( string name );
 
 				
 	private:
@@ -67,6 +76,8 @@ class Toolchain : public ToolchainOperation<Datahandler*, Datahandler*>
 		string getChilderen( ToolchainNode* parent, string parentID );
 		
 		void addNodeFromString( string id, string type, string node );
+		
+		string fileName;
 		
 		
 };

@@ -63,7 +63,6 @@ CategoryGTKMM::CategoryGTKMM( Gtk::ScrolledWindow* catTreeWindow, Gtk::ScrolledW
 	categoryTreeWindow->add( (Gtk::Widget&)(*categoryTree) );
 
 	categoryFieldEditWindow = editWindow;
-	categoryFieldEditWidget = NULL;
 
 	categoryTree->get_signal_selectionChange().connect( sigc::mem_fun(this, &CategoryGTKMM::fieldSelected) );
 
@@ -203,6 +202,7 @@ void CategoryGTKMM::readFromTable( ObjectData* object )
 
 void CategoryGTKMM::clear(  )
 {
+	categoryTree->clearTreeModel();
 #ifdef TODO_DEF
 #warning TODO in file __FILE__ at line __LINE__.
 #endif

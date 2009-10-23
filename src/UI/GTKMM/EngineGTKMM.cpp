@@ -151,14 +151,10 @@ void EngineGTKMM::quit()
 };
 
 
-	
+//-----------------------------------------------------------------------------
 // --- Functions relating to Category -----------------------------------------
 
-
-
-
-
-bool EngineGTKMM::loadCategory()
+void EngineGTKMM::loadCategory()
 {
   Gtk::FileChooserDialog dialog("Please choose a file", Gtk::FILE_CHOOSER_ACTION_OPEN);
 //  dialog.set_transient_for(*this);
@@ -185,52 +181,130 @@ bool EngineGTKMM::loadCategory()
   //Show the dialog and wait for a user response:
   int result = dialog.run();
 
-  //Handle the response:
-  switch(result)
-  {
-    case(Gtk::RESPONSE_OK):
-    {
-      //Notice that this is a std::string, not a Glib::ustring.
-      std::string fileName = dialog.get_filename();
-      
-      // Load a new category from the file and add it to the vector of category objects.
-      Category* cat = new Category();
-      cat->loadCategory( fileName );
+	try
+	{
+		// Handle the response
+		switch(result)
+		{
+		  case(Gtk::RESPONSE_OK):
+		  {
+		    //Notice that this is a std::string, not a Glib::ustring.
+		    std::string fileName = dialog.get_filename();
+		    
+		    // Load a new category from the file and add it to the vector of category objects.
+		    Category* cat = new Category();
+		    cat->loadCategory( fileName );
 
-#ifdef TODO_DEF
-#warning TODO Check to see if the category is not already loaded.
-#endif
-      this->addCategory( cat );  
-     
-     	return true;
-     	 
-      //std::cout << "Number of categories is: " << this->getNumberOfCategories() << ".\tCurrent category is: " << this->getCurrentCategory() << "\n" ;
-      
-      break;
-    }
-     default:
-    {
-    	return false;
-      break;
-    }
-  }
-  
-  return false;
+	#ifdef TODO_DEF
+	#warning TODO Check to see if the category is not already loaded.
+	#endif
+		    this->addCategory( cat );  
+		   
+
+		   	 
+		    //std::cout << "Number of categories is: " << this->getNumberOfCategories() << ".\tCurrent category is: " << this->getCurrentCategory() << "\n" ;
+		    
+		    break;
+		  }
+		   default:
+		  {
+		  	// TODO throw
+		    break;
+		  }
+		}
+	}
+	catch( exception& e )
+	{
+	
+	}  
+
   
 };
 
+//-----------------------------------------------------------------------------
+
+void EngineGTKMM::saveCategory()
+{
+	Category* category = this->getCurrentCategory();
+	if( category )
+	{	
+		string fileName = category->getFileName();
+		if( fileName.compare( "" ) != 0 )
+		{
+			try
+			{
+				category->saveCategory( );
+			}
+			catch( exception& e )
+			{
+				// TODO
+			}			
+		}
+		else
+		{
+			this->saveAsCategory();
+		}
+	}
+	
+
+};
+
+//-----------------------------------------------------------------------------
 
 
+void EngineGTKMM::saveAsCategory()
+{
 
+	// Create a dialog to save a toolchain to a file.
+	Gtk::FileChooserDialog dialog( "Please select a file name.", Gtk::FILE_CHOOSER_ACTION_OPEN); 
+
+  //Add response buttons the the dialog:
+  dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+  dialog.add_button(Gtk::Stock::SAVE, Gtk::RESPONSE_OK);
+
+	int result = dialog.run();
+	try
+	{
+		//Handle the response:
+		switch(result)
+		{
+		  case(Gtk::RESPONSE_OK):
+		  {	
+		  	string result_name = dialog.get_filename();
+				cout << result_name << "\n";
+
+				Category* category = this->getCurrentCategory();
+				if( category )
+				{
+						category->saveCategory( result_name, true );  		
+		   	}
+		   	else
+		   	{
+		   		// TODO throw
+		   	}
+		   	
+		    break;
+		  }
+		   default:
+		  {
+		  	// TODO throw
+		    break;
+		  }	
+		};
+	}
+	catch( exception& e )
+	{
+		// TODO
+	}	
+
+};
 
 
 //-----------------------------------------------------------------------------
 // --- Functions relating to Toolchain ----------------------------------------
 
-bool EngineGTKMM::loadToolchain()
+void EngineGTKMM::loadToolchain()
 {
-	bool succes = false;
-
 	// Create a dialog to load a toolchain from a file.
 	Gtk::FileChooserDialog dialog( "Please a toolchain file.", Gtk::FILE_CHOOSER_ACTION_OPEN); 
 
@@ -239,36 +313,68 @@ bool EngineGTKMM::loadToolchain()
   dialog.add_button(Gtk::Stock::OPEN, Gtk::RESPONSE_OK);
 
 	int result = dialog.run();
-
-  //Handle the response:
-  switch(result)
-  {
-    case(Gtk::RESPONSE_OK):
-    {	
-    	string result_name = dialog.get_filename();
-			cout << result_name << "\n";
-
-			Toolchain* newToolchain = Toolchain::loadToolchain( result_name );
-			this->addToolchain( newToolchain );
-			succes = true;
-     
-      break;
-    }
-     default:
-    {
-      break;
-    }	
-	};
 	
-	return succes;
+	try
+	{
+		//Handle the response:
+		switch(result)
+		{
+		  case(Gtk::RESPONSE_OK):
+		  {	
+		  	string result_name = dialog.get_filename();
+	//			cout << result_name << "\n";
+
+					Toolchain* newToolchain = Toolchain::loadToolchain( result_name );
+					this->addToolchain( newToolchain );
+		   
+		    break;
+		  }
+		   default:
+		  {
+		  	// TODO throw
+		    break;
+		  }	
+		};
+	}
+	catch( exception& e )
+	{
+		// TODO
+	}
+};
+
+//-----------------------------------------------------------------------------
+
+
+void EngineGTKMM::saveToolchain()
+{	
+	Toolchain* toolchain = this->getCurrentToolchain();
+	if( toolchain )
+	{
+		string fileName = toolchain->getFileName();
+		if( fileName.compare( "" ) != 0 )
+		{
+			try
+			{
+				toolchain->saveToolchain();
+			}
+			catch( exception& e )
+			{
+				// TODO
+			}
+		}	
+		else
+		{
+			this->saveAsToolchain();
+		}
+	}
 
 };
 
 //-----------------------------------------------------------------------------
 
-bool EngineGTKMM::saveAsToolchain()
+
+void EngineGTKMM::saveAsToolchain()
 {
-	bool succes = false;
 
 	// Create a dialog to save a toolchain to a file.
 	Gtk::FileChooserDialog dialog( "Please select a file name.", Gtk::FILE_CHOOSER_ACTION_OPEN); 
@@ -288,18 +394,27 @@ bool EngineGTKMM::saveAsToolchain()
 			cout << result_name << "\n";
 
 			Toolchain* toolchain = this->getCurrentToolchain();
-			toolchain->saveToolchain( result_name );
-     	succes = true;
+			if( toolchain )
+			{
+				try
+				{
+					toolchain->saveToolchain( result_name );
+				}
+				catch( exception& e )
+				{
+					// TODO
+				}
+     		
+     	}
      	
       break;
     }
      default:
     {
+    	// TODO throw
       break;
     }	
 	};
-	
-	return succes;
 	
 };
 

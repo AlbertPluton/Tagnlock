@@ -53,17 +53,31 @@ class EngineGTKMM : public Engine
 		/*!
 			\returns true if all was succesfull.
 		*/
-		virtual bool loadCategory();	
-	
-	
+		virtual void loadCategory();	
+
+		//! Save a category with the file name given in the object. If non is given a dialog is opened.
+		/*!
+			\returns true if all was succesfull.
+		*/	
+		virtual void saveCategory();
+		
+		//! Save a category by opening a dialog.
+		/*!
+			\returns true if all was succesfull.
+		*/	
+		virtual void saveAsCategory();
+
 		//! Load a toolchain by opening a dialog.
 		/*!
 			\returns true if all was succesfull.
 		*/
-		virtual bool loadToolchain();	
+		virtual void loadToolchain();	
+		
+		//! Save the toolchain under the file name given in the object
+		virtual void saveToolchain();
 		
 		//! A dialog to save as a toolchain.
-		virtual bool saveAsToolchain();
+		virtual void saveAsToolchain();
 	
 		// === The following functions are implementations of the virtual functions in the Engine class ====================
 

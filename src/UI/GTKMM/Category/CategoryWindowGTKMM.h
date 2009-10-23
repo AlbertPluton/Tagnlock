@@ -34,10 +34,11 @@ class CategoryWindowGTKMM : public EngineGTKMM
 		//! The default destructor.
 		~CategoryWindowGTKMM();
 
-
+		// Callback functions
 		void loadShowCategory();
-		bool saveCategory();
 		void newField();
+		void onButton_delete();
+
 		void modifyField();
 		void displayCategory( int index );
 		

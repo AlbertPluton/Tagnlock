@@ -7,7 +7,6 @@ include_directories (	${ALL_INCLUDE_DIRS} )
 LINK_DIRECTORIES ( ${ALL_LINK_DIRS} )
 
 
-
 # Add all source files in a variable
 SET (	SRCS_mainGTKMM
 			mainGTKMM.cpp

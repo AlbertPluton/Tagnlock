@@ -64,6 +64,10 @@ class Category
 		*/	
 		void saveCategory( string fileName, bool overwrite );
 		
+		//! Save the current category to a definition file. Uses the file name specified in this class and overwrites any excisting files with this name.
+		void saveCategory( );
+	
+		
 		
 		//! Return the size of the fields vector
 		int getFieldsSize();
@@ -76,6 +80,16 @@ class Category
 		
 		//! Move the field at index i to index i-1. It swaps place with the field at index i-1, which goes to index i.
 		void decreaseFieldIndex( int i );
+		
+		//! Deletes the specified field from the category.
+		void deleteField( int i );
+		
+		//! Deletes the specified field from the categogry.
+		void deleteField( Field* field );
+		
+		//! Returns the index of the specified field. Will return -1 if the field is not found.
+		int getIndex( Field* field );
+		
 		
 		
 		//! Return the type of a specific field
@@ -100,6 +114,12 @@ class Category
 		void setName( string categoryName );
 		
 	
+		//! Set the file name.
+		void setFileName( string name );
+		
+		//! Get the file name. Returns "" if non is set.
+		string getFileName();
+		
 	private:
 
 		//! This is a vector of pointer to Field ojects.
@@ -107,6 +127,9 @@ class Category
 
 		//! The name of the category. This name is used to identify the category
 		string name;
+		
+		//! The name of the file in which this category is saved.
+		string fileName;
 };
 
 #endif

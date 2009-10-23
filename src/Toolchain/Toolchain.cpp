@@ -15,7 +15,7 @@
 
 Toolchain::Toolchain() : ToolchainOperation< Datahandler*, Datahandler* >( NULL )
 {
-
+	fileName = "";
 };
 
 //-----------------------------------------------------------------------------
@@ -25,10 +25,28 @@ Toolchain::~Toolchain()
 
 };
 
+
+//-----------------------------------------------------------------------------
+
+void Toolchain::saveToolchain( )
+{
+	if( fileName.compare("") != 0 )
+	{
+		this->saveToolchain( fileName );
+	}
+	else
+	{
+		// TODO throw
+		cout << "ERROR in Toolchain::saveToolchain(): no file name given to toolchain.\n";
+	}
+};
+
 //-----------------------------------------------------------------------------
 
 void Toolchain::saveToolchain( string fileName )
 {
+
+	this->setFileName( fileName );
 
 	// Create file object.
 	ofstream file;
@@ -58,7 +76,7 @@ void Toolchain::saveToolchain( string fileName )
 
 Toolchain* Toolchain::loadToolchain( string fileName )
 {
-	
+
 	Toolchain* toolchain = NULL;
 
 	size_t found;
@@ -178,6 +196,7 @@ Toolchain* Toolchain::loadToolchain( string fileName )
 					// make a Toolchain object 
 					toolchain = new Toolchain();
 					toolchain->fromString( nodeString );
+					toolchain->setFileName( fileName );
 				}
 				else if( toolchain )				
 				{
@@ -351,7 +370,17 @@ void Toolchain::addNodeFromString( string id, string type, string node )
 		
 //-----------------------------------------------------------------------------
 
+string Toolchain::getFileName()
+{
+	return fileName;
+};
+
 //-----------------------------------------------------------------------------
+
+void Toolchain::setFileName( string name )
+{
+	fileName = name;
+};
 
 //-----------------------------------------------------------------------------
 

@@ -134,35 +134,24 @@ void CategoryWindowGTKMM::connectSignals()
 		refXml->get_widget("toolbutton16", pToolButton);
     if(pToolButton)
     {
-      pToolButton->signal_clicked().connect( sigc::mem_fun( this, &CategoryWindowGTKMM::on_toolbutton25_clicked) );
+      pToolButton->signal_clicked().connect( sigc::mem_fun( this, &EngineGTKMM::saveCategory) );
     }
     else
     {
     	// TODO throw error
     } 
-    
-    // Undo button
-		refXml->get_widget("toolbutton18", pToolButton);
-    if(pToolButton)
-    {
-      pToolButton->signal_clicked().connect( sigc::mem_fun( this, &CategoryWindowGTKMM::on_toolbutton25_clicked) );
-    }
-    else
-    {
-    	// TODO throw error
-    }   
 
-    // Redo button
-		refXml->get_widget("toolbutton19", pToolButton);
+    // Save as button
+		refXml->get_widget("toolbutton32", pToolButton);
     if(pToolButton)
     {
-      pToolButton->signal_clicked().connect( sigc::mem_fun( this, &CategoryWindowGTKMM::on_toolbutton25_clicked) );
+      pToolButton->signal_clicked().connect( sigc::mem_fun( this, &EngineGTKMM::saveAsCategory) );
     }
     else
     {
     	// TODO throw error
-    }  
-    
+    }     
+   
     
 		// Add button
     refXml->get_widget("toolbutton21", pToolButton);
@@ -180,7 +169,7 @@ void CategoryWindowGTKMM::connectSignals()
 		refXml->get_widget("toolbutton22", pToolButton);
     if(pToolButton)
     {
-      pToolButton->signal_clicked().connect( sigc::mem_fun( this, &CategoryWindowGTKMM::on_toolbutton25_clicked) );
+      pToolButton->signal_clicked().connect( sigc::mem_fun( this, &CategoryWindowGTKMM::onButton_delete) );
     }
     else
     {
@@ -220,12 +209,19 @@ void CategoryWindowGTKMM::connectSignals()
 
 void CategoryWindowGTKMM::loadShowCategory()
 {
-
-	if( loadCategory() )
+	try
 	{
-  	// Display the current category which is the new one.
-    this->displayCategory( this->getIndexCurrentCategory() );
-  }; 
+		this->loadCategory();
+	}
+	catch( exception& e )
+	{
+		// TODO
+	}
+	
+	
+	// Display the current category which is the new one.
+  this->displayCategory( this->getIndexCurrentCategory() );
+   
 
     
 };
@@ -233,16 +229,17 @@ void CategoryWindowGTKMM::loadShowCategory()
 
 //-----------------------------------------------------------------------------
 
-bool CategoryWindowGTKMM::saveCategory()
+void CategoryWindowGTKMM::newField()
 {
 
 };
 
 //-----------------------------------------------------------------------------
 
-void CategoryWindowGTKMM::newField()
+void CategoryWindowGTKMM::onButton_delete()
 {
-
+	this->deleteField();
+	this->displayCategory( this->getIndexCurrentCategory() );
 };
 
 //-----------------------------------------------------------------------------
@@ -270,7 +267,7 @@ void CategoryWindowGTKMM::displayCategory( int index )
 		categoryFieldsWindow->add( *(Gtk::Widget*)categoryGTKMM );
 
 		((Gtk::Widget*)categoryGTKMM)->show();
-		
+		categoryFieldsWindow->show();
 		// Make a tree model;
 //		categoryTree->makeTreeModel( cat );
 
@@ -280,11 +277,9 @@ void CategoryWindowGTKMM::displayCategory( int index )
 #ifdef TODO_DEF
 #warning TODO throw error index exceded
 #endif
-		cout << "In file " << __FILE__ << " at line " << __LINE__ << ": cat = NULL.\n";
+		cout << "ERROR in CategoryWindowGTKMM::displayCategory( int index ): cat = NULL.\n";
 	}
 	
-	//categoryFieldsWindow->show_all_childeren();
-
 };
 
 

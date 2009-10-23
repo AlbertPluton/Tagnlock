@@ -232,7 +232,20 @@ void Category::saveCategory( string fileName, bool overwrite )
 	
 };
 
+//-----------------------------------------------------------------------------
 
+void Category::saveCategory( )
+{
+	if( fileName.compare( "" ) != 0 )
+	{
+		this->saveCategory( fileName, true );
+	}
+	else
+	{
+		// TODO throw
+		cout << "ERROR in Category::saveCategory( ): no file name specified for this class";
+	}
+};
 
 //-----------------------------------------------------------------------------
 
@@ -249,6 +262,40 @@ Field* Category::getFieldAt( int index )
 };
 
 //-----------------------------------------------------------------------------
+
+void Category::deleteField( int i )
+{
+	if( (i >= 0) && (i < fields.size()) )
+	{
+		fields.erase( (fields.begin() + i) );
+	}
+};
+
+//-----------------------------------------------------------------------------
+
+void Category::deleteField( Field* field )
+{
+	if( field )
+	{
+		int index = getIndex( field );
+		if( index > -1 ) deleteField( index );
+	}
+};
+
+//-----------------------------------------------------------------------------
+
+int Category::getIndex( Field* field )
+{
+	for( int i = 0; i < fields.size(); i++ )
+	{
+		if( field == fields[i] ) return i;
+	}
+	return -1;
+};
+
+//-----------------------------------------------------------------------------
+
+
 
 string Category::getFieldTypeAt( int index )
 {
@@ -321,4 +368,24 @@ void Category::setName( string categoryName )
 	name = categoryName;
 };
 		
+
+//-----------------------------------------------------------------------------
+		
+void Category::setFileName( string name )
+{
+	fileName = name;
+};
+	
+//-----------------------------------------------------------------------------
+
+string Category::getFileName()
+{
+	return fileName;
+};
+
+
+
+
+
+
 

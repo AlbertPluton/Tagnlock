@@ -16,8 +16,8 @@ using namespace std;
 
 #include "Datahandler.h"
 
-#include "../ToolchainNode.h"
-#include "../ToolchainOperation.h"
+#include "ToolchainNode.h"
+#include "ToolchainOperation.h"
 
 
 //! This class can be used to store the data in a Datahandler in a text file.

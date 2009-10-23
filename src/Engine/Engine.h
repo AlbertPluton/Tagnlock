@@ -96,6 +96,9 @@ class Engine
 		//! Set the pointer currentField to field.
 		void setCurrentField( int field );
 
+		//! Delete the current field.
+		void deleteField();
+		
 		// Returns the size of the categories vector.
 		int getNumberOfCategories();
 
@@ -106,10 +109,13 @@ class Engine
 		void setCurrentCategory( int index );
 
 		//! This virtual function is UI dependent. The UI should give the user the option to load a category from a file.
-		virtual bool loadCategory(){};
+		virtual void loadCategory(){};
 
 		//! This virtual function is UI dependent. The UI should give the user the option to save a category to a file.
-		virtual bool saveCategory(){};
+		virtual void saveCategory(){};
+
+		//! This virtual function is UI dependent. The UI should give the user the option to save a category to a file.
+		virtual void saveAsCategory(){};
 
 		//! This virtual function is UI dependent. It should ask the user what kind of field to add to the current category.
 		/*!
@@ -228,14 +234,26 @@ class Engine
 		//! Sets the currentToolchainNode pointer to node. It also alters the current toolchain.
 		void setCurrentToolchainNode( ToolchainNode* node );
 
+		//! Save the toolchain under the file name given in the object
+		virtual void saveToolchain(){};
+		
+		//! A dialog to save as a toolchain.
+		virtual void saveAsToolchain(){};
+		
 		//! This virutal function is UI dependent. It should display the current toolchain.
 		virtual void displayToolchain(){};
 		
 		//! This virutal function is UI dependent. It should handel modifications to the current toolchain.
 		/*!
-			The function should ask the user what kind of Operation to add. The new node should be added as a child of the current ToolchainNode. After the node is added the function modifyToolchainNode can be called to edit the atributes of the node.
+			The function should ask the user what kind of Operation to add. The new node should be added as a brother/sister of the current ToolchainNode. After the node is added the function modifyToolchainNode can be called to edit the atributes of the node.
 		*/
 		virtual void addToolchainOperation(){}; 
+		
+		//! This virutal function is UI dependent. It should handel modifications to the current toolchain.
+		/*!
+			The function should ask the user what kind of Operation to add. The new node should be added as a child of the current ToolchainNode. After the node is added the function modifyToolchainNode can be called to edit the atributes of the node.
+		*/		 
+		virtual void addChildToolchainOperation(){}; 
 
 		//! This virutal function is UI dependent. It should handel modifications to the current ToolchainNode.
 		/*!

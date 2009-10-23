@@ -7,6 +7,7 @@
 
 #include "TextFileStorage.h"
 
+#include "Datahandler.h"
 #include <sstream>
 
 //-----------------------------------------------------------------------------
@@ -136,7 +137,7 @@ void TextFileStorage::saveToSingleFile()
 	ofstream file( str.c_str() );
   
   // Get the initial position of the internal iterator of the Datahandler.
-  int pos = getInput()->getPosition();
+  int pos = this->getInput()->getPosition();
   
 
   
@@ -235,7 +236,7 @@ void TextFileStorage::saveToIndividualFile()
   FieldData* data; 
 
   // Get the initial position of the internal iterator of the Datahandler.
-  int pos = getInput()->getPosition();
+  int pos = this->getInput()->getPosition();
 
   // Get the first data object.
  	ObjectData* objectData= getInput()->getFirstObject();

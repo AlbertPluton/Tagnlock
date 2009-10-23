@@ -120,7 +120,7 @@ void ToolchainWindowGTKMM::connectSignals()
   refXml->get_widget("toolbutton2", pToolButton);
   if(pToolButton)
   {
-    pToolButton->signal_clicked().connect( sigc::mem_fun( this, &ToolchainWindowGTKMM::saveButton_clicked) );
+    pToolButton->signal_clicked().connect( sigc::mem_fun( this, &EngineGTKMM::saveToolchain) );
   }
   else
   {
@@ -132,7 +132,7 @@ void ToolchainWindowGTKMM::connectSignals()
   refXml->get_widget("toolbutton1", pToolButton);
   if(pToolButton)
   {
-    pToolButton->signal_clicked().connect( sigc::mem_fun( this, &ToolchainWindowGTKMM::saveAsButton_clicked) );
+    pToolButton->signal_clicked().connect( sigc::mem_fun( this, &EngineGTKMM::saveAsToolchain) );
   }
   else
   {
@@ -143,7 +143,7 @@ void ToolchainWindowGTKMM::connectSignals()
   refXml->get_widget("toolbutton4", pToolButton);
   if(pToolButton)
   {
-    pToolButton->signal_clicked().connect( sigc::mem_fun( this, &ToolchainWindowGTKMM::openButton_clicked) );
+    pToolButton->signal_clicked().connect( sigc::mem_fun( this, &EngineGTKMM::loadToolchain) );
   }
   else
   {
@@ -353,6 +353,61 @@ void ToolchainWindowGTKMM::addToolchainOperation()
 	
 };
 
+
+//-----------------------------------------------------------------------------
+
+void ToolchainWindowGTKMM::addChildToolchainOperation()
+{
+	ToolchainNode* node = NULL;
+	
+	
+	// Start a dialog to select the operation type
+	DialogOperationChooserGTKMM dialog( (Gtk::Window*)this );
+	
+	
+	// Add a toolchain if one excits
+	if( this->getToolchainsSize() == 0 )
+	{			
+		this->newButton_clicked();
+	}
+
+	
+	// Add the row to the current toolchain if no row is selected.
+	Gtk::TreeModel::iterator iter = refTreeViewSelection->get_selected();
+	if( !iter )
+	{
+		// No row is selected, insert the row at the end of the toolchain
+		Toolchain* toolchain = this->getCurrentToolchain();
+		dialog.chooseOperationNode( toolchain );
+
+		// Display the toolchain with the new node.
+		this->displayToolchain();
+
+	}
+	else
+	{
+		// See if not an empty row is selected
+		if( (*iter)[treeViewColumns.col_nodePointer] )
+		{
+			ToolchainNode* toolchainNode = this->getCurrentToolchainNode();
+	
+			// See if a Toolchain object is selected
+			if( toolchainNode )
+			{
+				dialog.chooseOperationNode( toolchainNode );
+				
+				// Display the toolchain with the new node.
+				this->displayToolchain();
+			}
+
+
+		}
+
+	}
+		
+};
+
+
 //-----------------------------------------------------------------------------
 
 void ToolchainWindowGTKMM::modifyToolchainNode()
@@ -407,30 +462,6 @@ void ToolchainWindowGTKMM::newButton_clicked()
 		
 //-----------------------------------------------------------------------------
 
-void ToolchainWindowGTKMM::saveButton_clicked()
-{
-
-};
-
-//-----------------------------------------------------------------------------
-
-void ToolchainWindowGTKMM::saveAsButton_clicked()
-{
-	this->saveAsToolchain();
-};
-
-//-----------------------------------------------------------------------------
-
-void ToolchainWindowGTKMM::openButton_clicked()
-{
-	if( this->loadToolchain() )
-	{
-		this->displayToolchain();
-  };  
-};
-
-//-----------------------------------------------------------------------------
-
 void ToolchainWindowGTKMM::addButton_clicked()
 {
 	this->addToolchainOperation();
@@ -440,7 +471,7 @@ void ToolchainWindowGTKMM::addButton_clicked()
 
 void ToolchainWindowGTKMM::addChildButton_clicked()
 {
-	// TODO 
+	this->addChildToolchainOperation();
 };
 
 //-----------------------------------------------------------------------------
@@ -454,6 +485,12 @@ void ToolchainWindowGTKMM::deleteButton_clicked()
 	{
 		// Remove the node from the toolchain
 		if( parent->removeNode( node ) ) delete node;
+	}
+	else if( node ) // The node is a toolchain object
+	{
+		// TODO Ask before delete if alterations have been made.
+		int index = this->getCurrentToolchainIndex();
+		this->deleteToolchain( index );
 	}
 	
 	displayToolchain();

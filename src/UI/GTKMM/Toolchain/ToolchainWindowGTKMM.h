@@ -16,7 +16,6 @@
 #include <libglademm/xml.h>
 #include <gtkmm.h>
 
-#include "Datahandler.h"
 
 #include "Toolchain.h"
 
@@ -46,6 +45,7 @@ class ToolchainWindowGTKMM : public EngineGTKMM
 
 		void displayToolchain( );
 		void addToolchainOperation();
+		void addChildToolchainOperation();
 		void modifyToolchainNode();
 
 
@@ -57,9 +57,6 @@ class ToolchainWindowGTKMM : public EngineGTKMM
 		
 		//! Signal handlers relating to the toolbar buttons.
 		void newButton_clicked();
-		void saveButton_clicked();
-		void saveAsButton_clicked();
-		void openButton_clicked();
 		
 		void addButton_clicked();
 		void addChildButton_clicked();
