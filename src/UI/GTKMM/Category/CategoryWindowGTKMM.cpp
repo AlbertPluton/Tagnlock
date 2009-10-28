@@ -7,7 +7,7 @@
 
 
 #include "CategoryWindowGTKMM.h"
-
+#include "DialogFieldChooserGTKMM.h"
 
 //-----------------------------------------------------------------------------
 
@@ -55,7 +55,7 @@ CategoryWindowGTKMM::CategoryWindowGTKMM( int argc, char **argv, string gladeFil
   refXml->get_widget("CategoryTreeWindow", categoryTreeWindow);
 	refXml->get_widget("CategoryFieldEditWindow", categoryFieldEditWindow);
 	categoryGTKMM = new CategoryGTKMM( categoryTreeWindow, categoryFieldEditWindow );
-
+	categoryFieldsWindow->add( *(Gtk::Widget*)categoryGTKMM );
 
 
  	
@@ -110,7 +110,7 @@ void CategoryWindowGTKMM::connectSignals()
     refXml->get_widget("toolbutton14", pToolButton);
     if(pToolButton)
     {
-      pToolButton->signal_clicked().connect( sigc::mem_fun( this, &CategoryWindowGTKMM::on_toolbutton25_clicked) );
+      pToolButton->signal_clicked().connect( sigc::mem_fun( this, &CategoryWindowGTKMM::onButton_new) );
     }
     else
     {
@@ -122,7 +122,7 @@ void CategoryWindowGTKMM::connectSignals()
     refXml->get_widget("toolbutton15", pToolButton);
     if(pToolButton)
     {
-      pToolButton->signal_clicked().connect( sigc::mem_fun( this, &CategoryWindowGTKMM::loadShowCategory) );
+      pToolButton->signal_clicked().connect( sigc::mem_fun( this, &CategoryWindowGTKMM::onButton_open) );
     }
     else
     {
@@ -152,12 +152,35 @@ void CategoryWindowGTKMM::connectSignals()
     	// TODO throw error
     }     
    
+   
+    // Back button
+		refXml->get_widget("toolbutton17", pToolButton);
+    if(pToolButton)
+    {
+      pToolButton->signal_clicked().connect( sigc::mem_fun( this, &CategoryWindowGTKMM::onButton_back) );
+    }
+    else
+    {
+    	// TODO throw error
+    }      
+   
+   
+    // Forward button
+		refXml->get_widget("toolbutton18", pToolButton);
+    if(pToolButton)
+    {
+      pToolButton->signal_clicked().connect( sigc::mem_fun( this, &CategoryWindowGTKMM::onButton_forward) );
+    }
+    else
+    {
+    	// TODO throw error
+    }      
     
 		// Add button
     refXml->get_widget("toolbutton21", pToolButton);
     if(pToolButton)
     {
-      pToolButton->signal_clicked().connect( sigc::mem_fun( this, &CategoryWindowGTKMM::on_toolbutton25_clicked) );
+      pToolButton->signal_clicked().connect( sigc::mem_fun( this, &CategoryWindowGTKMM::onButton_add) );
     }
     else
     {
@@ -180,7 +203,7 @@ void CategoryWindowGTKMM::connectSignals()
 		refXml->get_widget("toolbutton23", pToolButton);
     if(pToolButton)
     {
-      pToolButton->signal_clicked().connect( sigc::mem_fun( this, &CategoryWindowGTKMM::on_toolbutton25_clicked) );
+      pToolButton->signal_clicked().connect( sigc::mem_fun( this, &CategoryWindowGTKMM::onButton_up) );
     }
     else
     {
@@ -188,10 +211,10 @@ void CategoryWindowGTKMM::connectSignals()
     }   
 
     // Down button
-		refXml->get_widget("toolbutton24 ", pToolButton);
+		refXml->get_widget("toolbutton24", pToolButton);
     if(pToolButton)
     {
-      pToolButton->signal_clicked().connect( sigc::mem_fun( this, &CategoryWindowGTKMM::on_toolbutton25_clicked) );
+      pToolButton->signal_clicked().connect( sigc::mem_fun( this, &CategoryWindowGTKMM::onButton_down) );
     }
     else
     {
@@ -206,8 +229,20 @@ void CategoryWindowGTKMM::connectSignals()
 };
 
 //-----------------------------------------------------------------------------
+void CategoryWindowGTKMM::onButton_new()
+{
 
-void CategoryWindowGTKMM::loadShowCategory()
+	Category* cat = new Category;
+	this->addCategory( cat );
+	
+	// Let the user choose the first field.
+	onButton_add();
+};
+
+
+//-----------------------------------------------------------------------------
+
+void CategoryWindowGTKMM::onButton_open()
 {
 	try
 	{
@@ -226,11 +261,62 @@ void CategoryWindowGTKMM::loadShowCategory()
     
 };
 
-
 //-----------------------------------------------------------------------------
 
-void CategoryWindowGTKMM::newField()
+void CategoryWindowGTKMM::onButton_back()
 {
+	int currentIndex = this->getIndexCurrentCategory();
+
+	// Decrease the current index by one if it is possible.
+	if( currentIndex >= 1 )
+	{
+		this->setCurrentCategory( currentIndex - 1 );
+
+		// Display the current category which is the new one.
+		this->displayCategory( this->getIndexCurrentCategory() );
+
+	};
+		
+};
+
+
+//-----------------------------------------------------------------------------
+	
+void CategoryWindowGTKMM::onButton_forward()
+{
+	int currentIndex = this->getIndexCurrentCategory();
+
+	// Increase the current index by one if it is possible.
+	if( currentIndex < this->getCategoriesSize() - 1 )
+	{
+		this->setCurrentCategory( currentIndex + 1 );
+
+		// Display the current category which is the new one.
+		this->displayCategory( this->getIndexCurrentCategory() );
+
+	};
+};
+
+//-----------------------------------------------------------------------------
+		
+		
+		
+void CategoryWindowGTKMM::onButton_add()
+{
+	DialogFieldChooserGTKMM dialog( (Gtk::Window*)this);
+	Category* cat = this->getCurrentCategory();
+
+	if( cat )
+	{
+		if( dialog.chooseField( cat ) )
+		{
+			this->displayCategory( this->getIndexCurrentCategory() );
+		}
+	}
+	else
+	{
+		onButton_new();
+	}
 
 };
 
@@ -242,8 +328,39 @@ void CategoryWindowGTKMM::onButton_delete()
 	this->displayCategory( this->getIndexCurrentCategory() );
 };
 
+
 //-----------------------------------------------------------------------------
 
+void CategoryWindowGTKMM::onButton_up()
+{
+	Category* cat = this->getCurrentCategory();
+	int index = this->getIndexCurrentField();
+	if( cat && (index > 0) ) 
+	{
+		cat->decreaseFieldIndex( index ); 
+		this->setCurrentField( index - 1);
+		this->displayCategory( this->getIndexCurrentCategory() );
+	}
+};
+
+
+//-----------------------------------------------------------------------------
+
+void CategoryWindowGTKMM::onButton_down()
+{
+	Category* cat = this->getCurrentCategory();
+	int index = this->getIndexCurrentField();
+	if( cat && (index < cat->getFieldsSize()-1) )
+	{
+		cat->increaseFieldIndex( index );
+		this->setCurrentField( index + 1);
+		this->displayCategory( this->getIndexCurrentCategory() );
+	};
+};		
+	
+	
+//-----------------------------------------------------------------------------
+		
 void CategoryWindowGTKMM::modifyField()
 {
 
@@ -254,7 +371,7 @@ void CategoryWindowGTKMM::modifyField()
 void CategoryWindowGTKMM::displayCategory( int index )
 {
 
-	categoryFieldsWindow->remove();
+	//categoryFieldsWindow->remove( );
 	categoryGTKMM->clear();
 
 	
@@ -263,14 +380,8 @@ void CategoryWindowGTKMM::displayCategory( int index )
 	{
 		categoryGTKMM->makeNewTable( cat );
 
-		// Add it to the scolled window.
-		categoryFieldsWindow->add( *(Gtk::Widget*)categoryGTKMM );
-
-		((Gtk::Widget*)categoryGTKMM)->show();
-		categoryFieldsWindow->show();
-		// Make a tree model;
-//		categoryTree->makeTreeModel( cat );
-
+//		((Gtk::Widget*)categoryGTKMM)->show_all();
+		categoryFieldsWindow->show_all();
 	}
 	else
 	{

@@ -84,10 +84,6 @@ class FieldGTKMM : public Gtk::EventBox
 		int getIndex( );
 		
 		
-
-		
-		
-		
 		
 		
 

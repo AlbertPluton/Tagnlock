@@ -131,7 +131,7 @@ ComboField::ComboField( vector<string> * description )
 
 ComboField::~ComboField()
 {
-
+	delete combo;
 }
 
 

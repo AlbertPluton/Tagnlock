@@ -63,6 +63,7 @@ CategoryGTKMM::CategoryGTKMM( Gtk::ScrolledWindow* catTreeWindow, Gtk::ScrolledW
 	categoryTreeWindow->add( (Gtk::Widget&)(*categoryTree) );
 
 	categoryFieldEditWindow = editWindow;
+	categoryFieldEditWidget = NULL;
 
 	categoryTree->get_signal_selectionChange().connect( sigc::mem_fun(this, &CategoryGTKMM::fieldSelected) );
 
@@ -109,23 +110,13 @@ void CategoryGTKMM::addField( FieldGTKMM* field )
 
 //----------------------------------------------------------------------------
 
-void CategoryGTKMM::deleteField( int index )
-{
-
-#ifdef TODO_DEF
-#warning TODO in file __FILE__ at line __LINE__.
-#endif
-
-};
-
-//-----------------------------------------------------------------------------
-
 void CategoryGTKMM::makeNewTable( Category* category )
 {
 
+	this->hide_all();
+
 	FieldGTKMM* fieldGTKMM = NULL;
 	int size = category->getFieldsSize();
-	fields.clear();
 	Field* field = NULL;
 	
 	// Disconnect excisting signals
@@ -199,13 +190,34 @@ void CategoryGTKMM::readFromTable( ObjectData* object )
 
 //-----------------------------------------------------------------------------
 
+void CategoryGTKMM::update( )
+{
+
+#ifdef TODO_DEF
+#warning TODO in file __FILE__ at line __LINE__.
+#endif
+
+};
+
+//-----------------------------------------------------------------------------
 
 void CategoryGTKMM::clear(  )
 {
 	categoryTree->clearTreeModel();
-#ifdef TODO_DEF
-#warning TODO in file __FILE__ at line __LINE__.
-#endif
+	
+	for( int i = 0; i < fields.size(); i++ )
+	{
+		FieldGTKMM* field = fields[i];
+//		this->remove( (Gtk::Widget&)*field );
+		this->remove( *(field->getLabel()) );
+		this->remove( *(field->getEntry()) );
+		this->remove( *(field->getRequired()) );
+		this->remove( *(field->getReset())	);
+		delete field;
+	}
+	
+	// Clear out the fields vector	
+	fields.clear();
 };
 
 //-----------------------------------------------------------------------------

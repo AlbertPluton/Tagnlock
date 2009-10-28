@@ -45,9 +45,6 @@ class CategoryGTKMM : public Gtk::Table
 		//! Add a signle field to the current table.
 		void addField( FieldGTKMM* field );
 		
-		//! Delete the field at index.
-		void deleteField( int index );
-
 		//! Create a new table from the given category.
 		void makeNewTable( Category* category );
 		//! Create a new empty table from the given object.
@@ -62,8 +59,8 @@ class CategoryGTKMM : public Gtk::Table
 		*/		
 		virtual void readFromTable( ObjectData* object );
 
-		//! Renew the table if some field has changed. 
-		void renewTable( );
+		//! Update the category widgets if some field has changed. 
+		void update( );
 		
 		//! Delete all the fields this class holds.
 		void clear();

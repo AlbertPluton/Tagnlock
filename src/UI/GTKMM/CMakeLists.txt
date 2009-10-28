@@ -57,13 +57,14 @@ SET (	SRCS_EngineGTKMM
 			Data/DisplayFilePDF.cpp
 			Data/DataAssistantGTKMM.cpp
 			Category/CategoryWindowGTKMM.cpp
+			Category/CategoryGTKMM.cpp
+			Category/CategoryTreeGTKMM.cpp
+			Category/DialogFieldChooserGTKMM.cpp
 			Category/Fields/FieldGTKMM.cpp
 			Category/Fields/TextFieldGTKMM.cpp
 			Category/Fields/CheckFieldGTKMM.cpp
 			Category/Fields/SpinFieldGTKMM.cpp
 			Category/Fields/ComboFieldGTKMM.cpp
-			Category/CategoryGTKMM.cpp
-			Category/CategoryTreeGTKMM.cpp
 			Category/Fields/FieldEditWidgetGTKMM.cpp
 			Category/Fields/FieldSpinEditWidgetGTKMM.cpp
 			Category/Fields/FieldComboEditWidgetGTKMM.cpp

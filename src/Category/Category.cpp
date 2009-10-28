@@ -162,6 +162,7 @@ void Category::loadCategory( string fileName )
 		}	
 
 		file.close();	
+		this->setFileName( fileName );
 		
 	}
 	else
@@ -238,7 +239,7 @@ void Category::saveCategory( )
 {
 	if( fileName.compare( "" ) != 0 )
 	{
-		this->saveCategory( fileName, true );
+		this->saveCategory( this->fileName, true );
 	}
 	else
 	{

@@ -35,13 +35,23 @@ class CategoryWindowGTKMM : public EngineGTKMM
 		~CategoryWindowGTKMM();
 
 		// Callback functions
-		void loadShowCategory();
-		void newField();
+		void onButton_new();
+		void onButton_open();
+
+		void onButton_back();
+		void onButton_forward();
+		
+		void onButton_add();
 		void onButton_delete();
+		void onButton_up();
+		void onButton_down();
+
+
 
 		void modifyField();
 		void displayCategory( int index );
-		
+
+		// Used to set the field selected by the user in the tree or table view.		
 		void fieldSelected( int select );
 
 

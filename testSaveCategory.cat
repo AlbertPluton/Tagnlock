@@ -21,7 +21,6 @@ Option: option 2
 Option: option 3
 Option: option 4
 
-
 Type: ComboRadio
 Label: combo_D
 Required: true
@@ -51,7 +50,7 @@ Label: spin_G
 Required: false
 Reset: false
 Minimum: NULL
-Maximum: 6.0
+Maximum: 6
 Stepsize: 0.01
 AdhereStep: true
 Decimals: 3
