@@ -124,6 +124,8 @@ void DataWindowGTKMM::connectSignals()
   //Get the Glade-instantiated Button, and connect a signal handler:
   Gtk::ToolButton* pToolButton = 0;
 
+	// The delete event to close the program
+	dataWindow->signal_delete_event().connect( sigc::mem_fun( this, &EngineGTKMM::quit) );
 
   // New button
   refXml->get_widget("toolbutton25", pToolButton);
@@ -233,7 +235,7 @@ void DataWindowGTKMM::displayDatahandlerObject()
 		//sigc::connection connection = comboSignalDatahandlers;
 		comboSignalFilesTodo.disconnect();
 		// Update the current datahandler combo
-		comboFilesTodo->set_active( (this->getCurrentDatahandler())->getPosition()-1 );
+		comboFilesTodo->set_active( (this->getCurrentDatahandler())->getPosition() );
 		// Enable the signal again
 		comboSignalFilesTodo = comboFilesTodo->signal_changed().connect(sigc::mem_fun(*this, &DataWindowGTKMM::comboFilesTodo_changed));
 		
@@ -374,6 +376,7 @@ void DataWindowGTKMM::openButton_clicked()
 		this->loadDatahandler();
 		this->update_comboDatahandlers();
 		this->update_comboFilesTodo();
+//		(this->getCurrentDatahandler())->getNextObject();
 		this->displayNextObjectData();
 	}
 	catch( exception& e )

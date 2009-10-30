@@ -98,7 +98,7 @@ class EngineGTKMM : public Engine
 
 
 		// --- Functions relating to the general program flow ---------------------
-		void quit();
+		bool quit( GdkEventAny* event );
 
 	
 

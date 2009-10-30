@@ -22,7 +22,7 @@
 Datahandler::Datahandler() : name("")
 {
 	it = objectDataList.begin();
-	position = 1;
+	position = -1;
 //	name = "";
 };
 
@@ -42,13 +42,13 @@ void Datahandler::addObject( ObjectData* data )
 		{
 			objectDataList.push_front( data );
 			it = objectDataList.begin();		
-			position = 1;	
+			position = 0;	
 		}
 		else if( it ==  objectDataList.end() ) 			// if it is the last item of the list, use push back
 		{
 			objectDataList.push_back( data );
 			it = --objectDataList.end();	// end returns a past last element iterator thus decrement for last element
-			position = objectDataList.size();
+			position = objectDataList.size()-1;
 		}
 		else 																				// if it is the in the middel of the list, use insert
 		{
@@ -73,13 +73,13 @@ void Datahandler::addNewObject( Category* category, URIobject* name )
 		{
 			objectDataList.push_front( data );
 			it = objectDataList.begin();
-			position = 1;			
+			position = 0;			
 		}
 		else if( it ==  objectDataList.end() ) 			// if it is the last item of the list, use push back
 		{
 			objectDataList.push_back( data );
 			it = --objectDataList.end();	// end returns a past last element iterator thus decrement for last element
-			position = objectDataList.size();
+			position = objectDataList.size()-1;
 		}
 		else 																				// if it is the in the middel of the list, use insert
 		{
@@ -96,7 +96,7 @@ void Datahandler::addNewObject( Category* category, URIobject* name )
 ObjectData* Datahandler::getFirstObject()
 {
 	this->it = objectDataList.begin();
-	position = 1;
+	position = 0;
 	return *(this->it);
 };
 
@@ -105,7 +105,7 @@ ObjectData* Datahandler::getFirstObject()
 ObjectData* Datahandler::getLastObject()
 {
 	this->it = --objectDataList.end();	// end returns a past last element iterator thus decrement for last element
-	position = objectDataList.size();  
+	position = objectDataList.size()-1;  
 	return *(this->it);
 };
 
@@ -126,7 +126,7 @@ ObjectData* Datahandler::getCurrentObject()
 ObjectData* Datahandler::getNextObject()
 {
 
- 	if( getPosition() == objectDataList.size() )
+ 	if( getPosition() == objectDataList.size()-1 )
  	{
  		// If the datahandler is empty / at the end of known objects, make a new dataobject.
  		
@@ -183,20 +183,20 @@ ObjectData* Datahandler::getObjectAt( int index )
 		// The number of steps required to reach the new object
 		int fromBegin = index;
 		int fromEnd 	= objectDataList.size() - 1 - index;
-		int fromPos   = index - position - 1;
+		int fromPos   = index - position;
 
 		// Find the shortest way to reach the desired position.
 
 		if( (fromBegin <= fromEnd) && (fromBegin*fromBegin <= fromPos*fromPos) ) // Use the square to lose possible minus sign of fromPos
 		{
 			this->it = objectDataList.begin();
-			position = 1;
+			position = 0;
 			for( int i = 0; i < fromBegin; i++ ) incrementIT();	
 		}
 		else if( fromEnd*fromEnd <= fromPos*fromPos )		// Starting from the end is the shortest way 
 		{
 			this->it = --objectDataList.end();	// end returns a past last element iterator thus decrement for last element
-			position = objectDataList.size();
+			position = objectDataList.size()-1;
 			for( int i = 0; i < fromEnd; i++ ) decrementIT();
 		}
 		else if( fromPos > 0 )	// Go up from the current position
@@ -261,19 +261,19 @@ void Datahandler::setPosition( int pos )
 		if( pos < objectDataList.size() )	
 		{
 			this->it = objectDataList.begin();
-			position = 1;
+			position = 0;
 			while( pos != position ) { incrementIT(); }; // Loop till the desired position is reached.
 		}
 		else	// If index exceeds the size of the list, set the position to the end of the list.
 		{
 			this->it = objectDataList.end();
-			position = objectDataList.size();
+			position = objectDataList.size()-1;
 		}
 	}
 	else	// If index is below equal or below zero set it to zero.
 	{
 		this->it = objectDataList.begin();
-		position = 1;
+		position = 0;
 	}
 
 };
@@ -282,7 +282,7 @@ void Datahandler::setPosition( int pos )
 
 void Datahandler::incrementIT()
 {
-	if( position < objectDataList.size() )	// To prevent invalid data acces
+	if( position < objectDataList.size()-1 )	// To prevent invalid data acces
 	{
 		(this->it)++;
 		position++;
@@ -293,7 +293,7 @@ void Datahandler::incrementIT()
 
 void Datahandler::decrementIT()
 {
-	if( position > 1 )	// To prevent invalid data acces
+	if( position > 0 )	// To prevent invalid data acces
 	{
 		(this->it)--;
 		position--;

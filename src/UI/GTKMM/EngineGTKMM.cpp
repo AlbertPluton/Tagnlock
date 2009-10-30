@@ -145,9 +145,10 @@ void EngineGTKMM::on_toolbutton25_clicked(  )
 
 // --- Functions relating to the general program flow -------------------------
 
-void EngineGTKMM::quit()
+bool EngineGTKMM::quit( GdkEventAny* event )
 {
 	Gtk::Main::quit();
+	return true;
 };
 
 
@@ -306,7 +307,7 @@ void EngineGTKMM::saveAsCategory()
 // --- Functions relating to Datahandler --------------------------------------
 		
 
-void EngineGTKMM::		loadDatahandler()
+void EngineGTKMM::loadDatahandler()
 {
 
 	// Create a dialog to choose a datahandler from a file.

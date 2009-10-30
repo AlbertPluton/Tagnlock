@@ -75,9 +75,9 @@ class Datahandler
 
 		//! Get the size of the list.
 		int getListSize();
-		//! Returns the current position in the list. Starts from 1!
+		//! Returns the current position in the list. 
 		int getPosition();
-		//! Sets the position of this datahandler to the value of index. Must start from 1!
+		//! Sets the position of this datahandler to the value of index.
 		void setPosition( int pos );
 	
 		//! Returns the name and directory of the next file to process. This removes the file from the todo vector!!
@@ -168,7 +168,7 @@ class Datahandler
 		//! An iterator to loop trough the list.
 		list<ObjectData*>::iterator it;
 		
-		//! An integer representation of the list iterator it. Starts from 1.
+		//! An integer representation of the list iterator it.
 		int position;
 		
 		//! Increments the iterator and position. The function also checks that no invalid iterators (greater or smaller than the list) are tried to be made.
