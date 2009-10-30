@@ -22,7 +22,7 @@
 Datahandler::Datahandler() : name("")
 {
 	it = objectDataList.begin();
-	position = 0;
+	position = 1;
 //	name = "";
 };
 
@@ -175,32 +175,64 @@ ObjectData* Datahandler::getPreviousObject()
 
 ObjectData* Datahandler::getObjectAt( int index )
 {
-	// The number of steps required to reach the new object
-	int fromBegin = index-1;
-	int fromEnd 	= objectDataList.size() - index;
-	int fromPos   = index - position;
+	
+	// See if index is within the current range of object
+	if( index < objectDataList.size() )
+	{
+	
+		// The number of steps required to reach the new object
+		int fromBegin = index;
+		int fromEnd 	= objectDataList.size() - 1 - index;
+		int fromPos   = index - position - 1;
 
-	// Find the shortest way to reach the desired position.
+		// Find the shortest way to reach the desired position.
 
-	if( (fromBegin <= fromEnd) && (fromBegin*fromBegin <= fromPos*fromPos) ) // Use the square to lose possible minus sign of fromPos
-	{
-		this->it = objectDataList.begin();
-		position = 1;
-		for( int i = 0; i < fromBegin; i++ ) incrementIT();	
+		if( (fromBegin <= fromEnd) && (fromBegin*fromBegin <= fromPos*fromPos) ) // Use the square to lose possible minus sign of fromPos
+		{
+			this->it = objectDataList.begin();
+			position = 1;
+			for( int i = 0; i < fromBegin; i++ ) incrementIT();	
+		}
+		else if( fromEnd*fromEnd <= fromPos*fromPos )		// Starting from the end is the shortest way 
+		{
+			this->it = --objectDataList.end();	// end returns a past last element iterator thus decrement for last element
+			position = objectDataList.size();
+			for( int i = 0; i < fromEnd; i++ ) decrementIT();
+		}
+		else if( fromPos > 0 )	// Go up from the current position
+		{
+			for( int i = 0; i < fromPos; i++ ) incrementIT();
+		}
+		else if( fromPos < 0 ) // Go down from the current position
+		{
+			for( int i = fromPos; i < 0; i++ ) decrementIT();
+		}
+	
 	}
-	else if( fromEnd*fromEnd <= fromPos*fromPos )		// Starting from the end is the shortest way 
+	else 
 	{
-		this->it = --objectDataList.end();	// end returns a past last element iterator thus decrement for last element
-		position = objectDataList.size();
-		for( int i = 0; i < fromEnd; i++ ) decrementIT();
-	}
-	else if( fromPos > 0 )	// Go up from the current position
-	{
-		for( int i = 0; i < fromPos; i++ ) incrementIT();
-	}
-	else if( fromPos < 0 ) // Go down from the current position
-	{
-		for( int i = fromPos; i < 0; i++ ) decrementIT();
+		while( getPosition() != index )
+		{
+	 		URIobject* fileName = getNextFile();
+	 		
+	 		// If the file name is empty some thing went wrong so do nothing.
+	 		if( fileName )//fileName.compare("") != 0 )
+	 		{			
+	 			// Find the file category matching the file type of this function.
+	 			Category* cat = getCategoryFromType( fileName->getFileName() );
+
+	 			if( cat ) // If a category is found
+				{
+					addNewObject( cat, fileName );
+					incrementIT();
+				}
+				else
+				{
+					// TODO throw found no category suiteble for this file. This is very strange as it was might have been / should have been to get her, during the updating of the todo vector.		
+				}
+			}
+			
+ 		};
 	}
 	
 	return  (*this->it); // A bit strange notation to get the pointer from the list
@@ -222,26 +254,26 @@ int Datahandler::getPosition()
 
 //-----------------------------------------------------------------------------
 
-void Datahandler::setPosition( int index )
+void Datahandler::setPosition( int pos )
 {
-	if( index > 0 )
+	if( pos > 0 )
 	{
-		if( index < objectDataList.size() )	
+		if( pos < objectDataList.size() )	
 		{
 			this->it = objectDataList.begin();
-			position = 0;
-			while( index != position ) { incrementIT(); }; // Loop till the desired position is reached.
+			position = 1;
+			while( pos != position ) { incrementIT(); }; // Loop till the desired position is reached.
 		}
 		else	// If index exceeds the size of the list, set the position to the end of the list.
 		{
 			this->it = objectDataList.end();
-			position = objectDataList.size() - 1;
+			position = objectDataList.size();
 		}
 	}
 	else	// If index is below equal or below zero set it to zero.
 	{
 		this->it = objectDataList.begin();
-		position = 0;
+		position = 1;
 	}
 
 };

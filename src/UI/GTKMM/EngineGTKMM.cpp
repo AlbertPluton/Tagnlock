@@ -298,6 +298,122 @@ void EngineGTKMM::saveAsCategory()
 	}	
 
 };
+	
+	
+	
+		
+//-----------------------------------------------------------------------------
+// --- Functions relating to Datahandler --------------------------------------
+		
+
+void EngineGTKMM::		loadDatahandler()
+{
+
+	// Create a dialog to choose a datahandler from a file.
+	Gtk::FileChooserDialog dialog( "Please choose a datahandler file.", Gtk::FILE_CHOOSER_ACTION_OPEN); //Gtk::FILE_CHOOSER_ACTION_SELECT_FOLDER 	 );
+
+  //Add response buttons the the dialog:
+  dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+  dialog.add_button(Gtk::Stock::OPEN, Gtk::RESPONSE_OK);
+
+	int result = dialog.run();
+
+  //Handle the response:
+  switch(result)
+  {
+    case(Gtk::RESPONSE_OK):
+    {	
+    	Glib::ustring result_name = dialog.get_uri();
+			URIobject uri( result_name.raw() );
+			cout << result_name << "\n";
+
+			Datahandler* newDatahandler = new Datahandler();
+			if( newDatahandler->load( uri, this->getCatVec() ) )
+			{
+				this->addDatahandler( newDatahandler );
+			}
+			else
+			{
+				// TODO throw / catch
+				cout << "ERROR in DataWindowGTKMM::openButton_clicked: Unable to open datahandler file: " << result_name << "\n";
+			}
+      
+      break;
+    }
+     default:
+    {
+      break;
+    }	
+	};
+
+};
+
+
+//-----------------------------------------------------------------------------
+
+void EngineGTKMM::saveDatahandler()
+{
+
+	Datahandler* curDat = this->getCurrentDatahandler();
+
+	// Check if this datahanlder has a file name if not got saveAsButton_clicked.
+	string fileNameString = (curDat->getName()).getFileName();
+	if(  fileNameString.compare( "" ) != 0 )
+	{
+		curDat->save( );
+	}
+	else
+	{
+		saveAsDatahandler();
+	}
+
+
+};
+
+
+//-----------------------------------------------------------------------------
+
+void EngineGTKMM::saveAsDatahandler()
+{
+
+	
+	// Create a dialog to choose a file.
+	Gtk::FileChooserDialog dialog( "Save as", Gtk::FILE_CHOOSER_ACTION_SAVE); //Gtk::FILE_CHOOSER_ACTION_SELECT_FOLDER 	 );
+
+  //Add response buttons the the dialog:
+  dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+  dialog.add_button(Gtk::Stock::SAVE_AS, Gtk::RESPONSE_OK);
+
+	int result = dialog.run();
+
+  //Handle the response:
+  switch(result)
+  {
+    case(Gtk::RESPONSE_OK):
+    {	
+    	Glib::ustring result = dialog.get_uri();
+			URIobject uri( result.raw() );
+			cout << result.raw() << "\n";
+
+  		if( this->getCurrentDatahandler()->save( uri ) != true )
+			{
+				// TODO catch / throw
+				cout << "In DataWindowGTKMM::saveAsButton_clicked: unalbe to save datahandler in file: " << result.raw() << "\n";
+			};
+
+      
+      break;
+    }
+     default:
+    {
+      break;
+    }	
+	};
+
+
+};
+
+
 
 
 //-----------------------------------------------------------------------------

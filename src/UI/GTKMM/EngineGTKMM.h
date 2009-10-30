@@ -48,29 +48,44 @@ class EngineGTKMM : public Engine
 		EngineGTKMM( int argc, char **argv, string gladeFileName );
 		
 		~EngineGTKMM();
+
+
+
+
+		// --- Functions relating to Category ------------------------------------
+	
 	
 		//! Load a category by opening a dialog.
-		/*!
-			\returns true if all was succesfull.
-		*/
 		virtual void loadCategory();	
 
 		//! Save a category with the file name given in the object. If non is given a dialog is opened.
-		/*!
-			\returns true if all was succesfull.
-		*/	
 		virtual void saveCategory();
 		
 		//! Save a category by opening a dialog.
-		/*!
-			\returns true if all was succesfull.
-		*/	
 		virtual void saveAsCategory();
+		
+		
+		
+		
+		// --- Functions relating to Datahandler ----------------------------------
+		
+		
+		//! Load a datahandler by opening a dialog.
+		virtual void loadDatahandler();	
 
+		//! Save a datahandler with the file name given in the object. If non is given a dialog is opened.
+		virtual void saveDatahandler();
+		
+		//! Save a datahandler by opening a dialog.
+		virtual void saveAsDatahandler();
+				
+		
+		
+		
+		// --- Functions relating to Toolchain ------------------------------------
+		
+		
 		//! Load a toolchain by opening a dialog.
-		/*!
-			\returns true if all was succesfull.
-		*/
 		virtual void loadToolchain();	
 		
 		//! Save the toolchain under the file name given in the object
@@ -79,17 +94,13 @@ class EngineGTKMM : public Engine
 		//! A dialog to save as a toolchain.
 		virtual void saveAsToolchain();
 	
-		// === The following functions are implementations of the virtual functions in the Engine class ====================
+
 
 
 		// --- Functions relating to the general program flow ---------------------
 		void quit();
 
 	
-		
-		
-		// --- Functions relating to Toolchain ------------------------------------
-		
 
 
 

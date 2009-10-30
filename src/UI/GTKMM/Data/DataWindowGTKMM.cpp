@@ -73,8 +73,8 @@ DataWindowGTKMM::DataWindowGTKMM(  int argc, char **argv, string gladeFileName )
 		comboTable->attach( *comboDatahandlers, 1, 2, 0, 1 );
 		comboTable->attach( *comboFilesTodo, 1, 2, 1, 2 );
 	
-		comboDatahandlers->signal_changed().connect(sigc::mem_fun(*this, &DataWindowGTKMM::comboDatahandlers_changed));
-		comboFilesTodo->signal_changed().connect(sigc::mem_fun(*this, &DataWindowGTKMM::comboFilesTodo_changed));
+		comboSignalDatahandlers = comboDatahandlers->signal_changed().connect(sigc::mem_fun(*this, &DataWindowGTKMM::comboDatahandlers_changed));
+		comboSignalFilesTodo = comboFilesTodo->signal_changed().connect(sigc::mem_fun(*this, &DataWindowGTKMM::comboFilesTodo_changed));
 	}
 	else
 	{
@@ -153,7 +153,7 @@ void DataWindowGTKMM::connectSignals()
 	refXml->get_widget("toolbutton27", pToolButton);
   if(pToolButton)
   {
-    pToolButton->signal_clicked().connect( sigc::mem_fun( this, &DataWindowGTKMM::saveButton_clicked) );
+    pToolButton->signal_clicked().connect( sigc::mem_fun( this, &EngineGTKMM::saveDatahandler) );
   }
   else
   {
@@ -164,7 +164,7 @@ void DataWindowGTKMM::connectSignals()
 	refXml->get_widget("toolbutton33", pToolButton);
   if(pToolButton)
   {
-    pToolButton->signal_clicked().connect( sigc::mem_fun( this, &DataWindowGTKMM::saveAsButton_clicked) );
+    pToolButton->signal_clicked().connect( sigc::mem_fun( this, &EngineGTKMM::saveAsDatahandler) );
   }
   else
   {
@@ -229,9 +229,14 @@ void DataWindowGTKMM::displayDatahandlerObject()
 		displayWindow->add( *widget );      
     displayWindow->show_all();
 
+		// Disable the signal before changing the active row.
+		//sigc::connection connection = comboSignalDatahandlers;
+		comboSignalFilesTodo.disconnect();
 		// Update the current datahandler combo
 		comboFilesTodo->set_active( (this->getCurrentDatahandler())->getPosition()-1 );
-
+		// Enable the signal again
+		comboSignalFilesTodo = comboFilesTodo->signal_changed().connect(sigc::mem_fun(*this, &DataWindowGTKMM::comboFilesTodo_changed));
+		
 	}
 
 
@@ -359,113 +364,26 @@ void DataWindowGTKMM::newButton_clicked()
 
 };
 
+
 //-----------------------------------------------------------------------------
 
 void DataWindowGTKMM::openButton_clicked()
 {
-	
-	// Create a dialog to choose a datahandler from a file.
-	Gtk::FileChooserDialog dialog( *dataWindow, "Please choose a datahandler file.", Gtk::FILE_CHOOSER_ACTION_OPEN); //Gtk::FILE_CHOOSER_ACTION_SELECT_FOLDER 	 );
-
-  //Add response buttons the the dialog:
-  dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
-  dialog.add_button(Gtk::Stock::OPEN, Gtk::RESPONSE_OK);
-
-	int result = dialog.run();
-
-  //Handle the response:
-  switch(result)
-  {
-    case(Gtk::RESPONSE_OK):
-    {	
-    	Glib::ustring result_name = dialog.get_uri();
-			URIobject uri( result_name.raw() );
-			cout << result_name << "\n";
-
-			Datahandler* newDatahandler = new Datahandler();
-			if( newDatahandler->load( uri, this->getCatVec() ) )
-			{
-				this->addDatahandler( newDatahandler );
-				this->update_comboDatahandlers();
-				this->update_comboFilesTodo();
-				this->displayNextObjectData();
-			}
-			else
-			{
-				// TODO throw / catch
-				cout << "ERROR in DataWindowGTKMM::openButton_clicked: Unable to open datahandler file: " << result_name << "\n";
-			}
-      
-      break;
-    }
-     default:
-    {
-      break;
-    }	
-	};
-};
-
-
-//-----------------------------------------------------------------------------
-
-void DataWindowGTKMM::saveButton_clicked()
-{
-
-	Datahandler* curDat = this->getCurrentDatahandler();
-
-	// Check if this datahanlder has a file name if not got saveAsButton_clicked.
-	string fileNameString = (curDat->getName()).getFileName();
-	if(  fileNameString.compare( "" ) != 0 )
+	try
 	{
-		curDat->save( );
+		this->loadDatahandler();
+		this->update_comboDatahandlers();
+		this->update_comboFilesTodo();
+		this->displayNextObjectData();
 	}
-	else
+	catch( exception& e )
 	{
-		saveAsButton_clicked();
+#ifdef TODO_DEF
+#warning TODO DataWindowGTKMM::openButton_clicked()
+#endif		
 	}
 
 };
-
-//-----------------------------------------------------------------------------
-
-
-void DataWindowGTKMM::saveAsButton_clicked()
-{
-	
-	// Create a dialog to choose a file.
-	Gtk::FileChooserDialog dialog( *dataWindow, "Save as", Gtk::FILE_CHOOSER_ACTION_SAVE); //Gtk::FILE_CHOOSER_ACTION_SELECT_FOLDER 	 );
-
-  //Add response buttons the the dialog:
-  dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
-  dialog.add_button(Gtk::Stock::SAVE_AS, Gtk::RESPONSE_OK);
-
-	int result = dialog.run();
-
-  //Handle the response:
-  switch(result)
-  {
-    case(Gtk::RESPONSE_OK):
-    {	
-    	Glib::ustring result = dialog.get_uri();
-			URIobject uri( result.raw() );
-			cout << result.raw() << "\n";
-
-  		if( this->getCurrentDatahandler()->save( uri ) != true )
-			{
-				// TODO catch / throw
-				cout << "In DataWindowGTKMM::saveAsButton_clicked: unalbe to save datahandler in file: " << result.raw() << "\n";
-			};
-
-      
-      break;
-    }
-     default:
-    {
-      break;
-    }	
-	};
-};
-
 
 
 //-----------------------------------------------------------------------------
@@ -477,7 +395,7 @@ void DataWindowGTKMM::update_comboDatahandlers()
 	for( int i = 0; i < data.size(); i++ )
 	{
 		name = ((data[i])->getName()).getUriString();
-		comboDatahandlers->append_text( name );
+		comboDatahandlers->prepend_text( name );
 	}
 	comboDatahandlers->set_active( this->getCurrentDatahandlerIndex() );
 };
@@ -491,7 +409,7 @@ void DataWindowGTKMM::update_comboFilesTodo()
 	list<URIobject*> * todo = dh->filesToDo();
 	for( list<URIobject*>::iterator it = todo->begin(); it != todo->end(); ++it )
 	{
-		comboFilesTodo->append_text( (*it)->getUriString() );
+		comboFilesTodo->prepend_text( (*it)->getUriString() );
 	}
 	
 };
@@ -517,8 +435,8 @@ void DataWindowGTKMM::comboFilesTodo_changed()
 	
 	int row = comboFilesTodo->get_active_row_number();
 	Datahandler* dh =	this->getCurrentDatahandler();
-	
-	
+	dh->getObjectAt( row );
+	this->displayDatahandlerObject();
 };
 
 //-----------------------------------------------------------------------------

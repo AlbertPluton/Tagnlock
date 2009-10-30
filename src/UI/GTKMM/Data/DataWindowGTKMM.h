@@ -57,11 +57,9 @@ class DataWindowGTKMM : public EngineGTKMM
 
 
 		// Functions for buttons
-		
 		void newButton_clicked();
 		void openButton_clicked();
-		void saveButton_clicked();
-		void saveAsButton_clicked();
+
 
 		// Functions to update combo lists
 		void update_comboDatahandlers();
@@ -91,6 +89,13 @@ class DataWindowGTKMM : public EngineGTKMM
 			
 		Gtk::ComboBoxText* comboDatahandlers;
 		Gtk::ComboBoxText* comboFilesTodo;
+		
+		// signal refrences to disable the combo signals
+//		sigc::signal<void>::iterator 
+		sigc::connection comboSignalDatahandlers;
+//		sigc::signal<void>::iterator 
+		sigc::connection comboSignalFilesTodo;
+		
 		
 		// Signal functions for the combo's	
 		void comboDatahandlers_changed();

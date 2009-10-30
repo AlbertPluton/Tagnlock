@@ -27,7 +27,7 @@ DisplayFilePDF::DisplayFilePDF( URIobject nameURI ) : DisplayFile( nameURI )
 	
 
 #ifdef DEBUG_MESSAGES_DEF
-	cout << "Constructing DisplayFilePDF object with " << nPages << " pages.\n";
+	cout << "Constructing DisplayFilePDF object with " << nPages << " pages, file name: \"" << nameString << "\"\n";
 #endif
 
 

@@ -75,10 +75,10 @@ class Datahandler
 
 		//! Get the size of the list.
 		int getListSize();
-		//! Returns the current position in the list
+		//! Returns the current position in the list. Starts from 1!
 		int getPosition();
-		//! Sets the position of this datahandler to the value of index.
-		void setPosition( int index );
+		//! Sets the position of this datahandler to the value of index. Must start from 1!
+		void setPosition( int pos );
 	
 		//! Returns the name and directory of the next file to process. This removes the file from the todo vector!!
 		/*!
