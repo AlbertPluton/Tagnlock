@@ -11,6 +11,7 @@ LINK_DIRECTORIES ( ${ALL_LINK_DIRS} )
 # Add all source files in a variable
 SET (	SRCS_Engine
 			Engine.cpp
+			Configuration.cpp
 		)
 
 		

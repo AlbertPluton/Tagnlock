@@ -17,6 +17,8 @@
 #include "ToolchainNode.h"
 
 
+#include "Configuration.h"
+
 #include <vector>
 using namespace std;
 
@@ -46,6 +48,13 @@ class Engine
 		// --- Functions relating to the general program flow ---------------------
 
 		virtual void quit(){};
+		
+		
+		//! Load the configuration of the program from a configuration file.
+		virtual void loadConfiguration();
+		
+		//! Save the current configuration to a configuration file.
+		virtual void saveConfiguration();
 
 
 		// --- Functions relating to Category -------------------------------------

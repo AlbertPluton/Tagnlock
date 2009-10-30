@@ -37,7 +37,31 @@ Engine::~Engine()
 
 };
 
+
+
+
+
 //-----------------------------------------------------------------------------
+// --- Functions relating to the general program flow -------------------------
+
+void Engine::loadConfiguration()
+{
+
+};
+
+
+//-----------------------------------------------------------------------------
+
+void Engine::saveConfiguration()
+{
+
+
+};
+
+
+//-----------------------------------------------------------------------------
+// --- Functions relating to Category -----------------------------------------
+
 
 void Engine::addCategory( Category* cat )
 {
