@@ -14,7 +14,7 @@
 
 //-----------------------------------------------------------------------------
 
-Engine::Engine()
+Engine::Engine() : Configuration( "Engine" )
 {		
 	currentCategory = -1;
 	currentField = -1;
@@ -546,11 +546,24 @@ void Engine::setCurrentToolchainNode( ToolchainNode* node )
 	};
 };
 
+
+//=============================================================================
 //-----------------------------------------------------------------------------
 
+void Engine::parseToMap()
+{
+	// create a string with all Category locations
+	string catLoc = "";
+	for( int i = 0; i < categories.size(); i++ ) catLoc += categories[i]->getFileName() + ";";
+	setPair( "catLoc", catLoc );
+};
 
 //-----------------------------------------------------------------------------
 
+void Engine::updateFromMap()
+{
+
+};
 
 //-----------------------------------------------------------------------------
 

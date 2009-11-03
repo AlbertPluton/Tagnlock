@@ -31,12 +31,14 @@ using namespace std;
 
 
 
-class Engine
+class Engine : public Configuration
 {
 
 
 	public:
-	
+
+		friend class Configuration;
+		
 		//! The default constructor
 		Engine();
 
@@ -275,6 +277,9 @@ class Engine
 
 
 	protected:
+
+		void parseToMap();
+		void updateFromMap();
 
 
 		vector<Category*> categories;

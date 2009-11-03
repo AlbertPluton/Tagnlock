@@ -9,8 +9,16 @@
 #ifndef CONFIGURATION_H
 #define CONFIGURATION_H
 
+
+#define CONFIG_FILE_NAME	"configuration_file"
+
+
+
 #include <iostream>
+#include <fstream>
 #include <string>
+#include <sstream>
+#include <map>
 using namespace std;
 
 
@@ -21,7 +29,7 @@ class Configuration
 	public:
 		
 		//! The default constructor	
-		Configuration();
+		Configuration( string className );
 	
 		//! The default destructor
 		~Configuration();
@@ -35,13 +43,176 @@ class Configuration
 		void save();
 	
 	
-	
+	protected:
+		
+		//! Add all key - data pairs in the class to the map.
+		virtual void parseToMap(){};
+		
+		//! Update the class with data from the map. 
+		virtual void updateFromMap(){};
+		
+		//! Set the data of key. If key does not excits add it.
+		template<class dataType> void setPair( string key, dataType data );
+		
+		//! Add a key - data pair. Throw exception if key already excits.
+		template<class dataType> void addPair( string key, dataType data );
+		
+		//! Get the data at the specified key. Throws an exception if the key is unknown. Throws an error if dataType and the data type indicator do not match
+		template<class dataType> dataType getData( string key );
+		
+			
 	private:
 
+		string classKey;
+	
+		static map<string, string> configMap;
 
+		//! Generate a data type indicator for the given data.
+		/*!
+			\returns an char indicating the type: 'I' for integer, 'F' for float, 'D' for double, 'S' for string and 'B' for boolean.
+		*/
+		template<class dataType> char getDataType( dataType data );
+		
+		int stringToInt( string data );
+		float stringToFloat( string data );
+		double stringToDouble( string data );
+		bool stringToBool( string data );
 
 };
 
+//=============================================================================
+
+template<class dataType> void Configuration::setPair(string key, dataType data)
+{
+
+	key = classKey + "-" + key;
+
+	// Convert the data via a string stream to a string and add it to the map.
+	stringstream ss;
+	ss << getDataType(data) << data;
+	configMap[key] = 	ss.str();		
+};
+
+//-----------------------------------------------------------------------------
+
+template<class dataType> void Configuration::addPair(string key, dataType data)
+{
+
+	key = classKey + "-" + key;
+
+	// Search for the given key
+	map<string, string>::iterator it = configMap.find(key);
+	
+	//! Add the object if it is NOT found in the map.
+	if( it == configMap.end() )
+	{
+		// Convert the data via a string stream to a string and add it to the map.
+		stringstream ss;
+		ss << getDataType(data) << data;
+		configMap[key] = 	ss.str();
+	}
+	else
+	{
+		// TODO throw
+		cout << "ERROR in Configuration::addPair: Key already found in map.\n";		
+	}
+	
+};
+
+//-----------------------------------------------------------------------------
+
+template<class dataType> char Configuration::getDataType( dataType data )
+{
+	if( typeid(data) == typeid(int) ) 				return 'I';
+	else if( typeid(data) == typeid(float) ) 	return 'F';
+	else if( typeid(data) == typeid(double) ) return 'D';
+	else if( typeid(data) == typeid(string) ) return 'S';
+	else if( typeid(data) == typeid(bool) ) 	return 'B';
+};
+
+//-----------------------------------------------------------------------------
+
+template<class dataType> dataType Configuration::getData( string key )
+{
+	
+	key = classKey + "-" + key;
+	
+	// Search for the given key
+	map<string, string>::iterator it = configMap.find( key);
+
+	//! Check for the excistance of the key.
+	if( it != configMap.end() )
+	{	
+	
+		// Obtain the data in string form and extract the data type indicator.
+		string data = configMap[key];
+		string typeIndicator = data[0];
+		data.erase(0,1);
+		
+		// See if the dataType is supported and the data type indicator matches this type.
+		if( typeid(dataType) == typeid(int) )
+		{
+			if(typeIndicator.compare('I') == 0)		return stringToInt( data );
+			else
+			{
+				// TODO throw
+				cout << "ERROR in Configuration::getData: dataType: \"" << typeid(dataType).name() << "\" does not match data type indicator \'I\'.\n";
+			}
+		}
+		else if( typeid(dataType) == typeid(float) )
+		{
+			if(typeIndicator.compare('F') == 0)		return stringToFloat( data );
+			else
+			{
+				// TODO throw
+				cout << "ERROR in Configuration::getData: dataType: \"" << typeid(dataType).name() << "\" does not match data type indicator \'F\'.\n";
+			}			
+		}	
+		else if( typeid(dataType) == typeid(double) )
+		{
+			if(typeIndicator.compare('D') == 0)		return stringToDouble( data );
+			else
+			{
+				// TODO throw
+				cout << "ERROR in Configuration::getData: dataType: \"" << typeid(dataType).name() << "\" does not match data type indicator \'D\'.\n";
+			}			
+		}	
+		else if( typeid(dataType) == typeid(string) )
+		{
+			if(typeIndicator.compare('S') == 0)		return data;
+			else
+			{
+				// TODO throw
+				cout << "ERROR in Configuration::getData: dataType: \"" << typeid(dataType).name() << "\" does not match data type indicator \'S\'.\n";
+			}			
+		}	
+		else if( typeid(dataType) == typeid(bool) )
+		{
+			if(typeIndicator.compare('B') == 0)		return stringToBool( data );
+			else
+			{
+				// TODO throw
+				cout << "ERROR in Configuration::getData: dataType: \"" << typeid(dataType).name() << "\" does not match data type indicator \'B\'.\n";
+			}			
+		}		
+		else
+		{
+			// TODO throw
+			cout << "ERROR in Configuration::getData: dataType: \"" << typeid(dataType).name() << "\" not supported.\n";
+		}					
+		
+		
+	}
+	else
+	{
+		// TODO throw
+		cout << "ERROR in Configuration::getData: unable to find key in map.\n";
+	}
+};
+
+
+//-----------------------------------------------------------------------------
+		
 #endif
 
 
