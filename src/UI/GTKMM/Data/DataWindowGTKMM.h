@@ -59,11 +59,13 @@ class DataWindowGTKMM : public EngineGTKMM
 		// Functions for buttons
 		void newButton_clicked();
 		void openButton_clicked();
+		void executeButton_clicked();
 
 
 		// Functions to update combo lists
 		void update_comboDatahandlers();
 		void update_comboFilesTodo();
+		void update_comboToolchains();
 
 
 	protected:
@@ -74,6 +76,13 @@ class DataWindowGTKMM : public EngineGTKMM
 
 	private:
 	
+		// Virtual functions derived from the Configuration class
+		virtual void parseToConfig();
+		virtual void updateFromConfig();
+
+
+
+
 		Gtk::Window* dataWindow;
 
 		Gtk::ScrolledWindow* categoryScrolledWindow;
@@ -89,18 +98,17 @@ class DataWindowGTKMM : public EngineGTKMM
 			
 		Gtk::ComboBoxText* comboDatahandlers;
 		Gtk::ComboBoxText* comboFilesTodo;
+		Gtk::ComboBoxText* comboToolchains;
 		
 		// signal refrences to disable the combo signals
-//		sigc::signal<void>::iterator 
 		sigc::connection comboSignalDatahandlers;
-//		sigc::signal<void>::iterator 
 		sigc::connection comboSignalFilesTodo;
-		
+		sigc::connection comboSignalToolchains;
 		
 		// Signal functions for the combo's	
 		void comboDatahandlers_changed();
 		void comboFilesTodo_changed();
-
+		void comboToolchains_changed();
 };
 
 

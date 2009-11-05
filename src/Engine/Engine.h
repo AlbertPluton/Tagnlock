@@ -278,8 +278,9 @@ class Engine : public Configuration
 
 	protected:
 
-		virtual void parseToConfig();
-		virtual void updateFromConfig();
+		// Virtual functions derived from the Configuration class
+		void parseToConfig();
+		void updateFromConfig();
 
 
 		vector<Category*> categories;

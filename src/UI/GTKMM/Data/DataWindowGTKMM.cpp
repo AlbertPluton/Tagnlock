@@ -68,23 +68,30 @@ DataWindowGTKMM::DataWindowGTKMM(  int argc, char **argv, string gladeFileName )
 	{
 	
 		comboDatahandlers = new Gtk::ComboBoxText();
+		comboToolchains = new Gtk::ComboBoxText();
 		comboFilesTodo = new Gtk::ComboBoxText();
 	
 		comboTable->attach( *comboDatahandlers, 1, 2, 0, 1 );
-		comboTable->attach( *comboFilesTodo, 1, 2, 1, 2 );
+		comboTable->attach( *comboToolchains, 1, 2, 1, 2 ); 
+		comboTable->attach( *comboFilesTodo, 1, 2, 2, 3 );
 	
 		comboSignalDatahandlers = comboDatahandlers->signal_changed().connect(sigc::mem_fun(*this, &DataWindowGTKMM::comboDatahandlers_changed));
+		comboSignalToolchains = comboToolchains->signal_changed().connect(sigc::mem_fun(*this, &DataWindowGTKMM::comboToolchains_changed));
 		comboSignalFilesTodo = comboFilesTodo->signal_changed().connect(sigc::mem_fun(*this, &DataWindowGTKMM::comboFilesTodo_changed));
 	}
 	else
 	{
 		// TODO Faild to obtain table.
 	}
-
+	
 
 	category = new CategoryGTKMM( );   
 	if( category ) categoryScrolledWindow->add( (Gtk::Widget&)*category );
 //	categoryScrolledWindow->show_all();
+
+
+	// Connect the signal of the Configuration base class to go parse.
+	signal_parse().connect( sigc::mem_fun(this, &DataWindowGTKMM::parseToConfig) );
 
 
   if(dataWindow)
@@ -93,6 +100,13 @@ DataWindowGTKMM::DataWindowGTKMM(  int argc, char **argv, string gladeFileName )
 		connectSignals();
     dataWindow->show_all();
 		datahandlerAssistant->hide_all();
+
+		update_comboDatahandlers();
+		update_comboFilesTodo();	
+		update_comboToolchains();	
+		displayNextObjectData();
+
+		
  		kit->run();
 	}
 	
@@ -197,7 +211,16 @@ void DataWindowGTKMM::connectSignals()
   	// TODO throw error
   }
   
-  
+  // Execute button
+  refXml->get_widget("toolbutton35", pToolButton);
+  if(pToolButton)
+  {
+    pToolButton->signal_clicked().connect( sigc::mem_fun( this, &DataWindowGTKMM::executeButton_clicked) );
+  }
+  else
+  {
+  	// TODO throw error
+  }  
  
 };
 
@@ -397,6 +420,16 @@ void DataWindowGTKMM::openButton_clicked()
 
 };
 
+//-----------------------------------------------------------------------------
+
+void DataWindowGTKMM::executeButton_clicked()
+{
+	Toolchain* toolchain = this->getCurrentToolchain();
+	Datahandler* pData = this->getCurrentDatahandler();
+	toolchain->setInput( pData );
+	toolchain->execute();
+};
+
 
 //-----------------------------------------------------------------------------
 
@@ -426,6 +459,23 @@ void DataWindowGTKMM::update_comboFilesTodo()
 	
 };
 
+
+//-----------------------------------------------------------------------------
+
+void DataWindowGTKMM::update_comboToolchains()
+{
+	string name;
+	comboToolchains->clear_items();
+	for( int i = 0; i < toolchains.size(); i++ )
+	{
+		name = toolchains[i]->getFileName();
+		comboToolchains->prepend_text( name );
+	};
+	comboToolchains->set_active( this->getCurrentToolchainIndex() );	
+
+};
+
+
 //-----------------------------------------------------------------------------
 
 void DataWindowGTKMM::comboDatahandlers_changed()
@@ -450,6 +500,43 @@ void DataWindowGTKMM::comboFilesTodo_changed()
 	dh->getObjectAt( row );
 	this->displayDatahandlerObject();
 };
+
+//-----------------------------------------------------------------------------
+
+void DataWindowGTKMM::comboToolchains_changed()
+{
+	int row = comboToolchains->get_active_row_number();
+	this->setCurrentToolchain(row);
+};
+
+
+//-----------------------------------------------------------------------------
+
+
+
+void DataWindowGTKMM::parseToConfig()
+{
+
+};
+
+//-----------------------------------------------------------------------------
+
+void DataWindowGTKMM::updateFromConfig()
+{
+
+};
+
+//-----------------------------------------------------------------------------
+
+
+//-----------------------------------------------------------------------------
+
+
+//-----------------------------------------------------------------------------
+
+
+//-----------------------------------------------------------------------------
+
 
 //-----------------------------------------------------------------------------
 

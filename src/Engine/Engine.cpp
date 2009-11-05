@@ -584,6 +584,15 @@ void Engine::parseToConfig()
 		setPair<string>( "dataLoc", dataLoc );
 	};
 	
+	// Store the current category
+	setPair<int>( "currCat", this->getIndexCurrentCategory() );
+
+	// Store the current toolchain
+	setPair<int>( "currTool", this->getCurrentToolchainIndex() );
+
+	// Store the current datahandler
+	setPair<int>( "currData", this->getCurrentDatahandlerIndex() );
+
 };
 
 //-----------------------------------------------------------------------------
@@ -602,7 +611,14 @@ void Engine::updateFromConfig()
 		// Get the toolchain locations
 		toolLoc = getData<string>( "toolLoc" );
 		// Get the datahandler locations
-		dataLoc = getData<string>( "dataLoc" );			
+		dataLoc = getData<string>( "dataLoc" );		
+		
+		// Load the current positions
+		this->setCurrentCategory( getData<int>("currCat") );
+		this->setCurrentToolchain( getData<int>("currTool") );
+		this->setCurrentDatahandler( getData<int>("currData") );
+		
+		
 	}
 	catch( exception& e )
 	{
@@ -644,6 +660,7 @@ void Engine::updateFromConfig()
 		string fileName = dataLoc.substr(0, found);
 		pData = new Datahandler();
 		pData->load( fileName, this->getCatVec() ); // TODO do some error checking on all load processes.	
+		this->addDatahandler( pData );
 		dataLoc.erase(0,found+1);
 		found = dataLoc.find(";");
 	};
