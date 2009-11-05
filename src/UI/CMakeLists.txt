@@ -18,6 +18,6 @@ SET (	SRCS_mainGTKMM
 ADD_EXECUTABLE (mainGTKMM mainGTKMM.cpp)
 
 # Link the executable to the libaries Field and Category
-TARGET_LINK_LIBRARIES ( mainGTKMM Engine EngineGTKMM Category Field Exceptions Datahandler Toolchain ${GTKMM_LIBRARIES} ${GLADEMM_LIBRARIES} ${POPPLER_GLIB_LIBRARIES} ${URIOBJECT_LIBRARIES})
+TARGET_LINK_LIBRARIES ( mainGTKMM EngineGTKMM Category Field Exceptions Datahandler Toolchain ${GTKMM_LIBRARIES} ${GLADEMM_LIBRARIES} ${POPPLER_GLIB_LIBRARIES} ${URIOBJECT_LIBRARIES})
 
 

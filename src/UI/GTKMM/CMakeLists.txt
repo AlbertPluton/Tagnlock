@@ -13,34 +13,6 @@
 #MESSAGE ( "Lib output path: ${LIBRARY_OUTPUT_PATH} \n " )
 
 
-
-
-# Make sure the compiler can find include files from our library.
-#include_directories (	${CMAKE_BINARY_DIR}/src/Category
-#											${CMAKE_BINARY_DIR}/src/Datahandler
-#											${CMAKE_BINARY_DIR}/src/Toolchain
-#											${CMAKE_BINARY_DIR}/src/Toolchain/Operations
-#											${CMAKE_BINARY_DIR}/src/Engine
-#											${CMAKE_BINARY_DIR}/src/UI/GTKMM/
-#											${CMAKE_BINARY_DIR}/src/UI/GTKMM/Category
-#											${CMAKE_BINARY_DIR}/src/UI/GTKMM/Category/Fields
-#											${CMAKE_BINARY_DIR}/src/UI/GTKMM/Data
-#											${CMAKE_BINARY_DIR}/src/UI/GTKMM/Toolchain
-#											${CMAKE_BINARY_DIR}/src/UI/GTKMM/GeneralGTKMM																		
-#											${GTKMM_INCLUDE_DIRS}
-#											${GLADEMM_INCLUDE_DIRS}
-#											${POPPLER_GLIB_INCLUDE_DIRS}
-#  										${URIOBJECT_INCLUDE_DIRS}
-#										)
-
-#LINK_DIRECTORIES ( ${LIBRARY_OUTPUT_PATH}
-#									 ${GTKMM_LIBRARY_DIRS}
-#									 ${GLADEMM_LIBRARY_DIRS}
-#									 ${POPPLER_GLIB_LIBRARY_DIRS}
-#									 ${URIOBJECT_LIBRARY_DIRS}
-#								 )
-
-
 # Make sure the compiler can find include files from our library.
 include_directories (	${ALL_INCLUDE_DIRS} )
 
@@ -69,6 +41,7 @@ SET (	SRCS_EngineGTKMM
 			Category/Fields/FieldSpinEditWidgetGTKMM.cpp
 			Category/Fields/FieldComboEditWidgetGTKMM.cpp
 			${CMAKE_BINARY_DIR}/src/Engine/Engine.cpp	
+			${CMAKE_BINARY_DIR}/src/Engine/Configuration.cpp
 			GeneralGTKMM/YesNoToggleButtonGTKMM.cpp
 			Toolchain/ToolchainWindowGTKMM.cpp
 			Toolchain/DialogOperationChooserGTKMM.cpp

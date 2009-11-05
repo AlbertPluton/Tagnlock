@@ -59,9 +59,6 @@ class Toolchain : public ToolchainOperation<Datahandler*, Datahandler*>
 		Datahandler* getOutput();
 		
 		
-		//! Returns the type of output this object giver, Datahandler*.
-		//type_info getTypeOut();
-		
 		//! Returns the file name in which the toolchain is stored. Will return "" if non is given.
 		string getFileName();
 		

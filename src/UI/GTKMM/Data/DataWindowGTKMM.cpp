@@ -338,10 +338,19 @@ void DataWindowGTKMM::readDataFromUI()
 
 void DataWindowGTKMM::newButton_clicked()
 {
+/*
 	// This is test code
 	Category* cat = new Category();
-	cat->loadCategory ("./testSaveCategory.cat");
+	cat->loadCategory("./testSaveCategory.cat");
 	this->addCategory(cat);
+	
+	Toolchain* tool = Toolchain::loadToolchain( "./toolchainSave.txt" );
+	this->addToolchain( tool );
+	
+	
+	this->saveConfig();
+*/
+
 
 	datahandlerAssistant->activate();
 	displayNextObjectData();

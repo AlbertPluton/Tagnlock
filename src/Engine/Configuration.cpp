@@ -9,6 +9,8 @@
 #include "Configuration.h"
 
 
+// Define the static member variable
+map<string, string> Configuration::configMap;
 
 //-----------------------------------------------------------------------------
 
@@ -16,6 +18,7 @@
 Configuration::Configuration( string className )
 {
 	classKey = className;
+	this->loadConfig();
 };
 
 
@@ -33,7 +36,7 @@ Configuration::~Configuration()
 
 //-----------------------------------------------------------------------------
 
-void Configuration::load()
+void Configuration::loadConfig()
 {
 
 	fstream file;								// Create file object.
@@ -93,6 +96,9 @@ void Configuration::load()
 				
 		}
 		
+		// Emit the signal indicating that a new map has been loaded.
+		m_signal_map_loaded.emit();
+		
 		file.close();	
 	
 		
@@ -110,7 +116,7 @@ void Configuration::load()
 //-----------------------------------------------------------------------------
 
 
-void Configuration::save()
+void Configuration::saveConfig()
 {
 	// Create file object.
 	ofstream file;
@@ -120,6 +126,10 @@ void Configuration::save()
 	
 	if( file.is_open() )
 	{
+	
+		// Emit the signal to the derived classes that they should parse their data.
+		m_signal_parse.emit( );
+	
 	
 		// See if the map has key pairs in it.
 		if( configMap.size() != 0 )
@@ -208,9 +218,17 @@ bool Configuration::stringToBool( string data )
 
 //-----------------------------------------------------------------------------
 
+Configuration::type_signal_parse Configuration::signal_parse()
+{
+	return m_signal_parse;
+};
 
 //-----------------------------------------------------------------------------
 
+Configuration::type_signal_map_loaded Configuration::signal_map_loaded()
+{
+	return m_signal_map_loaded;
+};
 
 //-----------------------------------------------------------------------------
 

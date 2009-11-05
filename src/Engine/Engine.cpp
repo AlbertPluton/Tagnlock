@@ -8,7 +8,7 @@
 
 #include "Engine.h"
 
-
+#include "URIobject.h"
 
 
 
@@ -21,6 +21,14 @@ Engine::Engine() : Configuration( "Engine" )
 	currentDatahandler = -1;
 	currentToolchain = -1;
 	currentToolchainNode = NULL;
+
+
+	// Connect the signal of the Configuration base class to go parse.
+	signal_parse().connect( sigc::mem_fun(this, &Engine::parseToConfig) );
+
+
+	// Extract configuration data from the map
+	this->updateFromConfig();
 
 	// TODO 28092009 what is there todo??
 
@@ -550,19 +558,93 @@ void Engine::setCurrentToolchainNode( ToolchainNode* node )
 //=============================================================================
 //-----------------------------------------------------------------------------
 
-void Engine::parseToMap()
+void Engine::parseToConfig()
 {
 	// create a string with all Category locations
-	string catLoc = "";
-	for( int i = 0; i < categories.size(); i++ ) catLoc += categories[i]->getFileName() + ";";
-	setPair( "catLoc", catLoc );
+	if( categories.size() )
+	{
+		string catLoc = "";
+		for( int i = 0; i < categories.size(); i++ ) catLoc += categories[i]->getFileName() + ";";
+		setPair<string>( "catLoc", catLoc );
+	};
+	
+	// create a string with all Toolchain locations
+	if( toolchains.size() > 0 )
+	{
+		string toolLoc = "";
+		for( int i = 0; i < toolchains.size(); i++ ) toolLoc += toolchains[i]->getFileName() + ";";
+		setPair<string>( "toolLoc", toolLoc );
+	};
+	
+	// create a string with all Datahandler locations
+	if( data.size() > 0 )
+	{
+		string dataLoc = "";
+		for( int i = 0; i < data.size(); i++ ) dataLoc += data[i]->getName().getFileName() + ";";
+		setPair<string>( "dataLoc", dataLoc );
+	};
+	
 };
 
 //-----------------------------------------------------------------------------
 
-void Engine::updateFromMap()
+void Engine::updateFromConfig()
 {
 
+	string catLoc = "";
+	string toolLoc = "";
+	string dataLoc = "";
+
+	try
+	{
+		// Get the category locations
+		catLoc = getData<string>( "catLoc" );
+		// Get the toolchain locations
+		toolLoc = getData<string>( "toolLoc" );
+		// Get the datahandler locations
+		dataLoc = getData<string>( "dataLoc" );			
+	}
+	catch( exception& e )
+	{
+		// TODO handle exception
+		cout << "ERROR in Engine::updateFromMap\n";
+	}
+	
+	// Go search for different locations in the loc strings
+	size_t found;
+	
+	// Do the categories
+	Category* cat = NULL;
+	found = catLoc.find(";");
+	while( found != string::npos ) 
+	{
+		cat = new Category();
+		cat->loadCategory( catLoc.substr(0, found) );
+		this->addCategory( cat);
+		found = catLoc.find(";");
+	}
+	
+	// Do the toolchains
+	found = toolLoc.find(";");
+	Toolchain* tool = NULL;
+	while( found != string::npos ) 
+	{
+		tool = Toolchain::loadToolchain( catLoc.substr(0, found) );
+		this->addToolchain( tool );
+		found = toolLoc.find(";");
+	}	
+	
+	// Do the toolchains
+	found = dataLoc.find(";");
+	Datahandler* pData = NULL;
+	URIobject uri;
+	while( found != string::npos ) 
+	{
+		uri.setUri( dataLoc.substr(0, found) );
+		pData = new Datahandler();
+		pData->load( uri, this->getCatVec() ); // TODO do some error checking on all load processes.	
+	};
+	
 };
 
 //-----------------------------------------------------------------------------

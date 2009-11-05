@@ -278,8 +278,8 @@ class Engine : public Configuration
 
 	protected:
 
-		void parseToMap();
-		void updateFromMap();
+		virtual void parseToConfig();
+		virtual void updateFromConfig();
 
 
 		vector<Category*> categories;
