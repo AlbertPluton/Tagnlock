@@ -76,7 +76,7 @@ void Configuration::loadConfig()
 			found = inputString.find_first_of("=");
 			if( found!=string::npos )
 			{			
-				string key = inputString.substr(0, found+1);
+				string key = inputString.substr(0, found);
 				string data = inputString.substr(found+1);
 				
 				// Search for the given key

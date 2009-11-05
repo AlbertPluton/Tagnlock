@@ -122,7 +122,7 @@ class Datahandler
 			\param catVec is a vector with all currently known categories by the engine.
 			\return True is returned when all went well.
 		*/
-		bool load( URIobject fileName, vector<Category*>* catVec );
+		bool load( string fileNameString, vector<Category*>* catVec );
 
 
 
@@ -151,10 +151,10 @@ class Datahandler
 
 
 		//! Sets the name of this datahandler.
-		void setName( URIobject uriName );
+		void setName( string uriName );
 
 		//! Returns the name of this datahandler. Name is set by the functions load and save.
-		URIobject getName();
+		string getName();
 
 
 	private:
@@ -187,7 +187,7 @@ class Datahandler
 		vector<Category*> categories; // The data in the categories vector corresponds to the data at the same index in the fileType vector.
 
 
-		URIobject name;
+		string name;
 
 
 		static bool stringToBool( string input );

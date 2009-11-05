@@ -406,7 +406,7 @@ void DataWindowGTKMM::update_comboDatahandlers()
 	comboDatahandlers->clear_items();
 	for( int i = 0; i < data.size(); i++ )
 	{
-		name = ((data[i])->getName()).getUriString();
+		name = (data[i])->getName();
 		comboDatahandlers->prepend_text( name );
 	}
 	comboDatahandlers->set_active( this->getCurrentDatahandlerIndex() );

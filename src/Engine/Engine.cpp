@@ -580,7 +580,7 @@ void Engine::parseToConfig()
 	if( data.size() > 0 )
 	{
 		string dataLoc = "";
-		for( int i = 0; i < data.size(); i++ ) dataLoc += data[i]->getName().getFileName() + ";";
+		for( int i = 0; i < data.size(); i++ ) dataLoc += data[i]->getName() + ";";
 		setPair<string>( "dataLoc", dataLoc );
 	};
 	
@@ -621,6 +621,7 @@ void Engine::updateFromConfig()
 		cat = new Category();
 		cat->loadCategory( catLoc.substr(0, found) );
 		this->addCategory( cat);
+		catLoc.erase(0, found+1);
 		found = catLoc.find(";");
 	}
 	
@@ -629,20 +630,22 @@ void Engine::updateFromConfig()
 	Toolchain* tool = NULL;
 	while( found != string::npos ) 
 	{
-		tool = Toolchain::loadToolchain( catLoc.substr(0, found) );
+		tool = Toolchain::loadToolchain( toolLoc.substr(0, found) );
 		this->addToolchain( tool );
+		toolLoc.erase(0, found+1);		
 		found = toolLoc.find(";");
 	}	
 	
 	// Do the toolchains
 	found = dataLoc.find(";");
 	Datahandler* pData = NULL;
-	URIobject uri;
 	while( found != string::npos ) 
 	{
-		uri.setUri( dataLoc.substr(0, found) );
+		string fileName = dataLoc.substr(0, found);
 		pData = new Datahandler();
-		pData->load( uri, this->getCatVec() ); // TODO do some error checking on all load processes.	
+		pData->load( fileName, this->getCatVec() ); // TODO do some error checking on all load processes.	
+		dataLoc.erase(0,found+1);
+		found = dataLoc.find(";");
 	};
 	
 };

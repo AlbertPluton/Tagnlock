@@ -647,8 +647,7 @@ void DataAssistantGTKMM::on_apply()
 {
 
 	Datahandler* newDatahandler = new Datahandler();
-	URIobject uri(confirmNameEntry.get_text());
-	newDatahandler->setName( uri );
+	newDatahandler->setName( confirmNameEntry.get_text() );
 	
 	// Add all directorys -----------------------------------
 	Gtk::TreeModel::Children rows = folderRefTreeModel->children(); 	// Get all rows 

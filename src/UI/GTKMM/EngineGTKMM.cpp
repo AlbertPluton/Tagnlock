@@ -325,11 +325,10 @@ void EngineGTKMM::loadDatahandler()
     case(Gtk::RESPONSE_OK):
     {	
     	Glib::ustring result_name = dialog.get_uri();
-			URIobject uri( result_name.raw() );
 			cout << result_name << "\n";
 
 			Datahandler* newDatahandler = new Datahandler();
-			if( newDatahandler->load( uri, this->getCatVec() ) )
+			if( newDatahandler->load( result_name.raw(), this->getCatVec() ) )
 			{
 				this->addDatahandler( newDatahandler );
 			}
@@ -358,7 +357,7 @@ void EngineGTKMM::saveDatahandler()
 	Datahandler* curDat = this->getCurrentDatahandler();
 
 	// Check if this datahanlder has a file name if not got saveAsButton_clicked.
-	string fileNameString = (curDat->getName()).getFileName();
+	string fileNameString = curDat->getName();
 	if(  fileNameString.compare( "" ) != 0 )
 	{
 		curDat->save( );

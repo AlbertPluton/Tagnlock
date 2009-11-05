@@ -630,22 +630,21 @@ bool Datahandler::save( URIobject fileNameUri )
 
 //-----------------------------------------------------------------------------
 
-bool Datahandler::load( URIobject fileNameUri,  vector<Category*>* catVec )
+bool Datahandler::load( string fileNameString,  vector<Category*>* catVec )
 {
 
 	fstream file;								// Create file object.
 	string inputString;					// This string is used to read the file line by line.
 	size_t found;								// Used for the string function find.
 	vector<string> description;	// All the lines containing information about the field.	
-	string fileNameString = fileNameUri.getFileName();
-
+	
 	// Open the file
 	file.open( fileNameString.c_str() );
 
 	if( file.is_open() )
 	{
 		
-		setName( fileNameUri );
+		setName( fileNameString );
 		
 		while( !file.eof() )
 		{
@@ -774,7 +773,7 @@ bool Datahandler::load( URIobject fileNameUri,  vector<Category*>* catVec )
 	}	
 
 
-	name = fileNameUri;
+	name = fileNameString;
 	return true;
 
 };
@@ -829,14 +828,14 @@ vector<Category*> Datahandler::getCategories()
 
 //-----------------------------------------------------------------------------
 
-void Datahandler::setName( URIobject uriName )
+void Datahandler::setName( string uriName )
 {
 	name = uriName;
 };
 
 //-----------------------------------------------------------------------------
 
-URIobject Datahandler::getName()
+string Datahandler::getName()
 {
 	return name;
 };

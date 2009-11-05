@@ -165,7 +165,8 @@ template<class dataType> void Configuration::addPair(string key, dataType data)
 
 //-----------------------------------------------------------------------------
 
-template<class dataType> dataType Configuration::getData( string key )
+
+template<> inline int Configuration::getData<int>( string key )
 {
 	
 	key = classKey + "-" + key;
@@ -179,61 +180,16 @@ template<class dataType> dataType Configuration::getData( string key )
 	
 		// Obtain the data in string form and extract the data type indicator.
 		string data = configMap[key];
-		string typeIndicator = data;
+		string typeIndicator = data.substr(0,1);
 		data.erase(0,1);
 		
-		// See if the dataType is supported and the data type indicator matches this type.
-		if( typeid(dataType) == typeid(int) )
-		{
-			if(typeIndicator.compare('I') == 0)		return stringToInt( data );
-			else
-			{
-				// TODO throw
-				cout << "ERROR in Configuration::getData: dataType: \"" << typeid(dataType).name() << "\" does not match data type indicator \'I\'.\n";
-			}
-		}
-		else if( typeid(dataType) == typeid(float) )
-		{
-			if(typeIndicator.compare('F') == 0)		return stringToFloat( data );
-			else
-			{
-				// TODO throw
-				cout << "ERROR in Configuration::getData: dataType: \"" << typeid(dataType).name() << "\" does not match data type indicator \'F\'.\n";
-			}			
-		}	
-		else if( typeid(dataType) == typeid(double) )
-		{
-			if(typeIndicator.compare('D') == 0)		return stringToDouble( data );
-			else
-			{
-				// TODO throw
-				cout << "ERROR in Configuration::getData: dataType: \"" << typeid(dataType).name() << "\" does not match data type indicator \'D\'.\n";
-			}			
-		}	
-		else if( typeid(dataType) == typeid(string) )
-		{
-			if(typeIndicator.compare('S') == 0)		return data;
-			else
-			{
-				// TODO throw
-				cout << "ERROR in Configuration::getData: dataType: \"" << typeid(dataType).name() << "\" does not match data type indicator \'S\'.\n";
-			}			
-		}	
-		else if( typeid(dataType) == typeid(bool) )
-		{
-			if(typeIndicator.compare('B') == 0)		return stringToBool( data );
-			else
-			{
-				// TODO throw
-				cout << "ERROR in Configuration::getData: dataType: \"" << typeid(dataType).name() << "\" does not match data type indicator \'B\'.\n";
-			}			
-		}		
+		// See if the data type indicator matches this type.
+		if(typeIndicator.compare("I") == 0)		return stringToInt( data );
 		else
 		{
 			// TODO throw
-			cout << "ERROR in Configuration::getData: dataType: \"" << typeid(dataType).name() << "\" not supported.\n";
-		}					
-		
+			cout << "ERROR in Configuration::getData: dataType: \"int\" does not match data type indicator \"" << typeIndicator << "\".\n";
+		}	
 		
 	}
 	else
@@ -245,6 +201,151 @@ template<class dataType> dataType Configuration::getData( string key )
 
 
 //-----------------------------------------------------------------------------
+
+template<> inline float Configuration::getData<float>( string key )
+{
+	
+	key = classKey + "-" + key;
+	
+	// Search for the given key
+	map<string, string>::iterator it = configMap.find( key);
+
+	//! Check for the excistance of the key.
+	if( it != configMap.end() )
+	{	
+	
+		// Obtain the data in string form and extract the data type indicator.
+		string data = configMap[key];
+		string typeIndicator = data.substr(0,1);
+		data.erase(0,1);
+		
+		// See if the data type indicator matches this type.
+		if(typeIndicator.compare("F") == 0)		return stringToFloat( data );
+		else
+		{
+			// TODO throw
+			cout << "ERROR in Configuration::getData: dataType: \"float\" does not match data type indicator \"" << typeIndicator << "\".\n";
+		}	
+		
+	}
+	else
+	{
+		// TODO throw
+		cout << "ERROR in Configuration::getData: unable to find key in map.\n";
+	}
+};
+
+
+//-----------------------------------------------------------------------------
+
+template<> inline double Configuration::getData<double>( string key )
+{
+	
+	key = classKey + "-" + key;
+	
+	// Search for the given key
+	map<string, string>::iterator it = configMap.find( key);
+
+	//! Check for the excistance of the key.
+	if( it != configMap.end() )
+	{	
+	
+		// Obtain the data in string form and extract the data type indicator.
+		string data = configMap[key];
+		string typeIndicator = data.substr(0,1);
+		data.erase(0,1);
+		
+		// See if the data type indicator matches this type.
+		if(typeIndicator.compare("D") == 0)		return stringToDouble( data );
+		else
+		{
+			// TODO throw
+			cout << "ERROR in Configuration::getData: dataType: \"double\" does not match data type indicator \"" << typeIndicator << "\".\n";
+		}	
+		
+	}
+	else
+	{
+		// TODO throw
+		cout << "ERROR in Configuration::getData: unable to find key in map.\n";
+	}
+};
+
+
+//-----------------------------------------------------------------------------
+
+template<> inline string Configuration::getData<string>( string key )
+{
+	
+	key = classKey + "-" + key;
+	
+	// Search for the given key
+	map<string, string>::iterator it = configMap.find( key);
+
+	//! Check for the excistance of the key.
+	if( it != configMap.end() )
+	{	
+	
+		// Obtain the data in string form and extract the data type indicator.
+		string data = configMap[key];
+		string typeIndicator = data.substr(0,1);
+		data.erase(0,1);
+		
+		// See if the data type indicator matches this type.
+		if(typeIndicator.compare("S") == 0)		return data;
+		else
+		{
+			// TODO throw
+			cout << "ERROR in Configuration::getData: dataType: \"string\" does not match data type indicator \"" << typeIndicator << "\".\n";
+		}	
+		
+	}
+	else
+	{
+		// TODO throw
+		cout << "ERROR in Configuration::getData: unable to find key in map.\n";
+	}
+};
+
+
+//-----------------------------------------------------------------------------
+
+template<> inline bool Configuration::getData<bool>( string key )
+{
+	
+	key = classKey + "-" + key;
+	
+	// Search for the given key
+	map<string, string>::iterator it = configMap.find( key);
+
+	//! Check for the excistance of the key.
+	if( it != configMap.end() )
+	{	
+	
+		// Obtain the data in string form and extract the data type indicator.
+		string data = configMap[key];
+		string typeIndicator = data.substr(0,1);
+		data.erase(0,1);
+		
+		// See if the data type indicator matches this type.
+		if(typeIndicator.compare("B") == 0)		return stringToBool( data );
+		else
+		{
+			// TODO throw
+			cout << "ERROR in Configuration::getData: dataType: \"bool\" does not match data type indicator \"" << typeIndicator << "\".\n";
+		}	
+		
+	}
+	else
+	{
+		// TODO throw
+		cout << "ERROR in Configuration::getData: unable to find key in map.\n";
+	}
+};
+
+
+//-----------------------------------------------------------------------------
+
 
 template<class dataType> char Configuration::getDataType( dataType data )
 {
