@@ -14,6 +14,7 @@
 #include <vector>
 #include <list>
 #include <string>
+#include <map>
 
 #include "Category.h"
 
@@ -24,6 +25,12 @@
 #include "URIobject.h"
 
 using namespace std;
+
+
+#define TODO_NO_DATAOBJECT			0
+#define TODO_HAS_DATAOBJECT			1
+#define COMPLETED_ALL_REQUIRED 	2
+#define DONE_EXECUTED_TOOLCHAIN 3
 
 
 //! This class holds all data of the "physical" objects being categorised.
@@ -43,26 +50,10 @@ class Datahandler
 		~Datahandler();
 	
 	
-		//! Add a predefined object to the list after the current position. This functions updates the value of the internal iterator.
-		/*!
-			All the data in the object is preserved.
-		*/
-		void addObject( ObjectData* data );
 	
-	
-		//! Create and add a new ObjectData object to the list after the current position. This functions updates the value of the internal iterator.
-		/*!
-			 	This new object has a data structure according to the given category. There is no data in this object, it is empty.
-				\param category the category corresponding to the object under consideration.
-				\param name the name and or directory of the file/folder under consideration.
-
-		*/
-		void addNewObject( Category* category, URIobject* name );
-
-		
-		//! Get the first data object in the list. This functions updates the value of the internal iterator.
+		//! Get the first data object in the map. This functions updates the value of the internal iterator.
 		ObjectData* getFirstObject();
-		//! Get the last data object in the list. This functions updates the value of the internal iterator.
+		//! Get the last data object in the map. This functions updates the value of the internal iterator.
 		ObjectData* getLastObject();		
 		//! Get the current data object referring to the internal index.
 		ObjectData* getCurrentObject();
@@ -70,12 +61,18 @@ class Datahandler
 		ObjectData* getNextObject();
 		//! Get the previous data object referring to the internal index. This functions updates the value of the internal iterator.
 		ObjectData* getPreviousObject();
-		//! Get the data object at a certain position in the list. This functions updates the value of the internal iterator.
+
+		//! Get the data object at a certain position in the map. This functions updates the value of the internal iterator.
 		ObjectData* getObjectAt( int index );
 
-		//! Get the size of the list.
-		int getListSize();
-		//! Returns the current position in the list. 
+		//! Sets the iterator and position index to the first file in the map which did not have a DataObject, it will add one and return it.
+		ObjectData* getNextObjectTodo();
+
+		void addNewObject( Category* category, URIobject* name );
+
+		//! Get the size of the map.
+		int getMapSize();
+		//! Returns the current position in the map. 
 		int getPosition();
 		//! Sets the position of this datahandler to the value of index.
 		void setPosition( int pos );
@@ -86,6 +83,8 @@ class Datahandler
 			\returns A string with the file name and directory. If todo is empty the string will be equel to "" and a error is generated.
 		*/
 		URIobject* getNextFile();
+		
+
 
 		//! Returns a vector of strings of all files which still need to be processed. The first string is the string getNextFile returns.
 		list<URIobject*> * filesToDo();
@@ -159,21 +158,46 @@ class Datahandler
 
 	private:
 	
-		//! A list with all data of every object which is being categorized. 
-		/*!
-			This list holds objects from the class ObjectData. This class holds the data of each individual object which is being categorized.
-		*/
-		list<ObjectData*> objectDataList;
+
 		
-		//! An iterator to loop trough the list.
-		list<ObjectData*>::iterator it;
+	
+		//! A structure to hold the objectData pointer and state of a file
+		struct fileStateObject
+		{
+			int state;
+			ObjectData* objectData;
+			Category* category;
+			URIobject* uri;
+		};
+	
+	
+		//! A map holding the file name as key and the associated data in a fileStateObject structure.
+		map<string, fileStateObject> objectMap;
+	
+		//! A iterator for the map.
+		map<string, fileStateObject>::iterator it;
+	
+		//! Function to add a new ObjectData object to the map.
+		void addObjectData( Category* category, URIobject* name );
+		
+		//! Function to add an ObjectDat object to the current file name in the map.
+		void addObjectData( );
+
+//		//! A list with all data of every object which is being categorized. 
+//		/*!
+//			This list holds objects from the class ObjectData. This class holds the data of each individual object which is being categorized.
+//		*/
+//		list<ObjectData*> objectDataList;
+		
+//		//! An iterator to loop trough the list.
+//		list<ObjectData*>::iterator it;
 		
 		//! An integer representation of the list iterator it.
 		int position;
 		
-		//! Increments the iterator and position. The function also checks that no invalid iterators (greater or smaller than the list) are tried to be made.
+		//! Increments the iterator and position. The function also checks that no invalid iterators (greater or smaller than the map) are tried to be made.
 		void incrementIT();
-		//! Decrements the iterator and position. The function also checks that no invalid iterators (greater or smaller than the list) are tried to be made.
+		//! Decrements the iterator and position. The function also checks that no invalid iterators (greater or smaller than the map) are tried to be made.
 		void decrementIT();
 		
 

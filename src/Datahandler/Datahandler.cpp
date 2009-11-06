@@ -21,7 +21,7 @@
 
 Datahandler::Datahandler() : name("")
 {
-	it = objectDataList.begin();
+	this->it = objectMap.begin();
 	position = -1;
 //	name = "";
 };
@@ -35,78 +35,41 @@ Datahandler::~Datahandler()
 
 //-----------------------------------------------------------------------------
 
-void Datahandler::addObject( ObjectData* data )
-{
-
-		if( (int)objectDataList.size() == 0 ) 			// If the list is empty add to the front.
-		{
-			objectDataList.push_front( data );
-			it = objectDataList.begin();		
-			position = 0;	
-		}
-		else if( it ==  objectDataList.end() ) 			// if it is the last item of the list, use push back
-		{
-			objectDataList.push_back( data );
-			it = --objectDataList.end();	// end returns a past last element iterator thus decrement for last element
-			position = objectDataList.size()-1;
-		}
-		else 																				// if it is the in the middel of the list, use insert
-		{
-			it++; 																		// Increment the it because insert puts the new object infront of the previous object
-			objectDataList.insert( it, data );
-			it--; 																		// Go back to the new data
-			position++;
-		}
-
-};
-
-
-//-----------------------------------------------------------------------------
-
-void Datahandler::addNewObject( Category* category, URIobject* name )
-{
-		// TODO throw incase of memory shortage
-		ObjectData* data = new ObjectData( category, name ); 
-
-		
-		if( (int)objectDataList.size() == 0 ) 			// If the list is empty add to the front.
-		{
-			objectDataList.push_front( data );
-			it = objectDataList.begin();
-			position = 0;			
-		}
-		else if( it ==  objectDataList.end() ) 			// if it is the last item of the list, use push back
-		{
-			objectDataList.push_back( data );
-			it = --objectDataList.end();	// end returns a past last element iterator thus decrement for last element
-			position = objectDataList.size()-1;
-		}
-		else 																				// if it is the in the middel of the list, use insert
-		{
-			it++;																			// Increment the it because insert puts the new object infront of the previous object
-			objectDataList.insert( it, data );
-			it--; 																		// Go back to the new data
-			position++;																// The position should be incremented to the new data.
-		}
-		
-};
-
-//-----------------------------------------------------------------------------
-
 ObjectData* Datahandler::getFirstObject()
 {
-	this->it = objectDataList.begin();
+	this->it = objectMap.begin();
 	position = 0;
-	return *(this->it);
+	
+	// Check to see if this file name has the correct state.
+	if( (it->second.state == TODO_HAS_DATAOBJECT) || (it->second.state == COMPLETED_ALL_REQUIRED) )
+	{
+		return it->second.objectData;
+	}
+	else
+	{
+		// If the first filename in the map has no ObjectData object go en check the next one.
+		return getNextObject();
+	}
 };
 
 //-----------------------------------------------------------------------------
 
 ObjectData* Datahandler::getLastObject()
 {
-	this->it = --objectDataList.end();	// end returns a past last element iterator thus decrement for last element
-	position = objectDataList.size()-1;  
-	return *(this->it);
+	this->it = --objectMap.end();	// end returns a past last element iterator thus decrement for last element
+	position = objectMap.size()-1;  
+
+	// Check to see if this file name has the correct state.
+	if( (it->second.state == TODO_HAS_DATAOBJECT) || (it->second.state == COMPLETED_ALL_REQUIRED) )
+	{
+		return it->second.objectData;
+	}
+	else
+	{
+		// If the last filename in the map has no ObjectData object go en check the previous one.
+		return getPreviousObject();
+	}
+
 };
 
 //-----------------------------------------------------------------------------
@@ -114,9 +77,9 @@ ObjectData* Datahandler::getLastObject()
 ObjectData* Datahandler::getCurrentObject()
 {
 	// See if there are objects in the list.
-	if( objectDataList.size() > 0 )	
+	if( objectMap.size() > 0 )	
 	{
-		return (*(this->it));	// A bit strange notation to get the pointer from the list
+		return this->it->second.objectData;
 	}
 	return NULL;
 };
@@ -126,40 +89,22 @@ ObjectData* Datahandler::getCurrentObject()
 ObjectData* Datahandler::getNextObject()
 {
 
- 	if( getPosition() == objectDataList.size()-1 )
- 	{
- 		// If the datahandler is empty / at the end of known objects, make a new dataobject.
- 		
- 		URIobject* fileName = getNextFile();
- 		
- 		// If the file name is empty some thing went wrong so do nothing.
- 		if( fileName )//fileName.compare("") != 0 )
- 		{
- 			
- 			// Find the file category matching the file type of this function.
- 			Category* cat = getCategoryFromType( fileName->getFileName() );
+	incrementIT();
+	
+	// See if the new position has a ObjectData object
+	if( (this->it->second.state == TODO_HAS_DATAOBJECT) || (this->it->second.state == COMPLETED_ALL_REQUIRED) )
+	{
+	 	return this->it->second.objectData;
+	}
+	else if( position == objectMap.size()-1 ) // If the last object in the map has no object 
+	{
+		return NULL; 
+	}
+	else // Go search the next file name
+	{
+		return getNextObject();
+	}
 
- 			if( cat ) // If a category is found
-			{
-				addNewObject( cat, fileName );
-				incrementIT();
-				ObjectData* object = getCurrentObject();
-				return object;
-			}
-			else
-			{
-				// TODO throw found no category suiteble for this file. This is very strange as it was might have been / should have been to get her, during the updating of the todo vector.		
-			}
-			
- 		}
- 	} 
- 	else if( objectDataList.size() > 0 ) 
- 	{
- 		incrementIT();
- 		return (*(this->it));	// A bit strange notation to get the pointer from the list
- 	}
- 	
-	return NULL;
 };
 
 //-----------------------------------------------------------------------------
@@ -167,8 +112,20 @@ ObjectData* Datahandler::getNextObject()
 ObjectData* Datahandler::getPreviousObject()
 {
 	decrementIT();
-	if( objectDataList.size() > 0 ) return (*(this->it)); // A bit strange notation to get the pointer from the list
-	return NULL;
+
+	// See if the new position has a ObjectData object
+	if( (this->it->second.state == TODO_HAS_DATAOBJECT) || (this->it->second.state == COMPLETED_ALL_REQUIRED) )
+	{
+	 	return this->it->second.objectData;
+	}
+	else if( position == 0 ) // If the last object in the map has no object 
+	{
+		return NULL; 
+	}
+	else // Go search the previous file name
+	{
+		return getPreviousObject();
+	}	
 };
 		
 //-----------------------------------------------------------------------------
@@ -177,26 +134,26 @@ ObjectData* Datahandler::getObjectAt( int index )
 {
 	
 	// See if index is within the current range of object
-	if( index < objectDataList.size() )
+	if( (index >= 0) &&  (index < objectMap.size())  )
 	{
 	
 		// The number of steps required to reach the new object
 		int fromBegin = index;
-		int fromEnd 	= objectDataList.size() - 1 - index;
+		int fromEnd 	= objectMap.size() - 1 - index;
 		int fromPos   = index - position;
 
 		// Find the shortest way to reach the desired position.
 
 		if( (fromBegin <= fromEnd) && (fromBegin*fromBegin <= fromPos*fromPos) ) // Use the square to lose possible minus sign of fromPos
 		{
-			this->it = objectDataList.begin();
+			this->it = objectMap.begin();
 			position = 0;
 			for( int i = 0; i < fromBegin; i++ ) incrementIT();	
 		}
 		else if( fromEnd*fromEnd <= fromPos*fromPos )		// Starting from the end is the shortest way 
 		{
-			this->it = --objectDataList.end();	// end returns a past last element iterator thus decrement for last element
-			position = objectDataList.size()-1;
+			this->it = --objectMap.end();	// end returns a past last element iterator thus decrement for last element
+			position = objectMap.size()-1;
 			for( int i = 0; i < fromEnd; i++ ) decrementIT();
 		}
 		else if( fromPos > 0 )	// Go up from the current position
@@ -211,38 +168,86 @@ ObjectData* Datahandler::getObjectAt( int index )
 	}
 	else 
 	{
-		while( getPosition() != index )
-		{
-	 		URIobject* fileName = getNextFile();
-	 		
-	 		// If the file name is empty some thing went wrong so do nothing.
-	 		if( fileName )//fileName.compare("") != 0 )
-	 		{			
-	 			// Find the file category matching the file type of this function.
-	 			Category* cat = getCategoryFromType( fileName->getFileName() );
-
-	 			if( cat ) // If a category is found
-				{
-					addNewObject( cat, fileName );
-					incrementIT();
-				}
-				else
-				{
-					// TODO throw found no category suiteble for this file. This is very strange as it was might have been / should have been to get her, during the updating of the todo vector.		
-				}
-			}
-			
- 		};
+		return NULL;
 	}
 	
-	return  (*this->it); // A bit strange notation to get the pointer from the list
+	// TODO make new object if it does not have one.
+	
+	return this->it->second.objectData;
+};
+
+
+//-----------------------------------------------------------------------------
+
+
+ObjectData* Datahandler::getNextObjectTodo()
+{
+
+	// Obtain the current position in the map
+	map<string, fileStateObject>::iterator it = this->it;
+	int pos = this->position;		
+		
+	// Go one up
+	it++;
+	pos++;
+		
+			
+		
+	while( it != objectMap.end() )
+	{
+		if( it->second.state == TODO_NO_DATAOBJECT ) // Add an object if it has non
+		{
+			// TODO addNewObject( Category* category, URIobject* name );
+			
+		}
+		else if( it->second.state == TODO_NO_DATAOBJECT ) // Set it as current object if not all required fields are filled out.
+		{
+		
+		}
+		it++;
+		pos++;			
+	}
+	
+	
+
+	
 };
 
 //-----------------------------------------------------------------------------
 
-int Datahandler::getListSize()
+void Datahandler::addNewObject( Category* category, URIobject* name )
 {
-	return (int)objectDataList.size();
+
+	string fileName = name->getUriString();
+	map<string, fileStateObject>::iterator it = objectMap.find( fileName );
+	
+	// If the object is not found, add it.
+	if( it == objectMap.end() )
+	{
+		// Create a new struct and add it to the map
+		fileStateObject* fileStruct = new fileStateObject;
+		fileStruct->state = TODO_NO_DATAOBJECT;
+		fileStruct->objectData = NULL;
+		fileStruct->category = category;
+		fileStruct->uri = name;
+		objectMap[fileName] = *fileStruct;	
+	}
+	else
+	{
+		// TODO throw
+		cout << "ERROR in Datahandler::addNewObject: object already in map.\n";
+	}
+
+	
+
+};
+
+
+//-----------------------------------------------------------------------------
+
+int Datahandler::getMapSize()
+{
+	return (int)objectMap.size();
 };
 
 //-----------------------------------------------------------------------------
@@ -258,21 +263,21 @@ void Datahandler::setPosition( int pos )
 {
 	if( pos > 0 )
 	{
-		if( pos < objectDataList.size() )	
+		if( pos < objectMap.size() )	
 		{
-			this->it = objectDataList.begin();
+			this->it = objectMap.begin();
 			position = 0;
 			while( pos != position ) { incrementIT(); }; // Loop till the desired position is reached.
 		}
-		else	// If index exceeds the size of the list, set the position to the end of the list.
+		else	// If index exceeds the size of the map, set the position to the end of the map.
 		{
-			this->it = objectDataList.end();
-			position = objectDataList.size()-1;
+			this->it = objectMap.end();
+			position = objectMap.size()-1;
 		}
 	}
 	else	// If index is below equal or below zero set it to zero.
 	{
-		this->it = objectDataList.begin();
+		this->it = objectMap.begin();
 		position = 0;
 	}
 
@@ -282,7 +287,7 @@ void Datahandler::setPosition( int pos )
 
 void Datahandler::incrementIT()
 {
-	if( position < objectDataList.size()-1 )	// To prevent invalid data acces
+	if( position < objectMap.size()-1 )	// To prevent invalid data acces
 	{
 		(this->it)++;
 		position++;
@@ -301,7 +306,7 @@ void Datahandler::decrementIT()
 };
 
 //-----------------------------------------------------------------------------
-
+/*
 URIobject* Datahandler::getNextFile()
 {
 
@@ -321,7 +326,7 @@ URIobject* Datahandler::getNextFile()
 	
 	return NULL;
 };
-
+*/
 //-----------------------------------------------------------------------------
 
 list<URIobject*> * Datahandler::filesToDo()
@@ -339,33 +344,28 @@ list<URIobject*> * Datahandler::filesDone()
 //-----------------------------------------------------------------------------
 
 
-void Datahandler::fileFinished( ObjectData* object )
+void Datahandler::fileFinished( ObjectData* object )																
 {
-
 	bool found = false;
-
-	list<ObjectData*>::iterator it = objectDataList.begin();
+	map<string, fileStateObject>::iterator it = objectMap.begin();
 	
-	for (list<ObjectData*>::iterator it= objectDataList.begin(); it!= objectDataList.end(); ++it)
+	while( it != objectMap.end() )
 	{
-		if( object == *it )
+		if( it->second.objectData == object ) 
 		{
-			found = true;
-			objectDataList.erase( it );
-			done.push_back( object->getObjectName() );		
-			break;		
-		}		
-	};
+			found == true;
+			it->second.state = DONE_EXECUTED_TOOLCHAIN;
+			break;
+		}
+		else it++;
+	}
 
 	if( !found )
 	{
-// TODO throw error
-    char * uriString;
-    int charsRequired;
-    URIobject* uri = object->getObjectName();
-		cout <<	"ERROR in Datahandler::fileFinished: Unable to find object in datahandler. Object is: " << uri->getUriString() << "\n";
+		// TODO throw
+		cout << "ERROR in Datahandler::fileFinished: unable to find finished object.\n";
 	}
-	
+			
 };
 
 
@@ -386,7 +386,7 @@ void Datahandler::updateFileList()
 		
 		if( !foundFiles->empty() )
 		{
-			todo.insert( todo.end(), foundFiles->begin(), foundFiles->end() );
+			todo.insert( todo.end(), foundFiles->begin(), foundFiles->end() );									// TODO todo
 		}
 		
 //		for( int iFiles = 0; iFiles < foundFiles->size(); iFiles++ )
@@ -838,6 +838,50 @@ void Datahandler::setName( string uriName )
 string Datahandler::getName()
 {
 	return name;
+};
+
+
+//-----------------------------------------------------------------------------
+
+
+void Datahandler::addObjectData( Category* category, URIobject* name )
+{
+		// Search for the file name in the map.
+		map<string, fileStateObject>::iterator it = objectMap.find( name->getUriString() );
+		
+		if( it != objectMap.end() )
+		{
+			// TODO throw incase of memory shortage
+			ObjectData* data = new ObjectData( category, name ); 
+			
+			it->second.state = TODO_HAS_DATAOBJECT;
+			it->second.objectData = data;
+			
+		}
+		else
+		{
+			// TODO throw
+			cout << "ERROR in Datahandler::addNewObject: unable to fine object name \"" << name->getUriString() << "\" in map.\n";
+		}
+		
+		
+};
+
+//-----------------------------------------------------------------------------
+
+void Datahandler::addObjectData( )
+{
+
+		if( this->it->second.objectData == NULL )
+		{
+			// TODO throw incase of memory shortage
+			ObjectData* data = new ObjectData( this->it->second.category, this->it->second.uri ); 
+			
+			it->second.state = TODO_HAS_DATAOBJECT;
+			it->second.objectData = data;
+			
+		}
+		
 };
 
 
