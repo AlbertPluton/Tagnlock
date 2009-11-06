@@ -171,8 +171,7 @@ void TextFileStorage::saveToSingleFile()
 						file << data->getFloat() << endl;
 					break;
 					
-					case typeFieldDataDouble:  // Resore the initial position of the internal Datahandler iterator. This is not as it is seposed to be. TODO alter the datahandler internal iterator.
-  getInput()->getObjectAt( pos );
+					case typeFieldDataDouble:  
 						file << data->getDouble() << endl;
 					break;
 					

@@ -109,6 +109,10 @@ class DataWindowGTKMM : public EngineGTKMM
 		void comboDatahandlers_changed();
 		void comboFilesTodo_changed();
 		void comboToolchains_changed();
+		
+		
+		Gtk::Statusbar* statusbar;
+		
 };
 
 

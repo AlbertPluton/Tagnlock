@@ -61,6 +61,7 @@ DataWindowGTKMM::DataWindowGTKMM(  int argc, char **argv, string gladeFileName )
   refXml->get_widget("scrolledwindow1", categoryScrolledWindow);
   refXml->get_widget("alignment3", displayWindow);
   refXml->get_widget("table1", comboTable);
+  refXml->get_widget("statusbar1", statusbar);
 	datahandlerAssistant = new DataAssistantGTKMM( this );
 
 
@@ -426,8 +427,18 @@ void DataWindowGTKMM::executeButton_clicked()
 {
 	Toolchain* toolchain = this->getCurrentToolchain();
 	Datahandler* pData = this->getCurrentDatahandler();
-	toolchain->setInput( pData );
-	toolchain->execute();
+	try
+	{
+		toolchain->setInput( pData );
+		toolchain->execute();
+	}
+	catch( exception& e )
+	{
+	
+	}
+	
+	statusbar->push( "Executed toolchain \"" + toolchain->getName() + "\" on datahandler \"" + pData->getName() + "\"." );
+	
 };
 
 
@@ -468,7 +479,7 @@ void DataWindowGTKMM::update_comboToolchains()
 	comboToolchains->clear_items();
 	for( int i = 0; i < toolchains.size(); i++ )
 	{
-		name = toolchains[i]->getFileName();
+		name = toolchains[i]->getName();
 		comboToolchains->prepend_text( name );
 	};
 	comboToolchains->set_active( this->getCurrentToolchainIndex() );	
