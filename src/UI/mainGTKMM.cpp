@@ -19,7 +19,7 @@ int main (int argc, char **argv)
 //  CategoryWindowGTKMM engine( argc, argv, fileName);
 
 
- 	ToolchainWindowGTKMM engine3( argc, argv, fileName);
+// 	ToolchainWindowGTKMM engine3( argc, argv, fileName);
 
 	// TODO Why do I get undefined refrences if this line is commented out.
 	DataWindowGTKMM engine2( argc, argv, fileName);
