@@ -1,3 +1,3 @@
-Engine-catLoc=S./testSaveCategory.cat;
-Engine-dataLoc=S/home/bart/DMS_SVN/testDH_06102009;
-Engine-toolLoc=S./toolchainSave.txt;
+Engine-catLoc=S./test_category.cat;
+Engine-dataLoc=S/home/bart/DMS_SVN/test_datahandler;
+Engine-toolLoc=S./test_toolchain;
