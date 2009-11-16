@@ -87,7 +87,13 @@ class CategoryGTKMM : public Gtk::Table
 		ObjectData* getObjectData();
 		
 	private:
-	
+
+
+		// Virtual functions derived from the Configuration class
+		void parseToConfig();
+		void updateFromConfig();	
+
+
 		ObjectData* objectData;
 
 

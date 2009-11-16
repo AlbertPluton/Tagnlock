@@ -42,6 +42,13 @@ CategoryGTKMM::CategoryGTKMM( )
 	this->set_child_visible();	
 
 
+	// Connect the signal of the Configuration base class to go parse.
+	signal_parse().connect( sigc::mem_fun(this, &CategoryGTKMM::parseToConfig) );
+
+	// Extract configuration data from the map
+	this->updateFromConfig();
+
+
 
 };
 
@@ -292,6 +299,26 @@ ObjectData* CategoryGTKMM::getObjectData()
 };
 
 //-----------------------------------------------------------------------------
+
+void CategoryGTKMM::parseToConfig()
+{
+
+	
+	
+	
+
+};
+
+//-----------------------------------------------------------------------------
+
+void CategoryGTKMM::updateFromConfig()
+{
+
+
+};
+
+//-----------------------------------------------------------------------------
+
 
 //-----------------------------------------------------------------------------
 
