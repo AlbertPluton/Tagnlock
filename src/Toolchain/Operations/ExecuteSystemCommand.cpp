@@ -97,7 +97,7 @@ ExecuteSystemCommand::~ExecuteSystemCommand( )
 //-----------------------------------------------------------------------------
 
 
-void ExecuteSystemCommand::execute()
+void ExecuteSystemCommand::execute( bool onlyCurrentObject )
 {
 
 	string str = this->getCommand() + " " + this->getInput() + " " + this->getArguments();

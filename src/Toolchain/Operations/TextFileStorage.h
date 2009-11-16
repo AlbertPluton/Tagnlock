@@ -52,7 +52,7 @@ class TextFileStorage : public ToolchainOperation<Datahandler*, string>
 	
 	
 		//! Execute this command, thus store the data from the Datahandler given in the input.
-		void execute();
+		void execute( bool onlyCurrentObject = false );
 		
 		//! Function to set the location of the file(s).
 		void setLocation( string loc );
@@ -84,9 +84,10 @@ class TextFileStorage : public ToolchainOperation<Datahandler*, string>
 		string location;
 		
 		string fileName;
+		int fileNumber;
 		
 		bool individualFiles;
-
+ 		bool onlyCurrent;
 
 		//! Function used to store all data in a single file ( individualFiles == false ).
 		void saveToSingleFile();

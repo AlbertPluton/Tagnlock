@@ -21,6 +21,7 @@ TextFileStorage::TextFileStorage( ToolchainNode* parent ) : ToolchainOperation<D
 	// Set the output to a default value.
 	this->setOutput( (string)("") );
 
+	fileNumber = 0;
 
 };
 
@@ -35,6 +36,7 @@ TextFileStorage::TextFileStorage( ToolchainNode* parent, int index ) : Toolchain
 	// Set the output to a default value.
 	this->setOutput( (string)("") );
 
+	fileNumber = 0;
 
 };
 
@@ -51,6 +53,8 @@ TextFileStorage::TextFileStorage( ToolchainNode* parent, string loc, string name
 	// Set the output to a default value.
 	this->setOutput( (string)("") );
 
+	fileNumber = 0;
+
 };
 
 //-----------------------------------------------------------------------------
@@ -62,8 +66,10 @@ TextFileStorage::~TextFileStorage()
 
 //-----------------------------------------------------------------------------
 
-void TextFileStorage::execute()
+void TextFileStorage::execute( bool onlyCurrentObject )
 {
+	
+	onlyCurrent = onlyCurrentObject;
 	
 	// Check to see if there is input.
 	if( this->getInput() == NULL )
@@ -80,7 +86,7 @@ void TextFileStorage::execute()
 		saveToSingleFile();
 	}	
 
-	this->executeChildren();
+	this->executeChildren( onlyCurrentObject );
 	
 };
 
@@ -134,7 +140,7 @@ void TextFileStorage::saveToSingleFile()
 
 	string str = this->getLocation() + this->getFileName();
 
-	ofstream file( str.c_str() );
+	ofstream file( str.c_str(), ios::app);
   
   // Get the initial position of the internal iterator of the Datahandler.
   int pos = this->getInput()->getPosition();
@@ -143,8 +149,18 @@ void TextFileStorage::saveToSingleFile()
   
   if( file.is_open() )
   {
-    // Get the first data object.
-  	ObjectData* objectData = getInput()->getFirstObjectCompleted();  
+    
+  	ObjectData* objectData = NULL;
+  	if( onlyCurrent )
+  	{
+  		// Get the current data object.
+  		objectData = getInput()->getCurrentObject();
+  	}
+  	else
+  	{
+  		// Get the first data object.
+  		objectData = getInput()->getFirstObjectCompleted();  
+  	}
     
     // Declare actual field data object.
     FieldData* data; 
@@ -152,49 +168,61 @@ void TextFileStorage::saveToSingleFile()
 		// Loop through all objectData elements in the Datahandler which are finched.
     while( objectData != NULL )
     {
-			
+
+			// Start with a new object.
+			file << "\n# BEGIN OF OBJECT\n";
+						
 			// Loop through all fieldData elements in an objectData object.
 			for( int j = 0; j < objectData->getSize(); j++ )
 			{
 				data = objectData->getDataAt(j);
 				
-				// Start with a new line;
-				file << endl;
-				
+
 				switch( data->getType() )
 				{
 					case typeFieldDataInt:
-						file << data->getInt() << endl;
+						file << data->getInt() << "\n";
 					break;
 					
 					case typeFieldDataFloat:
-						file << data->getFloat() << endl;
+						file << data->getFloat() << "\n";
 					break;
 					
 					case typeFieldDataDouble:  
-						file << data->getDouble() << endl;
+						file << data->getDouble() << "\n";
 					break;
 					
 					case typeFieldDataString:
-						file << data->getString() << endl;
+						file << data->getString() << "\n";
 					break;
 					
 					case typeFieldDataBool:
 						if( data->getBool() )
 						{
-							file << "true" << endl;
+							file << "true\n";
 						}
 						else
 						{
-							file << "false" << endl;
+							file << "false\n";
 						}
 					break;				
 				}		
 			}
-		
-			// Get the next data object.
-			objectData = getInput()->getNextObjectCompleted(); 
-			   	
+			
+			// The end of the object
+			file << "# END OF OBJECT\n";
+			
+			if( onlyCurrent )
+			{
+				// Stop the loop if only the current object is to be executed.
+				objectData = NULL;
+			}
+			else
+			{		
+				// Get the next data object.
+				objectData = getInput()->getNextObjectCompleted(); 
+			} 
+			  	
     }
     
 
@@ -229,7 +257,6 @@ void TextFileStorage::saveToIndividualFile()
 
 	string str;
 	ofstream file;
-	int i = 0;
 
   // Declare actual field data object.
   FieldData* data; 
@@ -237,9 +264,17 @@ void TextFileStorage::saveToIndividualFile()
   // Get the initial position of the internal iterator of the Datahandler.
   int pos = this->getInput()->getPosition();
 
-  // Get the first data object.
- 	ObjectData* objectData= getInput()->getFirstObjectCompleted();
-
+	ObjectData* objectData = NULL;
+	if( onlyCurrent )
+	{
+		// Get the current data object.
+		objectData = getInput()->getCurrentObject();
+	}
+	else
+	{
+		// Get the first data object.
+		objectData = getInput()->getFirstObjectCompleted();  
+	}
 
 	// Loop over all elements in the datahandler
 	while( objectData != NULL)
@@ -247,7 +282,7 @@ void TextFileStorage::saveToIndividualFile()
 
 		// Create the file name.
 		stringstream integerConvertor;
-		integerConvertor << i++;
+		integerConvertor << fileNumber++;
 		str = this->getLocation() + this->getFileName() + integerConvertor.str();
 
 		// Open the file;
@@ -299,9 +334,18 @@ void TextFileStorage::saveToIndividualFile()
 			//TODO throw
 		}		
 		
+	
+		if( onlyCurrent )
+		{
+			// Stop the loop if only the current object is to be executed.
+			objectData = NULL;
+		}
+		else
+		{		
+			// Get the next data object.
+			objectData = getInput()->getNextObjectCompleted(); 
+		} 		
 		
-		// Get the next data object.
-		objectData = getInput()->getNextObjectCompleted(); 
 		
 	}
 

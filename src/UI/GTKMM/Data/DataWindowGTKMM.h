@@ -59,8 +59,8 @@ class DataWindowGTKMM : public EngineGTKMM
 		// Functions for buttons
 		void newButton_clicked();
 		void openButton_clicked();
-		void executeButton_clicked();
-
+		void executeCompletedButton_clicked();
+		void executeCurrentButton_clicked();
 
 		// Functions to update combo lists
 		void update_comboDatahandlers();

@@ -52,7 +52,7 @@ class Toolchain : public ToolchainOperation<Datahandler*, Datahandler*>
 		
 		
 		//! Execute the toolchain
-		void execute( );//Datahandler* handler );
+		void execute( bool onlyCurrentObject = false );
 		
 		
 		//! Returns a pointer to the datahandler on which this toolchain is operating.

@@ -239,10 +239,10 @@ Toolchain* Toolchain::loadToolchain( string fileName )
 
 //-----------------------------------------------------------------------------
 
-void Toolchain::execute( )
+void Toolchain::execute( bool onlyCurrentObject )
 {
 	this->setOutput( this->getInput() );
-	this->executeChildren();
+	this->executeChildren( onlyCurrentObject );
 };
 
 //-----------------------------------------------------------------------------

@@ -216,17 +216,27 @@ void DataWindowGTKMM::connectSignals()
   	// TODO throw error
   }
   
-  // Execute button
+  // Execute completed button
   refXml->get_widget("toolbutton35", pToolButton);
   if(pToolButton)
   {
-    pToolButton->signal_clicked().connect( sigc::mem_fun( this, &DataWindowGTKMM::executeButton_clicked) );
+    pToolButton->signal_clicked().connect( sigc::mem_fun( this, &DataWindowGTKMM::executeCompletedButton_clicked) );
   }
   else
   {
   	// TODO throw error
   }  
- 
+
+  // Execute button
+  refXml->get_widget("toolbutton36", pToolButton);
+  if(pToolButton)
+  {
+    pToolButton->signal_clicked().connect( sigc::mem_fun( this, &DataWindowGTKMM::executeCurrentButton_clicked) );
+  }
+  else
+  {
+  	// TODO throw error
+  }  
 };
 
 //-----------------------------------------------------------------------------
@@ -427,13 +437,15 @@ void DataWindowGTKMM::openButton_clicked()
 
 //-----------------------------------------------------------------------------
 
-void DataWindowGTKMM::executeButton_clicked()
+void DataWindowGTKMM::executeCompletedButton_clicked()
 {
+	readDataFromUI();
 	Toolchain* toolchain = this->getCurrentToolchain();
 	Datahandler* pData = this->getCurrentDatahandler();
 	try
 	{
 		toolchain->setInput( pData );
+		// Execute all the completed objects
 		toolchain->execute();
 	}
 	catch( exception& e )
@@ -445,7 +457,27 @@ void DataWindowGTKMM::executeButton_clicked()
 	
 };
 
+//-----------------------------------------------------------------------------
 
+void DataWindowGTKMM::executeCurrentButton_clicked()
+{
+	readDataFromUI();
+	Toolchain* toolchain = this->getCurrentToolchain();
+	Datahandler* pData = this->getCurrentDatahandler();
+	try
+	{
+		toolchain->setInput( pData );
+		// Execute only the current object.
+		toolchain->execute( true );
+	}
+	catch( exception& e )
+	{
+	
+	}
+	
+	statusbar->push( "Executed toolchain \"" + toolchain->getName() + "\" on datahandler \"" + pData->getName() + "\"." );
+	
+};
 //-----------------------------------------------------------------------------
 
 void DataWindowGTKMM::update_comboDatahandlers()

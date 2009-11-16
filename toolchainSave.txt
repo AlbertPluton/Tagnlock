@@ -1,0 +1,32 @@
+NODE_ID: 0
+Class type: ""9Toolchain""
+Name: ""SaveToFile""
+Description: ""This toolchain saves a datahandler to a text file and copies it to a second file.""
+NODE_END
+
+NODE_ID: 0:0
+Class type: ""15TextFileStorage""
+Name: ""saveNode""
+Description: """"
+Location: ""../""
+File name: ""testFile""
+Individual: ""false""
+NODE_END
+
+NODE_ID: 0:0:0
+Class type: ""20ExecuteSystemCommand""
+Name: ""command""
+Description: """"
+Command: ""cp""
+Arguments: ""../'testFile 2 b' ""
+NODE_END
+
+NODE_ID: 0:1
+Class type: ""15TextFileStorage""
+Name: ""saveNode2""
+Description: """"
+Location: ""../""
+File name: ""testFile""
+Individual: ""true""
+NODE_END
+

@@ -80,6 +80,8 @@ ToolchainWindowGTKMM::ToolchainWindowGTKMM(  int argc, char **argv, string glade
   {
 		connectSignals();
     toolchainWindow->show_all();
+    displayToolchain();
+ 		
  		kit->run();
 	};
 }
@@ -143,7 +145,7 @@ void ToolchainWindowGTKMM::connectSignals()
   refXml->get_widget("toolbutton4", pToolButton);
   if(pToolButton)
   {
-    pToolButton->signal_clicked().connect( sigc::mem_fun( this, &EngineGTKMM::loadToolchain) );
+    pToolButton->signal_clicked().connect( sigc::mem_fun( this, &ToolchainWindowGTKMM::openButton_clicked) );
   }
   else
   {
@@ -458,7 +460,16 @@ void ToolchainWindowGTKMM::newButton_clicked()
 	// Display the new toolchain	
 	this->displayToolchain();
 };
+	
+	
+		
+//-----------------------------------------------------------------------------
 
+void ToolchainWindowGTKMM::openButton_clicked()
+{
+	this->loadToolchain();
+	this->displayToolchain();
+}
 		
 //-----------------------------------------------------------------------------
 

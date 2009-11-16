@@ -327,14 +327,8 @@ ObjectData* Datahandler::getFirstObjectCompleted()
 
 	// Obtain the current position in the map
 	map<string, fileStateObject>::iterator localIT = objectMap.begin();
-	int pos = this->position;		
-		
-	// Go one up
-	++localIT;
-	++pos;
-		
+	int pos = 0;		
 			
-		
 	while( localIT != objectMap.end() )
 	{
 		if( localIT->second.state == COMPLETED_ALL_REQUIRED ) // If it completed all the required fields return it.
@@ -359,14 +353,8 @@ ObjectData* Datahandler::getLastObjectCompleted()
 {
 
 	// Obtain the current position in the map
-	map<string, fileStateObject>::iterator localIT = objectMap.end();
-	int pos = this->position;		
-		
-	// Go one down
-	--localIT;
-	--pos;
-		
-			
+	map<string, fileStateObject>::iterator localIT = (objectMap.end())--;
+	int pos = objectMap.size()-1;				
 		
 	while( pos > -1 )
 	{
@@ -1147,7 +1135,12 @@ void Datahandler::addObjectData( )
 		// TODO throw incase of memory shortage
 		ObjectData* data = new ObjectData( this->it->second.category, this->it->second.uri ); 
 		
-		it->second.state = TODO_HAS_DATAOBJECT;
+
+#ifdef TODO_DEF
+#warning TODO in Datahandler::addObjectData: uses the correct state in stead of this short cut. This requires a check to see if all data has been entered.
+#endif		
+		it->second.state = COMPLETED_ALL_REQUIRED;
+	//it->second.state = TODO_HAS_DATAOBJECT;
 		it->second.objectData = data;
 		
 	}

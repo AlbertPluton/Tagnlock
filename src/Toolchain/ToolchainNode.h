@@ -103,7 +103,10 @@ class ToolchainNode
 		
 	
 		//! This function is implemented in the children of the class.
-		virtual void execute( ){};
+		/*!
+			\param onlyCurrentObject This boolean indicates wheter only the current object in the data handler should be executed.
+		*/
+		virtual void execute( bool onlyCurrentObject = false ){};
 		
 		
 		//! Get function for the description.
@@ -134,22 +137,22 @@ class ToolchainNode
 	protected:
 	
 		//! This function can be called in the derived execute function to execute the children of a node.
-		virtual void executeChildren(){};
+		virtual void executeChildren( bool onlyCurrentObject = false ){};
 
-	
-			//! This function is used by the parent class when it is destructed of the child node is removed from the nodeVector.
-			void deleteParentNode();
-			
-			
-			//! This vector holds all direct children nodes of this parent node.
-			vector<ToolchainNode*> nodeVector; 
-			
-			ToolchainNode* parentNode;
-	
-			string description;
-			
-			string name;
-			
+
+		//! This function is used by the parent class when it is destructed of the child node is removed from the nodeVector.
+		void deleteParentNode();
+		
+		
+		//! This vector holds all direct children nodes of this parent node.
+		vector<ToolchainNode*> nodeVector; 
+		
+		ToolchainNode* parentNode;
+
+		string description;
+		
+		string name;
+		
 		
 
 };

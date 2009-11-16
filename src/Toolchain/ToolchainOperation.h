@@ -50,7 +50,7 @@ class ToolchainOperation : public ToolchainNodeOutput<type_input, type_output>
 	protected:
 	
 		//! This function can be called in the derived execute function to execute the children of a node.
-		virtual void executeChildren();
+		virtual void executeChildren( bool onlyCurrentObject = false );
 	
 	private:
 
@@ -87,7 +87,7 @@ ToolchainOperation<type_in, type_out>::~ToolchainOperation( )
 //-----------------------------------------------------------------------------
 
 template <class type_in, class type_out>
-void ToolchainOperation<type_in, type_out>::executeChildren()
+void ToolchainOperation<type_in, type_out>::executeChildren( bool onlyCurrentObject )
 {
 	
 	ToolchainNode* childNode = NULL;
@@ -120,7 +120,7 @@ void ToolchainOperation<type_in, type_out>::executeChildren()
 
 		
 		// Now execute the child
-		childNode->execute();
+		childNode->execute( onlyCurrentObject );
 
 
 		childNode = NULL;

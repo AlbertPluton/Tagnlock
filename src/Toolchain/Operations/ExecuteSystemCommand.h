@@ -66,7 +66,7 @@ class ExecuteSystemCommand : public ToolchainOperation<string, int>
 		
 		
 		//! Execute the command with the arguments as defined in the vector arguments.
-		void execute();
+		void execute( bool onlyCurrentObject = false );
 		
 					
 		//! Sets the command. This function overwrites the current command.

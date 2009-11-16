@@ -57,6 +57,7 @@ class ToolchainWindowGTKMM : public EngineGTKMM
 		
 		//! Signal handlers relating to the toolbar buttons.
 		void newButton_clicked();
+		void openButton_clicked();
 		
 		void addButton_clicked();
 		void addChildButton_clicked();
