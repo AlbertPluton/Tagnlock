@@ -1,6 +1,0 @@
-Folder: file:///home/bart/DMS_SVN/test_docs/sub_dir
-Recursive: true
-Folder: file:///home/bart/DMS_SVN/test_docs
-Recursive: false
-Type: *.pdf
-Category: testName
