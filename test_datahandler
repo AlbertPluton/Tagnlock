@@ -1,6 +1,6 @@
-Folder: file:///home/bart/Documents
+Folder: file://./test_docs/sub_dir
 Recursive: true
-Folder: file://../
+Folder: file://./test_docs
 Recursive: false
 Type: *.pdf
 Category: testName
