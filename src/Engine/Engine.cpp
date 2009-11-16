@@ -27,6 +27,7 @@ Engine::Engine() : Configuration( "Engine" )
 	signal_parse().connect( sigc::mem_fun(this, &Engine::parseToConfig) );
 
 
+
 	// Extract configuration data from the map
 	this->updateFromConfig();
 
@@ -652,7 +653,7 @@ void Engine::updateFromConfig()
 		found = toolLoc.find(";");
 	}	
 	
-	// Do the toolchains
+	// Do the datahandlers
 	found = dataLoc.find(";");
 	Datahandler* pData = NULL;
 	while( found != string::npos ) 

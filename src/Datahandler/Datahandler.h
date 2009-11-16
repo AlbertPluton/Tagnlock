@@ -50,7 +50,22 @@ class Datahandler
 		~Datahandler();
 	
 	
-	
+		//! Get the next ObjectData, if the next iterator does not have one it will make one.
+		ObjectData* getNext();
+		
+		//! Get the next ObjectData, if the next iterator does not have one it will make one.	
+		ObjectData* getPrevious();
+
+		//! Get the first ObjectData, if the next iterator does not have one it will make one.		
+		ObjectData* getFirst();
+
+		//! Get the last ObjectData, if the next iterator does not have one it will make one.
+		ObjectData* getLast();
+		
+		//! Get the data object at a certain position in the map. This functions updates the value of the internal iterator and will create an data object if non excists.
+		ObjectData* getObjectAt( int index );
+		
+		
 		//! Get the first data object in the map. This functions updates the value of the internal iterator.
 		ObjectData* getFirstObject();
 		//! Get the last data object in the map. This functions updates the value of the internal iterator.
@@ -62,14 +77,55 @@ class Datahandler
 		//! Get the previous data object referring to the internal index. This functions updates the value of the internal iterator.
 		ObjectData* getPreviousObject();
 
-		//! Get the data object at a certain position in the map. This functions updates the value of the internal iterator.
-		ObjectData* getObjectAt( int index );
 
-		//! Sets the iterator and position index to the first file in the map which did not have a DataObject, it will add one and return it.
+		//! Sets the iterator and position index to the next file in the map which does not have a DataObject or completed all fields. 
+		/*!
+			The function will add a ObjectData object if required.
+			\returns a ObjectData pointer or NULL if no todo files are left.
+		*/
 		ObjectData* getNextObjectTodo();
 
+		//! Sets the iterator and position index to the previous file in the map which did not have a DataObject or completed all fields. 
+		/*!
+			The function will add a ObjectData object if required.
+			\returns a ObjectData pointer or NULL if no todo files are left.
+		*/
+		ObjectData* getPreviousObjectTodo();
+		
+		
+		
+		//! Returns the first object which completed all required fields.
+		/*!
+			\returns a ObjectData pointer or NULL if no completed files are availeble.
+		*/
+		ObjectData* getFirstObjectCompleted();
+
+		//! Returns the first object which completed all required fields.
+		/*!
+			\returns a ObjectData pointer or NULL if no completed files are availeble.
+		*/
+		ObjectData* getLastObjectCompleted();
+				
+		//! Returns the next object which completed all required fields.
+		/*!
+			\returns a ObjectData pointer or NULL if no completed files are availeble.
+		*/
+		ObjectData* getNextObjectCompleted();
+
+		//! Returns the previous object which completed all required fields. 
+		/*!
+			\returns a ObjectData pointer or NULL if no completed files are availeble.
+		*/
+		ObjectData* getPreviousObjectCompleted();
+
+
+
+
+		//! Add a new object to the map. 
 		void addNewObject( Category* category, URIobject* name );
 
+		
+		
 		//! Get the size of the map.
 		int getMapSize();
 		//! Returns the current position in the map. 
@@ -87,10 +143,10 @@ class Datahandler
 
 
 		//! Returns a vector of strings of all files which still need to be processed. The first string is the string getNextFile returns.
-		list<URIobject*> * filesToDo();
+		list<URIobject*> filesToDo();
 
 		//! Returns a vector of strings containing the names of the already processed files. 
-		list<URIobject*> * filesDone();
+		list<URIobject*> filesDone();
 
 		//! Updatas the objectDataList from the succes fully processed files. This function should be called when the toolchain has processed this object.
 		void fileFinished( ObjectData* object );
@@ -176,12 +232,15 @@ class Datahandler
 	
 		//! A iterator for the map.
 		map<string, fileStateObject>::iterator it;
-	
+
 		//! Function to add a new ObjectData object to the map.
 		void addObjectData( Category* category, URIobject* name );
 		
 		//! Function to add an ObjectDat object to the current file name in the map.
 		void addObjectData( );
+		
+		//! Function to add a key to the map. It will add the fileStateObject struct to with the known data; state, category and uri.
+		void addKey( URIobject* uri );
 
 //		//! A list with all data of every object which is being categorized. 
 //		/*!
@@ -199,10 +258,8 @@ class Datahandler
 		void incrementIT();
 		//! Decrements the iterator and position. The function also checks that no invalid iterators (greater or smaller than the map) are tried to be made.
 		void decrementIT();
-		
-
-		list<URIobject*> todo; 	
-		list<URIobject*> done;	
+		//! This function finds the position of the current iterator and sets position accordingly. Use it when changing the iterator withoud incrementIT of decrementIT.
+		void setPosToIT();
 
 		vector<URIobject> folders;
 		vector<bool> recursive; // The data in the recursive vector corresponds to the data at the same index in the folders vector.
@@ -234,6 +291,7 @@ class Datahandler
 			\returns A pointer to the category. NULL if none was found.
 		*/
 		Category* getCategoryFromType( string fileName );
+		
 
 };
 

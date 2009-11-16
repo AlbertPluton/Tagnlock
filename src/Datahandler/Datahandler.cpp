@@ -16,13 +16,13 @@
 
 
 
-
 //-----------------------------------------------------------------------------
 
 Datahandler::Datahandler() : name("")
 {
+
 	this->it = objectMap.begin();
-	position = -1;
+	position = 0;
 //	name = "";
 };
 
@@ -34,6 +34,62 @@ Datahandler::~Datahandler()
 };
 
 //-----------------------------------------------------------------------------
+
+ObjectData* Datahandler::getNext()
+{
+	incrementIT();
+	if( this->it->second.state == TODO_NO_DATAOBJECT )
+	{
+		addObjectData();
+	}
+	return this->it->second.objectData;
+};
+
+//-----------------------------------------------------------------------------
+
+ObjectData* Datahandler::getPrevious()
+{
+	decrementIT();
+	if( this->it->second.state == TODO_NO_DATAOBJECT )
+	{
+		addObjectData();
+	}
+	return this->it->second.objectData;
+}
+
+//-----------------------------------------------------------------------------
+
+ObjectData* Datahandler::getFirst()
+{
+
+	this->it = objectMap.begin();
+	position = 0;
+	if( this->it->second.state == TODO_NO_DATAOBJECT )
+	{
+		addObjectData();
+	}
+	return this->it->second.objectData;
+	
+};
+
+//-----------------------------------------------------------------------------
+
+ObjectData* Datahandler::getLast()
+{
+
+	this->it = (objectMap.end())--;
+	position = objectMap.size()-1;
+	if( this->it->second.state == TODO_NO_DATAOBJECT )
+	{
+		addObjectData();
+	}
+	return this->it->second.objectData;
+
+};
+
+//-----------------------------------------------------------------------------
+
+
 
 ObjectData* Datahandler::getFirstObject()
 {
@@ -111,6 +167,7 @@ ObjectData* Datahandler::getNextObject()
 
 ObjectData* Datahandler::getPreviousObject()
 {
+
 	decrementIT();
 
 	// See if the new position has a ObjectData object
@@ -126,6 +183,7 @@ ObjectData* Datahandler::getPreviousObject()
 	{
 		return getPreviousObject();
 	}	
+	
 };
 		
 //-----------------------------------------------------------------------------
@@ -171,9 +229,11 @@ ObjectData* Datahandler::getObjectAt( int index )
 		return NULL;
 	}
 	
-	// TODO make new object if it does not have one.
+	// Make new object if it does not have one.
+	if( this->it->second.state == TODO_NO_DATAOBJECT ) addObjectData();
 	
 	return this->it->second.objectData;
+
 };
 
 
@@ -184,34 +244,212 @@ ObjectData* Datahandler::getNextObjectTodo()
 {
 
 	// Obtain the current position in the map
-	map<string, fileStateObject>::iterator it = this->it;
+	map<string, fileStateObject>::iterator localIT = this->it;
 	int pos = this->position;		
 		
 	// Go one up
-	it++;
-	pos++;
+	++localIT;
+	++pos;
 		
 			
 		
-	while( it != objectMap.end() )
+	while( localIT != objectMap.end() )
 	{
-		if( it->second.state == TODO_NO_DATAOBJECT ) // Add an object if it has non
+		if( localIT->second.state == TODO_NO_DATAOBJECT ) // Add an object if it has non
 		{
-			// TODO addNewObject( Category* category, URIobject* name );
-			
+			this->it = localIT;
+			setPosToIT();
+			addNewObject( localIT->second.category, localIT->second.uri );
+			return this->it->second.objectData;
 		}
-		else if( it->second.state == TODO_NO_DATAOBJECT ) // Set it as current object if not all required fields are filled out.
+		else if( localIT->second.state == TODO_HAS_DATAOBJECT ) // Set it as current object if not all required fields are filled out.
 		{
-		
+			this->it = localIT;
+			setPosToIT();		
+			return this->it->second.objectData;
 		}
-		it++;
-		pos++;			
+		++localIT;
+		++pos;			
 	}
 	
-	
+	// No object todo was found.
+	return NULL;
 
 	
 };
+
+//-----------------------------------------------------------------------------
+
+
+ObjectData* Datahandler::getPreviousObjectTodo()
+{
+
+	// Obtain the current position in the map
+	map<string, fileStateObject>::iterator localIT = this->it;
+	int pos = this->position;		
+		
+	// Go one down
+	--localIT;
+	--pos;
+		
+			
+		
+	while( pos > -1 )
+	{
+		if( localIT->second.state == TODO_NO_DATAOBJECT ) // Add an object if it has non
+		{
+			this->it = localIT;
+			setPosToIT();
+			addNewObject( localIT->second.category, localIT->second.uri );
+			return this->it->second.objectData;
+		}
+		else if( localIT->second.state == TODO_HAS_DATAOBJECT ) // Set it as current object if not all required fields are filled out.
+		{
+			this->it = localIT;
+			setPosToIT();		
+			return this->it->second.objectData;
+		}
+		--localIT;
+		--pos;			
+	}
+	
+	// No object todo was found.
+	return NULL;
+
+	
+};
+
+
+//-----------------------------------------------------------------------------
+
+ObjectData* Datahandler::getFirstObjectCompleted()
+{
+
+	// Obtain the current position in the map
+	map<string, fileStateObject>::iterator localIT = objectMap.begin();
+	int pos = this->position;		
+		
+	// Go one up
+	++localIT;
+	++pos;
+		
+			
+		
+	while( localIT != objectMap.end() )
+	{
+		if( localIT->second.state == COMPLETED_ALL_REQUIRED ) // If it completed all the required fields return it.
+		{
+			this->it = localIT;
+			setPosToIT();
+			return this->it->second.objectData;
+		}
+		++localIT;
+		++pos;			
+	}
+	
+	// No completed object was found
+	return NULL;
+
+};
+
+
+//-----------------------------------------------------------------------------
+
+ObjectData* Datahandler::getLastObjectCompleted()
+{
+
+	// Obtain the current position in the map
+	map<string, fileStateObject>::iterator localIT = objectMap.end();
+	int pos = this->position;		
+		
+	// Go one down
+	--localIT;
+	--pos;
+		
+			
+		
+	while( pos > -1 )
+	{
+		if( localIT->second.state == COMPLETED_ALL_REQUIRED ) // If it completed all the required fields return it.
+		{
+			this->it = localIT;
+			setPosToIT();
+			return this->it->second.objectData;
+		}
+		--localIT;
+		--pos;			
+	}
+	
+	// No completed object was found
+	return NULL;
+
+};
+
+
+//-----------------------------------------------------------------------------
+
+ObjectData* Datahandler::getNextObjectCompleted()
+{
+
+	// Obtain the current position in the map
+	map<string, fileStateObject>::iterator localIT = this->it;
+	int pos = this->position;		
+		
+	// Go one up
+	++localIT;
+	++pos;
+		
+			
+		
+	while( localIT != objectMap.end() )
+	{
+		if( localIT->second.state == COMPLETED_ALL_REQUIRED ) // If it completed all the required fields return it.
+		{
+			this->it = localIT;
+			setPosToIT();
+			return this->it->second.objectData;
+		}
+		++localIT;
+		++pos;			
+	}
+	
+	// No completed object was found
+	return NULL;
+
+};
+
+//-----------------------------------------------------------------------------
+
+ObjectData* Datahandler::getPreviousObjectCompleted()
+{
+
+	// Obtain the current position in the map
+	map<string, fileStateObject>::iterator localIT = this->it;
+	int pos = this->position;		
+		
+	// Go one down
+	--localIT;
+	--pos;
+		
+			
+		
+	while( pos > -1 )
+	{
+		if( localIT->second.state == COMPLETED_ALL_REQUIRED ) // If it completed all the required fields return it.
+		{
+			this->it = localIT;
+			setPosToIT();
+			return this->it->second.objectData;
+		}
+		--localIT;
+		--pos;			
+	}
+	
+	// No completed object was found
+	return NULL;
+
+};
+
 
 //-----------------------------------------------------------------------------
 
@@ -224,13 +462,7 @@ void Datahandler::addNewObject( Category* category, URIobject* name )
 	// If the object is not found, add it.
 	if( it == objectMap.end() )
 	{
-		// Create a new struct and add it to the map
-		fileStateObject* fileStruct = new fileStateObject;
-		fileStruct->state = TODO_NO_DATAOBJECT;
-		fileStruct->objectData = NULL;
-		fileStruct->category = category;
-		fileStruct->uri = name;
-		objectMap[fileName] = *fileStruct;	
+		addKey( name );	
 	}
 	else
 	{
@@ -287,10 +519,11 @@ void Datahandler::setPosition( int pos )
 
 void Datahandler::incrementIT()
 {
-	if( position < objectMap.size()-1 )	// To prevent invalid data acces
+	
+	if( position < ((int)objectMap.size()-1) )	// To prevent invalid data acces
 	{
-		(this->it)++;
-		position++;
+		++(this->it);
+		++position;	
 	}
 };
 
@@ -300,9 +533,35 @@ void Datahandler::decrementIT()
 {
 	if( position > 0 )	// To prevent invalid data acces
 	{
-		(this->it)--;
-		position--;
+		--(this->it);
+		--position;
 	}
+};
+
+//-----------------------------------------------------------------------------
+
+void Datahandler::setPosToIT()
+{
+	
+	map<string, fileStateObject>::iterator localIT = objectMap.begin();
+	int pos = 0;
+	
+	while( (localIT != this->it) && (localIT != objectMap.end()) )
+	{
+		++localIT;
+		++pos;
+	}
+	
+	if( localIT == this->it )
+	{
+		this->position = pos;
+	}
+	else
+	{
+		// TODO throw
+		cout << "ERROR in Datahandler::setPosToIT: Unable to find position for iterator.\n";
+	}
+
 };
 
 //-----------------------------------------------------------------------------
@@ -329,16 +588,35 @@ URIobject* Datahandler::getNextFile()
 */
 //-----------------------------------------------------------------------------
 
-list<URIobject*> * Datahandler::filesToDo()
+list<URIobject*> Datahandler::filesToDo()
 {
-	return &todo;
+	list<URIobject*> todo;
+	map<string, fileStateObject>::iterator localIT = objectMap.begin();
+	while( localIT != objectMap.end() )
+	{
+		if( (localIT->second.state == TODO_NO_DATAOBJECT) || (localIT->second.state == TODO_HAS_DATAOBJECT) )
+		{
+			todo.push_back( localIT->second.uri );
+		}
+		++localIT;
+	}
+	return todo;
 };
 
 //-----------------------------------------------------------------------------
 
-list<URIobject*> * Datahandler::filesDone()
+list<URIobject*> Datahandler::filesDone()
 {
-	return &done;
+	list<URIobject*> done;
+	map<string, fileStateObject>::iterator localIT = objectMap.begin();
+	while( localIT != objectMap.end() )
+	{
+		if( localIT->second.state == DONE_EXECUTED_TOOLCHAIN )
+		{
+			done.push_back( localIT->second.uri );
+		}
+	}
+	return done;	
 };
 
 //-----------------------------------------------------------------------------
@@ -384,18 +662,15 @@ void Datahandler::updateFileList()
 		// Search a folder and return a list of files which have the desired type(s).
 		foundFiles = searchDirectory( folders[iFolder], recursive[iFolder] );
 		
-		if( !foundFiles->empty() )
+		// Loop over all the  files to add to the map
+		list<URIobject*>::iterator it = foundFiles->begin();
+		while( it != foundFiles->end() )
 		{
-			todo.insert( todo.end(), foundFiles->begin(), foundFiles->end() );									// TODO todo
+			addKey( *it );
+			++it;
 		}
 		
-//		for( int iFiles = 0; iFiles < foundFiles->size(); iFiles++ )
-//		{
-//			todo.push_back( (*foundFiles)[iFiles] );
-//		}	
-
 		delete foundFiles;
-		
 	}
 	
 	
@@ -447,22 +722,15 @@ list<URIobject*> * Datahandler::searchDirectory( URIobject folder, bool rec )
       	// See if the file has the correct type
       	if( correctType( nameOfFile ) )
       	{
-      		// See if it is not allready done
-      		bool doneBool = false;
-      		for( list<URIobject*>::iterator it = done.begin(); it != done.end(); it++ )
-      		{
-      			if( nameOfFile.compare( (*it)->getFileName() ) == 0 )
-      			{
-      				doneBool = true;
-      				break;
-      			}
-      		}
-      		
-      		// Add it
+      		// See if it is not allready added
       		string uriString = folder.getUriString() + "/" + nameOfFile;
-      		URIobject* uri = new URIobject( uriString );
-      		if( !doneBool ) foundFiles->push_back( uri ); 
-      		
+      		map<string, fileStateObject>::iterator foundIT = objectMap.find( uriString );
+					if( foundIT == objectMap.end() )
+					{      		
+	      		// Add it
+		    		URIobject* uri = new URIobject( uriString );
+		    		foundFiles->push_back( uri ); 
+  				}    		
       	};
       }
       else if( rec && (dptr->d_type == isFolder)  )
@@ -595,7 +863,7 @@ bool Datahandler::save( URIobject fileNameUri )
 	{
 
 		// Write all the folders to the file and whether or not the folder should be searched recursively.
-		for( int i = 0; i < folders.size(); i++ )
+		for( int i = 0; i < folders.size(); ++i )
 		{
 			file << "Folder: " << folders[i].getUriString() << "\n";
 			file << "Recursive: "<< this->boolToString( recursive[i] ) << "\n";
@@ -603,7 +871,7 @@ bool Datahandler::save( URIobject fileNameUri )
 
 
 		// Write the file types to the file.
-		for( int i = 0; i < fileTypes.size(); i++ )
+		for( int i = 0; i < fileTypes.size(); ++i )
 		{
 			file << "Type: " << fileTypes[i] << "\n";
 			file << "Category: " << categories[i]->getName() << "\n";
@@ -611,9 +879,11 @@ bool Datahandler::save( URIobject fileNameUri )
 
 
 		// Write the file names of the already processed files
-		for( list<URIobject*>::iterator it = done.begin(); it != done.end(); it++ )
+		map<string, fileStateObject>::iterator localIT = objectMap.begin();
+		while( localIT != objectMap.end() )
 		{
-			file << "Done: " << (*it)->getUriString() << "\n";
+			if( localIT->second.state == DONE_EXECUTED_TOOLCHAIN ) file << "Done: " << localIT->second.uri->getUriString() << "\n";
+			++localIT;
 		}
 
 		
@@ -733,7 +1003,7 @@ bool Datahandler::load( string fileNameString,  vector<Category*>* catVec )
 			{
 				inputString.erase(0, 6);
 				uri = new URIobject( inputString );
-				done.push_back( uri );
+				addKey( uri );
 				continue;
 			}	
 
@@ -872,18 +1142,35 @@ void Datahandler::addObjectData( Category* category, URIobject* name )
 void Datahandler::addObjectData( )
 {
 
-		if( this->it->second.objectData == NULL )
-		{
-			// TODO throw incase of memory shortage
-			ObjectData* data = new ObjectData( this->it->second.category, this->it->second.uri ); 
-			
-			it->second.state = TODO_HAS_DATAOBJECT;
-			it->second.objectData = data;
-			
-		}
+	if( this->it->second.objectData == NULL )
+	{
+		// TODO throw incase of memory shortage
+		ObjectData* data = new ObjectData( this->it->second.category, this->it->second.uri ); 
+		
+		it->second.state = TODO_HAS_DATAOBJECT;
+		it->second.objectData = data;
+		
+	}
 		
 };
 
+
+
+//-----------------------------------------------------------------------------
+
+void Datahandler::addKey( URIobject* uri )
+{
+	// Create the fileStateObject struct and fill it with data.	
+	fileStateObject* fileStruct = new fileStateObject;
+	fileStruct->state = TODO_NO_DATAOBJECT;
+	fileStruct->objectData = NULL;
+	fileStruct->category = getCategoryFromType( uri->getUriString() );
+	fileStruct->uri = uri;				
+	
+	// Add the key and struct to the map.
+	objectMap[ uri->getUriString() ] = *fileStruct;
+
+};
 
 //-----------------------------------------------------------------------------
 

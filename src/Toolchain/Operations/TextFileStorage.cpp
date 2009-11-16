@@ -144,13 +144,13 @@ void TextFileStorage::saveToSingleFile()
   if( file.is_open() )
   {
     // Get the first data object.
-  	ObjectData* objectData = getInput()->getFirstObject();  
+  	ObjectData* objectData = getInput()->getFirstObjectCompleted();  
     
     // Declare actual field data object.
     FieldData* data; 
 
-		// Loop through all objectData elements in the Datahandler.
-    for( int i = 0; i < (int)getInput()->getListSize(); i++ )
+		// Loop through all objectData elements in the Datahandler which are finched.
+    while( objectData != NULL )
     {
 			
 			// Loop through all fieldData elements in an objectData object.
@@ -193,7 +193,7 @@ void TextFileStorage::saveToSingleFile()
 			}
 		
 			// Get the next data object.
-			objectData = getInput()->getNextObject(); 
+			objectData = getInput()->getNextObjectCompleted(); 
 			   	
     }
     
@@ -229,7 +229,7 @@ void TextFileStorage::saveToIndividualFile()
 
 	string str;
 	ofstream file;
-
+	int i = 0;
 
   // Declare actual field data object.
   FieldData* data; 
@@ -238,16 +238,16 @@ void TextFileStorage::saveToIndividualFile()
   int pos = this->getInput()->getPosition();
 
   // Get the first data object.
- 	ObjectData* objectData= getInput()->getFirstObject();
+ 	ObjectData* objectData= getInput()->getFirstObjectCompleted();
 
 
 	// Loop over all elements in the datahandler
-	for( int i = 0; i < (int)getInput()->getListSize(); i++ )
+	while( objectData != NULL)
 	{
 
 		// Create the file name.
 		stringstream integerConvertor;
-		integerConvertor << i;
+		integerConvertor << i++;
 		str = this->getLocation() + this->getFileName() + integerConvertor.str();
 
 		// Open the file;
@@ -301,7 +301,7 @@ void TextFileStorage::saveToIndividualFile()
 		
 		
 		// Get the next data object.
-		objectData = getInput()->getNextObject(); 
+		objectData = getInput()->getNextObjectCompleted(); 
 		
 	}
 

@@ -145,7 +145,7 @@ template<class dataType> void Configuration::addPair(string key, dataType data)
 	key = classKey + "-" + key;
 
 	// Search for the given key
-	map<string, string>::iterator it = configMap.find(key);
+	map<string, string>::iterator it = configMap.find( key );
 	
 	//! Add the object if it is NOT found in the map.
 	if( it == configMap.end() )
@@ -172,7 +172,7 @@ template<> inline int Configuration::getData<int>( string key )
 	key = classKey + "-" + key;
 	
 	// Search for the given key
-	map<string, string>::iterator it = configMap.find( key);
+	map<string, string>::iterator it = configMap.find( key );
 
 	//! Check for the excistance of the key.
 	if( it != configMap.end() )
@@ -188,14 +188,14 @@ template<> inline int Configuration::getData<int>( string key )
 		else
 		{
 			// TODO throw
-			cout << "ERROR in Configuration::getData: dataType: \"int\" does not match data type indicator \"" << typeIndicator << "\".\n";
+			cout << "ERROR in Configuration::getData<int>: dataType: \"int\" does not match data type indicator \"" << typeIndicator << "\".\n";
 		}	
 		
 	}
 	else
 	{
 		// TODO throw
-		cout << "ERROR in Configuration::getData: unable to find key in map.\n";
+		cout << "ERROR in Configuration::getData<int>: unable to find key \"" << key << "\" in map.\n";
 	}
 };
 
@@ -208,7 +208,7 @@ template<> inline float Configuration::getData<float>( string key )
 	key = classKey + "-" + key;
 	
 	// Search for the given key
-	map<string, string>::iterator it = configMap.find( key);
+	map<string, string>::iterator it = configMap.find( key );
 
 	//! Check for the excistance of the key.
 	if( it != configMap.end() )
@@ -224,14 +224,14 @@ template<> inline float Configuration::getData<float>( string key )
 		else
 		{
 			// TODO throw
-			cout << "ERROR in Configuration::getData: dataType: \"float\" does not match data type indicator \"" << typeIndicator << "\".\n";
+			cout << "ERROR in Configuration::getData<float>: dataType: \"float\" does not match data type indicator \"" << typeIndicator << "\".\n";
 		}	
 		
 	}
 	else
 	{
 		// TODO throw
-		cout << "ERROR in Configuration::getData: unable to find key in map.\n";
+		cout << "ERROR in Configuration::getData<float>: unable to find key \"" << key << "\" in map.\n";
 	}
 };
 
@@ -244,7 +244,7 @@ template<> inline double Configuration::getData<double>( string key )
 	key = classKey + "-" + key;
 	
 	// Search for the given key
-	map<string, string>::iterator it = configMap.find( key);
+	map<string, string>::iterator it = configMap.find( key );
 
 	//! Check for the excistance of the key.
 	if( it != configMap.end() )
@@ -260,14 +260,14 @@ template<> inline double Configuration::getData<double>( string key )
 		else
 		{
 			// TODO throw
-			cout << "ERROR in Configuration::getData: dataType: \"double\" does not match data type indicator \"" << typeIndicator << "\".\n";
+			cout << "ERROR in Configuration::getData<double>: dataType: \"double\" does not match data type indicator \"" << typeIndicator << "\".\n";
 		}	
 		
 	}
 	else
 	{
 		// TODO throw
-		cout << "ERROR in Configuration::getData: unable to find key in map.\n";
+		cout << "ERROR in Configuration::getData<double>: unable to find key \"" << key << "\" in map.\n";
 	}
 };
 
@@ -303,7 +303,7 @@ template<> inline string Configuration::getData<string>( string key )
 	else
 	{
 		// TODO throw
-		cout << "ERROR in Configuration::getData: unable to find key in map.\n";
+		cout << "ERROR in Configuration::getData: unable to find key \"" << key << "\" in map.\n";
 	}
 };
 
@@ -339,7 +339,7 @@ template<> inline bool Configuration::getData<bool>( string key )
 	else
 	{
 		// TODO throw
-		cout << "ERROR in Configuration::getData: unable to find key in map.\n";
+		cout << "ERROR in Configuration::getData: unable to find key \"" << key << "\" in map.\n";
 	}
 };
 

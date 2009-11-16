@@ -102,10 +102,14 @@ DataWindowGTKMM::DataWindowGTKMM(  int argc, char **argv, string gladeFileName )
     dataWindow->show_all();
 		datahandlerAssistant->hide_all();
 
+		// Load the names in the combos.
 		update_comboDatahandlers();
 		update_comboFilesTodo();	
 		update_comboToolchains();	
-		displayNextObjectData();
+
+		// After start up show the first object.		
+		(this->getCurrentDatahandler())->getFirst();
+		displayDatahandlerObject();
 
 		
  		kit->run();
@@ -325,7 +329,7 @@ void DataWindowGTKMM::displayNextObjectData()
 		this->readDataFromUI();
 		
 		// A little abuse of the getNextObject function only to update the value of the current object in the datahandler.
-		(this->getCurrentDatahandler())->getNextObject();
+		(this->getCurrentDatahandler())->getNext();
 
 		this->displayDatahandlerObject();
 	};
@@ -344,7 +348,7 @@ void DataWindowGTKMM::displayPreviousObjectData()
 		this->readDataFromUI();
 		
 		// A little abuse of the getPreviousObject function only to update the value of the current object in the datahandler.
-		(this->getCurrentDatahandler())->getPreviousObject();
+		(this->getCurrentDatahandler())->getPrevious();
 
 		this->displayDatahandlerObject();
 	};
@@ -462,10 +466,11 @@ void DataWindowGTKMM::update_comboFilesTodo()
 {
 	comboFilesTodo->clear_items();
 	Datahandler* dh = this->getCurrentDatahandler();
-	list<URIobject*> * todo = dh->filesToDo();
-	for( list<URIobject*>::iterator it = todo->begin(); it != todo->end(); ++it )
+	list<URIobject*> todo = dh->filesToDo();
+	for( list<URIobject*>::iterator it = todo.begin(); it != todo.end(); ++it )
 	{
-		comboFilesTodo->prepend_text( (*it)->getUriString() );
+		URIobject* uri = *it;
+		comboFilesTodo->append_text( uri->getUriString() );
 	}
 	
 };
