@@ -487,7 +487,7 @@ void DataWindowGTKMM::update_comboDatahandlers()
 	for( int i = 0; i < data.size(); i++ )
 	{
 		name = (data[i])->getName();
-		comboDatahandlers->prepend_text( name );
+		comboDatahandlers->append_text( name );
 	}
 	comboDatahandlers->set_active( this->getCurrentDatahandlerIndex() );
 };
@@ -517,7 +517,7 @@ void DataWindowGTKMM::update_comboToolchains()
 	for( int i = 0; i < toolchains.size(); i++ )
 	{
 		name = toolchains[i]->getName();
-		comboToolchains->prepend_text( name );
+		comboToolchains->append_text( name );
 	};
 	comboToolchains->set_active( this->getCurrentToolchainIndex() );	
 
@@ -555,6 +555,7 @@ void DataWindowGTKMM::comboToolchains_changed()
 {
 	int row = comboToolchains->get_active_row_number();
 	this->setCurrentToolchain(row);
+	cout << "Current Toolchain set to: " << row << "\n";
 };
 
 
