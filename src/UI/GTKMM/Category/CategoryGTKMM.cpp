@@ -43,7 +43,7 @@ CategoryGTKMM::CategoryGTKMM( )
 
 
 	// Connect the signal of the Configuration base class to go parse.
-	signal_parse().connect( sigc::mem_fun(this, &CategoryGTKMM::parseToConfig) );
+//	signal_parse().connect( sigc::mem_fun(this, &CategoryGTKMM::parseToConfig) );
 
 	// Extract configuration data from the map
 	this->updateFromConfig();

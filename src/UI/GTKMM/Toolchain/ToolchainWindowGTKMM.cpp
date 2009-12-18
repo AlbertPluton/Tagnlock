@@ -102,6 +102,10 @@ ToolchainWindowGTKMM::~ToolchainWindowGTKMM( )
 void ToolchainWindowGTKMM::connectSignals()
 {
 
+	// The delete event to close the program
+	toolchainWindow->signal_delete_event().connect( sigc::mem_fun( this, &EngineGTKMM::quit) );
+
+
   //Get the Glade-instantiated Button, and connect a signal handler:
   Gtk::ToolButton* pToolButton = 0;
 

@@ -99,130 +99,132 @@ CategoryWindowGTKMM::~CategoryWindowGTKMM()
 void CategoryWindowGTKMM::connectSignals()
 {
 
+	// The delete event to close the program
+	categoryWindow->signal_delete_event().connect( sigc::mem_fun( this, &EngineGTKMM::quit) );
 
 
 
-    //Get the Glade-instantiated Button, and connect a signal handler:
-    Gtk::ToolButton* pToolButton = 0;
-    
+  //Get the Glade-instantiated Button, and connect a signal handler:
+  Gtk::ToolButton* pToolButton = 0;
+  
 
-    // New button
-    refXml->get_widget("toolbutton14", pToolButton);
-    if(pToolButton)
-    {
-      pToolButton->signal_clicked().connect( sigc::mem_fun( this, &CategoryWindowGTKMM::onButton_new) );
-    }
-    else
-    {
-    	// TODO throw error
-    }
-    
+  // New button
+  refXml->get_widget("toolbutton14", pToolButton);
+  if(pToolButton)
+  {
+    pToolButton->signal_clicked().connect( sigc::mem_fun( this, &CategoryWindowGTKMM::onButton_new) );
+  }
+  else
+  {
+  	// TODO throw error
+  }
+  
 
-		// Open button
-    refXml->get_widget("toolbutton15", pToolButton);
-    if(pToolButton)
-    {
-      pToolButton->signal_clicked().connect( sigc::mem_fun( this, &CategoryWindowGTKMM::onButton_open) );
-    }
-    else
-    {
-    	// TODO throw error
-    }
-    
-    
-    // Save button
-		refXml->get_widget("toolbutton16", pToolButton);
-    if(pToolButton)
-    {
-      pToolButton->signal_clicked().connect( sigc::mem_fun( this, &EngineGTKMM::saveCategory) );
-    }
-    else
-    {
-    	// TODO throw error
-    } 
+	// Open button
+  refXml->get_widget("toolbutton15", pToolButton);
+  if(pToolButton)
+  {
+    pToolButton->signal_clicked().connect( sigc::mem_fun( this, &CategoryWindowGTKMM::onButton_open) );
+  }
+  else
+  {
+  	// TODO throw error
+  }
+  
+  
+  // Save button
+	refXml->get_widget("toolbutton16", pToolButton);
+  if(pToolButton)
+  {
+    pToolButton->signal_clicked().connect( sigc::mem_fun( this, &EngineGTKMM::saveCategory) );
+  }
+  else
+  {
+  	// TODO throw error
+  } 
 
-    // Save as button
-		refXml->get_widget("toolbutton32", pToolButton);
-    if(pToolButton)
-    {
-      pToolButton->signal_clicked().connect( sigc::mem_fun( this, &EngineGTKMM::saveAsCategory) );
-    }
-    else
-    {
-    	// TODO throw error
-    }     
-   
-   
-    // Back button
-		refXml->get_widget("toolbutton17", pToolButton);
-    if(pToolButton)
-    {
-      pToolButton->signal_clicked().connect( sigc::mem_fun( this, &CategoryWindowGTKMM::onButton_back) );
-    }
-    else
-    {
-    	// TODO throw error
-    }      
-   
-   
-    // Forward button
-		refXml->get_widget("toolbutton18", pToolButton);
-    if(pToolButton)
-    {
-      pToolButton->signal_clicked().connect( sigc::mem_fun( this, &CategoryWindowGTKMM::onButton_forward) );
-    }
-    else
-    {
-    	// TODO throw error
-    }      
-    
-		// Add button
-    refXml->get_widget("toolbutton21", pToolButton);
-    if(pToolButton)
-    {
-      pToolButton->signal_clicked().connect( sigc::mem_fun( this, &CategoryWindowGTKMM::onButton_add) );
-    }
-    else
-    {
-    	// TODO throw error	fieldTableGTKMM = new FieldTableGTKMM();
-    }
-    
-    
-    // Delete button
-		refXml->get_widget("toolbutton22", pToolButton);
-    if(pToolButton)
-    {
-      pToolButton->signal_clicked().connect( sigc::mem_fun( this, &CategoryWindowGTKMM::onButton_delete) );
-    }
-    else
-    {
-    	// TODO throw error
-    } 
-    
-    // Up button
-		refXml->get_widget("toolbutton23", pToolButton);
-    if(pToolButton)
-    {
-      pToolButton->signal_clicked().connect( sigc::mem_fun( this, &CategoryWindowGTKMM::onButton_up) );
-    }
-    else
-    {
-    	// TODO throw error
-    }   
+  // Save as button
+	refXml->get_widget("toolbutton32", pToolButton);
+  if(pToolButton)
+  {
+    pToolButton->signal_clicked().connect( sigc::mem_fun( this, &EngineGTKMM::saveAsCategory) );
+  }
+  else
+  {
+  	// TODO throw error
+  }     
+ 
+ 
+  // Back button
+	refXml->get_widget("toolbutton17", pToolButton);
+  if(pToolButton)
+  {
+    pToolButton->signal_clicked().connect( sigc::mem_fun( this, &CategoryWindowGTKMM::onButton_back) );
+  }
+  else
+  {
+  	// TODO throw error
+  }      
+ 
+ 
+  // Forward button
+	refXml->get_widget("toolbutton18", pToolButton);
+  if(pToolButton)
+  {
+    pToolButton->signal_clicked().connect( sigc::mem_fun( this, &CategoryWindowGTKMM::onButton_forward) );
+  }
+  else
+  {
+  	// TODO throw error
+  }      
+  
+	// Add button
+  refXml->get_widget("toolbutton21", pToolButton);
+  if(pToolButton)
+  {
+    pToolButton->signal_clicked().connect( sigc::mem_fun( this, &CategoryWindowGTKMM::onButton_add) );
+  }
+  else
+  {
+  	// TODO throw error	fieldTableGTKMM = new FieldTableGTKMM();
+  }
+  
+  
+  // Delete button
+	refXml->get_widget("toolbutton22", pToolButton);
+  if(pToolButton)
+  {
+    pToolButton->signal_clicked().connect( sigc::mem_fun( this, &CategoryWindowGTKMM::onButton_delete) );
+  }
+  else
+  {
+  	// TODO throw error
+  } 
+  
+  // Up button
+	refXml->get_widget("toolbutton23", pToolButton);
+  if(pToolButton)
+  {
+    pToolButton->signal_clicked().connect( sigc::mem_fun( this, &CategoryWindowGTKMM::onButton_up) );
+  }
+  else
+  {
+  	// TODO throw error
+  }   
 
-    // Down button
-		refXml->get_widget("toolbutton24", pToolButton);
-    if(pToolButton)
-    {
-      pToolButton->signal_clicked().connect( sigc::mem_fun( this, &CategoryWindowGTKMM::onButton_down) );
-    }
-    else
-    {
-    	// TODO throw error
-    }        
-      
-    // When clicking on a field in the tree view of the category window, change the selection
-    categoryGTKMM->get_signal_selectionChange().connect( sigc::mem_fun( this, &CategoryWindowGTKMM::fieldSelected) );
+  // Down button
+	refXml->get_widget("toolbutton24", pToolButton);
+  if(pToolButton)
+  {
+    pToolButton->signal_clicked().connect( sigc::mem_fun( this, &CategoryWindowGTKMM::onButton_down) );
+  }
+  else
+  {
+  	// TODO throw error
+  }        
+    
+  // When clicking on a field in the tree view of the category window, change the selection
+  categoryGTKMM->get_signal_selectionChange().connect( sigc::mem_fun( this, &CategoryWindowGTKMM::fieldSelected) );
 
 
 
