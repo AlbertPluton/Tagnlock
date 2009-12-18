@@ -1,3 +1,6 @@
 Engine-catLoc=S./test_category;
+Engine-currCat=I0
+Engine-currData=I0
+Engine-currTool=I1
 Engine-dataLoc=S./test_datahandler;
 Engine-toolLoc=S./test_toolchain;

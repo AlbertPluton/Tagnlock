@@ -147,6 +147,7 @@ void EngineGTKMM::on_toolbutton25_clicked(  )
 
 bool EngineGTKMM::quit( GdkEventAny* event )
 {
+	saveConfig();
 	Gtk::Main::quit();
 	return true;
 };

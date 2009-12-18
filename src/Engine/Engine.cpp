@@ -561,11 +561,18 @@ void Engine::setCurrentToolchainNode( ToolchainNode* node )
 
 void Engine::parseToConfig()
 {
+
+	string name = "";
+
 	// create a string with all Category locations
 	if( categories.size() )
 	{
 		string catLoc = "";
-		for( int i = 0; i < categories.size(); i++ ) catLoc += categories[i]->getFileName() + ";";
+		for( int i = 0; i < categories.size(); i++ )
+		{
+		 name = categories[i]->getFileName();
+		 if( name.compare("") != 0 ) catLoc += name + ";";
+		}
 		setPair<string>( "catLoc", catLoc );
 	};
 	
@@ -573,7 +580,11 @@ void Engine::parseToConfig()
 	if( toolchains.size() > 0 )
 	{
 		string toolLoc = "";
-		for( int i = 0; i < toolchains.size(); i++ ) toolLoc += toolchains[i]->getFileName() + ";";
+		for( int i = 0; i < toolchains.size(); i++ ) 
+		{
+			name = toolchains[i]->getFileName();
+			if( name.compare("") != 0 ) toolLoc += name + ";";
+		}
 		setPair<string>( "toolLoc", toolLoc );
 	};
 	
@@ -581,7 +592,11 @@ void Engine::parseToConfig()
 	if( data.size() > 0 )
 	{
 		string dataLoc = "";
-		for( int i = 0; i < data.size(); i++ ) dataLoc += data[i]->getName() + ";";
+		for( int i = 0; i < data.size(); i++ ) 
+		{
+			name = data[i]->getName();
+			if( name.compare("") != 0 ) dataLoc += name + ";";
+		}
 		setPair<string>( "dataLoc", dataLoc );
 	};
 	
