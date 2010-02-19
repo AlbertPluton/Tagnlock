@@ -1,4 +1,7 @@
 
+#	Author: A.L. Hertog
+#	Copyrights Pluton IT B.V. http://www.pluton.nl
+#	License: GPL-v2
 
 #MESSAGE ( "gtkmm include: \n ${GTKMM_INCLUDE_DIRS} \n " )
 #MESSAGE ( "glademm include: \n ${GLADEMM_INCLUDE_DIRS} \n " )

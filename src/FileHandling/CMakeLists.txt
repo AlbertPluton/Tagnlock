@@ -1,4 +1,7 @@
 
+#	Author: A.L. Hertog
+#	Copyrights Pluton IT B.V. http://www.pluton.nl
+#	License: GPL-v2
 
 # Make sure the compiler can find include files from our library.
 #include_directories ( ${URIOBJECT_INCLUDE_DIRS}

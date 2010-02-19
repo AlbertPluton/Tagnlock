@@ -1,5 +1,10 @@
 
 
+#	Author: A.L. Hertog
+#	Copyrights Pluton IT B.V. http://www.pluton.nl
+#	License: GPL-v2
+
+
 project (DMS CXX)
 
 
