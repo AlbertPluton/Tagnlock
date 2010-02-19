@@ -1,4 +1,12 @@
 
+//
+//	Author: A.L. Hertog
+//	Date: 18 june 2009
+//	Copyrights Pluton IT B.V. http://www.pluton.nl
+//	License: GPL-v2
+//
+//
+
 #include "YesNoToggleButtonGTKMM.h"
 
 

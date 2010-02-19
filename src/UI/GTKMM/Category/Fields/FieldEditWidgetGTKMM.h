@@ -1,7 +1,8 @@
 //
 //	Author: A.L. Hertog
 //	Date: 13 May 2009
-//	License: GPL
+//	Copyrights Pluton IT B.V. http://www.pluton.nl
+//	License: GPL-v2
 //
 //
 

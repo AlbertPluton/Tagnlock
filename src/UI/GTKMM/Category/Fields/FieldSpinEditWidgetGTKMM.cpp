@@ -1,4 +1,10 @@
-
+//
+//	Author: A.L. Hertog
+//	Date: 19 Juni 2009
+//	Copyrights Pluton IT B.V. http://www.pluton.nl
+//	License: GPL-v2
+//
+//
 
 #include "FieldSpinEditWidgetGTKMM.h"
 #include <cmath>

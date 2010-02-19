@@ -1,4 +1,11 @@
 
+//
+//	Author: A.L. Hertog
+//	Date: 22 October 2009
+//	Copyrights Pluton IT B.V. http://www.pluton.nl
+//	License: GPL-v2
+//
+//
 
 
 #include "EditTextFileStorageGTKMM.h"
