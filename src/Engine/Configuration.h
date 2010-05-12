@@ -20,6 +20,7 @@
 #include <string>
 #include <sstream>
 #include <map>
+#include <typeinfo>
 using namespace std;
 
 #include <sigc++/sigc++.h>
