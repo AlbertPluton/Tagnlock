@@ -43,16 +43,19 @@ FieldEditWidgetGTKMM::FieldEditWidgetGTKMM( Field* pField, int i ) : 	typeLabel(
 
 	// Display the label used.
 	label.set_text( baseField->getLabel() );	
+  label.set_tooltip_text("The name of this field.");
 	this->attach( labelLabel, 0, 1, 1, 2, attachX, attachY );
 	this->attach( label, 1, columns, 1, 2, attachX, attachY );
 
 	// Display a button to edit the required property.
 	required.set_active( baseField->getRequired() );	
+  required.set_tooltip_text("Is it required to fill in this field.");
 	this->attach( requiredLabel, 0, 1, 2, 3, attachX, attachY );
 	this->attach( required, 1, columns, 2, 3, attachX, attachY );
 
 	// Add a button to edit the reset property.
 	reset.set_active( baseField->getReset() );	
+  reset.set_tooltip_text("Does this field reset for the next (new) data object.");
 	this->attach( resetLabel, 0, 1, 3, 4, attachX, attachY );
 	this->attach( reset, 1, columns, 3, 4, attachX, attachY );
 

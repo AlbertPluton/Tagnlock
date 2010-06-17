@@ -116,6 +116,7 @@ void ToolchainWindowGTKMM::connectSignals()
   if(pToolButton)
   {
     pToolButton->signal_clicked().connect( sigc::mem_fun( this, &ToolchainWindowGTKMM::newButton_clicked) );
+    pToolButton->set_tooltip_text("Create a new toolchain.");
   }
   else
   {
@@ -128,6 +129,7 @@ void ToolchainWindowGTKMM::connectSignals()
   if(pToolButton)
   {
     pToolButton->signal_clicked().connect( sigc::mem_fun( this, &EngineGTKMM::saveToolchain) );
+    pToolButton->set_tooltip_text("Save the selected toolchain.");
   }
   else
   {
@@ -140,6 +142,7 @@ void ToolchainWindowGTKMM::connectSignals()
   if(pToolButton)
   {
     pToolButton->signal_clicked().connect( sigc::mem_fun( this, &EngineGTKMM::saveAsToolchain) );
+    pToolButton->set_tooltip_text("Save the selected toolchain as.");
   }
   else
   {
@@ -151,6 +154,7 @@ void ToolchainWindowGTKMM::connectSignals()
   if(pToolButton)
   {
     pToolButton->signal_clicked().connect( sigc::mem_fun( this, &ToolchainWindowGTKMM::openButton_clicked) );
+    pToolButton->set_tooltip_text("Open a toolchain from file.");
   }
   else
   {
@@ -163,6 +167,7 @@ void ToolchainWindowGTKMM::connectSignals()
   if(pToolButton)
   {
     pToolButton->signal_clicked().connect( sigc::mem_fun( this, &ToolchainWindowGTKMM::addButton_clicked) );
+    pToolButton->set_tooltip_text("Add a node to the current toolchain.");
   }
   else
   {
@@ -175,6 +180,7 @@ void ToolchainWindowGTKMM::connectSignals()
   if(pToolButton)
   {
     pToolButton->signal_clicked().connect( sigc::mem_fun( this, &ToolchainWindowGTKMM::addChildButton_clicked) );
+    pToolButton->set_tooltip_text("Add a child-node to the current node");
   }
   else
   {
@@ -187,6 +193,7 @@ void ToolchainWindowGTKMM::connectSignals()
   if(pToolButton)
   {
     pToolButton->signal_clicked().connect( sigc::mem_fun( this, &ToolchainWindowGTKMM::deleteButton_clicked) );
+    pToolButton->set_tooltip_text("Delete the selected node.");
   }
   else
   {
@@ -199,6 +206,7 @@ void ToolchainWindowGTKMM::connectSignals()
   if(pToolButton)
   {
     pToolButton->signal_clicked().connect( sigc::mem_fun( this, &ToolchainWindowGTKMM::upButton_clicked) );
+    pToolButton->set_tooltip_text("Move the selected node up.");
   }
   else
   {
@@ -211,6 +219,7 @@ void ToolchainWindowGTKMM::connectSignals()
   if(pToolButton)
   {
     pToolButton->signal_clicked().connect( sigc::mem_fun( this, &ToolchainWindowGTKMM::downButton_clicked) );
+    pToolButton->set_tooltip_text("Move the selected node down.");
   }
   else
   {
@@ -223,6 +232,7 @@ void ToolchainWindowGTKMM::connectSignals()
   if(pToolButton)
   {
     pToolButton->signal_clicked().connect( sigc::mem_fun( this, &ToolchainWindowGTKMM::leftButton_clicked) );
+    pToolButton->set_tooltip_text("Make the selected node a sibling of its current parent.");
   }
   else
   {
@@ -235,6 +245,7 @@ void ToolchainWindowGTKMM::connectSignals()
   if(pToolButton)
   {
     pToolButton->signal_clicked().connect( sigc::mem_fun( this, &ToolchainWindowGTKMM::rightButton_clicked) );
+    pToolButton->set_tooltip_text("Make teh selected node a child of the node above it.");
   }
   else
   {

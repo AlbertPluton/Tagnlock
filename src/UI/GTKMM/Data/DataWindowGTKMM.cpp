@@ -152,6 +152,7 @@ void DataWindowGTKMM::connectSignals()
   if(pToolButton)
   {
     pToolButton->signal_clicked().connect( sigc::mem_fun( this, &DataWindowGTKMM::newButton_clicked) );
+    pToolButton->set_tooltip_text("Create a new datahandler.");
   }
   else
   {
@@ -164,6 +165,7 @@ void DataWindowGTKMM::connectSignals()
   if(pToolButton)
   {
     pToolButton->signal_clicked().connect( sigc::mem_fun( this, &DataWindowGTKMM::openButton_clicked) );
+    pToolButton->set_tooltip_text("Open an exciting datahandler.");
   }
   else
   {
@@ -176,6 +178,7 @@ void DataWindowGTKMM::connectSignals()
   if(pToolButton)
   {
     pToolButton->signal_clicked().connect( sigc::mem_fun( this, &EngineGTKMM::saveDatahandler) );
+    pToolButton->set_tooltip_text("Save the current datahandler.");
   }
   else
   {
@@ -187,6 +190,7 @@ void DataWindowGTKMM::connectSignals()
   if(pToolButton)
   {
     pToolButton->signal_clicked().connect( sigc::mem_fun( this, &EngineGTKMM::saveAsDatahandler) );
+    pToolButton->set_tooltip_text("Save the current datahandler as.");
   }
   else
   {
@@ -199,6 +203,7 @@ void DataWindowGTKMM::connectSignals()
   if(pToolButton)
   {
     pToolButton->signal_clicked().connect( sigc::mem_fun( this, &DataWindowGTKMM::displayPreviousObjectData) );
+    pToolButton->set_tooltip_text("Display the previous file.");
   }
   else
   {
@@ -211,6 +216,7 @@ void DataWindowGTKMM::connectSignals()
   if(pToolButton)
   {
     pToolButton->signal_clicked().connect( sigc::mem_fun( this, &DataWindowGTKMM::displayNextObjectData) );
+    pToolButton->set_tooltip_text("Display the file file.");
   }
   else
   {
@@ -222,6 +228,7 @@ void DataWindowGTKMM::connectSignals()
   if(pToolButton)
   {
     pToolButton->signal_clicked().connect( sigc::mem_fun( this, &DataWindowGTKMM::executeCompletedButton_clicked) );
+    pToolButton->set_tooltip_text("Execute the current toolchain on all completed files.");
   }
   else
   {
@@ -233,6 +240,7 @@ void DataWindowGTKMM::connectSignals()
   if(pToolButton)
   {
     pToolButton->signal_clicked().connect( sigc::mem_fun( this, &DataWindowGTKMM::executeCurrentButton_clicked) );
+    pToolButton->set_tooltip_text("Execute the current toolchain on the current file.");
   }
   else
   {

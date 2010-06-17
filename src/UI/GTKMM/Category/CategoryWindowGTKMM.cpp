@@ -114,6 +114,7 @@ void CategoryWindowGTKMM::connectSignals()
   if(pToolButton)
   {
     pToolButton->signal_clicked().connect( sigc::mem_fun( this, &CategoryWindowGTKMM::onButton_new) );
+    pToolButton->set_tooltip_text("Create a new category.");
   }
   else
   {
@@ -126,6 +127,7 @@ void CategoryWindowGTKMM::connectSignals()
   if(pToolButton)
   {
     pToolButton->signal_clicked().connect( sigc::mem_fun( this, &CategoryWindowGTKMM::onButton_open) );
+    pToolButton->set_tooltip_text("Open a category from file.");
   }
   else
   {
@@ -138,6 +140,7 @@ void CategoryWindowGTKMM::connectSignals()
   if(pToolButton)
   {
     pToolButton->signal_clicked().connect( sigc::mem_fun( this, &EngineGTKMM::saveCategory) );
+    pToolButton->set_tooltip_text("Save a category to file.");
   }
   else
   {
@@ -149,6 +152,7 @@ void CategoryWindowGTKMM::connectSignals()
   if(pToolButton)
   {
     pToolButton->signal_clicked().connect( sigc::mem_fun( this, &EngineGTKMM::saveAsCategory) );
+    pToolButton->set_tooltip_text("Save as a category to file.");
   }
   else
   {
@@ -161,6 +165,7 @@ void CategoryWindowGTKMM::connectSignals()
   if(pToolButton)
   {
     pToolButton->signal_clicked().connect( sigc::mem_fun( this, &CategoryWindowGTKMM::onButton_back) );
+    pToolButton->set_tooltip_text("Display previous category.");
   }
   else
   {
@@ -173,6 +178,7 @@ void CategoryWindowGTKMM::connectSignals()
   if(pToolButton)
   {
     pToolButton->signal_clicked().connect( sigc::mem_fun( this, &CategoryWindowGTKMM::onButton_forward) );
+    pToolButton->set_tooltip_text("Display next category.");
   }
   else
   {
@@ -184,6 +190,7 @@ void CategoryWindowGTKMM::connectSignals()
   if(pToolButton)
   {
     pToolButton->signal_clicked().connect( sigc::mem_fun( this, &CategoryWindowGTKMM::onButton_add) );
+    pToolButton->set_tooltip_text("Add a field to the category.");
   }
   else
   {
@@ -196,6 +203,7 @@ void CategoryWindowGTKMM::connectSignals()
   if(pToolButton)
   {
     pToolButton->signal_clicked().connect( sigc::mem_fun( this, &CategoryWindowGTKMM::onButton_delete) );
+    pToolButton->set_tooltip_text("Delete the selected field from the category.");
   }
   else
   {
@@ -207,6 +215,7 @@ void CategoryWindowGTKMM::connectSignals()
   if(pToolButton)
   {
     pToolButton->signal_clicked().connect( sigc::mem_fun( this, &CategoryWindowGTKMM::onButton_up) );
+    pToolButton->set_tooltip_text("Move the selected category up.");
   }
   else
   {
@@ -218,6 +227,7 @@ void CategoryWindowGTKMM::connectSignals()
   if(pToolButton)
   {
     pToolButton->signal_clicked().connect( sigc::mem_fun( this, &CategoryWindowGTKMM::onButton_down) );
+    pToolButton->set_tooltip_text("Move the selected category down.");
   }
   else
   {

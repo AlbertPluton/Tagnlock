@@ -110,12 +110,16 @@ FieldSpinEditWidgetGTKMM::FieldSpinEditWidgetGTKMM( Field* pField, int i )	: Fie
 	spinMin.set_update_policy( Gtk::UPDATE_IF_VALID );	
 	spinMin.update();
 
-	
-	
+	// Add some tool tips
+  checkMax.set_tooltip_text("Does this spin field have a maximum value.");
+  checkMin.set_tooltip_text("Does this spin field have a minimum value.");
+	spinMax.set_tooltip_text("The maximum value of this spin field.");
+  spinMin.set_tooltip_text("The minimum value of this spin field.");
 	
 	// Setup the stepsize line --------------------------------------
 	this->attach( labelStepsize, 0, 1, 6, 7, attachX, attachY ); 
-	this->attach( spinStepsize, 1, columns, 6, 7, attachX, attachY ); 
+	this->attach( spinStepsize, 1, columns, 6, 7, attachX, attachY );
+  spinStepsize.set_tooltip_text("The increment/decrement step size of the spin field.");
 	adjustment = spinStepsize.get_adjustment();
 	adjustment->set_upper( 1000000 );  		
 	adjustment->set_lower( -1000000 );
@@ -144,7 +148,7 @@ FieldSpinEditWidgetGTKMM::FieldSpinEditWidgetGTKMM( Field* pField, int i )	: Fie
 	this->attach( labelAdhereStep, 0, 1, 7, 8, attachX, attachY ); 
 	this->attach( toggleAdhereStep, 1, columns, 7, 8, attachX, attachY ); 
 	toggleAdhereStep.set_active( spinField->getAdhereStep() );
-
+  toggleAdhereStep.set_tooltip_text("All values of the spin field should be a multiplication of the stepsize.");
 
 	
 	
@@ -162,6 +166,7 @@ FieldSpinEditWidgetGTKMM::FieldSpinEditWidgetGTKMM( Field* pField, int i )	: Fie
 	spinDec.set_update_policy( Gtk::UPDATE_IF_VALID );	
 	spinDec.set_value( spinField->getDecimals() );
 	spinDec.update();
+  spinDec.set_tooltip_text("The number of decimals shown in the spin field.");
 	
 	
 	
@@ -169,6 +174,7 @@ FieldSpinEditWidgetGTKMM::FieldSpinEditWidgetGTKMM( Field* pField, int i )	: Fie
 	this->attach( labelAlwaysUpdate, 0, 1, 9, 10, attachX, attachY ); 
 	this->attach( toggleAlwaysUpdate, 1, columns, 9, 10, attachX, attachY ); 
 	toggleAlwaysUpdate.set_active( spinField->getAlwaysUpdate() );
+  toggleAlwaysUpdate.set_tooltip_text("Also show numbers with more decimals.");
 	
 	
 		

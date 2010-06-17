@@ -42,11 +42,13 @@ EditToolchainNodeGTKMM::EditToolchainNodeGTKMM( ToolchainNode* pNode ) :	labelTy
 	this->attach( labelName, 0, 1, 1, 2, attachX, attachY );
 	this->attach( entryName, 1, columns, 1, 2, attachX, attachY );
 	entryName.set_text( node->getName() );
+  entryName.set_tooltip_text("Enter the name of this node.");
 	
 	// Add the Description name and entry
 	this->attach( labelDescription, 0, 1, 2, 3, attachX, attachY );
 	this->attach( entryDescription, 1, columns, 2, 5, attachX, attachY );
 	entryDescription.set_text( node->getDescription() );
+	entryDescription.set_tooltip_text("Enter a description of the nodes purpose.");
 	
 	
 	entryName.signal_changed().connect( sigc::mem_fun(this, &EditToolchainNodeGTKMM::changedName) );

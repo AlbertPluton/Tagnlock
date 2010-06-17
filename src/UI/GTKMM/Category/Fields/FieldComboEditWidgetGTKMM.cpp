@@ -88,6 +88,12 @@ FieldComboEditWidgetGTKMM::FieldComboEditWidgetGTKMM( Field* pField, int i ) : 	
 	upButton.signal_clicked().connect( sigc::mem_fun( *this, &FieldComboEditWidgetGTKMM::movedOptionUp) );
 	downButton.signal_clicked().connect( sigc::mem_fun( *this, &FieldComboEditWidgetGTKMM::movedOptionDown) );
 
+  // Set the tool tips
+	addButton.set_tooltip_text("Add a new option.");
+	delButton.set_tooltip_text("Delete the selected option.");
+	upButton.set_tooltip_text("Move the selected option up.");
+	downButton.set_tooltip_text("Move the selected option down.");
+
 
  	treeSelection = treeView.get_selection();
   // When clicking on a field in the tree view of the category window, change the selection
